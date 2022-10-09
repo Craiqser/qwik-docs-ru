@@ -1,0 +1,22 @@
+{
+	"compilerOptions": {
+		"allowJs": true,
+		"esModuleInterop": true,
+		"incremental": true,
+		"isolatedModules": true,
+		"jsx": "react-jsx",
+		"jsxImportSource": "@builder.io/qwik",
+		"lib": ["ESNext", "DOM", "WebWorker", "DOM.Iterable"],
+		"module": "ESNext",
+		"moduleResolution": "node",
+		"paths": {
+			"~/*": ["./src/*"]
+		},
+		"resolveJsonModule": true,
+		"skipLibCheck": true,
+		"strict": true,
+		"target": "ESNext",
+		"types": ["node", "vite/client"]
+	},
+	"include": ["src"]
+}

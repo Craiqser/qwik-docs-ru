@@ -1,0 +1,22 @@
+node_modules/
+
+# Build
+/dist
+/lib
+/lib-types
+/server
+
+# Cache
+.cache
+.mf
+.vscode
+.rollup.cache
+tsconfig.tsbuildinfo
+
+# Logs
+logs/
+*.log*
+
+# Yarn
+.yarn/*
+!.yarn/releases
