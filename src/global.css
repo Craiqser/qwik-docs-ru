@@ -82,7 +82,3 @@ code {
 	font-size: 0.9em;
 	border-bottom: 2px solid #bfbfbf;
 }
-
-.builder-columns {
-	display: flex;
-}

@@ -4,11 +4,6 @@ import type { DocumentHead } from '@builder.io/qwik-city';
 export default component$(() => {
 	return (
 		<>
-			<div class="builder-columns">
-				<div class="builder-column">
-					<div></div>
-				</div>
-			</div>
 			<h2>Commands</h2>
 
 			<table class="commands">
