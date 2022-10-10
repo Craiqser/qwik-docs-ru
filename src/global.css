@@ -1,5 +1,8 @@
-* {
+*, ::after, ::before {
 	box-sizing: border-box;
+	border-width: 0;
+	border-style: solid;
+	border-color: #e5e7eb;
 }
 
 :root {
@@ -12,7 +15,6 @@
 		'Lucida Sans Typewriter', 'DejaVu Sans Mono', 'Bitstream Vera Sans Mono', 'Liberation Mono',
 		'Nimbus Mono L', Monaco, 'Courier New', Courier, monospace;
 
-	color-scheme: light;
 	--theme-accent: #006ce9;
 	--theme-text: #181818;
 }
@@ -23,6 +25,29 @@
 	}
 }
 
+* {
+	-webkit-tap-highlight-color: transparent;
+	-webkit-touch-callout: none;
+}
+
+html {
+	font-family: Poppins, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, Segoe UI,
+	  Roboto, Helvetica Neue, Arial, Noto Sans, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
+	  Segoe UI Symbol, 'Noto Color Emoji';
+	color: #0e201a;
+
+	--scroll-margin-top: 120px;
+	--qwik-blue: #0093ee;
+	--qwik-dark-blue: #006ce9;
+	--qwik-light-blue: #daf0ff;
+	--qwik-purple: #ac7ef4;
+
+	--header-height: 118px;
+	--repl-tab-height: 56px;
+	--repl-tab-bg-color: var(--qwik-light-blue);
+	--panel-toggle-height: 0px;
+}
+
 body {
 	display: flex;
 	flex-direction: column;
@@ -30,10 +55,10 @@ body {
 	font-family: var(--font-body);
 	font-size: 1rem;
 	font-size: clamp(0.9rem, 0.75rem + 0.375vw + var(--user-font-scale), 1rem);
-	line-height: 1.5;
+	line-height: inherit;
 	max-width: 100vw;
 	background: var(--theme-bg);
-	color: var(--theme-text);
+	-webkit-font-smoothing: antialiased;
 }
 
 main {

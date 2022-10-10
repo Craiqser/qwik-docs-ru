@@ -8,12 +8,6 @@ export default component$(() => {
 		<footer>
 			<ul>
 				<li>
-					<a href="/docs">Docs</a>
-				</li>
-				<li>
-					<a href="/about-us">About Us</a>
-				</li>
-				<li>
 					<a href="https://qwik.builder.io/">Qwik</a>
 				</li>
 				<li>
