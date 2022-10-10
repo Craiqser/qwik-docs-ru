@@ -1,5 +1,5 @@
 ---
-title: Overview
+title: Обзор
 contributors:
   - adamdbradley
   - steve8708
@@ -9,30 +9,30 @@ contributors:
 
 import { getCommunity } from './community';
 
-# Welcome to Qwik
+# Добро пожаловать в Qwik
 
-Qwik is a new kind of web framework that can deliver instant loading web applications at any size or complexity. Your sites and apps can boot with about 1kb of JS (regardless of application complexity), and achieve consistent performance at scale.
+Qwik — это новый вид веб-фреймворка, который позволяет мгновенно загружать веб-приложения любого размера и сложности. Ваши сайты и приложения могут загружаться примерно с 1 Kб JS (независимо от сложности приложения) и обеспечивать стабильную производительность при масштабировании.
 
-[See more presentations, videos, and podcasts](/media/)
+[Смотреть презентации, видео, подкасты (eng)](https://qwik.builder.io/media/)
 
-## Qwik Goals
+## Цели Qwik
 
 <div class="card-grid">
   <div class="card">
-    <h3>General-purpose</h3>
-    <p>Qwik can be used to build any type of web site or application</p>
+    <h3>Главное назначение</h3>
+    <p>Qwik можно использовать для создания любого типа веб-сайта или приложения.</p>
   </div>
     <div class="card">
-    <h3>Instant-on</h3>
-    <p>Unlike other frameworks, Qwik is resumable which means Qwik applications require 0 hydration. This allows Qwik apps to have instant-on interactivity, regardless of size or complexity</p>
+    <h3>Мгновенный</h3>
+    <p>В отличие от других фреймворков, Qwik является возобновляемым, что означает, что приложения Qwik не требуют гидратации. Это позволяет приложениям Qwik иметь мгновенную интерактивность, независимо от размера или сложности.</p>
   </div>
     <div class="card">
-    <h3>Optimized for speed</h3>
-    <p>Qwik has unprecedented performance, offering sub-second full page loads even on mobile devices. Qwik achieves this by delivering pure HTML, and incrementally loading JS only as-needed.</p>
+    <h3>Оптимизирован по скорости</h3>
+    <p>Qwik обладает беспрецедентной производительностью, обеспечивая полную загрузку страниц менее чем за секунду даже на мобильных устройствах. Qwik достигает этого отправляя чистый HTML и постепенно подгружая JS по мере необходимости.</p>
   </div>
 </div>
 
-## Getting Started with Qwik
+## Начало работы с Qwik
 
 <div class="card-grid">
   <a class="card card-center" href='/docs/getting-started/'>
@@ -41,7 +41,7 @@ Qwik is a new kind of web framework that can deliver instant loading web applica
   </a>
   <a class="card card-center" href='/docs/think-qwik/'>
     <p class='icon'>🤔</p>
-    <h3>Why Qwik?</h3>
+    <h3>Почему Qwik?</h3>
   </a>
   <a class="card card-center" href='/docs/components/overview/'>
     <p class='icon'>📚</p>
@@ -49,7 +49,7 @@ Qwik is a new kind of web framework that can deliver instant loading web applica
   </a>
   <a class="card card-center" href='https://qwik.builder.io/chat'>
     <p class='icon'>{getCommunity()}</p>
-    <h3>Community</h3>
+    <h3>Сообщество</h3>
   </a>
   <a class="card card-center" href='https://github.com/BuilderIO/qwik'>
     <p class='icon'>💙</p>
@@ -57,15 +57,15 @@ Qwik is a new kind of web framework that can deliver instant loading web applica
   </a>
 </div>
 
-## Does page speed really matter?
+## Действительно ли скорость страницы имеет значение?
 
-Put simply: slow sites deter visitors, costing businesses millions. Fast sites have better SEO, better UX, and are more profitable.
+Проще говоря, медленные сайты отпугивают посетителей, что обходится бизнесу в миллионы. Быстрые сайты имеют лучшую поисковую оптимизацию (SEO), лучшее взаимодействие с пользователем (UX) и являются более прибыльными.
 
-Some examples from [web.dev](https://web.dev/tags/case-study/):
+Некоторые примеры с [web.dev](https://web.dev/tags/case-study/):
 
-|                                                                                                                                                                                                                                               |                                                                                                                                                        |
-| --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| **Every 100ms faster → 1% more conversions** <br /> For Mobify, every 100ms decrease in homepage load speed worked out to a 1.11% increase in session-based conversion, yielding an average annual revenue increase of nearly $380,000.       | **50% faster → 12% more sales** <br /> When AutoAnything reduced page load time by half, they saw a boost of 12% to 13% in sales.                      |
-| **20% faster → 10% more conversions** <br /> Retailer Furniture Village audited their site speed and developed a plan to address the problems they found, leading to a 20% reduction in page load time and a 10% increase in conversion rate. | **40% faster → 15% more sign-ups** <br /> Pinterest reduced perceived wait times by 40% and this increased search engine traffic and sign-ups by 15%.  |
-| **850ms faster → 7% more conversions** <br /> COOK reduced average page load time by 850 milliseconds which increased conversions by 7%, decreased bounce rates by 7%, and increased pages per session by 10%.                                | **1 seconds slowness → 10% less users** <br /> The BBC found they lost an additional 10% of users for every additional second their site took to load. |
-|                                                                                                                                                                                                                                               |                                                                                                                                                        |
+|     |     |
+| --- | --- |
+| **На каждые 100 мс ускорения → На 1% больше конверсий**<br />Для Mobify каждые 100 мс снижения скорости загрузки страницы приводили к увеличению конверсии на основе сессий на 1,11%, что позволило увеличить среднегодовой доход почти на $380000. | **Ускорение на 50% → На 12% больше продаж**<br />Когда AutoAnything сократила время загрузки страницы наполовину, то их продажи увеличились на 12-13%. |
+| **На 20% быстрее → На 10% больше конверсий**<br />Ретейлер Furniture Village провела аудит скорости работы своего сайта и разработала план по устранению обнаруженных проблем, что привело к сокращению времени загрузки страниц на 20% и увеличению коэффициента конверсии на 10%. | **На 40% быстрее → На 15% больше регистраций**<br />Pinterest сократил воспринимаемое время ожидания на 40%, что увеличило трафик поисковых систем и количество регистраций на 15%. |
+| **850 мс ускорения → На 7% больше конверсий**<br />Фирма COOK сократила среднее время загрузки страницы на 850 миллисекунд, что позволило увеличить конверсию на 7%, снизить показатель отказов на 7% и увеличить количество страниц сессии на 10%. | **1 seconds slowness → 10% less users**<br />BBC обнаружила потерю дополнительных 10% пользователей за каждую дополнительную секунду загрузки их сайта. |
+|     |     |

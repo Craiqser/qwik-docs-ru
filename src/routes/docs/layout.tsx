@@ -20,6 +20,6 @@ export default component$(() => {
 
 export const head: DocumentHead = ({ head }) => {
 	return {
-		title: `${head.title} - Documentation`,
+		title: `${head.title} - Qwik docs`,
 	};
 };

@@ -9,13 +9,13 @@ export default component$(() => {
 	const contentHeadings = headings?.filter((h) => h.level === 2 || h.level === 3) || [];
 
 	const { pathname } = useLocation();
-	const editUrl = `#update-your-edit-url-for-${pathname}`;
+	const editUrl = `https://github.com/Craiqser/qwik-docs-ru/edit/main/src/routes${pathname}/index.mdx`;
 
 	return (
 		<aside class="on-this-page">
 			{contentHeadings.length > 0 ? (
 				<>
-					<h6>On This Page</h6>
+					<h6>На этой странице</h6>
 					<ul>
 						{contentHeadings.map((h) => (
 							<li>
@@ -34,16 +34,16 @@ export default component$(() => {
 				</>
 			) : null}
 
-			<h6>More</h6>
+			<h6>Дополнительно</h6>
 			<ul>
 				<li>
 					<a href={editUrl} target="_blank">
-						Edit this page
+						Редактировать
 					</a>
 				</li>
 				<li>
 					<a href="https://qwik.builder.io/chat" target="_blank">
-						Join our community
+						Сообщество
 					</a>
 				</li>
 				<li>
