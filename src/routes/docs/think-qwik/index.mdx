@@ -1,88 +1,87 @@
 ---
-title: Think Qwik
+title: Философия Qwik
 contributors:
   - manucorporat
   - hayley
   - adamdbradley
 ---
 
-# Think Qwik
+# Философия Qwik
 
-Qwik is very similar to other web frameworks on a high level. Qwik is a framework that renders a tree of components resulting in an interactive application.
+Qwik очень похож на другие веб-фреймворки, но лишь поверхностно. Это фреймворк, который отображает дерево компонентов, в результате чего получается интерактивное приложение.
 
-The unique part of Qwik is not in what it does but in how it achieves its goals. Qwik's goal is to have instant-on applications, even on mobile devices. Qwik achieves this through two main strategies:
+Уникальность Qwik заключается не в том, что он делает, а в том, как он этого достигает. Цель Qwik в том, чтобы приложения работали молниеносно даже на мобильных устройствах. Он достигает этого с помощью двух основных стратегий:
 
-1. Delay execution and download of JavaScript for as long as possible.
-2. Serialize the execution state of the application and the framework on the server and resume it on the client.
+1. Максимально отсрочить загрузку и выполнение JavaScript.
+2. Сериализовать состояние выполнения приложения и фреймворка на сервере, а затем возобновить его на клиенте.
 
-The goal of Qwik is having only to download and execute the bare minimum of the application.
+Цель Qwik заключается в том, чтобы загрузить и выполнить только необходимый минимум приложения.
 
-## Core principle
+## Основной принцип
 
-> Delay execution of JavaScript as much as possible.
+> Отсрочить выполнение JavaScript настолько, насколько это возможно.
 
-Qwik applications startup fast because there is a minimal amount of JavaScript code to execute. (At its simplest, a Qwik application only needs about 1KB of JavaScript to become interactive.)
+Приложения Qwik запускаются быстрее потому, что в них используется минимальное количество кода JavaScript (в самом простом случае требуется всего 1 Кб JavaScript-кода для того, чтобы приложение стало интерактивным).
 
-By aggressively delaying the application download and execution, Qwik can provide near-instant startup performance that current generations of web frameworks can't match.
+Благодаря агрессивной задержке загрузки и выполнения приложения, Qwik может обеспечить практически мгновенную скорость запуска, с которой не могут сравниться нынешние поколения веб-фреймворков.
 
-Qwik is fast not because it uses clever algorithms but because it is designed in a way where most of the JavaScript never needs to be downloaded or executed. Its speed comes from not doing things (such as hydration) that other frameworks have to do.
+Qwik работает быстро не потому, что в нём используются умные алгоритмы, а потому, что он разработан таким образом, что большая часть JavaScript никогда не загружается и не выполняется. Его скорость обусловлена тем, что он не делает некоторых вещей (таких как гидратация), которые должны делать другие фреймворки.
 
-## Resumability & Serialization
+## Возобновляемость & Сериализация
 
-Resumability is discussed in detail [here](../concepts/resumable/index.mdx). Resumability allows Qwik applications to continue execution where the server left off. All frameworks need to keep track of internal data structures about the application's state. The current generation of frameworks does not preserve this information from the server to browser transition. As a result, the framework's data structures need to be rebuilt in the browser. The rebuilding of data structures and attaching of listeners is called hydration.
+Подробное обсуждение возобновления находится [здесь](./../concepts/resumable/index.mdx). Возобновляемость позволяет приложениям Qwik продолжать выполнение с того места, на котором остановился сервер. Всем фреймворкам необходимо отслеживать внутренние структуры данных с состоянием приложения. Текущее поколение фреймворков не сохраняет эту информацию при переходе между сервером и браузером. В результате, структуры данных фреймворка должны быть перестроены в браузере. Перестройка структур данных и установка слушателей событий называется гидратацией.
 
-Qwik serializes listeners, internal data structures, and application state into the HTML on server browser handoff. Because all of the information is serialized in HTML, the client can just resume execution where the server left off.
+Qwik сериализует слушателей, внутренние структуры данных и состояние приложения в HTML при передаче с сервера браузеру. Поскольку вся информация сериализована в HTML, клиент может просто возобновить выполнение с того места, на котором остановился сервер.
 
+## В чем проблема?
 
-## What is the problem?
+Современные веб-сайты требуют огромного количества JavaScript, чтобы стать интерактивными. Слишком большое количество JavaScript приводит к двум проблемам:
 
-Modern websites require vast amounts of JavaScript to become interactive. Too much JavaScript manifests itself in two problems:
+1. **Пропускная способность сети**: клиенту отправляется большой объём кода, что может занять много времени в медленных сетях.
+2. **Время запуска**: код на клиенте должен быть выполнен (как часть гидратации), чтобы сайт стал интерактивным.
 
-1. **Network bandwidth**: A large amount of code is shipped to the client, which may take a long time on slow networks.
-2. **Startup time**: Once on the client, the code needs to be executed (as part of hydration) to get the site interactive.
+По мере того как наши приложения становятся всё более сложными и интерактивными, объём кода с годами неуклонно растёт и не собирается останавливаться. Проще говоря, наши сайты становятся всё сложнее. Увеличение сложности сайтов, в свою очередь, требует большего количества кода. Весь этот код негативно влияет на производительность при запуске.
 
-As our applications get more complex with a higher fidelity of interactivity, the amount of code has steadily increased over the years with no sign of stopping. Simply put, our sites are getting more complex. An increase in site complexity, in turn, requires more code. All of this code negatively impacts site startup performance.
+Что ещё хуже, JavaScript является однопоточным, поэтому наши сложные сайты не могут использовать преимущества современных многоядерных процессоров.
 
-To make matters worse, JavaScript is single-threaded; therefore, our complex sites can't take advantage of modern multi-core CPUs.
+### Как мы здесь оказались?
 
-### How did we get here?
+Решение вышеупомянутой проблемы одновременно и очевидно, и сложно: отправляйте меньше JavaScript.
 
-The solution to the above problem is both obvious and hard: Ship less JavaScript.
+Это очевидно, потому что все мы согласны с тем, что сайты с меньшим объёмом JavaScript будут работать лучше.
 
-It's obvious because we all agree that sites with less JavaScript would perform better.
+Это сложно, потому что наши инструменты не помогают нам. Почти все они решают проблемы таким образом, что получить меньший объём JavaScript-кода становится сложно. Это происходит потому, что большинство наших инструментов создаются для решения конкретной задачи, не задумываясь об объёме JavaScript, который они генерируют.
 
-It is hard because our tools don't help us to get there. Almost all of our tools solve problems in a way that makes shipping less JavaScript hard. This is because most of our tools are designed to solve a specific problem without thinking about the amount of JavaScript they generate.
+Вам нужно решать задачи рендера, стилизации, анимации, A/B тестирования, аналитики и т.д. Для них существуют инструменты. Вы просто импортируете модуль или добавляете тег `<script>`, и эти инструменты решают ваши проблемы, но за счёт увеличения начального бандла.
 
-Do you need to solve rendering, styling, animation, A/B testing, analytics, etc.? There is a tool for that. Just import or add a `<script>` tag, and these tools will solve your problems, but at the expense of making the initial bundle bigger.
+Как отрасль, мы не задумываемся о последствиях размера бандла. Каждый инструмент решает конкретную проблему в отдельности, но размер бандла не является частью этого уравнения. Размер - это проблема, которая возникает, когда вы собираете всё вместе, и к этому моменту разработчик уже мало что может с этим поделать.
 
-As an industry, we have failed to think about the implication of bundle size. Each tool solves a specific problem individually, but the size is not part of the equation. Size is the problem that emerges when you put all of the tools together, and by that point, there is very little the developer can do about it.
+### Каково решение?
 
-### What's the solution?
+Qwik разработан с нуля именно для решения проблемы размера. Небольшой размер бандла - это его первоначальная цель, и все остальные конструктивные решения подчинены этой цели.
 
-Qwik is designed from the ground up to address the size problem. Small bundle size is its initial goal, and all other design decisions are subservient to that goal.
+Qwik - это не про создание меньшего объёма JavaScript-кода. Qwik - это про отсутствие необходимости отправлять весь этот код клиенту сразу при запуске приложения. Qwik - это то, что получается, когда вы доводите идею задержки загрузки JavaScript до крайности.
 
-Qwik is not about creating less JavaScript. Qwik is about not having to ship all of that JavaScript to the client at once on application startup. Qwik is what you end up with when you take the idea of delay loading of JavaScript to the extreme.
+Да, Qwik требует другого образа мышления и проектирования приложения, но в результате вы получаете околонулевой начальный объём JavaScript с прогрессивной подгрузкой на основе взаимодействия с пользователем.
 
-Yes, Qwik requires a different way of thinking and designing your application, but the result is near zero initial JavaScript with progressive JavaScript download based on user interactions.
+### Размер - не проблема разработчиков
 
-### Size should not be a developer problem
+Сегодня размер - это проблема разработчиков. Если вы будете следовать лучшим практикам для каждого фреймворка, инструмента и т.д., у вас будет большой размер результирующего бандла. В этот момент разработчики начинают решать проблему с помощью разного рода границ ленивой загрузки и т.д. (но, как вам скажет любой, кто пробовал, возможности этого решения ограничены).
 
-Today, size is the developers' problem. If you follow best practices for each of the frameworks, tools, etc., you will have a large bundle size. It is at that time when developers start to mitigate the problem with some sort of lazy loading boundaries etc. (But as anyone who has tried will tell you, the options are limited.)
+Передовой опыт разработки в нашей отрасли приводит к большим бандлам, и в Интернете полно этому примеров.
 
-Our industry best practices lead to large bundles, and the web is full of examples.
+Мантра Qwik заключается в том, что размер бандла - это не то, о чём должен думать разработчик. Это должно происходить естественным образом, как часть машинерии фреймворка.
 
-The mantra of Qwik is that bundle size should not be something that developers should think about. It should just naturally emerge as part of how the framework is designed.
+Qwik разработан с целью создания множества лениво-загружаемых фрагментов. Инструментарий может разбить ваше приложение на множество лениво-загружаемых фрагментов, а среда выполнения может загружать их только по мере необходимости.
 
-Qwik is designed from the ground up to produce lots of lazy loadable boundaries. Tooling can break up your application into many lazy-loadable chunks, and the runtime can download them only when needed.
+### Почему бы не исправить существующие инструменты?
 
-### Why not fix existing frameworks/tools?
+Если кратко, философия ленивой загрузки находится на довольно низком уровне и не может быть задним числом добавлена к существующим фреймворкам/инструментам без фундаментального изменения. Такое фундаментальное изменение будет несовместимо с фреймворками/инструментами и их теукщими экосистемами, делая их бесполезными.
 
-In short, the lazy loading philosophy is at a low level and can not be retroactively added to the existing frameworks/tools without changing them fundamentally. Such fundamental change would be incompatible with the framework/tools and their respective ecosystems, rendering them useless.
+Когда фреймворк делает определённые предположения, например, что весь рендеринг синхронный, добавление асинхронной ленивой загрузки становится практически невозможным. Или, если фреймворк восстанавливает расположение слушателей из шаблонов, то загрузка и выполнение этих шаблонов является обязательным условием, прежде чем сайт сможет стать интерактивным. Это лишь некоторые из наиболее очевидных примеров, но на практике существует длинный хвост бесконечных причин, почему текущая ментальная модель не соответствует требованиям возобновляемости.
 
-When a framework makes certain assumptions, such as that all rendering is synchronous, adding asynchronous lazy loading becomes pretty close to impossible. Or, if a framework recovers the listener location from templates, then download and execution of those templates is a must before the site can be interactive. These are just some of the more obvious examples, but in practice, there is a long tail of endless reasons why the current mental model does not fit the requirements of resumability.
+Вышесказанное означает, что существующие фреймворки не могут добавить возобновляемость в качестве улучшения. Существующие фреймворки никогда не смогут сделать то, что может Qwik (не ломая обратную совместимость).
 
-The above also means that it is not feasible for existing frameworks to add resumability as a feature. Existing frameworks will never be able to do what Qwik can (without breaking backward compatibility).
+### Почему мы создаём Qwik?
 
-### Why are we building Qwik?
-
-Because we believe there is a better way to build sites. A way that does not involve massive amounts of JavaScript that must be downloaded eagerly on startup before your site becomes interactive. A way that allows the developer to think about adding features rather than how to break up the huge codebase into smaller chunks. A way to have instant-on sites for a better user experience. And all of that, in a way that is independent of the size of the application codebase.
+Потому что мы верим, что для создания сайтов есть путь лучше. Путь, не связанный с огромным количеством JavaScript, который должен быть немедленно загружен при запуске, прежде чем ваш сайт станет интерактивным. Путь, который позволит разработчику думать о добавлении новых функций, а не о том, как разбить огромную кодовую базу на более мелкие куски. Путь, позволяющий сайтам загружаться мгновенно, улучшая взаимодействие с пользователем. И всё это - способом, который не зависит от размера кодовой базы приложения.

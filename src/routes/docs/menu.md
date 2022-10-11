@@ -5,7 +5,7 @@
 - [Обзор](overview/index.mdx)
 
 - [Начало работы](getting-started/index.mdx)
-- [Think Qwik](think-qwik/index.mdx)
+- [Философия Qwik](think-qwik/index.mdx)
 - [FAQ](faq/index.mdx)
 - [Routing (QwikCity)](../qwikcity/overview/index.mdx)
 
