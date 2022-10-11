@@ -1,4 +1,5 @@
 import { component$, Slot, useStyles$ } from '@builder.io/qwik';
+import { ContentNav } from './../../components/content-nav/content-nav';
 import type { DocumentHead } from '@builder.io/qwik-city';
 import Menu from '~/components/menu/menu';
 import OnThisPage from '~/components/on-this-page/on-this-page';
@@ -10,9 +11,12 @@ export default component$(() => {
 	return (
 		<div class="docs">
 			<Menu />
-			<article>
-				<Slot />
-			</article>
+			<div class="docs-container">
+				<article>
+					<Slot />
+				</article>
+				<ContentNav />
+			</div>
 			<OnThisPage />
 		</div>
 	);
