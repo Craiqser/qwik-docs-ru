@@ -19,21 +19,21 @@ Qwik - это новый вид фреймворка, который являе�
 - Ваша любимая IDE (рекомендуется [VSCode](https://code.visualstudio.com/))
 - Начните [думать как Qwik](./../think-qwik/index.mdx)
 
-## Creating an app using the CLI
+## Создание приложения с помощью CLI
 
-The first step is to create an application. Qwik comes with a CLI that allows you to create a basic working skeleton of an application. We will use the CLI to create a blank starter so that you can quickly familiarize yourself with it.
+Первый шаг - создание приложения. Qwik поставляется с CLI (CLI - Command Line Interface - интерфейс командной строки), который позволяет вам создать базовый рабочий скелет приложения. Мы будем использовать CLI для создания стартового приложения, чтобы вы могли быстрее познакомиться с ним.
 
-### Run the Qwik CLI in your shell
+### Запуск Qwik CLI в терминале
 
 ```shell
 npm create qwik@latest
 ```
 
-The CLI will guide you through an interactive menu to set the project-name and select one of the starters:
+CLI проведёт вас через интерактивное меню, чтобы задать название проекта и выбрать один из стартовых шаблонов:
 
 <script id="asciicast-514542" src="https://asciinema.org/a/514542.js" async></script>
 
-After your new app is created, you will see an output like the following in your terminal:
+После создания нового приложения вы увидите в терминале вывод, подобный следующему:
 
 ```shell
 💫 Let's create a Qwik app 💫
@@ -56,31 +56,31 @@ After your new app is created, you will see an output like the following in your
    https://qwik.builder.io/media/
 ```
 
-At this point, you will have `qwik-app` directory, that contains the starter app.
+На этом этапе у вас будет каталог `qwik-app`, содержащий стартовое приложение.
 
-## Running in development
+## Запуск в режиме разработки
 
-Once the application is download.
+После того, как файлы приложения будут созданы, требуется выполнить следующие шаги:
 
-1. Change into the directory created by the `npm create qwik@latest`.
+1. Перейдите в каталог, созданный командой `npm create qwik@latest`
 
 ```shell
 cd qwik-app
 ```
 
-2. Install NPM modules:
+2. Установите модули NPM
 
 ```shell
 npm install
 ```
 
-3. Invoke the dev server
+3. Запустите сервер приложения в режиме разработки
 
 ```shell
 npm start
 ```
 
-4. You should see a server running with your To-do application
+4. Вы должны увидеть баннер запущенного сервера
 
 ```shell
 
@@ -91,13 +91,15 @@ npm start
 
 ```
 
-5. Visit http://localhost:5174/ to explore the app.
+5. Перейдите в браузере по адресу http://localhost:5174/, чтобы ознакомиться с приложением.
 
-## Commands
+## Команды
 
-Here are some useful commands to get you started. For a complete list please refer to `package.json`.
+Вот несколько полезных команд для начала работы:
 
-- `npm start`: alias to `npm run dev` (this currently defaults to running SSR)
-- `npm run preview`: Production build and start preview server.
-- `npm run build`: builds the application for production.
-- `npm run qwik add`: Select an integration to add.
+- `npm start`: алиас для команды `npm run dev`, базовая команда, запуск с поддержкой SSR;
+- `npm run preview`: Production-сборка и запуск в режиме предварительного просмотра;
+- `npm run build`: Production-сборка приложения;
+- `npm run qwik add`: Выбор и добавление в проект пакета интеграции (на текущий момент это __Server Adaptors (SSR)__, __Static Generator (SSG)__, [Partytown](https://www.npmjs.com/package/@builder.io/partytown), [Qwik React](https://www.npmjs.com/package/@builder.io/qwik-react), [Tailwind](https://www.npmjs.com/package/tailwindcss)).
+
+Полный список команд можно найти в файле `package.json`.
