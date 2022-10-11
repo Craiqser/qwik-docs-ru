@@ -38,6 +38,15 @@ export default component$(() => {
 						</a>
 					</li>
 					<li>
+						<a href="https://qwik.builder.io/media/"><span>Media</span></a>
+					</li>
+					<li>
+						<a href="https://qwik.builder.io/examples/introduction/hello-world/"><span>Examples</span></a>
+					</li>
+					<li>
+						<a href="https://qwik.builder.io/tutorial/welcome/overview/"><span>Tutorial</span></a>
+					</li>
+					<li>
 						<a
 							href="https://github.com/BuilderIO/qwik"
 							target="_blank"

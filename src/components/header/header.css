@@ -61,3 +61,11 @@ header a {
 	color: inherit;
 	text-decoration: inherit;
 }
+
+header a.active {
+	color: var(--qwik-dark-blue);
+}
+
+header a:hover {
+	text-decoration: underline;
+}
