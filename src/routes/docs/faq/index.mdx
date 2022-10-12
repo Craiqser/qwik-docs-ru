@@ -32,17 +32,18 @@ contributors:
 
 ### Сложен ли Qwik в освоении?
 
-Мы разработали Qwik так, чтобы он был [чрезвычайно прост в освоении](./../cheat/qwik-react/index.mdx) и был знаком React-разработчикам, создание компонентов практически идентично, а маршрутизация вдохновлена Nextjs и другими фреймворками.
+Мы разработали Qwik таким образом, что он [чрезвычайно прост в освоении](./../cheat/qwik-react/index.mdx) и знаком React-разработчикам, создание компонентов практически идентично, а маршрутизация вдохновлена Nextjs и другими фреймворками.
 
-However, there are fundamentally [new concepts](../think-qwik/index.mdx) to learn, such as [Resumability](../concepts/resumable/index.mdx), fine grained reactivity, but we think the learning curve is not steep.
+Однако есть и принципиально [новые концепции](./../think-qwik/index.mdx), такие как [возобновляемость](./../concepts/resumable/index.mdx), мелкозернистая реактивность, но мы думаем, что кривая обучения не будет крутой.
 
-We also have an interactive [tutorial](../../tutorial/welcome/overview/) to get you started.
+У нас также есть интерактивный [учебник](./../../tutorial/welcome/overview/).
 
-### What are all those `$`?
+### Что значат все эти "$"?
 
-You might have noticed there are more [`$`](../advanced/optimizer/index.mdx#the-meaning-of-) than usual in Qwik apps: `component$()`, `useWatch$()`, `<div onClick$={() => console.log('click')} />`. It's not for nothing. Qwik breaks your application into small chunks; these pieces are smaller than the component itself. For event handlers, hooks, etc... the `$` signals both to the [optimizer](../advanced/optimizer/index.mdx) and to the developer when it's happening.
+Вы могли заметить, что в приложениях Qwik больше [`$`](./../advanced/optimizer/index.mdx#the-meaning-of-), чем обычно: `component$()`, `useWatch$()`, `<div onClick$={() => console.log('click')} />`. Это не просто так. Qwik разбивает ваше приложение на небольшие фрагменты, меньшие, чем сам компонент: обработчики событий, хуки и прочие... Знак `$` сигнализирует как [оптимизатору](./../advanced/optimizer/index.mdx), так и разработчику, когда это происходит.
 
-**Example:**
+**Пример:**
+
 ```tsx
 import { component$ } from '@builder.io/qwik';
 
@@ -52,7 +53,7 @@ export const App = component$(() => {
 });
 ```
 
-The component above is split thanks to the `$` syntax into:
+Компонент выше разделен благодаря `$` на:
 
 **app.js**
 ```js
@@ -64,6 +65,7 @@ export { App };
 ```
 
 **app_component_akbu84a8zes.js**
+
 ```js
 import { jsx as _jsx } from "@builder.io/qwik/jsx-runtime";
 import { qrl } from "@builder.io/qwik";
@@ -77,139 +79,131 @@ export const App_component_AkbU84a8zes = ()=>{
 ```
 
 **app_component_p_onclick_01pegc10cpw.js**
+
 ```js
 export const App_component_p_onClick_01pEgC10cpw = ()=>console.log('hello');
 ```
 
+### Qwik загружает JS при взаимодействии с пользователем?
 
+Нет, в рабочей среде Qwik использует много информации, сгенерированной во время SSR, чтобы как можно скорее (ASAP) начать [предварительную загрузку](./../../qwikcity/prefetching/overview/index.mdx) фрагментов интерактивности только для текущей страницы. Таким образом, к моменту взаимодействия с пользователем, JS уже загружен.
 
-### Does Qwik download JS when the user interacts?
+### Если Qwik предварительно загружает JS, то в чём разница?
 
-Nope, in production Qwik uses a lot of information generated during SSR to start [prefetching](../../qwikcity/prefetching/overview/index.mdx) only the bits of interactivity of the current page as soon as possible (ASAP), this way when the user clicks or interacts, the JS is already downloaded.
+Предварительная загрузка - это не то же самое, что парсинг и выполнение JS, Qwik не выполняет JS, пока пользователь не взаимодействует с ним.
 
-### If Qwik prefetches JS, then what's the difference?
+Кроме того, [предварительная загрузка](./../../qwikcity/prefetching/overview/index.mdx) позволяет Qwik расставить приоритеты от более важных фрагментов интерактивности к наименее важным.
 
-Prefetching is not the same as parsing and executing JS, Qwik does not execute JS until the user interacts.
+Например, кнопка "Купить сейчас" важнее, чем кнопка "Добавить в корзину", поэтому Qwik сначала загрузит кнопку "Купить сейчас", а затем кнопку "Добавить в корзину".
 
-In addition [prefetching](../../qwikcity/prefetching/overview/index.mdx) enables Qwik to prioritize the important parts of interactivity first, and then the less important parts.
+Qwik не нуждается в полной предварительной загрузке, чтобы начать работу, в то время как другим фреймворкам из-за [гидратации](https://www.builder.io/blog/hydration-is-pure-overhead) необходимо загрузить целиком критически-важные данные, прежде чем они смогут продолжить работу.
 
-For example, the "buy now" button is more important than the "add to cart" button, so Qwik will prefetch the "buy now" button first, and then the "add to cart" button.
+### В низкоскоростных сетях приложения Qwik тоже медленны?
 
-Qwik does not need to prefetch everything to start running, while other frameworks do need to download the whole critical path before they can start running because of [hydration](https://www.builder.io/blog/hydration-is-pure-overhead).
+Вовсе нет, благодаря [предварительной загрузке](./../../qwikcity/prefetching/overview/index.mdx) приложения Qwik страдают от низкоскоростных сетей не больше, чем на других фреймворках. Фактически, благодаря точечной фрагментации и возобновляемости, приложения Qwik могут стать интерактивными с гораздо меньшим количеством JS, что эффективно ускоряет их работу в медленных сетях.
 
-### Are Qwik apps slow on slow networks?
+### Qwik генерирует слишком много маленьких файлов?
 
-Not at all, thanks to [prefetching](../../qwikcity/prefetching/overview/index.mdx) Qwik apps are not more affected by slow networks than other frameworks. In fact because of the fine grained bundling and resumability, Qwik apps can become interactive with much less JS, effectively making them faster on slow networks.
+В среде разработки Qwik генерирует много маленьких файлов, поскольку использует сервер разработки [Vite.js](https://vitejs.dev/), но в рабочей среде Qwik эффективно объединяет файлы.
 
+### Почему Qwik использует JSX? У него под капотом React?
 
-### Does Qwik generate too many small files?
+Нет, React не используется вообще, но Qwik использует JSX в качестве синтаксиса шаблонов.
 
-In dev mode Qwik generates a lot of small files because it uses the Dev [Vite.js](https://vitejs.dev/) server, but in production mode Qwik bundles files in a more efficient way.
+JSX - это не React, на самом деле JSX - это просто синтаксис без конкретной семантики. Мы выбрали JSX по нескольким причинам:
 
-### Why does Qwik use JSX? Is it React under the hood?
+- **Очень простой синтаксис**: не изобретает колесо, а использует существующий JS для циклов, условий и т.д., [спецификация JSX удивительно проста и мала](https://facebook.github.io/jsx/)
+- **Экосистема**: он хорошо поддерживается IDE, линтерами, инструментами аудита безопасности, отладки, подсветки...
+- **Похож на HTML**: JSX визуально и концептуально похож на HTML-дерево. Другие системы шаблонов, такие как *html templates* (lit-html), представляют собой не деревья, а массивы лексем, что усложняет преобразование и работу с ними.
+- **Популярен**: Нравится вам это или нет, но JSX является наиболее широко используемым синтаксисом шаблонов в мире.
 
-Nope, React is not used at all, but Qwik uses JSX as the template syntax.
+### Существует ли маршрутизатор для Qwik?
 
-Notice that JSX is not React, in fact JSX is only syntax without semantic. We choose JSX for several reason:
+ДА! [Qwik City](./../../qwikcity/overview/index.mdx) включает в себя маршрутизатор на основе каталогов, и он вдохновлен Nextjs и другими фреймворками.
 
-- **Very simple syntax:** It does not reinvent the wheel, but leverage existing JS for loops, conditions... [JSX spec is surprisinhly simple and small](https://facebook.github.io/jsx/)
-- **Ecosystem**: Well supported by IDEs, linters, security auditing tools, debugging tools, highlighting...
-- **Similar to HTML**: JSX is visually and conceptually similar to HTML, a tree. Other template systems like *html templates* (lit-html) are not trees but arrays of tokens, making it harder to build on top and transform.
-- **Popular**: Like it or not, JSX is the most widely used template syntax in the world.
+### Для развёртывания приложений Qwik нужен сервер?
 
-### Is there a Router for Qwik available?
+Вы легко можете развернуть приложение Qwik в любой [бессерверной среде благодаря нашим адаптерам](./../../qwikcity/adaptors/overview/index.mdx), мы также поддерживаем адаптер [Node](./../../qwikcity/adaptors/node/index.mdx) для серверов на базе Nodejs, таких, например, как Express.
 
-YES! [Qwik City](../../qwikcity/overview/index.mdx) includes a directory-based router, and it is inspired by Nextjs and others.
+Вы можете развернуть своё приложение Qwik как статический сайт, если нет необходимости в SSR, благодаря нашему [SSG-адаптеру](./../../qwikcity/static-site-generation/overview/index.mdx).
 
-### Do I need a server to deploy Qwik apps?
+### SPA быстрее, чем MPA?
 
-You can deploy easily a Qwik App in any [serverless enviroment thanks to our adaptors](../../qwikcity/adaptors/overview/index.mdx), we also support a [vanilla-node adaptor](../../qwikcity/adaptors/node/index.mdx) for Nodejs-based servers, such as Express.
+Зависит от ситуации, для SPA большая часть стоимости оплачивается заранее, за счёт полной загрузки в начале сессии. Таким образом, когда пользователь взаимодействует с приложением, затраты минимальны.
 
-You can deploy your Qwik app as a static site, if there is no need for SSR, thanks to our [SSG adaptor](../../qwikcity/static-site-generation/overview/index.mdx).
+### MPA быстрее, чем SPA?
 
-### SPA is faster than MPA
+Зависит от ситуации. MPA загружаются чрезвычайно быстро, потому что им не нужно загружать много JS, но, когда пользователь выполняет навигацию, обычно происходит полная перезагрузка страницы.
 
-Depends, for SPAs most of the cost is payed upfront, by downloading everything at the beginning of the session. So when a user interacts with the app the cost is minimal.
+Полная перезагрузка страницы обычно выполняется очень быстро, поскольку браузеры чрезвычайно быстро загружают и парсят HTML, но подход MPA не для всех, поскольку иногда хочется сохранить состояние между переходами, и SPA делает это очень хорошо.
 
-### MPA is faster than SPA
+Qwik - это уникальный фреймворк, который является одновременно и MPA и SPA.
 
-Depends, MPAs are extremelly fast to load, because they don't need to download that much JS, but when the user navigates it usually means a full page reload.
+### Можно ли на Qwik создать SPA?
 
-A full page reload is usually super fast, because browsers are extremelly fast to download and parse HTML, but the MPA approach is not for everyone since sometimes it's ideal to keep state between navigation, and SPA does that very well.
+Конечно! [Qwik City](./../../qwikcity/overview/index.mdx) включает компонент `<Link>`, который активирует SPA-навигацию.
+С Qwik разработчикам не нужно выбирать между SPA и MPA, каждый сайт - это и то, и другое одновременно.
 
-Qwik is the unique framework that is both MPA and SPA at the same time.
+MPA или SPA - это уже не архитектурное решение, принимаемое в начале проекта, а решение, принимаемое для каждой ссылки.
 
+### Может ли Qwik генерировать статические сайты (SSG)?
 
-### Can Qwik do SPA?
+Да! Эта возможность есть во всех стартовых шаблонах Qwik City. Узнать, как сделать [Static Site Generation](./../../qwikcity/static-site-generation/overview/index.mdx).
 
-Of course! [Qwik City](../../qwikcity/overview/index.mdx) includes the `<Link>` component which triggers a SPA navigation.
-With Qwik, developers don't need to choose between SPA and MPA, every site is both at the same time.
+### Но... с другими фреймворками я также могу делать MPA и SPA
 
-MPA vs SPA is no longer an architectural decision taken at beginning of the project, but a decision made for every link.
+Не совсем так, другие фреймворки предлагают удалить все `<Scripts>` в корне для создания MPA, фактически удаляя всю интерактивность вместе с навигацией SPA.
 
-### Can Qwik do Static Site Generation (SSG)?
+А если скрипты _не_ удаляются, то каждая перезагрузка страницы становится очень дорогой, потому что каждая перезагрузка страницы означает, что фреймворк должен гидратировать всю страницу. А вот Qwik не имеет [стоимости гидратации](https://www.builder.io/blog/hydration-is-pure-overhead) для каждой загрузки страницы.
 
-Yes! It's part of all Qwik City starters, learn how to do [Static Site Generation here](../../qwikcity/static-site-generation/overview/index.mdx).
+### Будет ли миграция на Qwik трудоемкой?
 
-### But... with other frameworks I can also do MPA and SPA
+Не обязательно. Если вы пришли из React, то перенос ваших компонентов в Qwik будет довольно прост. Помимо этого, благодаря `Qwik React` вы можете использовать всю экосистему React, вы можете использовать любые ваши React-компоненты и любые React-библиотеки в приложении Qwik.
 
-Not quite, other frameworks suggest removing all the `<Scripts>` at the root to generate an MPA, effectively removing all the interactivity along with the SPA navigation.
+### Могу ли я пользоваться экосистемой React?
 
-And if scripts are _not_ removed, then each full-page reload become very expensive, because every page reload means that the framework needs to hydrate the entire page. Qwik, however, does not have a [hydration cost](https://www.builder.io/blog/hydration-is-pure-overhead) for each page load.
-
-### Will migrate to Qwik be so much work?
-
-Depends, if you are coming from React, porting your components to Qwik should be straight forward. But on top of that, thanks to `Qwik React` you can use all the React ecosystem, so you can use any of your React components, and any React library in a Qwik App.
-
-### Can I enjoy the rich React ecosystem?
-
-YES! Qwik can run React components natively, check out `@builder.io/qwik-react` by adding it to your Qwik app:
+ДА! Qwik может нативно запускать React-компоненты с помощью библиотеки `@builder.io/qwik-react`, добавьте её в ваше приложение:
 
 ```
 npm run qwik add qwik-react
 ```
 
-You will be amazed!
+Вы будете поражены!
 
-### Does Qwik do partial hydration?
+### Qwik делает частичную гидратацию?
 
-No, Partial hydration (or island architecture) popularized by [Astro](https://astro.build/) is about preventing [full-page hydration](https://www.builder.io/blog/hydration-is-pure-overhead), where all existing components in the page need to be downloaded and executed, and instead breaking the app into islands of interactivity.
+Нет, частичная гидратация (или островная архитектура), популяризированная [Astro](https://astro.build/), предназначена для предотвращения [гидратации всей страницы](https://www.builder.io/blog/hydration-is-pure-overhead), когда все компоненты страницы должны быть загружены и выполнены, и вместо этого приложение разбивается на островки интерактивности.
 
-Islands that developers need to manually define, and then manually describe in which situations they should be hydrated. Islands that can not communicate between each other.
+Острова, которые разработчикам необходимо определять вручную, а затем вручную описывать, в каких ситуациях должна происходить их гидратация. Острова, которые не могут общаться друг с другом.
 
-Instead, Qwik components does not hydrate at all. Qwik achieves this through a powerful serialization system, that serializes only the necesary state the reactivity graph, so app can resumes without eagarly running any JS.
+В противовес этому, компоненты Qwik вообще не гидратируются. Qwik достигает этого с помощью мощной системы сериализации, которая сериализует только необходимое состояние графа реактивности, поэтому приложение может начать работу без предварительного запуска какого-либо JS.
 
-We think resumability scales without the negative trade-offs of partial hydration.
+Мы думаем, что возобновляемость масштабируется без негативных последствий частичной гидратации.
 
-### Does Qwik have community?
+### Есть ли у Qwik сообщество?
 
-YES, there is a growing community of Qwik developers at [Discord](https://qwik.builder.io/chat) and [Github](https://github.com/BuilderIO/qwik), they are making amazing contributions to the framework, building sites at scale and helping each other. [Join us](https://qwik.builder.io/chat).
+ДА, существует растущее сообщество разработчиков Qwik в [Discord](https://qwik.builder.io/chat) и [Github](https://github.com/BuilderIO/qwik), они вносят удивительный вклад в развитие фреймворка, создают масштабные сайты и помогают друг другу. [Присоединяйтесь](https://qwik.builder.io/chat).
 
+### Готов ли Qwik к запуску в рабочей среде?
 
-### Is Qwik production ready?
+ДА! Но это зависит от обстоятельств. Qwik находится в разработке уже 2 года, и мы достигли [вехи бета-версии](https://www.builder.io/blog/qwik-and-qwik-city-have-reached-beta), что означает нашу уверенность в готовности к запуску в рабочей среде, и не ожидается никаких ломающих изменений.
 
-YES! but it depends. Qwik has been in development for 2 years now, and we reached [the beta milestones](https://www.builder.io/blog/qwik-and-qwik-city-have-reached-beta), meaning that we are confident that Qwik is ready for production, and there are not expected breaking changes.
+[Builder.io](https://www.builder.io/) и многие другие команды уже используют Qwik в рабочей среде, так что вы будете не одиноки.
 
-[Builder.io](https://www.builder.io/) and a lot of teams are already using Qwik at production, so you will not be alone.
+### Полная перезагрузка страницы медленнее, чем SPA?
 
+Зависит от ситуации. Полная перезагрузка страницы выполняется чрезвычайно быстро, поскольку браузеры чрезвычайно быстро загружают и парсят HTML, но подход MPA не для всех, поскольку иногда хочется сохранить состояние между переходами, и SPA делает это очень хорошо.
 
-### Are full page reloads slower than SPA?
+MPA может быть медленным в существующих фреймворках при попытке сделать MPA с интерактивностью, потому что существующие фреймворки должны будут запускать [гидратацию во время загрузки, что может быть очень медленным](https://www.builder.io/blog/hydration-is-pure-overhead).
 
-Depends, full page reloads are extremelly fast, because browsers are extremelly fast to download and parse HTML, but the MPA approach is not for everyone since sometimes it's necesary to keep state between pages, and SPA does that very well.
+### Qwik сериализует слишком много данных в HTML?
 
-MPA can be slow in existing frameworks when trying to do MPA with interactivity because existing frameworks will need to run [hydration at load time, which can be very slow](https://www.builder.io/blog/hydration-is-pure-overhead).
+Нет, Qwik сериализует только те данные, которые необходимы для текущей страницы. Если на странице 1000 компонентов, но только один из них является интерактивным, то количество сериализованных данных будет пропорционально объёму интерактивности, а не количеству компонентов.
 
+### Кто создаёт Qwik?
 
-### Qwik serializes too much data in the HTML
+Удивительная команда разработчиков по всему миру, живущая в [Discord](https://qwik.builder.io/chat), и несколько разработчиков, работающих полный рабочий день в [Builder.io](https://www.builder.io/): [Misko](https://twitter.com/mhevery), [Adam](https://twitter.com/adamdbradley) и [Manu Almeida](https://twitter.com/manucorporat).
 
-False, Qwik serializes only the data that is needed for the current page, and only the data that is needed for the current page. If a page has 1000 components but only one is interactive the amount of data serialized is proportional to the amount of interactivity, not the amount of components.
+### Qwik является проектом с открытым исходным кодом?
 
-
-### Who builds Qwik?
-
-An amazing team of contributors around the world living in [Discord](https://qwik.builder.io/chat), and a few full time developers at [Builder.io](https://www.builder.io/): [Misko](https://twitter.com/mhevery), [Adam](https://twitter.com/adamdbradley) and [Manu Almeida](https://twitter.com/manucorporat).
-
-
-### Is Qwik open source?
-
-Yes, [MIT](https://github.com/BuilderIO/qwik/blob/main/LICENSE) and [dependency-free](https://github.com/BuilderIO/qwik/blob/main/packages/qwik/package.json), installing Qwik will not bloat your node_modules nor your lawyers.
+Да, [MIT-лицензия](https://github.com/BuilderIO/qwik/blob/main/LICENSE) и [отсутствие зависимостей](https://github.com/BuilderIO/qwik/blob/main/packages/qwik/package.json) не приведут при установке Qwik к раздуванию ваших node_modules и ваших юристов.

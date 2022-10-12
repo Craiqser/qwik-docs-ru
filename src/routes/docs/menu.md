@@ -7,7 +7,7 @@
 - [Начало работы](getting-started/index.mdx)
 - [Философия Qwik](think-qwik/index.mdx)
 - [FAQ](faq/index.mdx)
-- [Маршрутизация (QwikCity)](../qwikcity/overview/index.mdx)
+- [QwikCity (маршрутизация)](../qwikcity/overview/index.mdx)
 
 ## Component API
 
