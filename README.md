@@ -1,66 +1,88 @@
-# Qwik App ⚡️
+# Qwik Docs Site ⚡️
 
-- [Qwik Docs](https://qwik.builder.io/)
-- [Discord](https://qwik.builder.io/chat)
-- [Qwik GitHub](https://github.com/BuilderIO/qwik)
-- [@QwikDev](https://twitter.com/QwikDev)
-- [Vite](https://vitejs.dev/)
-- [Partytown](https://partytown.builder.io/)
-- [Mitosis](https://github.com/BuilderIO/mitosis)
-- [Builder.io](https://www.builder.io/)
+## Development Builds
 
----
+### Client only
 
-## Project Structure
-
-Inside your project, you'll see the following directory structure:
+During development, the index.html is not a result of server-side rendering, but rather the Qwik app is built using client-side JavaScript only. This is ideal for development with Vite and its ability to reload modules quickly and on-demand. However, this mode is only for development and does not showcase "how" Qwik works since JavaScript is required to execute, and Vite imports many development modules for the app to work.
 
 ```
-├── public/
-│   └── ...
-└── src/
-    ├── components/
-    │   └── ...
-    └── routes/
-        └── ...
+npm run dev
 ```
 
-- `src/routes`: Provides the directory based routing, which can include a hierarchy of `layout.tsx` layout files, and an `index.tsx` file as the page. Additionally, `index.ts` files are endpoints. Please see the [routing docs](https://qwik.builder.io/qwikcity/routing/overview/) for more info.
+### Server-side Rendering (SSR) and Client
 
-- `src/components`: Recommended directory for components.
+Server-side rendered index.html, with client-side modules prefetched and loaded by the browser. This can be used to test out server-side rendered content during development, but will be slower than the client-only development builds.
 
-- `public`: Any static assets, like images, can be placed in the public directory. Please see the [Vite public directory](https://vitejs.dev/guide/assets.html#the-public-directory) for more info.
-
-## Add Integrations
-
-Use the `npm run qwik add` command to add additional integrations. Some examples of integrations include: Cloudflare, Netlify or Vercel server, and the [Static Site Generator (SSG)](https://qwik.builder.io/qwikcity/static-site-generation/static-site-config/).
-
-```shell
-npm run qwik add # or `yarn qwik add`
+```
+npm run dev.ssr
 ```
 
-## Development
+## Production Builds
 
-Development mode uses [Vite's development server](https://vitejs.dev/). During development, the `dev` command will server-side render (SSR) the output.
+A production build should generate the client and server modules by running both client and server build commands.
 
-```shell
-npm run dev # or `yarn dev`
+```
+npm run build
 ```
 
-> Note: during dev mode, Vite may request a significant number of `.js` files. This does not represent a Qwik production build.
+### Client Modules
 
-## Preview
+Production build that creates only the client-side modules that are dynamically imported by the browser.
 
-The preview command will create a production build of the client modules, a production build of `src/entry.preview.tsx`, and run a local server. The preview server is only for convenience to locally preview a production build, and it should not be used as a production server.
-
-```shell
-npm run preview # or `yarn preview`
+```
+npm run build.client
 ```
 
-## Production
+### Server Modules
 
-The production build will generate client and server modules by running both client and server build commands. Additionally, the build command will use Typescript to run a type check on the source code.
+Production build that creates the server-side render (SSR) module that is used by the server to render the HTML.
 
-```shell
-npm run build # or `yarn build`
 ```
+npm run build.ssr
+```
+
+## Cloudflare Pages
+
+Cloudflare's [wrangler](https://github.com/cloudflare/wrangler) CLI can be used to preview a production build locally. To start a local server, run:
+
+```
+npm run serve
+```
+
+Then visit [http://localhost:8787/](http://localhost:8787/)
+
+### Deployments
+
+[Cloudflare Pages](https://pages.cloudflare.com/) are deployable through their [Git provider integrations](https://developers.cloudflare.com/pages/platform/git-integration/).
+
+If you don't already have an account, then [create a Cloudflare account here](https://dash.cloudflare.com/sign-up/pages). Next go to your dashboard and follow the [Cloudflare Pages deployment guide](https://developers.cloudflare.com/pages/framework-guides/deploy-anything/).
+
+Within the projects "Settings" for "Build and deployments", the "Build command" should be `npm run build`, and the "Build output directory" should be set to `dist`.
+
+## Algolia search
+
+STILL WIP
+
+resource: https://docsearch.algolia.com/
+
+### Crawler
+
+Setup in https://crawler.algolia.com/
+
+### Debug local site with crawler settings
+
+To crawl localhost site for testing index settings for content hierarchy. use this docker command
+
+```bash
+# create apiKey via https://www.algolia.com/account/api-keys
+touch .env
+# APPLICATION_ID=APPLICATION_ID
+# API_KEY=API_KEY
+
+docker run -it --rm --env-file=.env -e "CONFIG=$(cat ./packages/docs/algolia.json | jq -r tostring)" algolia/docsearch-scraper
+```
+
+see guide of [DocSearch-legacy docker command](https://docsearch.algolia.com/docs/legacy/run-your-own#run-the-crawl-from-the-docker-image)
+
+> In mac machine, docker container can access host's network, workaround is to use `host.docker.internal`
