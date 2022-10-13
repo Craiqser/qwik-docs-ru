@@ -1,5 +1,5 @@
 ---
-title: Qwik City - Named Layout
+title: Qwik City - Именованный макет
 contributors:
   - manucorporat
   - adamdbradley
@@ -8,20 +8,20 @@ contributors:
   - nnelgxorz
 ---
 
-# Named Layout
+# Именованный макет
 
-At times related routes need to have drastically different layouts from their siblings. It is possible to define multiple layouts for different sibling routes. A single default layout and any number of named layouts. The child route can then request a specific named-layout.
+Иногда маршруты нуждаются в макетах, коренным образом отличающихся от макетов соседних маршрутов. В этом случае можно определить несколько макетов для одноуровневых маршрутов. Один макет по умолчанию и любое количество именованных макетов. Затем дочерний маршрут может запросить определённый именованный макет.
 
-Qwik City defines the convention that layouts are within `src/routes` and the filename starts with `layout`. That's why the default layout is named `layout.tsx`. A named layout also starts with `layout` followed by a dash `-` and a unique name, such as `layout-narrow.tsx`.
+Qwik City определяет соглашение о том, что макеты находятся внутри каталога `src/routes`, а имена файлов начинаются с `layout`. Именно поэтому макет по умолчанию называется `layout.tsx`. Именованный макет также начинается с `layout`, за которым следует тире `-` и уникальное имя, например `layout-narrow.tsx`.
 
 ```
 src/
 └── routes/
     ├── contact/
-    │   └── index@narrow.tsx      # https://example.com/contact (Layout: layout-narrow.tsx)
-    ├── layout.tsx                # Default layout
-    ├── layout-narrow.tsx         # Default named layout
-    └── index.tsx                 # https://example.com/ (Layout: layout.tsx)
+    │   └── index@narrow.tsx      # https://example.com/contact (Макет: layout-narrow.tsx)
+    ├── layout.tsx                # Макет по умолчанию
+    ├── layout-narrow.tsx         # Именованный макет
+    └── index.tsx                 # https://example.com/ (Макет: layout.tsx)
 ```
 
 - `https://example.com/`
