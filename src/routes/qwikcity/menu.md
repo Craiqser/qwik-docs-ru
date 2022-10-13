@@ -9,8 +9,8 @@
 ## Маршрутизация
 
 - [Обзор](routing/overview/index.mdx)
-- [Route Parameters](routing/route-parameters/index.mdx)
-- [Error Responses](routing/error-responses/index.mdx)
+- [Параметры маршрута](routing/route-parameters/index.mdx)
+- [Ответы-ошибки](routing/error-responses/index.mdx)
 
 ## Layout
 
