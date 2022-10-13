@@ -1,16 +1,16 @@
 ---
-title: Qwik City - Grouped Layouts
+title: Qwik City - Группировка макетов
 contributors:
   - adamdbradley
 ---
 
-# Grouped Layouts
+# Группировка макетов
 
-Common purpose routes are often placed into directories so they can share layouts, and so related source files are logically grouped next to each other. However, it may be desirable that the directory, which was used to group similar files and share layouts, is excluded from the public-facing URL. This is where "grouped" layouts come in (also referred to as a "pathless" layout route).
+Маршруты общего назначения часто помещают в каталоги, чтобы они могли совместно использовать макеты, и чтобы связанные исходные файлы были логически сгруппированы друг с другом. Однако может возникнуть желание, чтобы каталог, который использовался для группировки похожих файлов и совместного использования макетов, был исключен из общедоступных URL-адресов. Здесь поможет "группировка" макетов (так называемый макет маршрута "без пути").
 
-By prefixing any directory name with two underscores `__`, then the directory name itself will not be included in the URL pathname.
+Если к любому имени каталога добавить два символа подчёркивания "__", то само имя каталога не будет включено в URL-путь.
 
-For example, let's say an app placed all accounts routes together in a directory, however, `/account/` could be dropped from the URL for cleaner, shorter URLs. In the example below, notice that the paths are within `src/routes/__accounts/` directory. However, the URL paths exclude `__accounts/`.
+Например, предположим, что все маршруты учётных записей в приложении расположены в одном каталоге `/accounts/`, однако он может быть удалён из URL-адреса для более чистых и кратких URL-адресов. В приведённом ниже примере обратите внимание на то, что пути находятся в каталоге `src/routes/__accounts/`, однако URL-адреса исключают `__accounts/`.
 
 ```
 src/
