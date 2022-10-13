@@ -6,9 +6,9 @@
 - [Структура каталога](directory-layout/index.mdx)
 - [Статические ресурсы](static-assets/index.mdx)
 
-## Routing
+## Маршрутизация
 
-- [Overview](routing/overview/index.mdx)
+- [Обзор](routing/overview/index.mdx)
 - [Route Parameters](routing/route-parameters/index.mdx)
 - [Error Responses](routing/error-responses/index.mdx)
 
