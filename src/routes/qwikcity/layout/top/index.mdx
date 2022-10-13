@@ -1,5 +1,5 @@
 ---
-title: Qwik City - Top Layout
+title: Qwik City - Макет верхнего уровня
 contributors:
   - manucorporat
   - Oyemade
@@ -8,25 +8,25 @@ contributors:
   - adamdbradley
 ---
 
-# Top Layout
+# Макет верхнего уровня
 
-The default is that a page will create its layout stack by climbing up each directory until it gets to the `src/routes` directory. If at any point it should not continue climbing up the directories you can use the "top" layout feature.
+По умолчанию страница будет создавать свой стек макетов, поднимаясь вверх по каждой директории, пока не доберётся до директории `src/routes`. Если в какой-то момент требуется прекратить подъём по каталогам, вы можете воспользоваться макетом "верхнего уровня".
 
-A top layout means that the layout is always at the very top of the nested layout stack, and doesn't keep collecting parent layouts, even when there are parent directory layouts.
+Под макетом верхнего уровня понимается то, что он всегда находится на самом верху стека макетов, и страница не продолжает собирать родительские макеты, даже если они есть в родительских каталогах.
 
-A top layout is specified by ending the layout filename with `!`, such as `layout!.tsx`.
+Макет верхнего уровня задаётся путём завершения имени файла макета символом `!`: например, `layout!.tsx`.
 
 ```
 src/
 └── routes/
-    ├── layout.tsx              # Root layout
+    ├── layout.tsx              # Корневой макет
     └── docs/
-        ├── layout!.tsx         # Docs layout
+        ├── layout!.tsx         # Макет документов
         ├── index.tsx           # https://example.com/docs
         └── api/
             └── index.tsx       # https://example.com/docs/api
 ```
 
-In the above example, there are two layouts in the parent directories of `src/routes/docs/api/index.tsx`. By default, the `/docs/api` page would be nested inside both layouts (the Root and Docs layout).
+В приведённом выше примере в родительских каталогах страницы `src/routes/docs/api/index.tsx` находятся два макета. По умолчанию страница `/docs/api` будет вложена в оба макета (корневой и макет документов).
 
-However, since the `src/routes/docs/layout!.tsx` filename ends with `!`, then this layout becomes the very top layout and the Root `src/routes/layout.tsx` layout is not a part of the stack.
+Однако, поскольку имя файла `src/routes/docs/layout!.tsx` заканчивается на `!`, то этот макет становится самым верхним макетом, а корневой макет `src/routes/layout.tsx` перестаёт являться частью стека макетов.

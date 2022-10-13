@@ -18,11 +18,11 @@
 - [Вложенность](layout/nested/index.mdx)
 - [Именование](layout/named/index.mdx)
 - [Группировка](layout/grouped/index.mdx)
-- [Top](layout/top/index.mdx)
+- [Верхний уровень](layout/top/index.mdx)
 
-## Data
+## Данные
 
-- [Overview](data/overview/index.mdx)
+- [Обзор](data/overview/index.mdx)
 - [Retrieving Data](data/retrieve/index.mdx)
 - [Modifying Data](data/modify/index.mdx)
 - [Endpoints](data/endpoints/index.mdx)
