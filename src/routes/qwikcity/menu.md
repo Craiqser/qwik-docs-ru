@@ -2,7 +2,7 @@
 
 ## Qwik City
 
-- [Overview](overview/index.mdx)
+- [Обзор](overview/index.mdx)
 - [Directory Layout](directory-layout/index.mdx)
 - [Static Assets](static-assets/index.mdx)
 

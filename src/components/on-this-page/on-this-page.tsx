@@ -13,13 +13,13 @@ export const OnThisPage = component$(() => {
   const contentHeadings = headings?.filter((h) => h.level === 2 || h.level === 3) || [];
 
   const { pathname } = useLocation();
-  const editUrl = `https://github.com/BuilderIO/qwik/edit/main/packages/docs/src/routes${pathname}index.mdx`;
+  const editUrl = `https://github.com/Craiqser/qwik-docs-ru/edit/main/src/routes${pathname}index.mdx`;
 
   return (
     <aside class="on-this-page fixed text-sm z-20 bottom-0 right-[max(0px,calc(50%-42rem))] overflow-y-auto hidden xl:block xl:w-[16rem] xl:top-[9rem]">
       {contentHeadings.length > 0 ? (
         <>
-          <h6>On This Page</h6>
+          <h6>На этой странице</h6>
           <ul>
             {contentHeadings.map((h) => (
               <li key={h.id}>
@@ -38,12 +38,12 @@ export const OnThisPage = component$(() => {
         </>
       ) : null}
 
-      <h6>More</h6>
+      <h6>Дополнительно</h6>
       <ul>
         <li>
           <a href={editUrl} target="_blank">
             <EditIcon width={22} height={22} />
-            <span>Edit this page</span>
+            <span>Редактировать</span>
           </a>
         </li>
         <li>
@@ -72,13 +72,13 @@ export const OnThisPage = component$(() => {
               />
               <path d="M256 367.91a20 20 0 1120-20 20 20 0 01-20 20z" fill="currentColor" />
             </svg>
-            <span>Create an issue</span>
+            <span>Сообщить о проблеме</span>
           </a>
         </li>
         <li>
           <a href="https://qwik.builder.io/chat" target="_blank" rel="nofollow noopener">
             <ChatIcon width={20} height={20} />
-            <span>Join our community</span>
+            <span>Сообщество</span>
           </a>
         </li>
         <li>
