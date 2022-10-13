@@ -12,9 +12,9 @@
 - [Параметры маршрута](routing/route-parameters/index.mdx)
 - [Страницы ошибок](routing/error-responses/index.mdx)
 
-## Layout
+## Макет
 
-- [Overview](layout/overview/index.mdx)
+- [Обзор](layout/overview/index.mdx)
 - [Nested](layout/nested/index.mdx)
 - [Named](layout/named/index.mdx)
 - [Grouped](layout/grouped/index.mdx)

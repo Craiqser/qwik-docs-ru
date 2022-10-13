@@ -1,5 +1,5 @@
 ---
-title: Qwik City - Non-200 Response
+title: Qwik City - Не 200-ый ответ
 contributors:
   - manucorporat
   - Oyemade
@@ -7,11 +7,11 @@ contributors:
   - nnelgxorz
 ---
 
-# Non-200 Response
+# Не 200-ый ответ
 
-At times it is necessary to respond with HTTP status codes other than 200. In such cases, response handler is the place to determine what status code should be returned.
+Иногда необходимо отвечать кодами состояния HTTP, отличными от 200. В таких случаях обработчик ответа является тем местом, которое определяет, какой код состояния должен быть возвращен.
 
-Assume this file layout.
+Предположим, у нас такая схема расположения файлов:
 
 ```
 src/
@@ -21,12 +21,12 @@ src/
             └── index.tsx     # https://example.com/product/1234
 ```
 
-## 404 - Not Found
+## 404 - Не найдено
 
-Let's say that a user does a request to an invalid `skuId` such as `https://example.com/product/999`. In this case, we would like to return a 404 HTTP status code and render a 404 page. The place where we determine if the request is valid or not is in the request handler by looking into the database. Even if the response is non-200, the component still gets a chance to render a page (Except in the redirect case.)
+Допустим, пользователь делает запрос на недействительный `skuId`, например `https://example.com/product/999`. В этом случае мы хотим вернуть код состояния HTTP 404 и отобразить страницу 404. Место, где мы определяем, является ли запрос корректным, находится в обработчике запроса, который просматривает базу данных. Даже если ответ не имеет 200-ый код, компонент всё-равно получает шанс отрендерить страницу (кроме случая с перенаправлением).
 
 ```typescript
-// File: src/routes/product/[skuId]/index.tsx
+// Файл: src/routes/product/[skuId]/index.tsx
 import { component$ } from '@builder.io/qwik';
 
 type EndpointData = ProductData | null;
@@ -40,8 +40,8 @@ export const onGet: RequestHandler<EndpointData> = async ({ params, response }) 
   const product = await loadProductFromDatabase(params.skuId);
 
   if (!product) {
-    // Product data not found
-    // but the data is still given to the renderer to decide what to do
+    // Данный товар не найден,
+    // но данные все равно передаются рендереру, чтобы он решил, что делать.
     response.status = 404;
     return null;
   } else {
@@ -50,19 +50,19 @@ export const onGet: RequestHandler<EndpointData> = async ({ params, response }) 
 };
 
 export default component$(() => {
-  const resource = useEndpoint<typeof onGet>(); //equivalent to useEndpoint<EndpointData>
+  const resource = useEndpoint<typeof onGet>(); // эквивалентно useEndpoint<EndpointData>
 
   if (resource.state == 'resolved' && !resource.resolved) {
-    // Early return for 404
-    return <div>404: Product not found!!!</div>;
+    // Ранний возврат для статус-кода 404
+    return <div>404: Товар не найден!!!</div>;
   }
 
-  // Normal rendering
+  // Нормальный рендеринг
   return (
     <Resource
       value={resource}
-      onPending={() => <div>Loading...</div>}
-      onError={() => <div>Error</div>}
+      onPending={() => <div>Загрузка...</div>}
+      onError={() => <div>Ошибка</div>}
       onResolved={() => (
         <>
           <h1>Product: {product.productId}</h1>
