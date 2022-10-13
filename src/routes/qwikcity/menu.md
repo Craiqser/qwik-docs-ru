@@ -4,7 +4,7 @@
 
 - [Обзор](overview/index.mdx)
 - [Структура каталога](directory-layout/index.mdx)
-- [Static Assets](static-assets/index.mdx)
+- [Статические ресурсы](static-assets/index.mdx)
 
 ## Routing
 
