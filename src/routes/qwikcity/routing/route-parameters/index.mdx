@@ -1,5 +1,5 @@
 ---
-title: Qwik City - Route Parameters
+title: Qwik City - Параметры маршрута
 contributors:
   - manucorporat
   - Oyemade
@@ -7,17 +7,17 @@ contributors:
   - adamdbradley
 ---
 
-# Route Parameters
+# Параметры маршрута
 
-Route Parameters are parts of the URLs that are extracted into parameters.
+Параметры маршрута - это составляющие части URL-адресов, которые извлекаются как параметры.
 
-Imagine that you have a page with the following URLs where `[skuId]` can be any of the thousands of products that you have in your database. It would be impractical to create a route for each product. Instead, we need to define a Route Parameter (a part of the URL) that will be used to extract the `[skuId]`.
+Представьте, что у вас есть страница со следующими URL, где `[skuId]` может быть любым из тысяч продуктов, которые есть в вашей базе данных. Было бы непрактично создавать маршрут для каждого продукта. Вместо этого нам нужно определить параметр маршрута (часть URL), который будет использоваться для извлечения `[skuId]`.
 
 - `https://example.com/sku/[skuId]`
-  - Will match: `https://example.com/sku/1234`
-  - Will match: `https://example.com/sku/xyz-567`
+  - будет соответствовать: `https://example.com/sku/1234`
+  - будет соответствовать: `https://example.com/sku/xyz-567`
 - `https://example.com/sku/[skuId]/details`
-  - Will match: `https://example.com/sku/1234/details`
+  - будет соответствовать: `https://example.com/sku/1234/details`
 
 ```
 src/
@@ -29,9 +29,9 @@ src/
                 └── index.tsx     # https://example.com/sku/1234/details
 ```
 
-## Retrieving the Route Parameter from the URL
+## Получение параметра маршрута из URL-адреса
 
-Once we have `[skuId]` in the URL, we need a way to retrieve it. This can be done by using `useLocation()` API.
+Получить `[skuId]` из URL можно с помощью API `useLocation()`:
 
 ```typescript
 import { useLocation } from '@builder.io/qwik-city';
@@ -49,8 +49,9 @@ export default component$(() => {
 });
 ```
 
-## Catch All Routes
-It is also possible to create a catch-all routes by adding a directory like `[...slug]`. This works like the above described example but will also consider subsegments of the URI. It can also be applied on the `routes` root level.
+## Универсальные маршруты
+
+Также можно создавать универсальные маршруты, добавив каталог наподобие `[...slug]`. Этот механизм работает аналогично описанному выше примеру, но дополнительно будет учитывать следующие далее сегменты URI. Его можно применять и на корневом уровне каталога `routes`.
 
 ```
 src/
@@ -60,13 +61,14 @@ src/
             └── index.tsx
 ```
 
-The above structure will match:
+Приведенная выше структура будет соответствовать:
+
 - `https://example.com/sku/1234`
 - `https://example.com/sku/1234/detail`
 - `https://example.com/sku/1234/detail/edit`
-- etc
+- и т.д.
 
-It is possible to limit catch-all routes by adding a subdirectory say `end-of-route` in `[...slug]` directory.
+Можно ограничить универсальные маршруты, добавив подкаталог с именем `end-of-route` в каталоге `[...slug]`.
 
 ```
 src/
@@ -78,5 +80,6 @@ src/
                 └──index.tsx
 ```
 
-The above structure will match:
+Приведенная выше структура будет соответствовать:
+
 - `https://example.com/sku/1234/5678/end-of-route`

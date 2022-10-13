@@ -10,7 +10,7 @@
 
 - [Обзор](routing/overview/index.mdx)
 - [Параметры маршрута](routing/route-parameters/index.mdx)
-- [Ответы-ошибки](routing/error-responses/index.mdx)
+- [Страницы ошибок](routing/error-responses/index.mdx)
 
 ## Layout
 
