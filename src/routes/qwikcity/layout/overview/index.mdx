@@ -10,60 +10,60 @@ contributors:
 
 # Макет
 
-When implementing routes, different routes usually share a common header, footer, and menu system. We call the common parts a layout.
+При реализации маршрутизации разные маршруты обычно имеют общие верхний и нижний колонтитулы и систему меню. Общие части мы называем макетом.
 
-The developer could extract all of these into `<Header>`, `<Footer>`, and `<Menu>` components and manually add them to each page component, but that is repetitive and error-prone. Instead, we can use layouts to automatically reuse common parts.
+Разработчик может извлечь их в компоненты `<Header>`, `<Footer>` и `<Menu>` и вручную добавить их в каждый компонент страницы, но это монотонно и чревато ошибками. Вместо этого, для автоматического повторного использования общих частей, мы можем использовать макеты.
 
-### Example
+### Пример
 
-Let's say we would like our site to look like this:
+Допустим, мы хотим, чтобы наш сайт выглядел следующим образом:
 
 ```
 ┌───────────────────────────────────────────────────┐
-│ Header                                            │
+│ Заголовок                                         │
 ├─────────┬─────────────────────────────────────────┤
-│ Menu    │ <ROUTE_SPECIFIC_CONTENT>                │
+│ Меню    │ <Контент_текущего_маршрута>             │
 │ - home  │                                         │
 │ - about │                                         │
 │         │                                         │
 ├─────────┴─────────────────────────────────────────┤
-│ Footer                                            │
+│ Подвал                                            │
 └───────────────────────────────────────────────────┘
 ```
 
-We can define the above with these files.
+Мы можем определить вышеупомянутый макет с помощью этих файлов:
 
 ```
 src/
 ├── components/
-│   ├── header.tsx         # Header component implementation
-│   ├── footer.tsx         # Footer component implementation
-│   └── menu.tsx           # Menu component implementation
+│   ├── header.tsx         # Реализация компонента заголовка
+│   ├── footer.tsx         # Реализация компонента подвала
+│   └── menu.tsx           # Реализация компонента меню
 └── routes/
-    ├── layout.tsx         # Layout implementation using: <Header>, <Footer>, and <Menu>
+    ├── layout.tsx         # Реализация макета компонентами <Header>, <Footer>, и <Menu>
     ├── about/
     │   └── index.tsx      # https://example.com/about
     └── index.tsx          # https://example.com
 ```
 
-### Component implementations
+### Реализации компонентов
 
 ```typescript
-// File: src/components/header.tsx
+// Файл: src/components/header.tsx
 export default component$(() => {
   return <>Header</>;
 });
 ```
 
 ```typescript
-// File: src/components/footer.tsx
+// Файл: src/components/footer.tsx
 export default component$(() => {
   return <>Footer</>;
 });
 ```
 
 ```typescript
-// File: src/components/menu.tsx
+// Файл: src/components/menu.tsx
 export default component$(() => {
   return (
     <ul>
@@ -75,13 +75,13 @@ export default component$(() => {
 ```
 
 ```typescript
-// File: src/routes/layout.tsx
+// Файл: src/routes/layout.tsx
 export default component$(() => {
   return (
     <>
       <Header />
       <Menu />
-      <Slot/> {/* <== This is where the route will be inserted */}
+      <Slot/> {/* <== Здесь будет контент маршрута */}
       <Footer />
     </>
   );
@@ -89,14 +89,14 @@ export default component$(() => {
 ```
 
 ```typescript
-// File: src/routes/index.tsx
+// Файл: src/routes/index.tsx
 export default component$(() => {
   return <>Home</>;
 });
 ```
 
 ```typescript
-// File: src/routes/about/index.tsx
+// Файл: src/routes/about/index.tsx
 export default component$(() => {
   return <>About</>;
 });

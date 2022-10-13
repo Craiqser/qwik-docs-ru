@@ -15,9 +15,9 @@
 ## Макет
 
 - [Обзор](layout/overview/index.mdx)
-- [Nested](layout/nested/index.mdx)
-- [Named](layout/named/index.mdx)
-- [Grouped](layout/grouped/index.mdx)
+- [Вложенность](layout/nested/index.mdx)
+- [Именование](layout/named/index.mdx)
+- [Группировка](layout/grouped/index.mdx)
 - [Top](layout/top/index.mdx)
 
 ## Data
