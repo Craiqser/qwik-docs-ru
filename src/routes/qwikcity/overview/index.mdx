@@ -14,47 +14,43 @@ contributors:
 # Qwik City (маршрутизация)
 *aka. Qwik Router*
 
-Learning Qwik and Qwik City are not two different things, Qwik City is built on top of Qwik, bringing opinionated routing and goodies to make your life easier.
+Изучение Qwik и Qwik City не имеет под собой разницы, Qwik City базируется на Qwik и добавляет декларативную маршрутизацию и другие дополнения, чтобы облегчить вашу жизнь.
 
 > Qwik¹ City²
 >
-> [**Qwik¹**](../../docs/overview/index.mdx): Core framework, stable, primitives, component model.
+> [**Qwik¹**](../../docs/overview/index.mdx): Ядро фреймворка, стабильные примитивы, компонентная модель.
 >
-> [**City²**](../directory-layout/index.mdx): Opinionated file-based router, build fast.
+> [**City²**](../directory-layout/index.mdx): Маршрутизатор на основе файлов, быстрая компоновка.
 
-We call it a **meta-framework** for Qwik. Qwik City is to Qwik, what [Next.js](https://nextjs.org/) is to React, what [Nuxt](https://nuxtjs.org/) is to Vue, or [SvelteKit](https://kit.svelte.dev/) to Svelte.
+Мы называем это **мета-фреймворком** для Qwik. Qwik City является для Qwik тем же, чем [Next.js](https://nextjs.org/) для React, чем [Nuxt](https://nuxtjs.org/) для Vue или [SvelteKit](https://kit.svelte.dev/) для Svelte.
 
-Qwik (core) and Qwik City (routing) solve problems at two layers of abstraction. **Qwik can stay stable**, without breaking changes, focusing on long-term and stable primitives, while Qwik City brings an **opinionated and performant way to build sites at scale**. We don't want to lock the ecosystem into a single correct way of building sites, in fact we encourge the community to build alternative solutions on top Qwik.
+Qwik (ядро) и Qwik City (маршрутизация) решают проблемы на двух уровнях абстракции. **Qwik может оставаться стабильным**, без ломающих изменений, сосредоточившись на долгосрочных и стабильных примитивах, в то время как Qwik City предлагает **масштабируемый и производительный способ создания сайтов**. Мы не хотим замыкать экосистему на одном правильном способе создания сайтов, более того, мы поощряем сообщество создавать альтернативные решения на базе Qwik.
 
-> As a user, using Qwik City today for your app is a no-brainer. Thanks to Qwik architecture, it comes with zero overhead, meaning that no extra JS will be delivered to the browser.
+> Вам, как пользователю, использование Qwik City в вашем приложении не доставит проблем. Благодаря архитектуре Qwik, он не добавляет накладных расходов, что означает, что в браузер не будет отправляться дополнительный JS.
 
+Используйте Qwik City для создания сайта электронной коммерции, сайта блога или любого другого сайта, который нуждается в маршрутизации, компоновке, шаблонизации или запросе/обновлении данных. Qwik City построен на Qwik, и поэтому сайты Qwik City возобновляемы и загружают только минимальное количество JavaScript с фрагментарной ленивой загрузкой.
 
-Use Qwik City to build an e-commerce website, blog site, or any other website that needs routing, layouts, templating, or data retrieval/updates. Qwik City is built on Qwik, and therefore Qwik City sites are resumable and only download the minimal amount of JavaScript with fine-grained lazy loading.
+Qwik City предоставляет:
 
-Qwik City provides:
+- Маршрутизация на основе каталогов
+- Вложенные макеты
+- Меню на основе файлов
+- Историю навигации
+- Поддержка создания контента в файлах форматов `.tsx` или `.mdx`
+- Конечные точки данных
 
-- Directory-based routing
-- Nested layouts
-- File-based menus
-- Breadcrumbs
-- Support authoring content with `.tsx` or `.mdx` file formats
-- Data endpoints
+Qwik City-сайты работают быстро по умолчанию, потому что они:
 
-By default, Qwik City sites are fast because they:
+- Возобновляемы
+- Загружают минимальный JavaScript
+- Используют [Partytown](https://partytown.builder.io)
 
-- Are resumable
-- Download minimal JavaScript
-- Come with [Partytown](https://partytown.builder.io)
-
-To follow along with this guide, run the Qwik CLI in your command line:
+Чтобы следовать этому руководству, запустите Qwik CLI в командной строке:
 
 ```bash
 npm create qwik@latest
 ```
 
-When prompted, choose a name for your project and Basic as your starter.
+Когда появится запрос, выберите имя для своего проекта и Basic в качестве стартового шаблона.
 
-> Note: the `start` script attempts to launch the site in system’s browser,
-> which in headless environments (e.g., within a container)
-> could cause the command to fail with an error.
-> Edit `package.json` to remove the `--open` flag.
+> Примечание: скрипт `start` пытается запустить сайт в системном браузере, что в окружении без хоста (например, внутри контейнера) может привести к тому, что команда завершится с ошибкой. В этом случае отредактируйте эту команду в файле `package.json`, убрав флаг `--open`.

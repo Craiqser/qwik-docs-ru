@@ -3,7 +3,7 @@
 ## Qwik City
 
 - [Обзор](overview/index.mdx)
-- [Directory Layout](directory-layout/index.mdx)
+- [Структура каталога](directory-layout/index.mdx)
 - [Static Assets](static-assets/index.mdx)
 
 ## Routing
