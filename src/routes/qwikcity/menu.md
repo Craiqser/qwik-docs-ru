@@ -31,7 +31,7 @@
 ## Предварительная загрузка
 
 - [Обзор](prefetching/overview/index.mdx)
-- [Service Worker](prefetching/service-worker-prefetching/index.mdx)
+- [Процесс службы](prefetching/service-worker-prefetching/index.mdx)
 - [Кэширование ответов](prefetching/request-response-cache/index.mdx)
 - [Распараллеливание запросов](prefetching/parallelizing-network-requests/index.mdx)
 

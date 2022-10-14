@@ -8,38 +8,38 @@ contributors:
 
 # Предварительная загрузка
 
-The goal of Qwik's prefetching is not to prefetch the entire application, but to have already prefetched and cached what's possible at that time. When the Qwik optimizer breaks apart the application, it's able to understand possible user interactions. And from this, it's just as important that it's able to understand what's not possible from user interaction.
+Цель предварительной загрузки Qwik заключается не в том, чтобы выполнить загрузку всего приложения, а в том, чтобы предварительно загрузить и кэшировать то, что нужно в данный момент. Когда оптимизатор Qwik разбивает приложение на фрагменты, он способен понять возможные пути взаимодействия с пользователем. И исходя из этого, что не менее важно, он способен понять, какие взаимодействия невозможны.
 
-For example, an entire rendered application may only be able to click a button, but that also means the entire app could never re-render. Since Qwik is able to understand what's possible, and _not_ possible, it's able to best collect which bundles to prefetch.
+Например, всё приложение может быть способно только нажать на кнопку, но это также означает, что всё приложение никогда не потребует ререндера. Поскольку Qwik способен понять, что возможно, а что _не_ возможно, он способен наилучшим образом собрать фрагменты для предварительной загрузки.
 
-- [Prefetching and caching with a Service Worker](../service-worker-prefetching/index.mdx)
-- [Caching Request and Response Pairs](../request-response-cache/index.mdx)
-- [Parallelizing Network Requests](../parallelizing-network-requests/index.mdx)
-- [Configuring Prefetching Strategies and Implementations](../../../docs/advanced/prefetching/index.mdx).
+- [Предварительная загрузка и кэширование процессом службы](../service-worker-prefetching/index.mdx)
+- [Кэширование пар запросов и ответов](../request-response-cache/index.mdx)
+- [Распараллеливание сетевых запросов](../parallelizing-network-requests/index.mdx)
+- [Настройка стратегий и реализаций предварительной загрузки](../../../docs/advanced/prefetching/index.mdx).
 
-## Prefetching Per Page
+## Предварительная загрузка страницы
 
-Each page load will prefetch bundles that could be executed by the user. For example, let's say that the page has a click listener on a button. When the page loads, the very first thing the service worker does is ensure the bundle for that click listener is prefetched and waiting in the [cache](../request-response-cache/index.mdx). When the user clicks the button, and Qwik makes a request to the event listener's bundle, the goal is the bundle is already sitting in the cache ready to execute.
+При загрузке страницы происходит предварительная загрузка фрагментов, которые могут быть выполнены пользователем. Предположим, что на странице есть слушатель клика по кнопке. Когда страница загружается, самое первое, что делает процесс службы, это убеждается, что бандл для этого слушателя предварительно загружен и лежит в [кэше](../request-response-cache/index.mdx). Когда пользователь кликает по кнопке, и Qwik делает запрос к бандлу слушателя событий, он уже находится в кэше, готовый к выполнению.
 
-## Prefetching Per Interaction
+## Предварительная загрузка при взаимодействии
 
-You can think of the page load as the first user interaction, which prefetches what the next user interaction could be. When a follow-up interaction happens, such as opening a modal, then Qwik will again emit another prefetch event with additional bundles that could be used since the last interaction happened. Prefetching not only happens on page load but continuously happens as users interact with the application.
+Можно считать, что загрузка страницы - это первое взаимодействие с пользователем, которое предзагружает то, с чем у пользователя может быть следующее взаимодействие. Когда произойдет следующее взаимодействие, например, открытие модального окна, то Qwik создаст ещё одно событие предварительной загрузки с дополнительными бандлами, которые могут быть использованы при следующем взаимодействии. Предварительная загрузка происходит не только при загрузке страницы, но и по мере того как пользователь взаимодействует с приложением.
 
-## Prefetch Event
+## Событие предварительной загрузки
 
-The recommended prefetching strategy is to use a [service worker](../service-worker-prefetching/index.mdx) to populate the browser's [Cache](https://developer.mozilla.org/en-US/docs/Web/API/Cache). Qwik itself should be configured to use the [prefetchEvent](../../../docs/advanced/prefetching/index.mdx) implementation, which will dispatch a prefetch event.
+Рекомендуемая стратегия предварительной загрузки заключается в использовании [процесса службы](../service-worker-prefetching/index.mdx) для заполнения [кэша](https://developer.mozilla.org/en-US/docs/Web/API/Cache) браузера. Сам Qwik должен быть настроен на использование реализации [prefetchEvent](../../../docs/advanced/prefetching/index.mdx), которая будет отправлять событие предварительной загрузки.
 
-The `qprefetch` event can contain various detailed data about what to prefetch, such as:
+Событие `qprefetch` может содержать различные подробности о том, что нужно загрузить, например:
 
-| Data      | Description                                                                                                     |
-| --------- | --------------------------------------------------------------------------------------------------------------- |
-| `bundles` | An array of JavaScript bundle names to prefetch. A "bundle" is a collection of symbols.                         |
-| `symbols` | An array of symbols to prefetch. The service worker already understands which bundles each symbol is a part of. |
-| `links`   | _Experimental:_ An array of link `hrefs` to prefetch.                                                           |
+| Данные | Описание |
+| --- | --- |
+| `bundles` | Массив имён JavaScript-бандлов для предварительной загрузки. Каждый бандл - коллекция `symbols`. |
+| `symbols` | Массив символов (ключей) для предварительной загрузки. Процесс службы уже понимает, в какие бандлы входит каждый символ. |
+| `links` | _Экспериментальный_. Массив ссылок `hrefs` для предварительной загрузки. |
 
-### Dispatching a prefetch event
+### Отправка события предварительной загрузки
 
-Below is an example of a prefetch event being dispatched. These events are dispatched from Qwik itself and do not require developers to dispatch these events manually. Additionally, the [service worker](../service-worker-prefetching/index.mdx) will automatically add listeners for these events.
+Ниже приведен пример диспетчеризации события предварительной загрузки. Эти события отправляются из самого Qwik и не требуют от разработчиков отправки этих событий вручную. Кроме того, [процесс службы](../service-worker-prefetching/index.mdx) автоматически добавит слушателей для этих событий.
 
 ```ts
 dispatchEvent(new CustomEvent("qprefetch", { detail: {
