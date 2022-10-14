@@ -1,15 +1,15 @@
 ---
-title: Qwik City - Modify Data
+title: Qwik City - Изменение данных
 contributors:
   - adamdbradley
 ---
 
-# Modify Data
+# Изменение данных
 
-Endpoints can define a way to fetch data and they can also define HTTP verbs to modify data. These are `GET`, `POST`, `PUT`, `PATCH`, `DELETE`. We have already discussed the `GET` verb in the previous section. Each of these verbs has a corresponding `on___` method such as `onGet`, `onPost`, `onPut`, `onPatch`, and `onDelete`.
+Конечные точки могут определять способ получения данных, а также они могут определять HTTP-методы для изменения данных. Это `GET`, `POST`, `PUT`, `PATCH`, `DELETE`. Мы уже обсуждали операцию `GET` в предыдущем разделе. Каждая из этих операций имеет соответствующий метод `on___`, такой как `onGet`, `onPost`, `onPut`, `onPatch` и `onDelete`.
 
 ```typescript
-// File: src/routes/product/[skuId]/index.tsx
+// Файл: src/routes/product/[skuId]/index.tsx
 import type { RequestHandler } from '@builder.io/qwik-city';
 
 type EndpointData = ProductData | null;
@@ -20,17 +20,17 @@ interface ProductData {
   description: string;
 }
 export const onPut: RequestHandler<EndpointData> = async ({ url, params, request, response }) => {
-  // put your DB access here (hard coding a response for the simplicity)
+  // Код доступа к БД. Мы просто закодируем ответ для простоты.
 
-  // read data from request and perform DB update.
+  // Прочитать данные из параметров запроса и выполнить обновление БД.
   // console.log(params.skuId);
   // console.log(request.method);
   // console.log(url.pathname);
 
-  // set response headers
+  // Установим заголовки ответа
   response.headers.append('Cache-Control', ' public, max-age=86400');
 
-  // return data to be access from `useEndpoint()`
+  // Возвращаем данные, которые будут доступны из `useEndpoint()`
   return {
     skuId: params.skuId,
     price: 123.45,

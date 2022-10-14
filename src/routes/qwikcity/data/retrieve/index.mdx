@@ -37,7 +37,7 @@ interface ProductData {
 }
 
 export const onGet: RequestHandler<ProductData> = async ({ params }) => {
-  // Здесь код доступа к вашей БД. Мы просто закодируем ответ для простоты.
+  // Код доступа к БД. Мы просто закодируем ответ для простоты.
   return {
     skuId: params.skuId,
     price: 123.45,
