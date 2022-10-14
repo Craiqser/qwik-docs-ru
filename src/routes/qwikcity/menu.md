@@ -16,17 +16,17 @@
 
 - [Обзор](layout/overview/index.mdx)
 - [Вложенность](layout/nested/index.mdx)
+- [Группы](layout/grouped/index.mdx)
 - [Именование](layout/named/index.mdx)
-- [Группировка](layout/grouped/index.mdx)
 - [Верхний уровень](layout/top/index.mdx)
 
 ## Данные
 
 - [Обзор](data/overview/index.mdx)
-- [Retrieving Data](data/retrieve/index.mdx)
-- [Modifying Data](data/modify/index.mdx)
-- [Endpoints](data/endpoints/index.mdx)
-- [Redirects](data/redirects/index.mdx)
+- [Получение данных](data/retrieve/index.mdx)
+- [Изменение данных](data/modify/index.mdx)
+- [Конечные точки](data/endpoints/index.mdx)
+- [Редиректы](data/redirects/index.mdx)
 
 ## Prefetching
 
