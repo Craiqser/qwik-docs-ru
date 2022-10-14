@@ -41,7 +41,7 @@
 - [Qwikloader](advanced/qwikloader/index.mdx)
 - [Custom Build Directory](advanced/custom-build-dir/index.mdx)
 
-## Community
+## Сообщество
 
 - [Github](https://github.com/BuilderIO/qwik)
 - [@QwikDev](https://twitter.com/QwikDev)

@@ -28,12 +28,12 @@
 - [Конечные точки](data/endpoints/index.mdx)
 - [Редиректы](data/redirects/index.mdx)
 
-## Prefetching
+## Предварительная загрузка
 
-- [Overview](prefetching/overview/index.mdx)
+- [Обзор](prefetching/overview/index.mdx)
 - [Service Worker](prefetching/service-worker-prefetching/index.mdx)
-- [Response Caching](prefetching/request-response-cache/index.mdx)
-- [Parallelizing Requests](prefetching/parallelizing-network-requests/index.mdx)
+- [Кэширование ответов](prefetching/request-response-cache/index.mdx)
+- [Распараллеливание запросов](prefetching/parallelizing-network-requests/index.mdx)
 
 ## Authoring Content
 
