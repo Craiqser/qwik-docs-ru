@@ -41,11 +41,11 @@
 - [MDX-файлы](content/mdx/index.mdx)
 - [Меню](content/menu/index.mdx)
 
-## Static Site Generation
+## Генерация (SSG)
 
-- [Overview](static-site-generation/overview/index.mdx)
-- [Static Site Config](static-site-generation/static-site-config/index.mdx)
-- [Dynamic Routes](static-site-generation/dynamic-routes/index.mdx)
+- [Обзор](static-site-generation/overview/index.mdx)
+- [Конфигурация](static-site-generation/static-site-config/index.mdx)
+- [Динамические маршруты](static-site-generation/dynamic-routes/index.mdx)
 
 ## Head
 

@@ -1,5 +1,5 @@
 ---
-title: Qwik City - Menu
+title: Qwik City - Меню
 contributors:
   - manucorporat
   - adamdbradley
@@ -9,16 +9,16 @@ contributors:
   - nnelgxorz
 ---
 
-# Menu
+# Меню
 
-Menus allow you to describe the site navigation structure in a simple declarative way. Menus come in two steps:
+Меню позволяют описать навигационную структуру сайта в простой декларативной форме. Настройка происходит в два этапа:
 
-1. Defining a `menu.md` file that contains the menu structure for the directory it's in.
-2. Using the `useContent()` function to retrieve the menu structure in a template for rendering. [Read more here](../../../qwikcity/api/use-content/index.mdx)
+1. Определение файла `menu.md`, содержащего структуру меню для каталога, в котором он находится.
+2. Использование функции `useContent()` для получения структуры меню в шаблоне для рендеринга. [Подробнее здесь](../../../qwikcity/api/use-content/index.mdx)
 
-## File Structure
+## Структура файла
 
-First layout files as follows:
+Пусть структура файлов выглядит следующим образом:
 
 ```
 src/
@@ -30,57 +30,57 @@ src/
             └── index.tsx  # https://example.com/some/path
 ```
 
-Navigating to `https://example.com/some/path` activates:
+Переход по адресу `https://example.com/some/path` активирует:
 
-- `src/routes/some/path/index.tsx`: This component will be used for rendering the page content.
-- `src/routes/some/layout.tsx`: This layout will be used to provide content around the `src/routes/some/path/index.tsx`. Internally the layout can use `src/routes/some/menu.md` to render the menus.
-- `src/routes/some/menu.md`: This file will be used to declare the menu structure which will be rendered by `src/routes/some/layout.tsx`.
+- `src/routes/some/path/index.tsx` - этот компонент будет использоваться для рендеринга содержимого страницы;
+- `src/routes/some/layout.tsx` - этот макет будет использоваться компонентом `src/routes/some/path/index.tsx`. Внутри макета можно использовать `src/routes/some/menu.md` для отображения меню;
+- `src/routes/some/menu.md` - этот файл будет использоваться для объявления структуры меню, которая будет отображаться в макете `src/routes/some/layout.tsx`.
 
-## Declaring Menu Structure
+## Объявление структуры меню
 
-Use `menu.md` to declare the menu structure.
+Используйте файл `menu.md` для объявления структуры меню.
 
-- Use the headings (`#`, `##`, etc..) to define menu depth
-- Use the bulleted list (`-`) to define menu items.
+- Используйте заголовки (`#`, `##` и т.д.) для определения глубины меню
+- Используйте маркированный список (`-`) для определения пунктов меню.
 
 ```markdown
-<!-- File: src/routes/some/menu.md -->
+<!-- Файл: src/routes/some/menu.md -->
 
-# Docs
+# Документация
 
-## Getting Started
+## Обзор
 
-- [Introduction](introduction/index.md)
+- [Введение](introduction/index.md)
 
-## Components
+## Компоненты
 
-- [Basics](/docs/components/basics/index.mdx)
+- [Основы](/docs/components/basics/index.mdx)
 ```
 
-## Retrieving Menu Structure
+## Загрузка структуры меню
 
-At runtime, any component can retrieve the menu with `useContent()` hook. The type returned is `ContentMenu`.
+Во время выполнения любой компонент может получить меню с помощью хука `useContent()`. Возвращаемый тип - `ContentMenu`.
 
-The example above will return:
+Для приведённого выше примера будет получен ответ:
 
 ```javascript
 {
-  text: "Docs",
+  text: "Документация",
   items: [
     {
-      text: "Getting Started",
+      text: "Обзор",
       items: [
         {
-          text: "Introduction",
+          text: "Введение",
           href: "/docs/introduction"
         }
       ],
     },
     {
-      text: "Components",
+      text: "Компоненты",
       items: [
         {
-          text: "Basics",
+          text: "Основы",
           href: "/docs/components/basics"
         }
       ],
@@ -89,9 +89,9 @@ The example above will return:
 }
 ```
 
-## Using `ContentMenu` in a layout
+## Использование `ContentMenu` в макете
 
-While `useContent()` can be invoked from any component that is part of the current route. It is typically used in a layout component (or a component used by layout) to render the menu. An example usage is shown here:
+Метод `useContent()` может быть вызван из любого компонента, который является частью текущего маршрута. Но чаще отображение меню используется в макете (или компоненте, используемом макетом). Пример использования:
 
 ```typescript
 export default component$(() => {
