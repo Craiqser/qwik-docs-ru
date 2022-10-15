@@ -1,16 +1,16 @@
 ---
-title: Static Site Generation Config
+title: Настройка генерации статических сайтов
 contributors:
   - adamdbradley
   - wtho
 ---
 
-# Static Site Generation Config
+# Настройка генерации статических сайтов
 
-Below is an example of a `src/entry.static.tsx` file, which is the initial file used for a Static Site Generation (SSG) build. Just like a server's entry file for SSR, such as `src/entry.server.tsx`, it should import your app's `render` function from `./entry.ssr`.
+Ниже приведён пример файла `src/entry.static.tsx`, который является начальным файлом, используемым для сборки статического сайта (SSG). Как и файл точки входа для SSR, такой как `src/entry.server.tsx`, он должен импортировать функцию `render` вашего приложения из файла `./entry.ssr`.
 
 ```typescript
-// file: src/entry.static.tsx
+// Файл: src/entry.static.tsx
 import { qwikCityGenerate } from '@builder.io/qwik-city/static/node';
 import render from './entry.ssr';
 import { fileURLToPath } from 'url';
@@ -22,42 +22,39 @@ qwikCityGenerate(render, {
 });
 ```
 
-You then can add the `build.ssg` script to `package.json` for building the generator code and add it to the `build` script to have it ready after each build:
+Затем вы можете добавить скрипт `build.ssg` в `package.json` для сборки кода и добавить его в скрипт `build`, чтобы он работал после каждой сборки:
 
 ```json
   "build": "npm run typecheck && npm run build.client && npm run build.ssr && npm run build.ssg",
   "build.ssg": "vite build --ssr src/entry.static.tsx",
 ```
 
-In node you can run the generation after building using:
+В среде Node.js вы можете запустить генерацию после сборки с помощью:
+
 ```bash
 node server/entry.static.js
 ```
 
-Your build files will be generated into the `dist` folder, as configured in `src/entry.static.tsx`.
+Ваши файлы сборки будут сгенерированы в папке `dist`, как настроено в `src/entry.static.tsx`.
 
-## SSG Config
+## Настройка SSG
 
-The `src/entry.static.tsx` file also includes the SSG config, which would be custom for each implementation.
+Файл `src/entry.static.tsx` также включает конфигурацию SSG, которая будет индивидуальной для каждой реализации.
 
 ### `origin`
 
-The URL `origin`, which is a combination of the scheme (protocol) and hostname (domain).
-For example, `https://qwik.builder.io` has the protocol `https://` and domain `qwik.builder.io`.
-However, the `origin` does _not_ include a `pathname`.
+URL `origin` представляет собой комбинацию схемы (протокола) и имени хоста (домена).
+Например, `https://qwik.builder.io` имеет протокол `https://` и домен `qwik.builder.io`.
+Однако `origin` _не_ включает в себя `pathname` (маршрут).
 
-The `origin` is used to provide a full URL during Static Site Generation (SSG), and to
-simulate a complete URL rather than just the `pathname`. For example, in order to
-render a correct canonical tag URL or URLs within the `sitemap.xml`, the `origin` must
-be provided too.
+Параметр `origin` используется для предоставления полного URL-адреса во время генерации статических сайтов (SSG), а также для того, чтобы формировать полный URL-адрес, а не просто `pathname`. Например, для создания правильного канонического тега URL или URL-адреса в файле `sitemap.xml`, должен быть указан и `origin`.
 
-If the site also starts with a pathname other than `/`, please use the `basePathname`
-option in the Qwik City config options.
+Если сайт также начинается с имени, отличного от `/`, пожалуйста, используйте опцию `basePathname` в конфигурации Qwik City.
 
 ### `outDir`
 
-The `outDir` is a file system output directory where the static files should be written. In the example above, it's using Node's [fileURLToPath](https://nodejs.org/api/url.html#urlfileurltopathurl) to create an absolute file system path to write the static HTML files to.
+`outDir` - это каталог файловой системы, куда должны быть записаны статические файлы. В приведенном выше примере используется метод среды Node.js [fileURLToPath](https://nodejs.org/api/url.html#urlfileurltopathurl). Он формирует название абсолютного пути в файловой системе для записи статических HTML-файлов.
 
-## Javascript Runtimes
+## Среды выполнения Javascript
 
-For a Javascript project, it's quite common for the build's runtime to be built on top of [Node.js](https://nodejs.org/en/docs/). However, the core of Qwik City static site generation isn't tied to using only Node.js, which is why the `qwikCityGenerate()` function is imported from `@builder.io/qwik-city/static/node`. By scoping the generate function to a specific runtime, such as Node.js, this gives Qwik City the flexibility to also generate SSG from other runtimes in the future, such as [Deno](https://deno.land/) or [Bun](https://bun.sh/).
+Для Javascript-проекта довольно часто выполнение сборки работает поверх [Node.js](https://nodejs.org/en/docs/). Однако ядро генерации статического сайта Qwik City не привязано к использованию только Node.js, именно поэтому функция `qwikCityGenerate()` импортируется из пакета `@builder.io/qwik-city/static/node`. Это дает Qwik City гибкость для того, чтобы в будущем также генерировать SSG и из других сред выполнения, таких как [Deno](https://deno.land/) или [Bun](https://bun.sh/). Изменится лишь пакет импорта.
