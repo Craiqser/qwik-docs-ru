@@ -35,11 +35,11 @@
 - [Кэширование ответов](prefetching/request-response-cache/index.mdx)
 - [Распараллеливание запросов](prefetching/parallelizing-network-requests/index.mdx)
 
-## Authoring Content
+## Создание контента
 
-- [Components](content/component/index.mdx)
-- [MDX](content/mdx/index.mdx)
-- [Menu](content/menu/index.mdx)
+- [Компоненты](content/component/index.mdx)
+- [MDX-файлы](content/mdx/index.mdx)
+- [Меню](content/menu/index.mdx)
 
 ## Static Site Generation
 

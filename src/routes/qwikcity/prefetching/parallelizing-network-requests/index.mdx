@@ -1,33 +1,33 @@
 ---
-title: Qwik City Parallelizing Network Requests
+title: Qwik City Распараллеливание сетевых запросов
 contributors:
   - mhevery
   - adamdbradley
 ---
 
-# Parallelizing Network Requests
+# Распараллеливание сетевых запросов
 
-In the [Caching Request and Response Pairs](../request-response-cache/index.mdx) docs we explained the powerful combination of the [Cache](https://developer.mozilla.org/en-US/docs/Web/API/Cache) and [Service Worker](https://developer.mozilla.org/en-US/docs/Web/API/ServiceWorker) APIs. However, we can take it even one step further by ensuring duplicate requests are not created for the same bundle, and we can prevent network waterfalls.
+В документации [Кэширование пар запросов и ответов](../request-response-cache/index.mdx) мы объяснили мощное сочетание [Кэша](https://developer.mozilla.org/en-US/docs/Web/API/Cache) и [Сервис-воркера](https://developer.mozilla.org/en-US/docs/Web/API/ServiceWorker). Однако мы можем сделать ещё один шаг вперед, убедившись, что дублирующие запросы не создаются для одного и того же пакета, и предотвратить сетевые водопады.
 
-## Avoiding Duplicate Requests
+## Избегание дублирования запросов
 
-For example, let's say an end-user currently has a slow 3G connection. When they first request the landing page, as fast as this slow network allows, the device downloads the HTML and renders the content (an area where Qwik really shines). On this slow connection, it'd be a shame if they'd have to also download a few more hundred kilobytes just to [make their app work and become interactive](https://www.builder.io/blog/hydration-is-pure-overhead).
+Например, допустим, конечный пользователь в настоящее время имеет медленное 3G-соединение. Когда он впервые запрашивает страницу лэндинга, устройство, насколько позволяет медленная сеть, загружает HTML и отображает содержимое (та область, где Qwik действительно хорош). При таком медленном соединении было бы обидно, если бы ему пришлось загружать ещё несколько сотен килобайт только для того, чтобы [приложение заработало и стало интерактивным](https://www.builder.io/blog/hydration-is-pure-overhead).
 
-However, because the app was built with Qwik, the end-user doesn't need to download the entire application for it to become interactive. Instead, the end-user already downloaded the SSR rendered HTML app, and any interactive parts, such as an "Add to cart" button, can be prefetched immediately. Note that we're only prefetching the actual listener code, and _not_ the entire stack of the component tree render functions.
+Однако, поскольку приложение было создано с помощью Qwik, конечному пользователю не нужно загружать всё приложение, чтобы оно стало интерактивным. Вместо этого, конечный пользователь уже загрузил HTML приложение, отрендеренное на сервере, и все интерактивные части, такие как кнопка "Добавить в корзину", могут сразу же начать свою предварительную загрузку. Заметьте, что мы загружаем только фактический код слушателя, а _не_ весь стек функций рендеринга дерева компонентов.
 
-In this extremely common real-world example of a device with a slow connection, the device immediately starts to prefetch for the possible interactions that are visible by the end-user. However, due to their slow connection, even though we started to prefetch as soon as possible in a [background thread](../service-worker-prefetching/index.mdx), the prefetch request itself could still be in flight.
+В этом примере, чрезвычайно распространённом в реальном мире, устройство немедленно начинает предварительную выборку возможных взаимодействий, которые видны конечному пользователю. Однако из-за медленного соединения, даже если мы сразу начали выполнять предварительную загрузку в [фоновом потоке](../service-worker-prefetching/index.mdx), сам запрос предварительной загрузки может всё ещё находиться в процессе выполнения.
 
-For demo purposes, let's say the prefetching for this bundle takes two seconds. However, after one second of viewing the page, the user clicks on the button. In a traditional framework, there's a good chance that absolutely nothing would be happening! If the framework hasn't finished downloading, the app hasn't hydrated, the app hasn't re-rendered, and the event listener hasn't been added to the button yet. Sadly, the user's interaction would just be lost on a framework using hydration.
+Для демонстрации предположим, что предварительная загрузка для этого бандла занимает две секунды. Однако, через секунду после просмотра страницы пользователь нажимает на кнопку. В традиционном фреймворке, скорее всего, ничего не произойдёт! Если фреймворк еще не закончил загрузку, приложение не гидратировано, приложение не перерендерено, а слушатель события ещё не добавлен к кнопке. К сожалению, взаимодействие с пользователем будет просто потеряно на фреймворке, использующем гидратацию.
 
-However, with Qwik's prefetching and caching, if the user clicked the button, and we already started a request one second ago, and it has one second left until it's fully received, then the end-user only has to wait for one second. Remember, they're on a slow 3G connection for this demo. Luckily the user already received the full rendered landing page, so they're already looking at a completed page. Next, they're only prefetching the bits of the app they could interact with, and their slow connection is dedicated to just those bundle(s). This is in contrast to their slow connection downloading all of the apps, just to execute the one listener.
+Однако, благодаря предварительной загрузке и кэшированию Qwik, если пользователь нажал на кнопку, а мы уже начали запрос одну секунду назад, и до его полного получения осталась одна секунда, то конечному пользователю придётся ждать всего одну секунду. Вспоним, что (для этой демонстрации) он пользуется медленным 3G-соединением. К счастью, пользователь уже получил полную страницу лэндинга, поэтому он уже смотрит на готовую страницу. Далее, фреймворк предварительно загружает только те части приложения, с которыми пользователь может взаимодействовать, и его медленное соединение предназначено только для этих бандлов. Это контрастирует с работой на медленном соединении других фреймворков, загружающих всё в приложении, только чтобы выполнить метод одного слушателя.
 
-Qwik is able to intercept requests for known bundles, and if a prefetch is already in flight, and then a user requests the same bundle, it'll ensure that the second request is able to re-use the initial one, which may already be done downloading. Doing any of this with the [link](../request-response-cache/index.mdx#known-issues-with-link) also shows why Qwik preferred to not make it the default, but instead use the [Caching API](../request-response-cache/index.mdx).
+Qwik способен перехватывать запросы на известные ему бандлы, и если предварительная загрузка уже находится в процессе, а затем пользователь запрашивает тот же пакет, то он гарантирует, что второй запрос сможет повторно использовать первый, который, возможно, уже закончил загрузку. Выполнение всего этого с помощью [link](../request-response-cache/index.mdx#known-issues-with-link) невозможно, и это показывает, почему Qwik предпочёл не использовать его по умолчанию, а стал вместо этого использовать [Cache API](../request-response-cache/index.mdx).
 
-## Reducing Network Waterfalls
+## Уменьшение сетевых водопадов
 
-A network waterfall is when numerous requests happen one after another, like steps downstairs, rather than in parallel. A waterfall of network requests will usually hurt performance because it increases the time until all modules are downloaded, rather than each module starting to download at the same time.
+Сетевой водопад - это когда многочисленные запросы идут один за другим, как ступеньки вниз по лестнице, а не выполняются параллельно. Водопад сетевых запросов обычно снижает производительность, поскольку модули загружаются последовательно, а не одновременно.
 
-Below is an example with three modules: A, B and C. Module A imports B, and B imports C. The HTML document is what starts the waterfall by first requesting Module A.
+Ниже приведен пример с тремя модулями: A, B и C. Модуль A импортирует B, а B импортирует C. HTML-документ - это то, с чего начинается водопад: сначала запрашивается модуль A.
 
 ```ts
 import './b.js';
@@ -47,6 +47,6 @@ console.log('Module C');
 <script type="module" src="./a.js"></script>
 ```
 
-In this example, when Module `A` is first requested, the browser has no idea that it should also start requesting Module `B` and `C`. It doesn't even know it needs to start requesting Module `B`, until AFTER Module `A` has finished downloading. It's a common problem in that the browser doesn't know ahead of time what it should start to request, until after each module has finished downloading.
+В этом примере, когда впервые запрашивается модуль `A`, браузер не знает, что он также должен начать запрашивать модули `B` и `C`. Он даже не знает, что ему нужно начать запрашивать модуль `B`, пока модуль `A` не закончит загрузку. Это распространенная проблема, связанная с тем, что браузер не знает заранее, что ему следует начать запрашивать, пока не закончится загрузка каждого модуля.
 
-However, because our service worker contains a module graph generated from the manifest, we do know all of the modules which _will_ be requested next. So when either user interaction or a prefetch for a bundle happens, the browser initiates the request for all of the bundles that _will_ be requested. This allows us to drastically reduce the time it takes to request all bundles.
+Однако, поскольку наш сервис-воркер содержит граф модулей, созданный из манифеста, мы знаем все модули, которые _будут_ запрошены далее. Поэтому, когда происходит какое-либо взаимодействие с пользователем, или предварительная загрузка бандла, то браузер инициирует запрос всех пакетов, которые _будут_ запрошены. Это позволяет нам значительно сократить время, необходимое для запроса всех бандлов.
