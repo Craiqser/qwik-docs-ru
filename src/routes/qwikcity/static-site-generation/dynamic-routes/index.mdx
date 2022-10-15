@@ -1,10 +1,10 @@
 ---
-title: Dynamic Static Site Generated Routes
+title: Динамические маршруты при генерации статических сайтов
 contributors:
   - adamdbradley
 ---
 
-# Dynamic SSG Routes
+# Динамические маршруты SSG
 
 ```typescript
 import type { StaticGenerateHandler } from '@builder.io/qwik-city';
@@ -12,11 +12,12 @@ import type { StaticGenerateHandler } from '@builder.io/qwik-city';
 export default component$(() => {
   const { params } = useLocation();
 
-  return <div>Example: {params.id}</div>;
+  return <div>Пример: {params.id}</div>;
 });
 
 export const onStaticGenerate: StaticGenerateHandler = () => {
-  const ids = [...]; // id data load implementation
+  // Реализация загрузки данных по id (закодируем ответ для упрощения).
+  const ids = [...]; // Перечень id для генерации.
 
   return {
     params: ids.map((id) => {
