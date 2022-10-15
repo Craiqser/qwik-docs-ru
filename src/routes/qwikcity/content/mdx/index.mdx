@@ -10,9 +10,9 @@ contributors:
 
 # MDX
 
-An alternative way to author content is using `.mdx` files ([Markdown JSX](https://mdxjs.com/)). These files are authored as Markdown, but they are compiled down to Qwik components. In addition to Markdown syntax, `.mdx` files can also refer to other components.
+Альтернативным способом создания контента является использование файлов `.mdx` ([Markdown JSX](https://mdxjs.com/)). Эти файлы создаются в формате Markdown, но они компилируются в компоненты Qwik. Помимо синтаксиса Markdown, файлы `.mdx` могут ссылаться на другие компоненты.
 
-Let's assume you have your routes set up like this:
+Предположим, что ваши маршруты построены следующим образом:
 
 ```
 src/
@@ -32,11 +32,11 @@ This is a simple hello world component.
 
 ```
 
-The above component will be rendered at `https://example.com/some/path`.
+Приведённый выше компонент будет отрендерен по адресу `https://example.com/some/path`.
 
-## Importing other components.
+## Импорт других компонентов
 
-[MDX](https://mdxjs.com/) is a creative opportunity for you to come up with new content quickly ("Qwikly" 🙂) and if you need more interaction on your page you can seamlessly integrate your Qwik components like so:
+[MDX](https://mdxjs.com/) - это творческая возможность быстро придумывать новый контент и, если вам нужно больше интерактива на странице, вы можете легко интегрировать ваши компоненты Qwik, например, так:
 
 ```
 src/
@@ -58,11 +58,10 @@ import { Counter } from "../../../components/counter/counter";
 This is a simple hello world component.
 
 <Counter />
-
 ```
 
 ```typescript
-// File: src/components/counter/counter.tsx
+// Файл: src/components/counter/counter.tsx
 import { component$, useStyles$, useStore } from '@builder.io/qwik';
 
 export const Counter = component$(() => {
@@ -76,6 +75,6 @@ export const Counter = component$(() => {
 });
 ```
 
-**Note**: A key difference between Qwik City and many current meta-frameworks is directory-based routing. Every route needs to be defined as `a-directory/index.(tsx,ts,js,jsx,md,mdx)`.
+**Примечание**: Ключевым отличием Qwik City от многих современных мета-фреймворков является маршрутизация на основе файлов. Каждый маршрут должен быть определен как `a-directory/index.(tsx,ts,js,jsx,md,mdx)`.
 
-In other meta-frameworks you're used to `about.mdx` will render a route `http://example.com/about`. However, this will not work in Qwik City. You must rename the file to `about/index.mdx` for Qwik City to know to render it.
+В других мета-фреймворках, к которым вы привыкли, `about.mdx` будет отображать маршрут `http://example.com/about`. Однако это не будет работать в Qwik City. Вы должны переименовать файл в `about/index.mdx`, чтобы Qwik City знал, что его нужно рендерить.
