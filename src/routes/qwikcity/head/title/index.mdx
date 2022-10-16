@@ -1,5 +1,5 @@
 ---
-title: Qwik City - Head Title
+title: Qwik City - Название заголовка
 contributors:
   - adamdbradley
   - manucorporat
@@ -7,16 +7,16 @@ contributors:
   - mhevery
 ---
 
-# Head Title
+# Название заголовка
 
-HTML places the `<head>` tag as the first element within `<html>` (at the very top of the HTML content). The `<head>` section is not something that your route component renders directly, yet you still need to control its content. This can be achieved by exporting a `head` property (or function) from your page component.
+HTML содержит тег `<head>` как первый элемент в `<html>` (в самом верху содержимого HTML-страницы). Секция `<head>` не отображается напрямую компонентом маршрута, однако вам всё-равно необходимо контролировать её содержимое. Этого можно достичь, экспортируя свойство `head` (или функцию) из компонента страницы.
 
-## Static Document Head
+## Статический заголовок документа
 
-If all we need to do is set the title of the page, we can do it in the `head` (and optional `meta`, `links` and `styles`) export of the component like so:
+Если нам нужно только задать заголовок страницы, мы можем сделать это экспортом `head` (и необязательных `meta`, `links` и `styles`) в компоненте следующим образом:
 
 ```typescript
-// File: src/routes/product/[skuId]/index.tsx
+// Файл: src/routes/product/[skuId]/index.tsx
 import { component$ } from '@builder.io/qwik';
 import type { DocumentHead } from '@builder.io/qwik-city';
 
@@ -30,12 +30,12 @@ export const head: DocumentHead = {
 };
 ```
 
-## Dynamic Document Head
+## Динамический заголовок документа
 
-The above case works for simple situations where we just want to set the document's title of the page with a static value. In a case where we need to set the title dynamically, for example, to include the product title, we can use a function:
+Приведённый выше случай работает для простых ситуаций - когда мы просто хотим установить статический заголовок страницы. В случае, когда нам нужно задать заголовок динамически, например, чтобы включить название продукта, мы можем использовать функцию:
 
 ```typescript
-// File: src/routes/product/[skuId]/index.tsx
+// Файл: src/routes/product/[skuId]/index.tsx
 import { component$ } from '@builder.io/qwik';
 import type { DocumentHead } from '@builder.io/qwik-city';
 
@@ -53,16 +53,16 @@ export default component$(() => {...});
 
 export const head: DocumentHead<EndpointData> = ({ data }) => {
   return {
-    title: `Product - ` + data.description
+    title: `Товар - ` + data.description
   };
 };
 ```
 
-The second case is a bit more complicated but it showcases how we can set the title of the page with the value that is retrieved from the `onGet` endpoint. (See [data documentation](../../data/overview/index.mdx) for retrieving data.) The Qwik City invokes `onGet` to retrieve the data for the route and then passes the data to the `head` function allowing it to create a custom title.
+Второй случай немного сложнее, но он демонстрирует, как мы можем установить заголовок страницы с помощью значения, полученного из конечной точки с помощью `onGet` (см. документацию [Данные](../../data/overview/index.mdx)). Qwik City вызывает для маршрута `onGet` и затем передаёт полученные данные в функцию `head`, которая возвращает требуемый заголовок.
 
-## Resolved Document Head
+## Сформированный заголовок документа
 
-An advanced case is that a [layout](../../layout/overview/index.mdx) may want to modify the document title of an already resolved document head. In the example below, the page component returns the title of `Foo`. Next, the containing layout component can read the value of the page's document head and modify it. In this example, the layout component is adding `Bar` to the title, so that when rendered, the title will be `Foo Bar`. Every layout in the stack has the opportunity to return a new value.
+Более сложный случай - если вам нужно в [макете](../../layout/overview/index.mdx) изменить заголовок документа в уже сформированной шапке. В приведенном ниже примере компонент страницы возвращает заголовок `Foo`. А макет, содержащий компонент, читает значение заголовка страницы и изменяет его. Макет добавляет к заголовку `Bar`, поэтому при рендере итоговый заголовок будет выглядеть как `Foo Bar`. Каждый макет в стеке (если используются вложенные макеты) имеет возможность доступа к заголовку.
 
 ```
 ──src/
@@ -72,14 +72,14 @@ An advanced case is that a [layout](../../layout/overview/index.mdx) may want to
 ```
 
 ```typescript
-// File: src/routes/index.tsx
+// Файл: src/routes/index.tsx
 export const head: DocumentHead = {
   title: `Foo`,
 };
 ```
 
 ```typescript
-// File: src/routes/layout.tsx
+// Файл: src/routes/layout.tsx
 export const head: DocumentHead<EndpointData> = ({ head }) => {
   return {
     title: `${head.title} Bar`,

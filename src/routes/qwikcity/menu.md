@@ -47,9 +47,9 @@
 - [Конфигурация](static-site-generation/static-site-config/index.mdx)
 - [Динамические маршруты](static-site-generation/dynamic-routes/index.mdx)
 
-## Head
+## Заголовок
 
-- [Title](head/title/index.mdx)
+- [Название](head/title/index.mdx)
 
 ## APIs
 
