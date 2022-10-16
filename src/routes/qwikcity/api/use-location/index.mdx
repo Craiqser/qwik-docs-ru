@@ -9,7 +9,7 @@ contributors:
 
 # `useLocation()`
 
-Use the `useLocation()` function to retrieve a `RouteLocation` object for the current location.
+Функция `useLocation()` возвращает объект `RouteLocation` для текущего маршрута.
 
 ```tsx
 export interface RouteLocation {
@@ -20,17 +20,17 @@ export interface RouteLocation {
 }
 ```
 
-The return value of `useLocation()` is similar to `document.location`, but it is safe to use on the server where there is no global `location` object.
+Возвращаемое значение `useLocation()` аналогично `document.location`, но его безопасно использовать на сервере, где нет глобального объекта `location`.
 
-## Path Route Parameters
+## Параметры маршрута
 
-`useLocation()` encodes the [Route Parameters](../../../qwikcity/routing/route-parameters/index.mdx) as params.
+`useLocation()` извлекает [параметры маршрута](../../../qwikcity/routing/route-parameters/index.mdx) в объект `params`.
 
-Assume you have:
+Предположим, что у вас есть:
 
-- Route: `https://example.com/sku/[skuId]`
-- User navigates to: `https://example.com/sku/1234`
-- Then the `skuId` can be retrieved through `useLocation().params.skuId`.
+- Маршрут: `https://example.com/sku/[skuId]`
+- Пользователь переходит к: `https://example.com/sku/1234`
+- Затем `skuId` можно получить через `useLocation().params.skuId`
 
 ```typescript
 export default component$(() => {
@@ -38,18 +38,18 @@ export default component$(() => {
 
   return (
     <>
-      <h1>SKU</h1>
-      <p>pathname: {pathname}</p>
-      <p>skuId: {params.skuId}</p>
+      <h1>Артикул</h1>
+      <p>Путь: {pathname}</p>
+      <p>Код: {params.skuId}</p>
     </>
   );
 });
 ```
 
-The above code would generate:
+Приведенный выше код будет генерировать:
 
 ```html
-<h1>SKU</h1>
-<p>pathname: /sku/1234</p>
-<p>skuId: 1234</p>
+<h1>Артикул</h1>
+<p>Путь: /sku/1234</p>
+<p>Код: 1234</p>
 ```

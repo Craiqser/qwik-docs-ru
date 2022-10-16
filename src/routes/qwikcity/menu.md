@@ -51,19 +51,19 @@
 
 - [Название](head/title/index.mdx)
 
-## APIs
+## Интерфейсы
 
 - [useContent()](api/use-content/index.mdx)
 - [useDocumentHead()](api/use-document-head/index.mdx)
 - [useLocation()](api/use-location/index.mdx)
 
-## Adaptors
+## Адаптеры
 
-- [Overview](adaptors/overview/index.mdx)
+- [Обзор](adaptors/overview/index.mdx)
 - [Cloudflare Pages](adaptors/cloudflare-pages/index.mdx)
 - [Netlify Edge](adaptors/netlify-edge/index.mdx)
 - [Node](adaptors/node/index.mdx)
 
-## Starters
+## Стартовые шаблоны
 
 - [Partytown](starters/partytown/index.mdx)
