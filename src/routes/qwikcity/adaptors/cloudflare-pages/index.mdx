@@ -1,35 +1,35 @@
 ---
-title: Qwik City - Cloudflare Pages Middleware
+title: Qwik City - Промежуточное ПО для Cloudflare
 contributors:
   - adamdbradley
 ---
 
-# Cloudflare Pages Middleware
+# Промежуточное ПО для страниц Cloudflare
 
-You have to integrate cloudflare-pages using this command to see your files as the files below
+Вы можете добавить интеграцию со страницами Cloudflare с помощью этой команды:
 
 ```bash
 npm run qwik add cloudflare-pages
 ```
 
-Qwik City Cloudflare Pages middleware allows you to connect Qwik City to [Cloudflare Pages](https://pages.cloudflare.com/).
+Промежуточное ПО Qwik City Cloudflare Pages позволяет подключить Qwik City к [Cloudflare Pages](https://pages.cloudflare.com/).
 
-Below is an example of using the built-in middleware within a user's app.
+Ниже приведен пример использования в пользовательском приложении.
 
 ```typescript
-// entry.cloudflare-pages.tsx
+// Файл entry.cloudflare-pages.tsx
 import render from './entry.ssr';
 import { qwikCity } from '@builder.io/qwik-city/middleware/cloudflare-pages';
 
 export const onRequest = qwikCity(render);
 ```
 
-The compiled middleware can then be used anywhere in the cloudflare pages `/functions` directory.
+Скомпилированный модуль можно использовать в любом месте каталога страниц Cloudflare `/functions`.
 
 ```typescript
-// export the compiled middleware where cloudflare pages can find it.
-// for example use /functions/[[path]].ts or /functions/_middleware.ts
-// to have qwik city handle all requests.
+// Экспортируйте скомпилированный модуль туда, где его смогут найти страницы cloudflare.
+// Например, используйте /functions/[[path]].ts или /functions/_middleware.ts
+// чтобы Qwik City обрабатывал все запросы.
 
 export { onRequest } from '../server/entry.cloudflare-pages';
 ```

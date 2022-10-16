@@ -1,26 +1,26 @@
 ---
-title: Qwik City - Netlify Edge Middleware
+title: Qwik City - Промежуточное ПО для Netlify Edge
 contributors:
   - adamdbradley
 ---
 
-# Netlify Edge Middleware
+# Промежуточное ПО для Netlify Edge
 
-Qwik City Netlify Edge middleware allows you to connect Qwik City to [Netlify Edge](https://docs.netlify.com/netlify-labs/experimental-features/edge-functions/).
+Промежуточное ПО Qwik City Netlify Edge позволяет подключить Qwik City к [Netlify Edge](https://docs.netlify.com/netlify-labs/experimental-features/edge-functions/).
 
-## Add to Qwik project
+## Добавление в Qwik-проект
 
-Run this command to integrate netlify-edge with your app:
+Выполните эту команду, чтобы интегрировать netlify-edge в приложение:
 
 ```bash
 npm run qwik add netlify-edge
 ```
 
-The previous command will create `src/entry.netlify-edge.tsx` using the built-in middleware within a user's app.
+Предыдущая команда создаст `src/entry.netlify-edge.tsx`, используя встроенное промежуточное ПО в приложении пользователя.
 
-## Manually Add Netlify Edge
+## Ручное добавление Netlify Edge
 
-If want to add Netilify Edge manually, you can add or modify files like below:
+Если вы хотите добавить Netilify Edge вручную, вы можете добавить или изменить файлы, как показано ниже:
 
 `src/entry.netlify-edge.tsx`
 
@@ -60,7 +60,7 @@ export default defineConfig(() => {
 });
 ```
 
-Configure `netlify.toml`
+Настройка `netlify.toml`
 
 ```toml
 [[edge_functions]]
@@ -68,18 +68,18 @@ path = "/*"
 function = "entry.netlify-edge"
 ```
 
-## Usage
+## Использование
 
-Use Netlify CLI to preview or deploy. [Read the full guide here](https://github.com/BuilderIO/qwik/blob/main/starters/servers/netlify-edge/README.md)
+Используйте Netlify CLI для предварительного просмотра или развёртывания. [Полный текст руководства читайте здесь.](https://github.com/BuilderIO/qwik/blob/main/starters/servers/netlify-edge/README.md)
 
 ```bash
 vite build --ssr src/entry.netlify-edge.tsx
 netlify dev
 ```
 
-### Context
+### Контекст
 
-[Netlify context](https://docs.netlify.com/edge-functions/api/#netlify-specific-context-object) is available in endpoint method's `platform` param:
+[Netlify context](https://docs.netlify.com/edge-functions/api/#netlify-specific-context-object) доступен в параметре `platform` метода конечной точки:
 
 ```javascript
 export const onRequest = async ({ platform }) => {
@@ -87,7 +87,7 @@ export const onRequest = async ({ platform }) => {
 };
 ```
 
-### Environment variables
+### Переменные окружения
 
 ```javascript
 export const onRequest = async ({ platform }) => {
