@@ -1,5 +1,5 @@
 ---
-title: Qwik City and Partytown
+title: Qwik City и Partytown
 contributors:
   - manucorporat
   - leifermendez
@@ -8,25 +8,25 @@ contributors:
 
 # Partytown
 
-Third party scripts slow down your initial page load substantially by blocking the main thread.
+Сторонние скрипты существенно замедляют начальную загрузку страницы, блокируя основной поток.
 
-Partytown is a tool that allows you to defer third party scripts like Google Analytics, Facebook Pixel, etc off the main thread by using a web worker.
-For more information about this tool visit the [Partytown docs](https://partytown.builder.io/).
+Partytown - это инструмент, который позволяет отделить сторонние скрипты, такие как Google Analytics, Facebook Pixel и т.д., от основного потока с помощью веб-воркера.
+Для получения дополнительной информации об этом инструменте смотрите документацию [Partytown](https://partytown.builder.io/).
 
-## Usage
+## Использование
 
-You can add Partytown easily by using the following Qwik starter script:
+Вы можете легко добавить Partytown с помощью следующего стартового скрипта Qwik:
 
 ```bash
 npm run qwik add partytown
 ```
 
-The previous command updates your app and sets the correct configuration in `vite.config.ts`.
+Предыдущая команда обновляет ваше приложение и устанавливает правильную конфигурацию в файле `vite.config.ts`.
 
-It also adds new files inside to your `components` folder.
+Она также добавляет новые файлы в папку `components`.
 
 ```typescript
-// file root.tsx
+// Файл root.tsx
 
 import { QwikPartytown } from './components/partytown/partytown';
 
@@ -51,6 +51,6 @@ export default component$(() => {
 });
 ```
 
-## Advanced
+## Дополнительно
 
-To further configure Partytown with more options, please visit the [Partytown Documentation](https://partytown.builder.io/configuration)
+Для дальнейшей настройки дополнительных опций смотрите документацию [Partytown](https://partytown.builder.io/configuration).

@@ -64,6 +64,6 @@
 - [Netlify Edge](adaptors/netlify-edge/index.mdx)
 - [Node](adaptors/node/index.mdx)
 
-## Стартовые шаблоны
+## Стартовые скрипты
 
 - [Partytown](starters/partytown/index.mdx)
