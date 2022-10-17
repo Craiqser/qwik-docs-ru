@@ -1,11 +1,11 @@
 import { component$, Slot, useStyles$ } from '@builder.io/qwik';
 import type { RequestHandler } from '@builder.io/qwik-city';
-import { ContentNav } from '../../components/content-nav/content-nav';
-import { Footer } from '../../components/footer/footer';
-import { Header } from '../../components/header/header';
-import { OnThisPage } from '../../components/on-this-page/on-this-page';
-import { SideBar } from '../../components/sidebar/sidebar';
-import styles from '../docs/docs.css?inline';
+import { ContentNav } from './../../components/content-nav/content-nav';
+import { Footer } from './../../components/footer/footer';
+import { Header } from './../../components/header/header';
+import { OnThisPage } from './../../components/on-this-page/on-this-page';
+import { SideBar } from './../../components/sidebar/sidebar';
+import styles from './../docs/docs.css?inline';
 
 export default component$(() => {
   useStyles$(styles);

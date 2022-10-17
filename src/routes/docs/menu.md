@@ -9,14 +9,14 @@
 - [FAQ](faq/index.mdx)
 - [QwikCity (маршрутизация)](../qwikcity/overview/index.mdx)
 
-## Component API
+## Компоненты
 
-- [Overview](components/overview/index.mdx)
-- [State](components/state/index.mdx)
-- [Events](components/events/index.mdx)
-- [Lifecycle](components/lifecycle/index.mdx)
-- [Context](components/context/index.mdx)
-- [Resource](components/resource/index.mdx)
+- [Обзор](components/overview/index.mdx)
+- [Состояние](components/state/index.mdx)
+- [События](components/events/index.mdx)
+- [Жизненный цикл](components/lifecycle/index.mdx)
+- [Контекст](components/context/index.mdx)
+- [Ресурс](components/resource/index.mdx)
 - [Lite components](components/lite-components/index.mdx)
 - [Content projection](components/projection/index.mdx)
 - [Rendering](components/rendering/index.mdx)
