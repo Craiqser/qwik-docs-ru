@@ -1,5 +1,5 @@
 ---
-title: Overview
+title: Обзор
 contributors:
   - RATIU5
   - leifermendez
@@ -7,31 +7,31 @@ contributors:
   - adamdbradley
 ---
 
-# Components
+# Компоненты
 
-Components are basic building blocks of Qwik Applications. Qwik components are unique in that:
+Компоненты - это основные строительные блоки приложений Qwik. Компоненты Qwik уникальны в своём роде:
 
-- Qwik components automatically get broken down into lazy-loaded chunks by the Optimizer. (See Optimizer discussion)
-- Are [resumable](../../concepts/resumable/index.mdx). (A component can get created on a server and continue its execution on the client.) (See resumable discussion)
-- Can render independently of other components on the page. (See rendering discussion)
+- Автоматически разбиваются оптимизатором на лениво загружаемые фрагменты (см. описание оптимизатора);
+- Являются [возобновляемыми](./../../concepts/resumable/index.mdx) - компонент может быть создан на сервере и продолжить своё выполнение на клиенте (см. описание возобновляемости);
+- Могут рендериться независимо от других компонентов на странице (см. описание рендеринга).
 
 ## `component$()`
 
-A component is a small, reusable piece of code that can be used to build a UI.
+Компонент - это небольшой, переиспользуемый фрагмент кода, который можно использовать для создания пользовательского интерфейса.
 
-In Qwik, they are declared using the `component$` method:
+В Qwik они объявляются с помощью метода `component$`:
 
 ```tsx
 import { component$, useStore } from '@builder.io/qwik';
 
-// Qwik components can be asynchronous
+// Компоненты Qwik могут быть асинхронными.
 export const MyCmp = component$(async (props: MyCmpProps) => {
-  // Declare local state
+  // Объявление локального состояния
   const state = useStore({
     count: 0,
   });
 
-  // Returns JSX
+  // Возврат JSX
   return (
     <>
       <span>
@@ -40,8 +40,8 @@ export const MyCmp = component$(async (props: MyCmpProps) => {
       <div>Times: {state.count}</div>
       <button
         onClick$={() => {
-          // This will update the local state and cause a re-render.
-          // Reactivity is at Qwik's core!
+          // Обновление локального состояния и вызов ререндеринга.
+          // Реактивность лежит в основе Qwik!
           state.count++;
         }}
       >
@@ -52,16 +52,11 @@ export const MyCmp = component$(async (props: MyCmpProps) => {
 });
 ```
 
-> **NOTE**
->
-> - For an explanation of `$` see lazy-loading and Optimizer discussion.
-> - For a detailed discussion of props, see Component/props discussion.
+## Параметры
 
-## Props
+Параметры используются для передачи данных в компонент. Параметры объявляются как именованные аргументы компонента.
 
-Props are used to pass data into the component. Props are declared as named arguments of the component.
-
-In this example a component `Item` declares optional `name`, `quantity`, `description`, and `price`.
+В этом примере компонент `Item` объявляет необязательные параметры `name`, `quantity`, `description` и `price`.
 
 ```tsx
 interface ItemProps {
@@ -76,9 +71,9 @@ export const Item = component$((props: ItemProps) => {
 });
 ```
 
-## Using components
+## Использование компонентов
 
-Qwik components can use other components.
+Компоненты Qwik могут использовать другие компоненты.
 
 ```tsx
 const Counter = component$((props: {step?:number, initial?: number}) => {
@@ -95,23 +90,23 @@ const MyApp = component$(() => {
 });
 ```
 
-The above example shows how the `MyApp` component can use the `Counter` component. The second example shows how one can use binding to pass values to the `Counter` component's props.
+Приведённый выше пример показывает, как компонент `MyApp` может использовать компонент `Counter`. Второй пример показывает привязку значений для передачи параметров в компонент `Counter`.
 
-## Re-rendering on Reactivity
+## Реактивный ререндер
 
-Qwik components are reactive on the component level. Component props, as well as stores, are proxies. These proxies track reads as well as writes.
+Компоненты Qwik являются реактивными на уровне самого компонента. Параметры компонента, так же как и состояние, являются прокси-объектами. Эти прокси отслеживают как чтение, так и запись.
 
-- A proxy-read during OnRender method execution lets Qwik know that the OnRender method depends on a given property. A read creates a subscription on that property. In our [example](../../concepts/reactivity/#counter-example), OnRender reads`{store.count}`, which creates a subscription that tells Qwik that whenever the `store.count` changes, the component should be invalidated.
-- A proxy-write notifies Qwik that all associated subscriptions should be invalidated.
+- Прокси-чтение во время выполнения метода OnRender позволяет Qwik узнать, что метод OnRender зависит от данного свойства, поэтому он создаёт подписку на это свойство. В нашем [примере](./../../concepts/reactivity/#counter-example), OnRender читает `{store.count}`, что создаёт подписку, которая сообщает Qwik, что всякий раз, когда `store.count` изменяется, компонент требует обновления.
 
-When components get invalidated, they are added to the invalidation queue, which is flushed (rendered) on the next `requestAnimationFrame`. This acts as a form of coalescing for component rendering.
+- Прокси-запись уведомляет Qwik о необходимости уведомить все связанные подписки.
 
-For a detailed discussion of reactivity, see related discussion.
+Когда компоненты признаются недействительными, они добавляются в очередь на обновление, которая сбрасывается (так как компонент рендерится) при очередном событии `requestAnimationFrame`. Это работает как способ объединения рендеринга компонентов.
 
+Подробное обсуждение реактивности смотри в соответствующем обсуждении.
 
-## Lazy Loading
+## Ленивая загрузка
 
-The component also serves an important role when breaking parent-child relationships for bundling purposes.
+Компонент также играет важную роль в разрыве отношений родитель-потомок в целях разбиения на бандлы.
 
 ```tsx
 const Child = () => <span>child</span>;
@@ -123,7 +118,7 @@ const Parent = () => (
 );
 ```
 
-In the above example, referring to the `Parent` component implies a transitive reference to the `Child` component. When the bundler is creating a chunk, a reference to `Parent` necessitates bundling `Child` as well. (`Parent` internally refers to `Child`.) These transitive dependencies are a problem because it means that having a reference to the root component will transitively refer to the remainder of the application—something which Qwik tries to avoid explicitly.
+В приведённом выше примере обращение к компоненту `Parent` подразумевает транзитивную ссылку на компонент `Child`. Когда упаковщик создаёт чанк, ссылка на `Parent` также требует упаковки `Child` (внутри `Parent` есть зависимость на `Child`). Эти транзитивные зависимости представляют из себя проблему, так как это означает, что наличие ссылки на корневой компонент приложения будет транзитивно тянуть остальную часть приложения, чего Qwik пытается избежать.
 
 ```tsx
 const Child = component$(() => {
@@ -139,7 +134,7 @@ const Parent = component$(() => {
 });
 ```
 
-In the above example the Optimizer transforms the above to:
+Для приведённого выше примера оптимизатор выполнит следующее преобразование кода:
 
 ```tsx
 const Child = componentQrl(qrl('./chunk-a', 'Child_onMount'));
@@ -152,12 +147,12 @@ const Parent_onRender = () => (
 );
 ```
 
-> **NOTE**
-> For simplicity, not all of the transformations are shown; all resulting symbols are kept in the same file for succinctness.
+> **ПРИМЕЧАНИЕ**
+> Для простоты показаны не все преобразования. Результирующие символы хранятся для краткости в одном файле.
 
-Notice that after the Optimizer transforms the code, the `Parent` no longer directly references `Child`. This is important because it allows the bundler (and tree shakers) to freely move the symbols into different chunks without pulling the rest of the application with it.
+Обратите внимание, что после того, как оптимизатор преобразовал код, `Parent` больше не ссылается напрямую на `Child`. Это важно, потому что позволяет упаковщику свободно перемещать символы в разные бандлы, не увлекая за собой остальную часть приложения.
 
-So what happens when the `Parent` component renders and `Child` component has not yet been downloaded? First, the `Parent` component renders its JSX like so.
+Что же происходит, когда компонент `Parent` отображается, а компонент `Child` ещё не загружен? Во-первых, компонент `Parent` отображает свой JSX следующим образом:
 
 ```html
 <div>
@@ -167,54 +162,54 @@ So what happens when the `Parent` component renders and `Child` component has no
 </div>
 ```
 
-As you can see in the above example, the `<div/>` acts as a marker where the `Child` component will be inserted once it is lazy-loaded.
+Как видно из приведённого выше примера, `<div/>` действует как маркер, куда будет вставлен компонент `Child` после того, как он будет лениво загружен.
 
-## Mental Model
+## Ментальная модель
 
-The Optimizer splits Qwik components into the host element and the behavior of the component. The host element gets bundled with the parent component's OnRender method, whereas the component's behavior is something that gets lazy-loaded on an as-needed basis.
+Оптимизатор разделяет компонент Qwik на его основание и его поведение. Элемент-основание связывается с методом OnRender родительского компонента, в то время как поведение компонента - это то, что лениво загружается по мере необходимости.
 
-## API Overview
+## Обзор API
 
-### State
+### Состояние
 
-- `useStore(initialState)` - creates a reactive store
-- `useRef$(initialState)` - creates a ref
-- `createContext(contentName)` - creates a context
-- `useContextProvider$()` - creates a context provider
-- `useContext$()` - use a context
+- `useStore(initialState)` - создаёт реактивное состояние
+- `useRef$(initialState)` - создаёт ссылку
+- `createContext(contentName)` - создаёт контекст
+- `useContextProvider$()` - создаёт провайдер контекста
+- `useContext$()` - использование контекста
 
-### Styles
+### Стили
 
-- `useStylesScoped$()` - creates a scoped style
-- `useStyles$()` - creates a global style
+- `useStylesScoped$()` - создаёт локальный стиль
+- `useStyles$()` - создаёт глобальный стиль
 
-### Events
+### События
 
-- `useOn()` - creates an event listener
-- `useOnWindow()` - creates a window event listener
-- `useOnDocument()` - creates a document event listener
+- `useOn()` - создаёт слушателя событий
+- `useOnWindow()` - создаёт слушателя событий объекта window
+- `useOnDocument()` - создаёт слушателя событий объекта document
 
-### Lifecycles
+### События жизненного цикла
 
-- `useMount$()` - creates a post rendering
-- `useServerMount$()` - creates a post rendering
-- `useWatch$()` - creates a watch
-- `useClientEffect$()` - creates a post rendering
-- `useResource$()` - creates a resource
+- `useMount$()`
+- `useServerMount$()`
+- `useWatch$()` - создаёт наблюдателя
+- `useClientEffect$()`
+- `useResource$()` - создаёт ресурс
 
-### Other
+### Другое
 
-- `$()` - creates a QRL
+- `$()` - создаёт QRL
 - `noSerialize()`
 - `useErrorBoundary()`
 
-### Components
+### Компоненты
 
-- `<Slot>` - creates a slot
-- `<SSRStreamBlock>` - creates a stream block
-- `<SSRStream>` - creates a stream
-- `<Fragment>` - creates a fragment
+- `<Slot>` - создаёт слот
+- `<SSRStreamBlock>` - создаёт блок потока
+- `<SSRStream>` - создаёт поток
+- `<Fragment>` - создаёт фрагмент
 
-## See Also
+## Другие ссылки
 
-- [Lite components](../lite-components/index.mdx)
+- [Облегчённые компоненты](./../lite-components/index.mdx)
