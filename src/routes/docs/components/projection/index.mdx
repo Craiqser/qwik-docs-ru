@@ -1,5 +1,5 @@
 ---
-title: Projection
+title: Отображение
 contributors:
   - RATIU5
   - manucorporat
@@ -7,11 +7,11 @@ contributors:
   - adamdbradley
 ---
 
-# Content projection
+# Отображение содержимого
 
-Content projection allows a component to treat the JSX children of the component as a form of input and project these children into the component's JSX.
+Отображение содержимого позволяет компоненту рассматривать дочерние элементы JSX компонента как форму ввода и отображать дочерние элементы в JSX компонента.
 
-An example of a collapsible component which conditionally projects it's content.
+Пример сворачиваемого компонента, который отображает своё содержимое по условию.
 
 ```tsx
 export const Collapsible = component$(() => {
@@ -28,30 +28,30 @@ export const Collapsible = component$(() => {
 });
 ```
 
-The above component can be used from a parent component like so:
+Вышеупомянутый компонент можно использовать из родительского компонента следующим образом:
 
 ```tsx
 export const MyApp = component$(() => {
   return (
     <Collapsible>
-      <span q:slot="title">Title text</span>
+      <span q:slot="title">Текст заголовка</span>
       Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus vulputate accumsan pretium.
     </Collapsible>
   );
 });
 ```
 
-The `Collapsible` component will always display the title, but the body of the text will only display if `store.isOpen` is `true`.
+Компонент `Collapsible` всегда будет отображать заголовок, но основной текст будет отображаться только в том случае, если `store.isOpen` имеет значение `true`.
 
-## Rendered output
+## Вывод рендерера
 
-The above example would render into this HTML if `isOpen===true`:
+Приведённый выше пример рендерится в следующий HTML, если `isOpen === true`:
 
 ```html
 <my-app>
   <collapsible>
     <q:slot q:key="title" has-content>
-      <span q:slot="title" has-content>Title text</span>
+      <span q:slot="title" has-content>Текст заголовка</span>
     </q:slot>
     <q:slot>
       Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus vulputate accumsan pretium.
@@ -60,11 +60,11 @@ The above example would render into this HTML if `isOpen===true`:
 </my-app>
 ```
 
-## Slots
+## Слоты
 
-Qwik uses slots as a way of connecting content from the parent component to the child projection.
+Qwik использует слоты как способ включения содержимого родительского компонента к дочернему содержимому.
 
-The parent component uses `q:slot` attribute to identify the source of projection and `<Slot>` element to identify the destination of the projection. Unnamed (or unwrapped) content is assumed to have `q:slot=""` attribute
+Родительский компонент использует атрибут `q:slot` для определения источника содержимого и элемент `<Slot>` для определения места назначения содержимого. Предполагается, что безымянный (или развернутый) контент имеет атрибут `q:slot=""`.
 
 ```tsx
 export const Project = component$(() => {
@@ -78,33 +78,33 @@ export const Project = component$(() => {
 export const MyApp = component$(() => {
   return (
     <Project>
-      unwrapped text
-      <span>wrapped text with no q:slot</span>
-      <span q:slot="">wrapped text with default name</span>
+      внешний текст
+      <span>внутренний текст без q:slot</span>
+      <span q:slot="">внутренний текст с q:slot с именем по умолчанию</span>
     </Project>
   );
 });
 ```
 
-Results in:
+Результат рендера:
 
 ```html
 <my-app>
   <project>
     <div>
       <q:slot q:key has-content>
-        unwrapped text
-        <span>wrapped text with no q:slot</span>
-        <span q:slot="">wrapped text with default name</span>
+        внешний текст
+        <span>внутренний текст без q:slot</span>
+        <span q:slot="">внутренний текст с q:slot с именем по умолчанию</span>
       </q:slot>
     </div>
   </project>
 </my-app>
 ```
 
-### Naming slots
+### Именованные слоты
 
-Use `q:slot` attributes to name slots.
+Используйте атрибуты `q:slot` для именования слотов.
 
 ```tsx
 export const Project = component$(() => {
@@ -121,42 +121,42 @@ export const Project = component$(() => {
 export const MyApp = component$(() => {
   return (
     <Project>
-      unwrapped text
-      <span q:slot="title">first title text</span>
-      <span>wrapped text with no q:slot</span>
-      <span q:slot="title">second title text</span>
+      внешний текст
+      <span q:slot="title">первый заголовок</span>
+      <span>внутренний текст без q:slot</span>
+      <span q:slot="title">второй заголовок</span>
     </Project>
   );
 });
 ```
 
-Results in:
+Результат:
 
 ```html
 <my-app>
   <project>
     <div>
       <div class="title">
-        <span q:slot="title">first title text</span>
-        <span q:slot="title">second title text</span>
+        <span q:slot="title">первый заголовок</span>
+        <span q:slot="title">второй заголовок</span>
       </div>
       <q:slot q:key="" has-content>
-        unwrapped text
-        <span>wrapped text with no q:slot</span>
+        внешний текст
+        <span>внутренний текст без q:slot</span>
       </q:slot>
     </div>
   </project>
 </my-app>
 ```
 
-Notice that:
+Помните что:
 
-- `name=""` attribute is the same behavior as no attribute or no wrapping element.
-- Multiple `q:slot="title"` attributes coalesce items together in the content projection.
+- Атрибут `name=""` ведёт себя так же, как отсутствие атрибута или элемента-обертки.
+- Несколько атрибутов `q:slot="title"` объединяют элементы в отображении контента.
 
-### Not projecting content
+### Не отображаемое содержимое
 
-Qwik keeps all content around, even if not projected. This is because the content could be projected in the future.
+Qwik хранит весь контент, даже если он не отображается. Это потому, что контент может быть отображён позднее.
 
 ```tsx
 export const Project = component$(() => {
@@ -164,63 +164,63 @@ export const Project = component$(() => {
 });
 
 export const MyApp = component$(() => {
-  return <Project>unwrapped text</Project>;
+  return <Project>текст без обёртки</Project>;
 });
 ```
 
-Results in:
+Результат:
 
 ```html
 <my-app>
   <project>
-    <q:template q:slot="">unwrapped text</q:template>
+    <q:template q:slot="">текст без обёртки</q:template>
     <div></div>
   </project>
 </my-app>
 ```
 
-Notice that the un-projected content is moved into inert `<q:template>`. This is done just in case the `Project` component re-renders and inserts a `<Slot>`. In that case, we don't want to re-render the parent component. The rendering of the two components needs to stay independent.
+Обратите внимание, что не отображаемое содержимое перемещено в инертный `<q:template>`. Это делается на тот случай, если компонент `Project` перерендерится и вставит `<Slot>`. В этом случае мы не хотим повторно отображать родительский компонент. Рендеринг этих двух компонентов должен оставаться независимым.
 
-### Default slot content
+### Содержание слота по умолчанию
 
-It is possible to insert default slot content if the parent component does not provide a value.
+Можно вставить содержимое слота по умолчанию, если родительский компонент не предоставляет значения.
 
 ```tsx
 export const Project = component$(() => {
   return (
     <>
-      <Slot name="title">default title</Slot>
-      <Slot>default content</Slot>
+      <Slot name="title">заголовок по умолчанию</Slot>
+      <Slot>содержимое по умолчанию</Slot>
     </>
   );
 });
 
 export const MyApp = component$(() => {
-  return <Project>some content</Project>;
+  return <Project>Переданное содержимое</Project>;
 });
 ```
 
-Results in:
+Результат:
 
 ```html
 <my-app>
   <project>
     <q:slot q:key="title">
-      <q:slot-default>default title</q:slot-default>
+      <q:slot-default>заголовок по умолчанию</q:slot-default>
     </q:slot>
     <q:slot has-content>
-      <q:slot-default>default content</q:slot-default>
-      some content
+      <q:slot-default>содержимое по умолчанию</q:slot-default>
+      Переданное содержимое
     </q:slot>
   </project>
 </my-app>
 ```
 
-Notice that default content can be included in the `<Slot>..default content</Slot>`. This content will always get inserted into the resulting HTML output wrapped in `<q:slot-default/>`. The visibility of the `<q:slot-default/>` is controlled by the `has-content` attribute. See the CSS section for details.
+Обратите внимание, что содержимое по умолчанию может быть включено в `<Slot>default content</Slot>`. Этот контент всегда будет вставляться в результирующий вывод HTML, заключенный в `<q:slot-default/>`. Видимость `<q:slot-default/>` контролируется атрибутом `has-content`. Подробнее в следующем разделе `CSS`.
 
 ## CSS
 
-On order for Qwik to be able to render components independently, it must be able to read the rules of projection from the HTML. This is achieved with the `<q:slot>` element, the `<q:slot-default/>` element and the `q:slot` attribute. The extra elements are necessary to achieve this. To make the elements act inert, Qwik adds the following CSS to the `<style>` tag.
+Для того чтобы Qwik мог самостоятельно отрисовывать компоненты, он должен уметь считывать правила отображения из HTML. Это достигается с помощью элемента `<q:slot>`, элемента `<q:slot-default/>` и атрибута `q:slot`. Чтобы сделать эти элементы инертными, Qwik добавляет в тег `<style>` следующий код CSS:
 
 ```html
 <style>
@@ -235,9 +235,9 @@ On order for Qwik to be able to render components independently, it must be able
 </style>
 ```
 
-## Invalid projection
+## Ошибка отображения
 
-The `q:slot` attribute must be a direct child of a component.
+Атрибут `q:slot` должен быть прямым потомком компонента.
 
 ```tsx
 export const Project = component$(() => { ... })
@@ -245,31 +245,32 @@ export const Project = component$(() => { ... })
 export const MyApp = component$(() => {
   return (
     <Project>
-      <span q:slot="title">ok, direct child of Project</span>
+      <span q:slot="title">Хорошо, прямой наследник.</span>
       <div>
-        <span q:slot="title">Error, not a direct child of Project</span>
+        <span q:slot="title">Ошибка, не является прямым наследником.</span>
       </div>
     </Project>
   );
 });
 ```
 
-## Projection vs `children`
+## Отображение vs `наследник`
 
-All frameworks need a way for a component to wrap its complex content in a conditional way. This problem is solved in many different ways, but there are two predominant approaches:
+Все фреймворки нуждаются в том, чтобы компонент мог обернуть своё сложное содержимое условным образом. Эта проблема решается по-разному, но есть два преобладающих подхода:
 
-- **projection**: Projection is a declarative way of describing how the content gets from the parent template to where it needs to be projected.
-- **`children`**: `children` refers to vDOM approaches that treat content just like another input.
+- `отображение` - это декларативный способ описания того, как содержимое попадает из родительского шаблона в место отображения.
 
-The two approaches can best be described as declarative vs imperative. They both come with their set of advantages and disadvantages.
+- `наследник` - относится к подходам vDOM, которые обрабатывают содержимое точно так же, как и другой вход.
 
-Qwik uses the declarative projection approach. The reason for this is that Qwik needs to be able to render parent/children components independently from each other. With an imperative (`children`) approach, the child component can modify the `children` in countless ways. If a child component relied on `children`, it would be forced to re-render whenever a parent component would re-render to reapply the imperative transformation to the `children`. The extra rendering goes explicitly against the goals of Qwik components rendering in isolation.
+Эти два подхода лучше всего можно описать как декларативный и императивный. Они оба имеют свой набор преимуществ и недостатков.
 
-For example, let's go back to our `Collapsible` example from above:
+Qwik использует декларативный подход отображения. Причина этого в том, что Qwik должен иметь возможность отображать родительские/дочерние компоненты независимо друг от друга. При императивном (`наследник`) подходе дочерний компонент может изменять потомков бесчисленным количеством способов. Если бы дочерний компонент зависел от `наследник`а, он был бы вынужден повторно вызывать функцию рендера каждый раз, когда родительский компонент повторно применял бы изменения для императивного преобразования к `наследник`у. Дополнительный рендер явно противоречит целям изолированного рендеринга компонентов Qwik.
 
-- The parent needs to be able to change the title and the text without forcing the `Collapsible` component to re-render. Qwik needs to be able to redistribute the changes to the `MyApp` template without affecting the `Collapsible` component.
-- The child component needs to change what is projected without having the parent component re-render. In our case, `Collapsible` should be able to show/hide the default `q:slot` without downloading and re-rendering the `MyApp` component.
+Например, давайте вернёмся к нашему примеру выше с компонентом `Collapsible`:
 
-In order for the two components to have an independent lifecycle, the projection needs to be declarative. In this way, either the parent or child can change what is projected or how it is projected without re-rendering the other.
+- Родитель должен иметь возможность изменить заголовок и текст, не заставляя компонент `Collapsible` выполнять ререндер. Qwik должен иметь возможность распространить изменения в шаблоне `MyApp`, не затрагивая компонент `Collapsible`.
+- Дочерний компонент должен изменить то, что отображается, без повторного рендера родительского компонента. В нашем случае `Collapsible` должен иметь возможность показывать/скрывать слот `q:slot` по умолчанию без загрузки и повторного рендера компонента `MyApp`.
 
-With `children` approach, the component can imperatively modify the `children` in endless ways. This would make it extremely difficult to build a framework that would not force re-rendering both parent and children.
+Чтобы два компонента имели независимый жизненный цикл, отображение должно быть декларативным. Таким образом, либо родитель, либо потомок могут изменить то, что отображается, или то, как это отображается, без повторного рендера другого компонента.
+
+С императивным подходом компонент может принудительно изменять дочерние элементы бесконечным числом способов. Это чрезвычайно затруднило бы создание фреймворка, который не заставлял бы повторно рендерить как родительский, так и дочерний элементы.

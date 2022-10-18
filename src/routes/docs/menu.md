@@ -18,7 +18,7 @@
 - [Контекст](components/context/index.mdx)
 - [Ресурсы](components/resource/index.mdx)
 - [Легковесные компоненты](components/lite-components/index.mdx)
-- [Проекция содержимого](components/projection/index.mdx)
+- [Отображение содержимого](components/projection/index.mdx)
 - [Рендеринг](components/rendering/index.mdx)
 
 ## Cheat Sheet
