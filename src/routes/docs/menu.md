@@ -17,9 +17,9 @@
 - [Жизненный цикл](components/lifecycle/index.mdx)
 - [Контекст](components/context/index.mdx)
 - [Ресурсы](components/resource/index.mdx)
-- [Lite components](components/lite-components/index.mdx)
-- [Content projection](components/projection/index.mdx)
-- [Rendering](components/rendering/index.mdx)
+- [Легковесные компоненты](components/lite-components/index.mdx)
+- [Проекция содержимого](components/projection/index.mdx)
+- [Рендеринг](components/rendering/index.mdx)
 
 ## Cheat Sheet
 

@@ -1,36 +1,36 @@
 ---
-title: Lite components
+title: Легковесные компоненты
 contributors:
   - RATIU5
   - ykou
   - adamdbradley
 ---
 
-# Lite Components
+# Легковесные компоненты
 
-In addition to standard Qwik components that have all of its lazy-loaded properties, Qwik also supports lightweight (lite) components that act more like traditional frameworks.
+В дополнение к стандартным Qwik-компонентам, обладающим всеми свойствами отложенной загрузки, Qwik также поддерживает легковесные (`lite`) компоненты, которые больше похожи на традиционные фреймворки.
 
 ```tsx
-// Lite component: declared using a standard function.
+// Легковесный компонент: объявлен с использованием стандартной функции.
 function MyButton(props: { text: string }) {
   return <button>{props.text}</button>;
 }
 
-// Component: declared using `component$()`.
+// Компонент: объявлен с использованием функции `component$()`.
 const MyApp = component$(() => {
   return (
     <div>
-      Some text:
-      <MyButton text="Click me" />
+      Немного текста:
+      <MyButton text="Нажми меня" />
     </div>
   );
 });
 ```
 
-In the above example, the `MyButton` is a lite component. Lite components' lazy loading is merged with the regular component they are part of. In this case:
+В приведённом выше примере `MyButton` является легковесным компонентом. Ленивая загрузка легковесных компонентов объединяется с обычным компонентом, частью которого они являются. И в таком случае:
 
-- `MyButton` will get bundled with the `MyApp` render function.
-- Whenever the render function of `MyApp` executes, it will also force the execution of `MyButton`.
-- `MyButton` does not have a host element.
+- `MyButton` будет связан с функцией рендера `MyApp`.
+- Всякий раз, когда выполняется функция рендера `MyApp`, она также вызывает выполнение рендера `MyButton`.
+- `MyButton` не имеет владельца.
 
-You can think of lightweight components as being inlined into the component, where they are instantiated.
+Вы можете представлять легковесные компоненты как блоки, встроенные в компонент, в котором они создаются.
