@@ -1,5 +1,5 @@
 ---
-title: Lifecycles
+title: Жизненный цикл
 contributors:
   - nnelgxorz
   - RATIU5
@@ -8,44 +8,44 @@ contributors:
 
 import diagram from './diagram2.svg';
 
-# Lifecycles
+# Хуки жизненного цикла
 
 <img src={diagram}/>
 
-## Rules
+## Правила
 
-When using lifecycle hooks, you must adhere to the following rules:
+При использовании хуков жизненного цикла необходимо придерживаться следующих правил:
 
-  - They can only be called in `component$`
-  - They can only be called at the root level of a function / arrow function context, not inside of branches or conditional blocks
-  - They can only be called from another `use*$` method, allowing for composition
+  - Они могут быть вызваны только внутри `component$`;
+  - Они могут быть вызваны только на верхнем уровне контекста функции/стрелочной функции, а не внутри ветвей кода или условных блоков;
+  - Они могут быть вызваны только из другого метода `use*$`, что позволяет создавать композицию.
 
 ```tsx
-useHook() // <-- ❌ does not work
+useHook() // <-- ❌ не работает
 
 export default component$(() => {
-  useHook() // <-- ✅ does work
+  useHook() // <-- ✅ работает
   if (condition) {
-    useHook() // <-- ❌ does not work
+    useHook() // <-- ❌ не работает
   }
-  const myQrl = $(() => useHook()) // <-- ✅ does work
-  return <button onClick$={() => useHook() }></button> // <-- ✅ does work
+  const myQrl = $(() => useHook()) // <-- ✅ работает
+  return <button onClick$={() => useHook() }></button> // <-- ✅ работает
 })
 
 const useCustomHook = () => {
-  useHook() // <-- ✅ does work
+  useHook() // <-- ✅ работает
 }
 ```
 
 ## `useMount$()`
 
-`useMount$()` registers a hook to be executed upon component creation. `useMount$()` will block the rendering of the component until after the `useMount$()` callback resolves. (This is useful for fetching asynchronous data and delaying rendering until data is received, ensuring that the rendered component contains the data)
+`useMount$()` регистрирует хук, который будет выполняться при создании компонента. `useMount$()` будет блокировать рендеринг компонента до тех пор, пока функция обратного вызова `useMount$()` не разрешится (это часто используется для получения асинхронных данных и задержки рендеринга до их получения, гарантируя, что рендер компонента содержит данные).
 
-While `useMount$()` can execute on either the server or on the client, it runs exactly once. (Either on the server or on the client, depending on where the component got first rendered)
+Хотя `useMount$()` может выполняться как на сервере, так и на клиенте, она запускается ровно один раз (либо на сервере, либо на клиенте, в зависимости от того, где был первый рендер компонента).
 
-See also the `useServerMount$()` hook which has the same semantics but only runs on the server.
+Смотри также хук `useServerMount$()`, который имеет ту же семантику, но работает только на сервере.
 
-### Example
+### Пример
 
 ```tsx
 const Cmp = component$(() => {
@@ -53,7 +53,7 @@ const Cmp = component$(() => {
     users: [],
   });
   useMount$(async () => {
-    // This code will run on component creation to fetch the data.
+    // Этот код будет выполняться при создании компонента для получения данных.
     store.users = await db.requestUsers();
   });
   return (
@@ -76,9 +76,9 @@ function User(props: { user: User }) {
 
 ## `useServerMount$()`
 
-`useServerMount$()` registers a server-mounted hook that only runs on the server when the component is first mounted.
+`useServerMount$()` регистрирует серверный хук монтирования, который запускается на сервере только при первом монтировании компонента.
 
-### Example
+### Пример
 
 ```tsx
 const Cmp = component$(() => {
@@ -86,7 +86,7 @@ const Cmp = component$(() => {
     users: [],
   });
   useServerMount$(async () => {
-    // This code will ONLY run once in the server, when the component is mounted
+    // Этот код выполнится ТОЛЬКО один раз на сервере, при монтировании компонента.
     store.users = await db.requestUsers();
   });
   return (
@@ -109,17 +109,17 @@ function User(props: { user: User }) {
 
 ## `useWatch$()`
 
-Re-runs the `watchFn` when the tracked inputs change.
+Повторно запускает `watchFn` при изменении отслеживаемых данных.
 
-Use `useWatch` to track changes on a set of inputs, and then re-execute the `watchFn` when those inputs change.
+`useWatch` используется для отслеживания изменений в наборе входных данных, и повторного выполнения `watchFn` при изменении этих данных.
 
-The `watchFn` only executes if the tracked inputs change. To track the inputs, use the `track` function to wrap property reads. This will create subscriptions that will trigger the `watchFn` to re-run.
+`watchFn` выполняется только в том случае, если входные данные изменились. Для отслеживания данных используется функция `track`, которая перехватывает чтение свойств. Это создаёт подписки, которые вызовут повторный запуск `watchFn`.
 
-See also the `useClientEffect$()` hook that has the same semantics but only runs on the client.
+Смотри также хук `useClientEffect$()`, который имеет ту же семантику, но работает только на клиенте.
 
-### Example
+### Пример
 
-The `useWatch` function is used to observe the `state.count` property. Any changes to the `state.count` cause the `watchFn` to execute which in turn updates the `state.doubleCount` to the double of `state.count`.
+Функция `useWatch` используется для наблюдения за свойством `state.count`. Любые изменения в `state.count` вызывают выполнение `watchFn`, которая, в свою очередь, обновляет `state.doubleCount` до двойного значения `state.count`.
 
 ```tsx
 const Cmp = component$(() => {
@@ -156,11 +156,11 @@ const Cmp = component$(() => {
 
 ## `useClientEffect$()`
 
-Re-runs the `watchFn` when the tracked inputs change.
+Повторно запускает `watchFn` при изменении отслеживаемых входных данных.
 
-If no `track` is being used, it will execute exactly once.
+Если `track` не используется, она будет выполнена ровно один раз.
 
-### Example
+### Пример
 
 ```tsx
 const Timer = component$(() => {
@@ -168,7 +168,7 @@ const Timer = component$(() => {
     count: 0,
   });
   useClientEffect$(() => {
-    // Only runs in the client
+    // Запускается только на клиенте.
     const timer = setInterval(() => {
       store.count++;
     }, 500);
