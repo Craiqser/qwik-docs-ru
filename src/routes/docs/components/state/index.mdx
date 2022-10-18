@@ -8,27 +8,27 @@ contributors:
   - RATIU5
   - manucorporat
 ---
-# State
 
-State management is an important part of any app. In Qwik, we can differentiate between two types of state, reactive and static.
+# Состояние
 
-Static state is anything that can be serialized: a string, number, object, array... anything. Reactive state on the other hand is created with `useStore()`.
+Управление состоянием - важная часть любого приложения. В Qwik мы различаем два типа состояния - реактивное и статическое.
 
-It's important to notice that state in Qwik is not component state, but rather app state that can be instantiated by any component.
+Статичное состояние - это всё, что может быть сериализовано: строка, число, объект, массив... что угодно. Реактивное состояние, напротив, создаётся с помощью `useStore()`.
 
+Важно отметить, что состояние в Qwik - это не состояние компонента, а скорее состояние приложения, которое может быть инстанцировано любым компонентом.
 
 ## `useStore()`
 
-`const reactive = useStore(initialState)` is a hook that creates a reactive object. It takes an initial state as a parameter, and returns a reactive object.
+`const reactive = useStore(initialState)` - это хук, который создает реактивный объект. Он принимает в качестве параметра начальное состояние и возвращает реактивный объект.
 
-The reactive object returned by `useStore()` is just like any other object, but it's reactive. If you change a property of the object, any component that depends on it will be updated.
+Реактивный объект, возвращаемый `useStore()`, похож на любой другой объект, но он реактивен: если вы измените свойство объекта, любой компонент, зависящий от него, будет обновлен.
 
-> **NOTE**
-> Make sure to keep a reference to the reactive object and not only to its properties, for reactivity to work. e.g. doing `let { count } = useStore({ count: 0 })` and then mutating `count` won't trigger updates of components that depends on it.
+> **ПРИМЕЧАНИЕ**
+> Чтобы реактивность работала, обязательно сохраняйте ссылку на реактивный объект, а не только на его свойства. Например, написание `let { count } = useStore({ count: 0 })` и последующее изменение `count` не вызовет обновления компонентов, которые зависят от него.
 
-### Example
+### Пример
 
-An example showing how `useStore` is used in the Counter example to keep track of the count.
+Пример, показывающий, как `useStore` используется в примере Counter для отслеживания значения счётчика.
 
 ```tsx
 export const App = component$(() => {
@@ -41,18 +41,17 @@ export const App = component$(() => {
     </>
   );
 });
-
 ```
 
-The example above, the App component is using `useStore()` to create a reactive object. The object is then used to keep track of the count. The count is then displayed in the component.
+В приведённом выше примере компонент App использует `useStore()` для создания реактивного объекта. Затем он используется для отслеживания значения счётчика, которое отображается в компоненте.
 
-Just accessing the `state.count` property will cause the component to be updated if the count changes, when the property is changed in the click handler.
+Доступ к свойству `state.count` приведёт к обновлению компонента при изменении счётчика, когда свойство будет изменено в обработчике клика по кнопке.
 
-### Recursive values
+### Рекурсивные значения
 
-By default, `useStore()` only tracks the top level fields in your store, which means any for any updates to register, you have to update values at the top level field.
+По умолчанию `useStore()` отслеживает только поля верхнего уровня в вашем объекте состояния. Это означает, что для регистрации любых обновлений необходимо обновить значения полей верхнего уровня.
 
-For example, this will not work:
+Например, этот код не будет работать:
 
 ```tsx
 import { component$, useStore } from '@builder.io/qwik';
@@ -71,13 +70,13 @@ export const App = component$(() => {
 });
 ```
 
-In order to update this with default tracking we would have to update the top level `nested` field:
+Чтобы обновить это поле не ломая реактивность, нам придётся обновить поле верхнего уровня `nested`:
 
 ```ts
 store.nested = { fields: { are: { "tracked" } } }
 ```
 
-In order to make the first example work, we can pass a second argument to our useStore, and tell it to use recursion to track all the values in our store, no matter how deep.
+Для того чтобы первый пример работал, мы можем передать второй аргумент нашему методу useStore и указать ему использовать рекурсивное отслеживание всех значений в нашем хранилище, независимо от его глубины.
 
 ```tsx
 export const App = component$(() => {
@@ -94,7 +93,7 @@ export const App = component$(() => {
 });
 ```
 
-Now the component will update as expected. This will also track individual values inside of arrays!
+Теперь компонент будет обновляться, как и ожидалось. Этот приём также позволяет отслеживать отдельные значения внутри массивов!
 
 ```tsx
 import { component$, useStore } from '@builder.io/qwik';
@@ -113,16 +112,15 @@ export const App = component$(() => {
 });
 ```
 
+## Передача состояния другим компонентам
 
-## Passing a store to other components
+Одной из приятных особенностей Qwik является то, что состояние может быть передано другим компонентам, и они могут читать и записывать его, позволяя данным течь по дереву компонентов в обоих направлениях.
 
-One of the nice features of Qwik is that the state can be passed to other components, and both can read and write to it, allowing data to flow across the tree in all directions.
+Существует несколько способов передачи состояния другим компонентам.
 
-There are three ways to pass state to other components.
+### Использование параметров
 
-### Using props
-
-The most naive way to pass state to other components is to pass it as props. This is the way you would do it in React, and it works in Qwik as well.
+Самый простой способ передачи состояния другим компонентам - это передача его в виде параметров. Так вы обычно делаете в React, и это также работает в Qwik.
 
 ```tsx
 export const Parent = component$(() => {
@@ -147,11 +145,11 @@ export const Child = component$(({ userData }) => {
 });
 ```
 
-### Using context API
+### Использование API контекста
 
-The context API is a way to pass state to components without having to pass it through props. Automatically, all the descendant components in the tree get a reference to the state with read/write access to it.
+API контекста - это способ передачи состояния компонентам без необходимости передавать его через параметры. Все дочерние компоненты в дереве автоматически получают ссылку на состояние с доступом на чтение/запись.
 
-Check the [context API](../context/index.mdx) for more information.
+Подробнее об этом можно прочитать в разделе [Контекст](./../context/index.mdx).
 
 ```tsx
 const CTX = createContext('stuff');
@@ -181,18 +179,17 @@ export const Child = component$(() => {
 });
 ```
 
-## Computed values
+## Вычисляемые свойства
 
-Computed values are values that are derived from other values. They are useful when you have a value that is derived from other values, and you want to keep it in sync with the other values.
+Вычисляемые свойства - это значения, которые получены из других значений. Они полезны, когда вам требуется значение, которое является производным от других, и вы хотите, чтобы оно с ними синхронизировалось.
 
-In Qwik there are two ways to create computed values, using `useWatch$()` or `useResource$()`.
+В Qwik есть два способа создания вычисляемых свойств: с помощью `useWatch$()` или `useResource$()`.
 
-The main difference between the two is that `useWatch$()` allows side effects and the execution is serialized, while `useResource$()` is asynchronous and multiple useResource calls can happen in parallel.
+Основное различие между `useWatch$()` и `useResource$()` заключается в том, что `useWatch$()` допускает побочные эффекты и его выполнение синхронно, в то время как `useResource$()` является асинхронным, и несколько вызовов `useResource` могут выполняться параллельно.
 
-`useWatch$()` is usually used to compute intermediate state, while `useResource$()` has better ergonomics to compute the final state, used for rendering. Let's see some examples:
+`useWatch$()` обычно используется для вычисления промежуточного состояния, в то время как `useResource$()` имеет лучшую эргономику для вычисления конечного состояния, используемого для рендеринга. Рассмотрим несколько примеров.
 
-
-### `useWatch$()` example
+### Пример `useWatch$()`
 
 ```tsx
 export const App = component$(() => {
@@ -216,7 +213,7 @@ export const App = component$(() => {
 });
 ```
 
-### `useResource$()` example
+### Пример `useResource$()`
 
 ```tsx
 export const App = component$(() => {
@@ -239,8 +236,8 @@ export const App = component$(() => {
 });
 ```
 
-Both [useWatch](../lifecycle/index.mdx#usewatch) and [useResource](../resource/index.mdx) are explained in detail in their respective sections.
+Как [useWatch](./../lifecycle/index.mdx#usewatch), так и [useResource](./../resource/index.mdx) подробно описаны в соответствующих разделах.
 
-## Reactivity
+## Реактивность
 
-Thanks to the fine grained reactivity of Qwik, only the components that depend on the state will be updated. This is a huge performance gain, as only the components that needs to be updated will be updated.
+Благодаря фрагментарной реактивности Qwik, обновляться будут только те компоненты, которые зависят от состояния. Это огромный выигрыш в производительности, так как обновляются только те компоненты, которые действительно необходимо обновить.
