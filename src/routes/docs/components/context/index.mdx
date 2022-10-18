@@ -1,5 +1,5 @@
 ---
-title: Context
+title: Контекст
 contributors:
   - manucorporat
   - RATIU5
@@ -7,21 +7,21 @@ contributors:
   - adamdbradley
 ---
 
-# Context
+# Контекст
 
-Qwik provides a context API, very similar to React's functional `useContext()`. In fact, Qwik's context API is the most efficient way to pass data down, reducing overhead, generating less code, and allowing Qwik to treeshake unused data more heavily.
+Qwik предоставляет API контекста, очень похожий на функционал `useContext()` в React. На самом деле, контекстный API Qwik является наиболее эффективным способом передачи данных вниз по дереву, что снижает накладные расходы, генерирует меньше кода и позволяет Qwik более интенсивно тришейкать неиспользуемые данные.
 
-Qwik's context API is made of 3 methods, importable from `@builder.io/qwik`:
+API контекста Qwik состоит из 3 методов, импортируемых из `@builder.io/qwik`:
 
 - `createContext(contextName: string): Context`
 - `useContextProvider(ctx: Context, value: VALUE): Context`
 - `useContext(ctx: Context): VALUE`
 
-### Example
+### Пример
 
-This example is made of two components, the `Parent` and the `Child`. The parent component creates some new state and assigns it to a context, allowing any descendent component to get a reference to the "state".
+Нижеследующий пример состоит из двух компонентов: `Parent` и `Child`. Родительский компонент создаёт некоторое новое состояние и присваивает его контексту, позволяя любому компоненту-потомку получить ссылку на это состояние.
 
-At the same time, the parent component is rendering `<div>Count: {state.count}</div>`, creating a reactive subscription that will re-render when the Child changes the value in the click handler: `<button onClick$={() => state.count++}>`.
+Родительский компонент также отображает `<div>Count: {state.count}</div>`, создавая реактивную подписку, которая будет вызывать рендер, когда `Child` изменит значение в обработчике клика: `<button onClick$={() => state.count++}>`.
 
 ```tsx
 import {
@@ -32,16 +32,16 @@ import {
   createContext,
 } from '@builder.io/qwik';
 
-// Create a new context descriptor
+// Создаём новый дескриптор контекста.
 export const MyContext = createContext('my-context');
 
 export const Parent = component$(() => {
-  // Create some reactive storage
+  // Создаём реактивное состояние.
   const state = useStore({
     count: 0,
   });
 
-  // Assign value (state) to the context (MyContext)
+  // Присваиваем значение (state) контексту (MyContext).
   useContextProvider(MyContext, state);
   return (
     <>
@@ -52,37 +52,37 @@ export const Parent = component$(() => {
 });
 
 export const Child = component$(() => {
-  // Get reference to state using MyContext
+  // Получение ссылки на состояние с помощью MyContext.
   const state = useContext(MyContext);
   return (
     <>
-      <button onClick$={() => state.count++}>Increment</button>
+      <button onClick$={() => state.count++}>Увеличить</button>
     </>
   );
 });
 ```
 
-Let's dig into every API involved:
+Давайте разберемся в каждом методе API, участвующих в этом процессе:
 
-## API
+## Методы API
 
 ### `createContext()`
 
-This method takes a string that gives the context unique name, if your application uses a lot of different context or you are writing a component library, we recommend to follow a name convention that avoids conflicts, such as:
+Этот метод принимает строку, которая задаёт уникальное имя контекста. Если ваше приложение использует много разных контекстов или вы пишете библиотеку компонентов, мы рекомендуем следовать соглашению об именах, которое позволяет избежать конфликтов:
 
 ```tsx
 export const QwikCityContext = createContext('io.builder.qwik.city');
 ```
 
-Notice that the value returned by `createContext()` does not hold any state, and it's immutable. It's only used to describe the name and type of the context, like an address or an identifier.
+Обратите внимание, что значение, возвращаемое `createContext()`, не содержит никакого состояния, и оно неизменяемо. Оно используется только для описания имени и типа контекста, как ссылка или идентификатор.
 
-Because it does not hold any state, it's ok to call it and make it a singleton, exported in some shared module.
+Поскольку оно не хранит никакого состояния, его можно сделать синглтоном, экспортируемым в какой-нибудь общий модуль.
 
 ### `useContextProvider()`
 
-Like all use- methods, it can only be called at the root of `component$()` (not inside branches). This method is called by some higher level component and it's what assigns (provides) a value to the context. The provided value will not be globally available across the whole render tree, but only to descendant components in the tree.
+Как и все `use`-методы, его можно использовать только в корне `component$()`. Этот метод вызывается компонентом более высокого уровня, и именно он предоставляет значение контексту. Значение будет доступно только для дочерних компонентов, на глобальном уровне его не будет.
 
-The value passed to `useContextProvider()` can be any primitive, object (including from useStore), or array that contains serializable values.
+Значение, передаваемое в `useContextProvider()`, может быть любым примитивом, объектом (в том числе из `useStore`) или массивом, содержащим сериализуемые значения.
 
 ```tsx
 export const Parent = component$(() => {
@@ -105,11 +105,11 @@ export const Parent = component$(() => {
 });
 ```
 
-Let's see how `Children` can consume the values:
+Давайте посмотрим, как `Children` может использовать эти значения:
 
 ### `useContext()`
 
-Again, like all use- methods, they are only usable at the root of a `component$()`. This methods allows us to get the **provided** value to a named context.
+Опять же, как и все `use`-методы, его можно использовать только в корне `component$()`. Этот метод позволяет нам получить значение именованного контекста.
 
 ```tsx
 export const Children = component$(() => {
@@ -119,15 +119,15 @@ export const Children = component$(() => {
 
   return (
     <>
-      <div>Child components can use any of the provided values, such as {appName}</div>
+      <div>Дочерние компоненты могут использовать любое из значений контекста, например {appName}</div>
     </>
   );
 });
 ```
 
-## Typed contexts
+## Типизированные контексты
 
-When a context is created using `createContext()`, a type can be provided. In fact, it's highly recommended to do so, in order to reduce errors and typos.
+Когда контекст создается с помощью `createContext()`, ему можно указать тип. На самом деле, это настоятельно рекомендуется делать, чтобы уменьшить количество ошибок и опечаток.
 
 ```tsx
 export interface SharedState {
@@ -136,9 +136,9 @@ export interface SharedState {
 export const MyContext = createContext<SharedState>('my-context');
 ```
 
-This way, when using `MyContext` in `useContextProvider()` and `useContext()`, the provided value will have the `SharedState` type.
+Теперь при использовании `MyContext` в функциях `useContextProvider()` и `useContext()` значение будет иметь тип `SharedState`.
 
-Let's see a working example:
+Давайте посмотрим на рабочий пример:
 
 ```tsx
 import {
@@ -159,7 +159,7 @@ export const Parent = component$(() => {
     count: 0,
   });
 
-  useContextProvider(MyContext, state); // type checker will ensure the second param is SharedState
+  useContextProvider(MyContext, state); // Проверка типов убедится, что вторым параметром передаётся SharedState.
   return (
     <>
       <Child />
@@ -169,7 +169,7 @@ export const Parent = component$(() => {
 });
 
 export const Child = component$(() => {
-  const state = useContext(MyContext); // type of "state" will be `SharedState`
+  const state = useContext(MyContext); // Тип состояния будет `SharedState`.
   return (
     <>
       <button onClick$={() => state.count++}>Increment</button>
