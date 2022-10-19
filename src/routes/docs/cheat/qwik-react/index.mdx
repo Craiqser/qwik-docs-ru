@@ -5,15 +5,16 @@ contributors:
   - zahash
   - manucorporat
 ---
-# Cheat sheet
 
-### Hello world component
+# Шпаргалка
+
+### Компонент Hello world
 
 #### ⚡️ Qwik
 
 ```tsx
 export const HelloWorld = component$(() => {
-  return <div>Hello world</div>;
+  return <div>Привет, мир</div>;
 });
 ```
 
@@ -21,17 +22,17 @@ export const HelloWorld = component$(() => {
 
 ```tsx
 export function HelloWorld() {
-  return <div>Hello world</div>;
+  return <div>Привет, мир</div>;
 };
 ```
 
-### Button with a click handler
+### Кнопка с обработкой нажатия
 
 #### ⚡️ Qwik
 
 ```tsx
 export const Button = component$(() => {
-  return <button onClick$={() => console.log('click')}>Click me</button>;
+  return <button onClick$={() => console.log('click')}>Нажми меня</button>;
 });
 ```
 
@@ -39,11 +40,11 @@ export const Button = component$(() => {
 
 ```tsx
 export function Button() {
-  return <button onClick={() => console.log('click')}>Click me</button>;
+  return <button onClick={() => console.log('click')}>Нажми меня</button>;
 };
 ```
 
-### Declare local state
+### Объявление локального состояния
 
 #### ⚡️ Qwik
 
@@ -52,7 +53,7 @@ export const LocalStateExample = component$(() => {
   const state = useStore({
     value: 0,
   });
-  return <div>Value is: {state.value}</div>;
+  return <div>Значение: {state.value}</div>;
 });
 ```
 
@@ -61,11 +62,11 @@ export const LocalStateExample = component$(() => {
 ```tsx
 export function UseStateExample() {
   const [value, setValue] = useState(0);
-  return <div>Value is: {value}</div>;
+  return <div>Значение: {value}</div>;
 };
 ```
 
-### Create a counter component
+### Создание компонента счётчика
 
 #### ⚡️ Qwik
 
@@ -76,8 +77,8 @@ export const Counter = component$(() => {
   });
   return (
     <>
-      <div>Value is: {state.count}</div>
-      <button onClick$={() => state.count++}>Increment</button>
+      <div>Значение: {state.count}</div>
+      <button onClick$={() => state.count++}>Увеличить</button>
     </>
   );
 });
@@ -90,14 +91,14 @@ export function Counter() {
   const [count, setCount] = useState(0);
   return (
     <>
-      <div>Value is: {count}</div>
-      <button onClick={() => setCount(count + 1)}>Increment</button>
+      <div>Значение: {count}</div>
+      <button onClick={() => setCount(count + 1)}>Увеличить</button>
     </>
   );
 };
 ```
 
-### Create a clock that increments every second
+### Создание часов, которые тикают каждую секунду
 
 #### ⚡️ Qwik
 
@@ -113,7 +114,7 @@ export const Clock = component$(() => {
     return () => clearInterval(interval);
   });
 
-  return <div>Seconds: {state.seconds}</div>;
+  return <div>Секунды: {state.seconds}</div>;
 });
 ```
 
@@ -128,11 +129,11 @@ export function Clock() {
     }, 1000);
     return () => clearInterval(interval);
   });
-  return <div>Seconds: {seconds}</div>;
+  return <div>Секунды: {seconds}</div>;
 };
 ```
 
-### Perform a fetch request every time the state changes
+### Выполнение запроса при каждом изменении состояния
 
 #### ⚡️ Qwik
 
@@ -179,7 +180,7 @@ export function Fetch() {
 };
 ```
 
-### Declare some context and consume it
+### Объявление и использование контекста
 
 #### ⚡️ Qwik
 
@@ -187,7 +188,7 @@ export function Fetch() {
 export const MyContext = createContext('my-context');
 export const Parent = component$(() => {
   const state = useStore({
-    message: 'some example value',
+    message: 'значение для примера',
   });
   useContextProvider(MyContext, state);
   return (
@@ -203,7 +204,7 @@ export const Child = component$(() => {
 });
 ```
 
-### Create a debounced input
+### Создание ввода с блокировкой
 
 #### ⚡️ Qwik
 
@@ -229,7 +230,7 @@ export const DebouncedInput = component$(() => {
 });
 ```
 
-### Change background color randomly every button click
+### Изменение цвета фона на случайный при нажатии кнопки
 
 #### ⚡️ Qwik
 
@@ -249,7 +250,7 @@ export const DynamicBackground = component$(() => {
         state.green = Math.random() * 256;
         state.blue = Math.random() * 256;
       }}>
-        Change background
+        Изменить фон
       </button>
     </div>
   );
@@ -272,14 +273,14 @@ export function DynamicBackground() {
         setGreen(Math.random() * 256);
         setBlue(Math.random() * 256);
       }}>
-        Change background
+        Изменить фон
       </button>
     </div>
   );
 };
 ```
 
-### Create a component that renders a list of the presidents
+### Создание компонента со списком президентов
 
 #### ⚡️ Qwik
 

@@ -21,12 +21,12 @@
 - [Отображение содержимого](components/projection/index.mdx)
 - [Рендер](components/rendering/index.mdx)
 
-## Cheat Sheet
+## Шпаргалка
 
 - [Qwik vs React](cheat/qwik-react/index.mdx)
-- [Serialization](cheat/serialization/index.mdx)
+- [Сериализация](cheat/serialization/index.mdx)
 
-## Concepts
+## Концепции
 
 - [Resumable](concepts/resumable/index.mdx)
 - [Progressive](concepts/progressive/index.mdx)
