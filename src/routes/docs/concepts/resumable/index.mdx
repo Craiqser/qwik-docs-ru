@@ -7,104 +7,104 @@ contributors:
 
 # Возобновление vs. Гидратация
 
-A key concept of Qwik applications is that they are resumable from a server-side-rendered state. The best way to explain resumability is to understand how the current generation of frameworks are replayable (hydration).
+Ключевая концепция приложений Qwik заключается в том, что их можно возобновлять из состояния рендера на стороне сервера. Лучший способ объяснить возобновляемость — понять, каким образом это делают фреймворки текущего поколения (гидратация).
 
-When an SSR/SSG application boots up on a client, it requires that the framework on the client restores three pieces of information:
+Когда SSR/SSG-приложение загружается на клиенте, оно требует, чтобы фреймворк восстановил три составляющих части:
 
-1. Listeners - locate event listeners and install them on the DOM nodes to make the application interactive.
-2. Component tree - build up an internal data structure representing the application component tree.
-3. Application state - restore the application state.
+1. Слушатели — найти слушатели событий и вставить их в узлы DOM, чтобы сделать приложение интерактивным.
+2. Дерево компонентов — создать внутреннюю структуру данных, представляющую дерево компонентов приложения.
+3. Состояние приложения - восстановить состояние приложения.
 
-Collectively, this is known as hydration. All current generations of frameworks require this step to make the application interactive.
+В совокупности эти шаги называются гидратацией. Все текущие поколения фреймворков требуют этого шага, чтобы сделать приложение интерактивным.
 
-[Hydration is expensive](https://www.builder.io/blog/hydration-is-pure-overhead) for two reasons:
+[Гидратация стоит дорого](https://www.builder.io/blog/hydration-is-pure-overhead) по двум причинам:
 
-1. The frameworks have to download all of the component code associated with the current page.
-2. The frameworks have to execute the templates associated with the components on the page to rebuild the listener location and the internal component tree.
+1. Фреймворки должны загрузить весь код компонента, связанный с текущей страницей.
+2. Фреймворки должны выполнять шаблоны, связанные с компонентами на странице, чтобы перестроить местоположение слушателя и внутреннее дерево компонента.
 
 ![Resumable vs Hydration](https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2F04681212764f4025b2b5f5c6a258ad6e?format=webp&width=2000)
 
-Qwik is different because it does not require hydration to resume an application on the client. Not requiring hydration is what makes the Qwik application startup instantaneous.
+Qwik отличается тем, что не требует гидратации для возобновления работы приложения на клиенте. Отсутствие необходимости гидратации — вот что делает запуск приложения Qwik мгновенным.
 
-All other frameworks' hydration **replays** all the application logic in the client. Qwik instead pauses execution in the server, and resumes execution in the client.
+Гидратация всех других фреймворков **воспроизводит** всю логику приложения на клиенте. Вместо этого Qwik приостанавливает выполнение на сервере и возобновляет выполнение на клиенте.
 
-# Introducing Resumability
+# Введение в возобновляемость
 
-Resumability is about pausing execution in the server and resuming execution in the client without having to replay and download all of the application logic.
+Возобновляемость — это приостановка выполнения на сервере и возобновление выполнения на клиенте без повторного воспроизведения и загрузки всей логики приложения.
 
-A good mental model is that Qwik applications at any point in their lifecycle can be serialized and moved to a different VM instance (server to browser). There, the application simply resumes where the serialization stopped. No hydration is required. This is why we say that Qwik applications don't hydrate; they resume.
+Ментальная модель заключается в том, что приложения Qwik в любой момент их жизненного цикла могут быть сериализованы и перемещены в другой экземпляр виртуальной машины (с сервера в браузер). Там приложение просто возобновляет работу в том месте, где остановилась сериализация. Гидратация не требуется. Вот почему мы говорим, что приложения Qwik не гидратируются - они возобновляются.
 
-In order to achieve this, Qwik needs to solve the 3 problems (listeners, component tree, application state) in a way that is compatible with a no-code startup.
+Чтобы достичь этого, Qwik должен решить 3 проблемы (слушатели, дерево компонентов, состояние приложения) таким образом, чтобы иметь возможность запуска без кода.
 
-## Listeners
+## Слушатели
 
-DOM without event listeners is just a static page; it is not an application. Today's standard for all sites is quite a high level of interactivity, so even the most static-looking sites are full of event listeners. These include menus, hovers, expanding details, or even full-on interactive apps.
+DOM без слушателей событий - это просто статическая страница, это не приложение. Сегодня стандартом для всех сайтов является довольно высокий уровень интерактивности, поэтому даже самые статичные на вид сайты полны слушателей событий. К ним относятся меню, наведение курсора, раскрывающиеся списки или даже полноценные интерактивные приложения.
 
-Existing frameworks solve the event listener by downloading the components and executing their templates to collect event listeners that are then attached to the DOM. The current approach has these issues:
+Существующие фреймворки решают проблему слушателей событий путем загрузки компонентов и выполнения их шаблонов для сбора слушателей событий, которые затем прикрепляются к DOM. Текущий подход имеет следующие проблемы:
 
-1. Requires the template code to be eagerly downloaded.
-2. Requires template code to be eagerly executed.
-3. Requires the event handler code to be downloaded eagerly (to be attached).
+1. Код шаблона должен быть предварительно загружен;
+2. Код шаблона должен быть предварительно выполнен;
+3. Код обработчика события должен быть предварительно загружен (чтобы быть прикреплённым).
 
-The above approach does not scale. As the application becomes more complicated, the amount of code needed to download eagerly and execute grows proportionally with the size of the application. This negatively impacts the application startup performance and hence the user experience.
+Приведенный выше подход не масштабируем. По мере усложнения приложения, объём кода, необходимого для предварительной загрузки и выполнения, растёт пропорционально размеру приложения. Это негативно сказывается на производительности запуска приложения и, следовательно, на удобстве работы пользователя.
 
-Qwik solves the above issue by serializing the event listeners into DOM like so:
+Qwik решает эту проблему, сериализуя прослушиваемые события в DOM следующим образом:
 
 ```html
-<button on:click="./chunk.js#handler_symbol">click me</button>
+<button on:click="./chunk.js#handler_symbol">Нажми меня</button>
 ```
 
-Qwik still needs to collect the listener information, but this step is done as part of the SSR/SSG. The results of SSR/SSG are then serialized into HTML so that the browser does not need to do anything to resume the execution. Notice that the `on:click` attribute contains all of the information to resume the application without doing anything eagerly.
+Qwik по-прежнему нуждается в сборе информации о слушателях, но этот шаг выполняется как часть SSR/SSG. Результат SSR/SSG сериализуется в HTML, так что браузеру не нужно ничего делать для возобновления выполнения. Обратите внимание, что атрибут `on:click` содержит всю информацию для возобновления работы приложения, не выполняя предварительных операций.
 
-1. Qwikloader sets up a single global listener instead of many individual listeners per DOM element. This step can be done with no application code present.
-2. The HTML contains a URL to the chunk and symbol name. The attribute tells Qwikloader which code chunk to download and which symbol to retrieve from the chunk.
-3. Finally, to make all of the above possible, Qwik's event processing implementation understands asynchronicity which allows insertion of asynchronous lazy loading.
+1. Qwikloader устанавливает один глобальный слушатель вместо множества отдельных слушателей для каждого элемента DOM. Этот шаг может быть выполнен без кода приложения.
+2. HTML содержит URL-адрес чанка и имя символа. Эти атрибуты сообщают Qwikloader-у, какой файл загрузить и по какому ключу извлечь из него код.
+3. Наконец, чтобы сделать всё вышеперечисленное возможным, реализация обработки событий в Qwik поддерживает асинхронность, что позволяет выполнять асинхронную ленивую загрузку.
 
-## Component Trees
+## Деревья компонентов
 
-Frameworks work with component trees. To that end, frameworks need a complete understanding of the component trees to know which components need to be rerendered and when. If you look into the existing framework SSR/SSG output, the component boundary information has been destroyed. There is no way of knowing where component boundaries are by looking at the resulting HTML. To recreate this information, frameworks re-execute the component templates and memoize the component boundary location. Re-execution is what hydration is. Hydration is expensive as it requires both the download of component templates and their execution.
+Фреймворки работают с деревьями компонентов. Для этого фреймворкам необходимо полное понимание деревьев компонентов, чтобы знать, какие компоненты и когда требуют рендера. Если вы посмотрите на вывод существующих SSR/SSG фреймворков, то увидите, что информация о границах компонентов будет уничтожена. Нет никакого способа узнать, где находятся границы компонента, глядя на результирующий HTML. Чтобы воссоздать эту информацию, фреймворки повторно выполняют шаблон компонента и запоминают местоположение границ компонента. Повторное выполнение - вот что такое гидратация. Гидратация является дорогостоящей, поскольку требует как загрузки шаблонов компонентов, так и их выполнения.
 
-Qwik collects component boundary information as part of the SSR/SSG and then serializes that information into HTML. The result is that Qwik can:
+Qwik собирает информацию о границах компонента как часть SSR/SSG и затем сериализует эту информацию в HTML. В результате Qwik может:
 
-1. Rebuild the component hierarchy information without the component code actually being present. The component code can remain lazy.
-2. Qwik can do this lazily only for the components which need to be re-rendered rather than all upfront.
-3. Qwik collects relationship information between stores and components. This creates a subscription model that informs Qwik which components need to be re-rendered as a result of state change. The subscription information also gets serialized into HTML.
+1. Перестроить информацию об иерархии компонента без фактического присутствия кода компонента. Код компонента может оставаться ленивым;
+2. Qwik может сделать это отложенно, и только для тех компонентов, которые нуждаются в ререндере, а не для всех сразу;
+3. Qwik собирает информацию о взаимоотношениях между состояниями данных и компонентов. Это создаёт модель подписки, которая информирует Qwik о том, какие компоненты должны быть отрендерены в результате изменения состояния. Информация о подписке также сериализуется в HTML.
 
-## Application State
+## Состояние приложения
 
-Existing frameworks usually have a way of serializing the application state into HTML so that the state can be restored as part of hydration. In this way, they are very similar to Qwik. However, Qwik has state management more tightly integrated into the lifecycle of the components. In practice, this means that component can be delay-loaded independently from the state of the component. This is not easily achievable in existing frameworks because component props are usually created by the parent component. This creates a chain reaction. In order to restore component X, its parents need to be restored as well. Qwik allows any component to be resumed without the parent component code being present.
+Существующие фреймворки обычно имеют способ сериализации состояния приложения в HTML, так что состояние может быть восстановлено в рамках гидратации. В этом они очень похожи на Qwik. Однако в Qwik управление состоянием более тесно интегрировано в жизненный цикл компонентов. На практике это означает, что компонент может быть лениво загружен независимо от его состояния. Этого нелегко достичь в существующих фреймворках, поскольку параметры компонентов обычно создаются родительским компонентом. Это создает цепную реакцию. Для того чтобы восстановить компонент X, необходимо восстановить и его родителей. Qwik позволяет возобновить работу любого компонента без присутствия кода родительского компонента.
 
-### Serialization
+### Сериализация
 
-The simplest way to think about serialization is through `JSON.stringify`. However, JSON has several limitations. Qwik can overcome some limitations, but some can't be overcome, and they place limitations on what the developer can do. Understanding these limitations is important when building Qwik applications.
+Проще всего думать о сериализации через призму метода `JSON.stringify`. Однако JSON имеет ряд ограничений. Qwik может преодолеть некоторые ограничения, но не все, и они накладывают ограничения на то, что разработчик может делать. Понимание этих ограничений важно при создании приложений Qwik.
 
-Limitations of JSON which Qwik solves:
+Ограничения JSON, которые решает Qwik:
 
-- JSON produces DAG. DAG stands for Directed Acyclic Graph, which means that the object which is being serialized can't have circular references. This is a big limitation because the application state is often circular. Qwik ensures that when the graph of objects gets serialized, the circular references get properly saved and then restored.
-- JSON can't serialize some object types. For example, DOM references, Dates, etc... Qwik serialization format ensures that such objects can correctly be serialized and restored. Here is a list of types that can be serialized with Qwik:
-  - DOM references
-  - Dates (not yet implemented)
-  - Function closures (if wrapped in QRL).
+- JSON производит DAG. DAG (Directed Acyclic Graph) - направленный ациклический граф, что означает, что сериализуемый объект не может иметь циклических ссылок. Это большое ограничение, поскольку состояние приложения часто является циклическим. Qwik гарантирует, что при сериализации графа объектов циклические ссылки будут правильно сохранены, а затем восстановлены.
+- JSON не может сериализовать некоторые типы объектов. Например, DOM-ссылки, даты и другие. Формат сериализации Qwik гарантирует, что такие объекты могут быть корректно сериализованы и восстановлены. Вот список типов, которые можно сериализовать с помощью Qwik:
+  - Ссылки на DOM;
+  - Даты (на этапе реализации);
+  - Замыкания функций (если они внутри QRL).
 
-Limitations of JSON that Qwik does not solve:
+Ограничения JSON, которые Qwik не решает:
 
-- Serialization of classes (`instanceof` and prototype)
-- Serialization of `Promise`s, Streams, etc...
+- Сериализация классов (`instanceof` и прототип);
+- Сериализация промисов, потоков и т.д.
 
-## Writing applications with serializability in mind
+## Написание приложений с учетом сериализации
 
-The resumability property of the framework must extend to resumability of the application as well. This means that the framework must provide mechanisms for the developer to express Components and Entities of the applications in a way which can be serialized and then resumed (without re-bootstrapping). This necessitates that applications are written with resumability constraints in mind. It is simply not possible for developers to continue to write applications in a heap-centric way and expect that a better framework can somehow make up for this sub-optimal approach.
+Свойство возобновляемости фреймворка должно также распространяться и на возобновляемость приложения. Это означает, что фреймворк должен предоставлять разработчику механизмы для выражения Компонентов и Сущностей приложений таким образом, чтобы их можно было сериализовать и затем возобновить (без повторной загрузки). Это обуславливает необходимость написания приложений с учетом ограничений на возобновляемость. Разработчики просто не могут продолжать писать приложения способом, ориентированным на кучу, и ожидать, что фреймворк сможет лучше компенсировать этот неоптимальный подход.
 
-Developers must write their applications in a DOM-centric way. This will require a change of behavior and retooling of web developers' skills. Frameworks need to provide guidance and APIs to make it easy for developers to write the applications in this way.
+Разработчики должны писать свои приложения, ориентируясь на DOM. Это потребует изменения подхода и навыков веб-разработчиков. Фреймворки должны предоставлять руководства и API, чтобы разработчикам было легко писать приложения таким образом.
 
-## Other benefits of resumability
+## Другие преимущества возобновляемости
 
-The most obvious benefit of using resumability is for server-side-rendering. However, there are secondary benefits:
+Наиболее очевидным преимуществом использования возобновляемости является рендер на стороне сервера. Однако, есть и второстепенные преимущества:
 
-- Serializing existing PWA apps so that users don't lose context when they return to the application
-- Improved rendering performance because only changed components need to be re-rendered
-- Fine-grained lazy-loading
-- Decreased memory pressure, especially on mobile devices
-- Progressive interactivity of existing static websites
+- Сериализация существующих PWA-приложений, чтобы пользователи не теряли контекст при возвращении к приложению;
+- Улучшенная производительность рендера, поскольку только изменённые компоненты нуждаются в ререндере;
+- Фрагментарная ленивая загрузка;
+- Снижение нагрузки на память, особенно на мобильных устройствах;
+- Прогрессивная интерактивность существующих статичных веб-сайтов.
 
-Reactivity is a key component of Qwik. Reactivity allows Qwik to track which components are subscribed to which state. This information enables Qwik to invalidate only the relevant component on state change, which minimizes the number of components that need to be rerendered. Without reactivity, a state change would require re-rendering from the root component, which would force the whole component tree to be eagerly downloaded.
+Реактивность - ключевой компонент Qwik. Реактивность позволяет Qwik отслеживать, какие компоненты подписаны на то или иное состояние. Эта информация позволяет Qwik аннулировать только соответствующий компонент при изменении состояния, что минимизирует количество компонентов, которые необходимо перерисовать. Без реактивности изменение состояния потребовало бы повторного рендеринга корневого компонента, что заставило бы загрузить всё дерево компонентов.

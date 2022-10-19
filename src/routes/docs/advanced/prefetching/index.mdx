@@ -8,6 +8,12 @@ contributors:
 
 # Prefetching
 
+Предварительная загрузка — это способ для приложений начать загрузку модулей в фоновой задаче до того, как эти модули действительно потребуются пользователю. Идеальным решением является предварительная загрузка только наименьшего количества кода, который, скорее всего, будет выполнен в результате взаимодействия с пользователем, но при этом следует избегать любого JavaScript, который нельзя использовать.
+
+Только загрузка и выполнение минимального количества JavaScript — это та область, в которой приложения Qwik преуспевают. А поскольку Qwik может понять, как используются отдельные компоненты (и какие не используются), он также может наилучшим образом решить, какие пакеты следует предварительно загрузить.
+
+Помните, что [разница между возобновляемостью и гидратацией](./resumable.md) заключается в том, что возобновляемость позволяет приложениям Qwik избегать выполнения JavaScript только для восстановления прослушивателей событий, дерева компонентов и состояния приложения. Фундаментально разбивая прослушиватели событий компонента, функцию рендеринга и состояние, объем кода для предварительной выборки также значительно меньше, чем при традиционном подходе.
+
 Prefetching is a way for applications to begin downloading modules in a background task, before the user may actually require these modules. The ideal solution is to only prefetch the smallest amount of code that is highly likely to be executed from a user's interaction, but avoiding any JavaScript that's _couldn't_ be used.
 
 Only downloading and executing a minimal amount of JavaScript is an area where Qwik applications excel. And since Qwik is able to understand how individual components are used (and what's not used), it can also best decide which bundles should be prefetched.
