@@ -28,11 +28,11 @@
 
 ## Концепции
 
-- [Resumable](concepts/resumable/index.mdx)
-- [Progressive](concepts/progressive/index.mdx)
-- [Reactive](concepts/reactivity/index.mdx)
+- [Возобновляемый](concepts/resumable/index.mdx)
+- [Прогрессивный](concepts/progressive/index.mdx)
+- [Реактивный](concepts/reactivity/index.mdx)
 
-## Advanced
+## Дополнительно
 
 - [Prefetching](advanced/prefetching/index.mdx)
 - [Контейнеры](advanced/containers/index.mdx)
