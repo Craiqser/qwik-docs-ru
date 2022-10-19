@@ -19,7 +19,7 @@
 - [Ресурсы](components/resource/index.mdx)
 - [Легковесные компоненты](components/lite-components/index.mdx)
 - [Отображение содержимого](components/projection/index.mdx)
-- [Рендеринг](components/rendering/index.mdx)
+- [Рендер](components/rendering/index.mdx)
 
 ## Cheat Sheet
 
@@ -35,8 +35,8 @@
 ## Advanced
 
 - [Prefetching](advanced/prefetching/index.mdx)
-- [Containers](advanced/containers/index.mdx)
-- [Optimizer](advanced/optimizer/index.mdx)
+- [Контейнеры](advanced/containers/index.mdx)
+- [Оптимизатор](advanced/optimizer/index.mdx)
 - [QRL](advanced/qrl/index.mdx)
 - [Qwikloader](advanced/qwikloader/index.mdx)
 - [Custom Build Directory](advanced/custom-build-dir/index.mdx)

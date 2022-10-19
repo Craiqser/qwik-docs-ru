@@ -1,5 +1,5 @@
 ---
-title: Rendering
+title: Рендер
 contributors:
   - the-r3aper7
   - RATIU5
@@ -8,18 +8,19 @@ contributors:
   - adamdbradley
 ---
 
-# Rendering
+# Рендер
 
-Rendering is the process of updating the DOM based on
-  1. Changes in the state of the application
-  2. Component templates
+Рендер — это процесс обновления DOM, основанный на:
 
-Qwik is unique because it knows how to render templates out-of-order and asynchronously.
+1. Изменениях в состоянии приложения;
+2. Шаблонах компонентов.
 
-- **Out-of-order**: this means that Qwik does not require that the parent component or child component must also be rendered when rendering a component.
-- **Asynchronously**: this means that Qwik's `render` function understands that it may need to download child components, and therefore the rendering operation is asynchronous.
+Уникальность Qwik заключается в том, что он знает как выполнять рендер шаблонов вне очереди, и асинхронно.
 
-Simple counter-example:
+- **Вне очереди**: это означает, что Qwik не требует, чтобы родительский или дочерний компоненты рендерились при рендере одного из них.
+- **Асинхронно**: это означает, что функция Qwik `render` понимает, что когда может потребоваться загрузка дочерних компонентов, и делает операцию рендера асинхронной.
+
+Простой пример со счётчиком:
 
 ```tsx
 export const Counter = component$(() => {
@@ -29,7 +30,7 @@ export const Counter = component$(() => {
 });
 ```
 
-Once rendered, the HTML fragment may look something like this:
+После рендеринга фрагмент HTML может выглядеть примерно так:
 
 ```html
 <div>
@@ -37,17 +38,17 @@ Once rendered, the HTML fragment may look something like this:
 </div>
 ```
 
-- For an explanation of `$`, see [`$` and optimizer rules](../../advanced/optimizer/index.mdx).
-- For an explanation of `q:obj`, see [serialization](../../concepts/resumable/index.mdx).
-- For an explanation of `on:click`, see [qwikloader](../../advanced/qwikloader/index.mdx).
+- Информация по `$` - [`$` и правила оптимизатора](../../advanced/optimizer/index.mdx).
+- Информация по `q:obj` - [Сериализация](../../concepts/resumable/index.mdx).
+- Информация по `on:click` - [Qwikloader](../../advanced/qwikloader/index.mdx).
 
 ## JSX
 
-Qwik uses JSX to express the component's template. JSX discussion is outside of the scope of this document, but Qwik JSX should feel very familiar if you have used JSX with other frameworks. For this reason, let's focus on how Qwik JSX is different.
+Для выражения шаблона компонента Qwik использует JSX. Обсуждение JSX выходит за рамки данного документа, но Qwik JSX должен показаться вам очень знакомым, если вы использовали JSX в других фреймворках. По этой причине давайте сосредоточимся на том, в чём различия Qwik JSX.
 
-## Rendering child components
+## Рендеринг дочерних компонентов
 
-Qwik lazy loads components on an as-needed basis. To minimize the number of components to download, Qwik only descends into child components if the component's props have changed.
+Qwik лениво загружает компоненты по мере необходимости. Чтобы минимизировать количество компонентов для загрузки, Qwik спускается в дочерние компоненты только в том случае, если изменились параметры компонента.
 
 ```tsx
 export const Parent = component$(() => {
@@ -55,29 +56,30 @@ export const Parent = component$(() => {
 
   return (
     <>
-      <button onClick$={(store.step *= -1)}>direction</button>
+      <button onClick$={(store.step *= -1)}>направление</button>
       <button onClick$={() => (store.count += store.step)}>{store.step}</button>
-      <Greeter name={'World_' + store.count} />
+      <Greeter name={'Мир_' + store.count} />
     </>
   );
 });
 
 export const Greeter = component$((props: { name: string }) => {
-  return <span>Hello {props.name}</span>;
+  return <span>Привет, {props.name}</span>;
 });
 ```
 
-In the above example, there are two buttons:
+В приведенном выше примере есть две кнопки:
 
-1. Clicking the first button changes the direction of the counter (`store.step` flips between `+1` and `-1`). Changing the `store` requires that the component's `OnRender` function executes. The resulting JSX updates the DOM to show `+1` and `-1`. However, changing the direction will not change the props on `<Greeter name={'World_' + store.count}/>`. For this reason, Qwik will not descend into the `<Greeter>` component, and therefore the `Greeter`'s template does not need to be downloaded or executed. Such aggressive pruning allows Qwik to minimize the amount of code that needs to be present to render a component.
-2. Clicking the second button increments (or decrements) `store.count`. This in turn causes the props on `<Greeter name={'World_' + store.count}/>` to change. A change in props means that Qwik will also descend and render `<Greeter>`. However, it is possible that Qwik does not have a reference to the child component. In that case, Qwik will lazy-load the component and continue the rendering once the component's render function is available.
+1. Нажатие первой кнопки изменяет направление шага счётчика (`store.step` переключается между `+1` и `-1`). Изменение `store` требует выполнения функции `OnRender` компонента. Результирующий JSX обновляет DOM, чтобы показать `+1` или `-1`. Однако изменение направления шага счётчика не изменит свойства в `<Greeter name={'Мир_' + store.count}/>`. По этой причине Qwik не будет спускаться в компонент `<Greeter>`, поэтому шаблон приветствия не нужно загружать или выполнять. Такая агрессивная обрезка позволяет Qwik свести к минимуму количество кода, необходимого для отображения компонента.
 
-## `render()` is async
+2. Нажатие второй кнопки увеличивает (или уменьшает) значение `store.count`. Это, в свою очередь, приводит к изменению свойства в `<Greeter name={'Мир_' + store.count}/>`. Изменение свойства означает, что Qwik спустится в компонент `<Greeter>` и сделает рендер. Однако, возможно, что Qwik ещё не будет иметь ссылки на дочерний компонент. В этом случае Qwik отложит загрузку компонента и продолжит рендеринг, как только станет доступна функция рендеринга компонента.
 
-The above example demonstrates why the rendering process must be asynchronous. It is important that the rendering pipeline can lazy load child components. Lazy loading is an asynchronous operation; therefore, rendering needs to be asynchronous. In practice, this means that the `render()` function returns a promise.
+## `render()` является асинхронным
 
-Most current-generation frameworks have a synchronous `render()` process. Synchronous rendering can't easily deal with asynchronous code loading, so synchronous rendering necessitates that all dependant components are eagerly present before rendering can commence.
+Приведённый выше пример демонстрирует, почему процесс рендеринга должен быть асинхронным. Важно, чтобы конвейер рендеринга мог лениво загружать дочерние компоненты. Ленивая загрузка - это асинхронная операция; поэтому рендеринг должен быть асинхронным. На практике это означает, что функция `render()` возвращает промис.
 
-## DOM update buffering
+Большинство фреймворков текущего поколения имеют синхронный `render()`. Синхронный рендеринг не может так просто справиться с асинхронной загрузкой кода, поэтому он требует чтобы все зависимые компоненты были представлены до начала рендеринга.
 
-The asynchronous nature of `render()` means that users may see an intermediate rendering of the UI as components download. Seeing an intermediate state is undesirable; therefore, Qwik will buffer all DOM updates and only flush the DOM operations once all of the components have been downloaded and their JSX functions executed. The result is that the UI will update as an atomic operation, and the user will not see the intermediate steps.
+## Буферизация обновлений DOM
+
+Асинхронный характер `render()` означает, что пользователи могут увидеть промежуточный рендеринг пользовательского интерфейса по мере загрузки компонентов. Видеть промежуточное состояние нежелательно, поэтому Qwik буферизует все обновления DOM и применяет эти операции только после загрузки всех компонентов и выполнения их JSX-функций. В результате пользовательский интерфейс будет обновляться как атомарная операция, и пользователь не увидит промежуточных шагов.
