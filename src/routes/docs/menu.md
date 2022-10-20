@@ -34,12 +34,12 @@
 
 ## Дополнительно
 
-- [Prefetching](advanced/prefetching/index.mdx)
+- [Предзагрузка](advanced/prefetching/index.mdx)
 - [Контейнеры](advanced/containers/index.mdx)
 - [Оптимизатор](advanced/optimizer/index.mdx)
 - [QRL](advanced/qrl/index.mdx)
 - [Qwikloader](advanced/qwikloader/index.mdx)
-- [Custom Build Directory](advanced/custom-build-dir/index.mdx)
+- [Каталог сборки](advanced/custom-build-dir/index.mdx)
 
 ## Сообщество
 
