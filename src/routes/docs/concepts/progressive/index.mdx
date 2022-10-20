@@ -1,78 +1,77 @@
 ---
-title: Progressively
+title: Прогрессивный
 contributors:
   - adamdbradley
   - RATIU5
   - manucorporat
 ---
 
-# Progressively
+# Постепенный
 
-Progressively is about downloading code as the application needs, without having to download the entire codebase eagerly.
+Постепенно - про то, что загрузка кода происходит по мере необходимости приложения, без необходимости жадно загружать всю кодовую базу сразу.
 
-This connect with Qwik's [core tenet](../../think-qwik/index.mdx) which focus on delaying **the loading** and execution of JavaScript for as long as possible. Qwik needs to break up the application into many lazy loadable chunks to achieve that.
+Это связано с [основным принципом](../../think-qwik/index.mdx), который фокусируется на как можно большем откладывании **загрузки** и выполнении JavaScript. Для этого Qwik должен разбить приложение на множество лениво загружаемых фрагментов.
 
-## Current state-of-the-art
+## Текущее состояние
 
-[Existing frameworks suffer from two problems](https://www.builder.io/blog/dont-blame-the-developer-for-what-the-frameworks-did):
+[Существующие фреймворки страдают от двух проблем](https://www.builder.io/blog/dont-blame-the-developer-for-what-the-frameworks-did):
 
-- Lazy loading boundaries are 100% delegated to the developer
-- Frameworks can only lazy load components that are not in the current render tree.
+- Границы ленивой загрузки на 100% делегированы разработчику;
+- Фреймворки могут лениво загружать только те компоненты, которых нет в текущем дереве рендеринга.
 
-The issue is that the frameworks need to reconcile their internal state with the DOM. And that means that at least once on application hydration, they need to be able to do a full render to rebuild the framework's internal state. After the first render, the frameworks can be more surgical about their updates, but the damage has been done, the code has been downloaded. So we have two issues:
+Проблема в том, что фреймворкам необходимо согласовывать свое внутреннее состояние с DOM. А это означает, что хотя бы один раз при гидратации приложения им необходимо выполнить полный рендер, чтобы восстановить внутреннее состояние фреймворка. После первого рендера фреймворки могут быть более хирургически точными в своих обновлениях, но ущерб уже нанесён, код загружен. Итак, у нас есть две проблемы:
 
-- Frameworks need to download and execute components to rebuild the render tree on startup. (See [hydration is pure overhead](https://www.builder.io/blog/hydration-is-pure-overhead)) This forces eager download and execution of all components in the render tree.
-- The event handlers come with the components even though they are not needed at the time of rendering. The inclusion of event handlers forces the download of unnecessary code.
+- Фреймворки должны загружать и выполнять компоненты для перестройки дерева рендеринга при запуске (см. [гидратация — это дорого](https://www.builder.io/blog/hydration-is-pure-overhead)). Это вызывает жадную загрузку и выполнение всех компонентов в дереве рендеринга.
+- Обработчики событий поставляются с компонентами, даже если они не нужны во время рендера. Включение обработчиков событий вызывает загрузку ненужного кода.
 
-## Solution
+## Решение
 
-Qwik architecture takes full advantage of modern tooling to automate the problem of entry point generation. Developers can write components normally, while the Qwik optimizer will split the components into chunks and download them as needed.
+Архитектура Qwik в полной мере использует современные инструменты для автоматизации задачи создания точки входа. Разработчики могут писать компоненты как обычно, в то время как оптимизатор Qwik разделит компоненты на фрагменты и загрузит их по мере необходимости.
 
-In addition, the framework runtime does not need to download code that is not required for interactivity, even if the component is part of the render tree.
+Кроме того, среде выполнения фреймворка не нужно загружать код, который не требуется для интерактивности, даже если компонент является частью дерева рендеринга.
 
-### Optimizer
+### Оптимизатор
 
-Optimizer (described in-depth [here](../../advanced/optimizer/index.mdx)) is a code transformation that extracts functions into top-level importable symbols, which allows the Qwik runtime to lazy-load the JavaScript on an as-needed basis.
+Оптимизация (подробное описание [здесь](../../advanced/optimizer/index.mdx)) — это преобразование кода, которое извлекает функции в импортируемые символы верхнего уровня, что позволяет среде выполнения Qwik лениво загружать JavaScript по мере необходимости.
 
-The Optimizer and Qwik runtime work together to achieve the desired result of fine-grained lazy loading.
+Оптимизатор и среда выполнения Qwik работают вместе для достижения желаемого результата фрагментарной ленивой загрузки.
 
-Without the Optimizer, either:
+Без оптимизатора либо:
 
-- The code would have to be broken up by the developer into importable parts. This would be unnatural to write an application, making for a bad DX.
-- The application would have to load a lot of unnecessary code as there would be no lazy-loaded boundaries.
+- Код должен быть разбит разработчиком на импортируемые части. Было бы неестественно писать приложение, делающее плохой DX.
+- Приложению пришлось бы загружать много ненужного кода, так как не было бы границ ленивой загрузки.
 
-Qwik runtime must understand the Optimizer output. The biggest difference to comprehend is that by breaking up the component into lazy-loadable chunks, the lazy-loading requirement introduces asynchronous code into the framework. The framework has to be written differently to take asynchronicity into account. Existing frameworks assume that all code is available synchronously. This assumption prevents an easy insertion of lazy-loading into existing frameworks. (For example, when a new component is created, the framework assumes that its initialization code can be invoked in a synchronous fashion. If this is the first time component is referenced, then its code needs to be lazy-loaded, and therefore the framework must take that into account.)
+Среда выполнения Qwik должна понимать вывод оптимизатора. Самая большая разница для понимания заключается в том, что разбивая компонент на лениво загружаемые фрагменты, требование ленивой загрузки вводит понятие асинхронного кода. Фреймворк должен быть написан по-другому, чтобы учесть асинхронность. Существующие платформы предполагают, что весь код доступен синхронно. Это предположение предотвращает простое внедрение отложенной загрузки в существующие фреймворки (например, когда создаётся новый компонент, фреймворк предполагает, что его код инициализации может быть вызван в синхронной манере и если это первая ссылка на компонент, то его код должен быть загружен лениво, и поэтому фреймворк должен учитывать это).
 
-### Lazy-loading
+### Ленивая загрузка
 
-Lazy-loading is asynchronous. Qwik is an asynchronous framework. Qwik understands that at any time, it may not have a reference to a callback, and therefore, it may need to lazy-load it. (In contrast, most existing frameworks assume that all of the code is available synchronously, making lazy-loading non-trivial.)
+Ленивая загрузка является асинхронной. Qwik - это асинхронный фреймворк. Qwik понимает, что у него не всегда может быть ссылка на функцию обратного вызова, и поэтому для неё может потребоваться ленивая загрузка (в отличие от этого, большинство существующих фреймворков предполагают, что весь код доступен синхронно, что делает ленивую загрузку нетривиальной).
 
-In Qwik everything is lazy-loadable:
+В Qwik всё можно загружать лениво:
 
-- Component on-render (initialization block and render block)
-- Component on-watch (side-effects, only downloaded if inputs change)
-- Listeners (only downloaded on interaction)
-- Styles (Only downloaded if the server did not already provide them)
+- Компонент на этапе рендера (блок инициализации и блок рендеринга);
+- Компонент на этапе контроля (побочные эффекты, загружается только при изменении входных данных);
+- Слушатели (загружаются только при взаимодействии);
+- Стили (загружаются только в том случае, если сервер ещё их не отдавал).
 
-Lazy-loading is a core property of the framework and not an afterthought.
+Ленивая загрузка - это основное свойство фреймворка, а не второстепенное.
 
-### Optimizer and `$`
+### Оптимизатор и `$`
 
-Let's look at our example again:
+Давайте снова посмотрим на наш пример:
 
 ```tsx
-// the `$` suffix for `component` indicates that the component should be
-// lazy-loaded.
+// Суффикс `$` для `component` указывает, что компонент должен быть
+// лениво загружен.
 export const Counter = component$(() => {
   const store = useStore({ count: 0 });
 
-  // the `$` suffix for `onClick` indicates that the implementation for
-  // the handler should be lazy-loaded.
+  // Суффикс `$` для `onClick` указывает на то, что реализация для
+  // обработчика должна быть загружена лениво.
   return <button onClick$={() => store.count++}>{store.count}</button>;
 });
 ```
 
-Notice the presence of `$` in the code. `$` is a marker that tells the Optimizer that the function
-following it should be lazy-loaded. (For a detailed discussion see [$ and Optimizer Rules](../../advanced/optimizer/index.mdx).)
-The `$` is a single character that hints to the Optimizer and the developer to let them know
-that asynchronous lazy-loading occurs here.
+Обратите внимание на наличие `$` в коде. `$` — это маркер, сообщающий оптимизатору, что функция
+после него должна быть загружена лениво (для подробной информации смотри [$ и правила оптимизатора](../../advanced/optimizer/index.mdx)).
+`$` — это единственный символ, который напоминает оптимизатору и разработчику, что здесь происходит асинхронная отложенная загрузка.
