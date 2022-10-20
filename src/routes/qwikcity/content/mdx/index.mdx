@@ -78,3 +78,40 @@ export const Counter = component$(() => {
 **Примечание**: Ключевым отличием Qwik City от многих современных мета-фреймворков является маршрутизация на основе файлов. Каждый маршрут должен быть определен как `a-directory/index.(tsx,ts,js,jsx,md,mdx)`.
 
 В других мета-фреймворках, к которым вы привыкли, `about.mdx` будет отображать маршрут `http://example.com/about`. Однако это не будет работать в Qwik City. Вы должны переименовать файл в `about/index.mdx`, чтобы Qwik City знал, что его нужно рендерить.
+
+## Отключение плагинов MDX, включенных по умолчанию.
+
+Qwik City по умолчанию включает 3 плагина:
+
+- [remarkGfm](https://github.com/remarkjs/remark-gfm): [GFM](https://github.github.com/gfm/)-поддержка (литералы автоматических ссылок, сноски, зачёркивание, таблицы, списки задач).
+- [rehypeSyntaxHighlight](https://github.com/wooorm/refractor): Легкая, надежная, элегантная виртуальная подсветка синтаксиса с помощью Prism.
+- [rehypeAutolinkHeadings](https://github.com/rehypejs/rehype-autolink-headings): Плагин для добавления ссылок к заголовкам в HTML.
+
+Эти плагины можно отключить независимо друг от друга следующим образом:
+
+```typescript
+import { defineConfig } from 'vite';
+import { qwikCity } from '@builder.io/qwik-city/vite';
+
+import rehypeAutolinkHeadings from 'rehype-autolink-headings'
+export default defineConfig(() => {
+  return {
+    plugins: [
+      qwikCity({
+        mdxPlugins: {
+          remarkGfm: false,
+          rehypeSyntaxHighlight: false,
+          rehypeAutolinkHeadings: false,
+        },
+        mdx: {
+          rehypePlugins: [
+            // Плагины теперь можно добавлять вручную, чтобы использовать другую конфигурацию сборки.
+            [rehypeAutolinkHeadings, { behavior: 'wrap' }],
+          ],
+        },
+      }),
+      /* остальная часть конфигурации */
+    ],
+  };
+});
+```
