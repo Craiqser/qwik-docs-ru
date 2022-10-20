@@ -7,6 +7,34 @@ contributors:
 
 # Конечные точки и RESTful API
 
-Qwik City может создать RESTful API для вашего приложения, используя конечные точки. Маршруты конечных точек создаются так же, как если бы вы создавали "страницу", за исключением того, что имя файла должно заканчиваться на `.ts` вместо `.tsx`. `index.ts` в каталоге `src/routes` предназначен только для обработки данных, таких как `json`-ответ, в то время как `index.tsx` предназначен для HTML-страницы.
+Qwik City может создать RESTful API для вашего приложения, используя конечные точки. Маршруты конечных точек создаются так же, как если бы вы создавали "страницу", за исключением того, что имя файла должно заканчиваться на `.ts` вместо `.tsx`. `index.ts` в каталоге `src/routes` предназначен только для обработки данных, таких как `json`-ответ, в то время как `index.tsx` предназначен для рендера HTML-страницы. Нет необходимости помещать "конечную точку" маршрута в специальный каталог `api` внутри `src/routes`.
 
 И "страница", и "конечные точки" одинаковы, за исключением одного различия: страница экспортирует `default component$()` для рендера HTML, тогда как конечная точка использует только обработчики HTTP-запросов и ответов. Более подробно о компонентах страницы вы можете [прочитать здесь](../../content/component/index.mdx). Маршрут конечной точки используется только для того, чтобы отправлять данные.
+
+## Пример конечной точки API
+
+```ts
+// Файл: src/routes/product/[skuId]/index.ts
+import type { RequestHandler } from '@builder.io/qwik-city';
+
+interface ProductData {
+  skuId: string;
+  price: number;
+  description: string;
+}
+
+export const onGet: RequestHandler<ProductData> = async ({ params }) => {
+  // Напишите здесь код доступа к вашей БД,
+  // мы просто вернём ответ для простоты.
+  return {
+    skuId: params.skuId,
+    price: 123.45,
+    description: `Description for ${params.skuId}`,
+  };
+};
+
+export const onPost: RequestHandler<ProductData> = async ({ params }) => { ... }
+export const onPut: RequestHandler<ProductData> = async ({ params }) => { ... }
+export const onPatch: RequestHandler<ProductData> = async ({ params }) => { ... }
+export const onDelete: RequestHandler<ProductData> = async ({ params }) => { ... }
+```

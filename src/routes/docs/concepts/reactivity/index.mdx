@@ -1,5 +1,5 @@
 ---
-title: Overview
+title: Обзор
 contributors:
   - wmertens
   - bado22
@@ -8,21 +8,21 @@ contributors:
   - adamdbradley
 ---
 
-# Reactivity
+# Реактивность
 
-Reactivity is a key component of Qwik. Reactivity allows Qwik to track which components are subscribed to which state. This information enables Qwik to invalidate only the relevant component on state change, which minimizes the number of components that need to be re-rendered. Without reactivity, a state change would require re-rendering from the root component, which would force the whole component tree to be eagerly downloaded.
+Реактивность - ключевой компонент Qwik. Реактивность позволяет Qwik отслеживать, какие компоненты подписаны на то или иное состояние. Эта информация позволяет Qwik аннулировать только соответствующий компонент при изменении состояния, что минимизирует количество компонентов, которые необходимо перерисовать. Без реактивности изменение состояния потребовало бы повторного рендера корневого компонента, что заставило бы загрузить всё дерево компонентов.
 
-# Proxy
+# Прокси
 
-Reactivity requires that the framework keeps track of the relationship between the state of the applications and the components. The framework must render the whole application at least once to build the reactivity graph. The build of reactive graph initially happens on the server and is serialized to HTML so that the browser can use the information without being forced to do a single pass through all components to rebuild the graph. (Qwik does not need to do hydration to register events or build up the reactivity graph.)
+Реактивность требует, чтобы фреймворк отслеживал взаимосвязь между состоянием приложений и компонентов. Для построения графа реактивности фреймворк должен хотя бы один раз отрисовать всё приложение. Построение реактивного графа первоначально происходит на сервере и сериализуется в HTML, чтобы браузер мог использовать информацию без необходимости совершать проход по всем компонентам для восстановления графа (Qwik не нуждается в гидратации для регистрации событий или построения графа реактивности).
 
-Reactivity can be done in a few ways:
+Реактивность может быть достигнута несколькими способами:
 
-1. using explicit registration of listeners using `.subscribe()` (for example, RxJS)
-2. using implicit registration using a compiler (for example, Svelte)
-3. using implicit registration using proxies.
+1. Используя явную регистрацию слушателей с помощью `.subscribe()` (как в RxJS);
+2. Используя неявную регистрации с помощью компилятора (как в Svelte);
+3. Используя неявную регистрации с помощью прокси.
 
-Qwik uses proxies for a few reasons:
+Qwik использует прокси по нескольким причинам:
 
 1. using explicit registration such as `.subscribe()` would require the system to serialize all of the subscribed listeners to avoid hydration. Serializing subscribed closures would not be possible as all the subscribe functions would have to be lazy-loaded and asynchronous (too expensive).
 2. using the compiler to create graphs implicitly would work, but only for components. Intra component communications would still require `.subscribe()` methods and hence suffer the issues described above.
