@@ -29,7 +29,7 @@ export default component$(() => {
     useHook() // <-- ❌ не работает
   }
   const myQrl = $(() => useHook()) // <-- ✅ работает
-  return <button onClick$={() => useHook() }></button> // <-- ✅ работает
+  return <button onClick$={() => useHook()}></button> // <-- ✅ работает
 })
 
 const useCustomHook = () => {
@@ -48,7 +48,7 @@ const useCustomHook = () => {
 ### Пример
 
 ```tsx
-const Cmp = component$(() => {
+export const Cmp = component$(() => {
   const store = useStore({
     users: [],
   });
@@ -69,7 +69,7 @@ interface User {
   name: string;
 }
 
-function User(props: { user: User }) {
+export function User(props: { user: User }) {
   return <div>Name: {props.user.name}</div>;
 }
 ```
@@ -81,7 +81,7 @@ function User(props: { user: User }) {
 ### Пример
 
 ```tsx
-const Cmp = component$(() => {
+export const Cmp = component$(() => {
   const store = useStore({
     users: [],
   });
@@ -102,7 +102,7 @@ interface User {
   name: string;
 }
 
-function User(props: { user: User }) {
+export function User(props: { user: User }) {
   return <div>Name: {props.user.name}</div>;
 }
 ```
@@ -122,20 +122,20 @@ function User(props: { user: User }) {
 Функция `useWatch` используется для наблюдения за свойством `state.count`. Любые изменения в `state.count` вызывают выполнение `watchFn`, которая, в свою очередь, обновляет `state.doubleCount` до двойного значения `state.count`.
 
 ```tsx
-const Cmp = component$(() => {
+export const Cmp = component$(() => {
   const store = useStore({
-    count: 0,
+    count: 1,
     doubleCount: 0,
     debounced: 0,
   });
   // Double count watch
   useWatch$(({ track }) => {
-    const count = track(store, 'count');
+    const count = track(() => store.count);
     store.doubleCount = 2 * count;
   });
   // Debouncer watch
   useWatch$(({ track }) => {
-    const doubleCount = track(store, 'doubleCount');
+    const doubleCount = track(() => store.doubleCount);
     const timer = setTimeout(() => {
       store.debounced = doubleCount;
     }, 2000);
@@ -143,6 +143,7 @@ const Cmp = component$(() => {
       clearTimeout(timer);
     };
   });
+
   return (
     <>
       <div>
@@ -163,7 +164,7 @@ const Cmp = component$(() => {
 ### Пример
 
 ```tsx
-const Timer = component$(() => {
+export const Timer = component$(() => {
   const store = useStore({
     count: 0,
   });

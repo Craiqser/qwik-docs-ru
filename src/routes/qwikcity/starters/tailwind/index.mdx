@@ -1,0 +1,40 @@
+---
+title: Qwik City и Tailwind
+contributors:
+  - manucorporat
+  - leifermendez
+---
+
+# Tailwind
+
+Tailwind — это CSS-фреймворк, предоставляющий нам служебные классы узкого назначения, которые помогают нам стилизовать наши веб-страницы прямо внутри нашего файла разметки или файлах с расширениями .js/.jsx/.ts/.tsx. [Сайт Tailwind](https://tailwindcss.com/)
+
+## Использование
+
+Вы можете легко добавить Tailwind с помощью следующего стартового скрипта Qwik:
+
+```bash
+npm run qwik add tailwind
+```
+
+Предыдущая команда обновляет ваше приложение и устанавливает правильную конфигурацию в `vite.config.ts`.
+
+Также она добавляет новые файлы в папку `src`:
+
+- `postcss.config.js`
+- `tailwind.config.js`
+
+## Необходимые действия
+
+После успешного выполнения команды необходимо добавить следующие строки в вашем файле `global.css`:
+
+```css
+# global.css file
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+...stuff...
+
+```

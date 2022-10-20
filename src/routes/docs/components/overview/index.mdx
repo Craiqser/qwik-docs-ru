@@ -52,6 +52,11 @@ export const MyCmp = component$(async (props: MyCmpProps) => {
 });
 ```
 
+> **ПРИМЕЧАНИЕ**
+>
+> - Для понимания `$` смотри разделы [Ленивая загрузка](../../advanced/qrl/index.mdx) и [Оптимизатор](../../advanced/optimizer/index.mdx);
+> - Подробное обсуждение параметров смотри в главе "Параметры".
+
 ## Параметры
 
 Параметры используются для передачи данных в компонент. Параметры объявляются как именованные аргументы компонента.
@@ -60,10 +65,10 @@ export const MyCmp = component$(async (props: MyCmpProps) => {
 
 ```tsx
 interface ItemProps {
-   name?: string,
-   quantity?: number,
-   description?: string,
-   price?: number
+   name?: string;
+   quantity?: number;
+   description?: string;
+   price?: number;
 }
 
 export const Item = component$((props: ItemProps) => {
@@ -76,11 +81,11 @@ export const Item = component$((props: ItemProps) => {
 Компоненты Qwik могут использовать другие компоненты.
 
 ```tsx
-const Counter = component$((props: {step?:number, initial?: number}) => {
+export const Counter = component$((props: {step?:number, initial?: number}) => {
   ...
 });
 
-const MyApp = component$(() => {
+export const MyApp = component$(() => {
   return (
     <>
       <div>Single: <Counter /></div>
@@ -109,9 +114,9 @@ const MyApp = component$(() => {
 Компонент также играет важную роль в разрыве отношений родитель-потомок в целях разбиения на бандлы.
 
 ```tsx
-const Child = () => <span>child</span>;
+export const Child = () => <span>child</span>;
 
-const Parent = () => (
+export const Parent = () => (
   <section>
     <Child />
   </section>
@@ -121,11 +126,11 @@ const Parent = () => (
 В приведённом выше примере обращение к компоненту `Parent` подразумевает транзитивную ссылку на компонент `Child`. Когда упаковщик создаёт чанк, ссылка на `Parent` также требует упаковки `Child` (внутри `Parent` есть зависимость на `Child`). Эти транзитивные зависимости представляют из себя проблему, так как это означает, что наличие ссылки на корневой компонент приложения будет транзитивно тянуть остальную часть приложения, чего Qwik пытается избежать.
 
 ```tsx
-const Child = component$(() => {
+export const Child = component$(() => {
   return <span>child</span>;
 });
 
-const Parent = component$(() => {
+export const Parent = component$(() => {
   return (
     <section>
       <Child />

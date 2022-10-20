@@ -82,7 +82,7 @@ store.nested = { fields: { are: { "tracked" } } }
 export const App = component$(() => {
   const store = useStore({
     nested: { fields: { are: "not tracked" }}
-  }, { recursion: true })
+  }, { recursive: true })
 
   return (
     <>
