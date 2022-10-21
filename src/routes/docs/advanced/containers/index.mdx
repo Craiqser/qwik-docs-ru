@@ -1,61 +1,61 @@
 ---
-title: Containers
+title: Контейнеры
 contributors:
   - the-r3aper7
   - RATIU5
   - adamdbradley
 ---
 
-# Containers
+# Контейнеры
 
-Containers are a way to break up an application into smaller parts. We call these parts containers. Containers brings several benefits. Each container on the page can independently be:
+Контейнеры - это способ разбить приложение на более мелкие части. Мы называем эти части контейнерами. Контейнеры дают несколько преимуществ. Каждый контейнер на странице может быть независимо:
 
-- **resumed**: Each container can be resumed independently from all other components on the page. Independent resumability further reduces the amount of state which resume deserializes.
-- **updated**: Each container can be updated/replaced at any point using `innerHTML`. This allows a portion of the page to update without forcing a full re-fetch of a complete HTML document without downloading or executing JavaScript.
-- **compiled**: Each container can be compiled and deployed separately from other containers. Separate compilation is especially useful for large-scale applications and large-scale teams working on the applications.
-- **versioned**: Each container can run a different version of the Qwik framework. Allowing for the composability of the website from many small containers.
+- **возобновлён**: Каждый контейнер может быть возобновлён независимо от других компонентов на странице. Независимая возобновляемость ещё больше уменьшает количество состояний, которые десериализует возобновление.
+- **обновлён**: Каждый контейнер может быть обновлён/заменён в любой момент с помощью `innerHTML`. Это позволяет обновить часть страницы, не заставляя заново получать весь HTML-документ, не загружая и не выполняя JavaScript.
+- **скомпилирован**: Каждый контейнер может быть скомпилирован и развёрнут отдельно от других контейнеров. Раздельная компиляция особенно полезна для крупномасштабных приложений и больших команд, работающих над приложениями.
+- **версионирован**: Каждый контейнер может запускать различные версии фреймворка Qwik. Это позволяет компоновать веб-сайт из множества небольших контейнеров.
 
-Containers can be nested in a tree and can communicate and share data. The inter-component communication requires that the components have well-defined boundaries, which we call container protocols.
+Контейнеры могут быть вложены в дереве и могут взаимодействовать и обмениваться данными. Межкомпонентное взаимодействие требует, чтобы компоненты имели чётко определённые границы, которые мы называем протоколами контейнера.
 
-## Containers vs. Components
+## Контейнеры vs. Компоненты
 
-Containers sound very similar to components; what are the differences? You can think of a container as a more restricted component. However, components can do a few things which containers can't.
+Контейнеры очень похожи на компоненты, в чём же различия? Контейнер можно рассматривать как более ограниченный компонент. Компоненты могут делать несколько вещей, которые не могут делать контейнеры.
 
-- Containers can only have read-only properties passed into them. This restriction is because container inputs may need to be serialized for SSR requests.
-- Containers don't understand [projection](../../../docs/components/projection/index.mdx).
-- Containers can't modify the state which has been passed into them.
+- В контейнеры можно передавать параметры, но они доступны только для чтения. Это ограничение связано с тем, что вход контейнера может потребовать сериализации для запросов SSR.
+- Контейнеры не понимают [проекцию](../../../docs/components/projection/index.mdx).
+- Контейнеры не могут изменять состояние, которое было в них передано.
 
-Components have restrictions:
+Ограничения компонентов:
 
-- Components must be compiled together and, as a result, share the same bundle artifacts and same Qwik version.
-- On pause, all of the components in the container are serialized together (and then they are resumed together).
+- Компоненты должны быть скомпилированы вместе и, как следствие, имеют общий бандл пакета и одинаковую версию Qwik;
+- Во время паузы все компоненты в контейнере сериализуются вместе (а затем возобновляются вместе).
 
-## What do containers solve?
+## Что контейнеры делают?
 
-Containers allow multiple independent Qwik applications to run on the page and behave as a single application to the user. There are two most common use cases:
+Контейнеры позволяют нескольким независимым приложениям Qwik работать на странице и вести себя для пользователя как единое приложение. Существует два наиболее распространенных варианта использования:
 
-1. Routing
-2. Micro-frontend architecture
+1. Маршрутизация;
+2. Микро-фронтенд архитектура.
 
-### Routing
+### Маршрутизация
 
-A typical site is composed of two logical parts:
+Типичный сайт состоит из двух логических частей:
 
-1. The navigation that tends to stay constant across many pages.
-2. The outlet, which is the part of the page that changes based on which route the user navigated to.
+1. Навигация, которая, как правило, остаётся неизменной на большинстве страниц.
+2. Содержимое - это часть страницы, которая изменяется в зависимости от того, на какой маршрут перешел пользователь.
 
-We can model the two parts as two navigation and outlet containers. When the user first navigates to a route, the server responds with HTML, that contains containers for both the navigation and the outlet. Once the user navigates to the second route, there are three ways to solve the navigation:
+Мы можем смоделировать эти две части как два контейнера: для навигации и содержимого. Когда пользователь впервые переходит к маршруту, сервер отвечает разметкой HTML, которая содержит контейнеры для навигации и содержимого. Когда пользователь переходит на второй маршрут, существует три способа выполнения навигации:
 
-1. The simplistic approach is to make a full round trip and download an entirely new page. The main downside is that the application loses all of its states on the client.
-2. The classical approach is to treat any further navigation in JavaScript. We replace the current outlet component with the new outlet component and let the new component render. The disadvantage is that we need to download and execute the JavaScript.
-3. The Qwik approach treats the navigation and the outlet as two different containers. The first navigation downloads HTML representing the full page (with both containers). The subsequent navigation fetches the HTML only for the outlet container. This approach is the best of both worlds. The navigation is fast (no JavaScript download or execution), and the application keeps its state in the parent container.
+1. Упрощенный подход заключается в том, чтобы сделать полный круговорот и загрузить совершенно новую страницу. Основным недостатком является то, что приложение теряет все свои состояния на клиенте.
+2. Классический подход заключается в том, чтобы обрабатывать любую дальнейшую навигацию в JavaScript. Мы заменяем текущий компонент содержимого на новый компонент содержимого и позволяем новому компоненту отрисоваться. Недостатком является то, что нам необходимо загрузить и выполнить JavaScript.
+3. В подходе Qwik навигация и содержимое рассматриваются как два разных контейнера. Первый переход загружает HTML, представляющий полную страницу (с двумя контейнерами). При последующей навигации извлекается HTML только для контейнера содержания. Такой подход является лучшим из двух миров. Навигация осуществляется быстро (без загрузки и выполнения JavaScript), а приложение сохраняет свое состояние в родительском контейнере.
 
-### Micro-frontend
+### Микро-фронтенд
 
-When an application gets very large, it becomes impractical to think of it as a single application. A better mental model is that many applications work together to give the user the impression of a single application.
+Когда приложение становится очень большим, непрактично рассматривать его как отдельное приложение. Лучшая ментальная модель заключается в том, что много приложений работают вместе, создавая у пользователя впечатление единого приложения.
 
-For large apps, the teams also become large. Large teams usually have different goals and, as a result, different release schedules.
+Для больших приложений команды также становятся большими. Большие команды обычно имеют разные задачи и, как следствие, разные графики релизов.
 
-Containers allow a large team to break up the application into many smaller parts and treat each part as a unit with a separate deployment, testing, and version upgrade schedule.
+Контейнеры позволяют большой команде разбить приложение на множество мелких частей и рассматривать каждую часть как единое целое с отдельным графиком развертывания, тестирования и обновления версии.
 
-Teams break up the application into containers and clearly define protocols between the containers. As long as the protocols are satisfied, each team can deploy the two containers independently.
+Команды разбивают приложение на контейнеры и чётко определяют протоколы взаимодействия между контейнерами. Пока протоколы совместимы, каждая команда может развернуть два контейнера независимо друг от друга.
