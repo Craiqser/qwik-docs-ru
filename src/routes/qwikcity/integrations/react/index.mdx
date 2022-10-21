@@ -6,17 +6,17 @@ contributors:
 
 # Qwik React ⚛️
 
-QwikReact allows you to use React components in Qwik, including the whole ecosystem of component libraries, such as [Material UI](https://mui.com/), [Threejs](https://github.com/pmndrs/react-three-fiber) and [React Spring](https://react-spring.io/).
+QwikReact позволяет использовать компоненты React в Qwik, включая всю экосистему библиотек компонентов, таких как [Material UI](https://mui.com/), [Threejs](https://github.com/pmndrs/react-three-fiber) и [React Spring](https://react-spring.io/).
 
-## Installation
+## Установка
 
-Inside your Qwik app run:
+Выполните в терминале вашего Qwik-приложения:
 
 ```bash
 npm run qwik add react
 ```
 
-If you don't have a Qwik app yet, then you need to [create one first](/docs/getting-started/index.mdx), then, follow the instructions and run the command add React to your app.
+Если у вас ещё нет приложения Qwik, то вам нужно [сначала создать его](/docs/getting-started/index.mdx), затем, следуя инструкциям выше, выполнить команду добавления React к вашему приложению.
 
 ```bash
 npm create qwik
@@ -24,13 +24,13 @@ cd to-my-app
 npm run qwik add react
 ```
 
-## Usage
+## Использование
 
-The `@builder.io/qwik-react` package exports the `qwikify$()` function that allows to convert React components into Qwik components, you can use across your application.
+Пакет `@builder.io/qwik-react` экспортирует функцию `qwikify$()`, преобразующую компоненты React в компоненты Qwik, которые вы можете использовать в своем приложении.
 
-> **Note:** You CAN NOT use React components in Qwik without converting them first, using `qwikify$()`. Even though [React and Qwik component look similar](/docs/cheat/qwik-react/index.mdx), they are fundamentally very different.
+> **Примечание:** Вы НЕ МОЖЕТЕ использовать компоненты React в Qwik без их предварительного преобразования с помощью `qwikify$()`. Несмотря на то, что [компоненты React и Qwik выглядят похоже](/docs/cheat/qwik-react/index.mdx), они принципиально очень разные.
 
-React and Qwik components can not be mixed in the same file, if you check your project right after running the installation command, you will see a new folder `src/integrations/react/`, from now on, all your React components will live there.
+Компоненты React и Qwik не могут находиться в одном файле. Если вы посмотрите на свой проект сразу после выполнения команды установки, вы увидите новую папку - `src/integrations/react/`, с этого момента все ваши компоненты React будут жить там.
 
 **src/integrations/react/mui.tsx:**
 
@@ -46,17 +46,16 @@ export const MUIAlert = qwikify$(Alert);
 export const MUISlider = qwikify$(Slider, { eagerness: 'hover' });
 ```
 
-> **Important:** You need to import `/** @jsxImportSource react */` at the top of your file, this is an instruction to the compiler to use React as the JSX factory.
+> **Важно:** Вам необходимо импортировать `/** @jsxImportSource react */` в первой строке вашего файла, это указание компилятору использовать React в качестве фабрики JSX.
 
-In a nutshell, the rules are:
+В двух словах, правила таковы:
 
-1. Don't mix React and Qwik components in the same file.
-2. Place all your react code inside the `src/integrations/react` folder.
-3. Add `/** @jsxImportSource react */` at the top of the files containing React code.
-4. Use `qwikify$()` to convert React components into Qwik components, which you can import from Qwik modules.
+1. Не смешивайте компоненты React и Qwik в одном файле;
+2. Поместите весь ваш React-код в каталог `src/integrations/react`;
+3. Добавьте `/** @jsxImportSource react */` в начало файлов, содержащих код React;
+4. Используйте `qwikify$()` для преобразования компонентов React в компоненты Qwik, которые вы хотите импортировать из модулей Qwik.
 
-
-Now your Qwik can import `MUIButton` and use it as any other Qwik component:
+Теперь ваш Qwik может импортировать `MUIButton` и использовать его как любой другой компонент Qwik:
 
 ```tsx
 import { component$ } from '@builder.io/qwik';
@@ -66,23 +65,22 @@ export default component$(() => {
   return (
     <>
       <MUIButton client:hover>
-        Hello this is a button
+        Привет, это кнопка
       </MUIButton>
 
       <MUIAlert severity="warning">
-        This is a warning from Qwik
+        Это предупреждение от Qwik
       </MUIAlert>
     </>
   );
 });
 ```
 
-
 ## `qwikify$()`
 
-The `qwikify$(ReactCmp, options?): QwikCmp` allows to implement partial hydration of React components. It works by wrapping the SSR and hydration logic of React into a Qwik component that can execute React's `renderToString()` during SSR and dynamically call `hydrateRoot()` when specified.
+Функция `qwikify$(ReactCmp, опции?): QwikCmp` позволяет реализовать частичную гидратацию компонентов React. Она работает, оборачивая логику SSR и гидратации React в компонент Qwik, который может выполнять метод React `renderToString()` во время SSR и динамически вызывать `hydrateRoot()`, когда требуется.
 
-Notice that by default no React code will run in the browser, meaning that React component will NOT be interactive by default, for example, in the following example, we *qwikify* the [Slider](https://mui.com/material-ui/react-slider/) component from MUI, but it will not be interactive.
+Обратите внимание, что по умолчанию никакой код React не будет выполняться в браузере, то есть компонент React по умолчанию НЕ будет интерактивным. В следующем примере мы квикифицируем компонент [Слайдер](https://mui.com/material-ui/react-slider/) из библиотеки MUI, но он не будет интерактивным.
 
 ```tsx
 /** @jsxImportSource react */
@@ -104,11 +102,11 @@ export default component$(() => {
 });
 ```
 
-## Adding interactivity
+## Добавление интерактивности
 
-In order to add interactivity, in React terminology we need to [hydrate](https://reactjs.org/docs/react-dom.html#hydrate), usually in React applications this hydration task happens unconditionally at load time, [adding a massive overhead](https://www.builder.io/blog/hydration-is-pure-overhead) and making sites slow.
+Чтобы добавить интерактивность, в терминологии React нам нужно выполнить [гидратацию](https://reactjs.org/docs/react-dom.html#hydrate). Обычно в приложениях React задача гидратации происходит безусловно во время загрузки, [добавляя огромные накладные расходы](https://www.builder.io/blog/hydration-is-pure-overhead) и делая сайты медленными.
 
-Qwik allows you decide when to hydrate your components, by using the `client:` JSX properties, this technique is commonly called partial hydration, popularized by [Astro](https://astro.build/).
+Qwik позволяет вам решать, когда гидратировать ваши компоненты, используя `client:`-свойства JSX. Эта техника обычно называется частичной гидратацией, популяризованной [Astro](https://astro.build/).
 
 ```diff
 export default component$(() => {
@@ -121,51 +119,51 @@ export default component$(() => {
 });
 ```
 
-Qwik comes with different strategies out of the box:
+Qwik из коробки поставляется с различными стратегиями:
 
 ### `client:load`
 
-The component eagerly hydrates when the document loads.
+Компонент сразу гидратируется при загрузке документа.
 
 ```tsx
 <MUISlider client:load></MUISlider>
 ```
 
-**Use case:** Immediately-visible UI elements that need to be interactive as soon as possible.
+**Когда использовать:** Непосредственно видимые элементы пользовательского интерфейса, которые должны быть интерактивными как можно скорее.
 
 ### `client:idle`
 
-The component eagerly hydrates when the browser first become idle, ie, when everything important as already run before.
+Компонент гидратируется в момент, когда браузер впервые освобождается, т.е. когда всё важное уже запущено.
 
 ```tsx
 <MUISlider client:idle></MUISlider>
 ```
 
-**Use case:** Lower-priority UI elements that don’t need to be immediately interactive.
+**Когда использовать:** Менее приоритетные элементы пользовательского интерфейса, которые не нуждаются в немедленном взаимодействии.
 
 ### `client:visible`
 
-The component eagerly hydrates when it becomes visible in the viewport.
+Компонент гидратируется в момент, когда становится видимым в области просмотра.
 
 ```tsx
 <MUISlider client:visible></MUISlider>
 ```
 
-**Use case:** Low-priority UI elements that are either far down the page (“below the fold”) or so resource-intensive to load that you would prefer not to load them at all if the user never saw the element.
+**Когда использовать:** Низкоприоритетные элементы пользовательского интерфейса, которые либо находятся далеко внизу страницы ("за краем"), либо настолько ресурсоемкие для загрузки, что вы предпочтёте не загружать их вообще, если пользователь никогда не увидит этот элемент.
 
 ### `client:hover`
 
-The component eagerly hydrates when the mouse is over the component.
+Компонент гидратируется в момент наведения на него мыши.
 
 ```tsx
 <MUISlider client:hover></MUISlider>
 ```
 
-**Use case:** Lowest-priority UI elements which interactivity is not crucial, and only needs to run in desktop.
+**Когда использовать:** Низкоприоритетные элементы пользовательского интерфейса, интерактивность которых не имеет решающего значения, и которые работают только на рабочем столе.
 
 ### `client:signal`
 
-This is an advanced API that allows to hydrate the component whenever the passed signal becomes `true`.
+Это расширенный API, который позволяет гидратировать компонент каждый раз, когда переданный сигнал становится `true`.
 
 ```tsx
 export default component$(() => {
@@ -173,7 +171,7 @@ export default component$(() => {
   return (
     <>
       <button onClick$={() => hydrateReact.value = true}>
-        Hydrate Slider when click
+        При клике выполнить гидратацию слайдера
       </button>
 
       <MUISlider client:signal={hydrateReact}></MUISlider>
@@ -182,12 +180,11 @@ export default component$(() => {
 });
 ```
 
-This effectively allows you to implement custom strategies for hydration.
-
+Это позволяет эффективно реализовать индивидуальные стратегии гидратации.
 
 ### `client:event`
 
-The component eagerly hydrates when specified DOM events are dispatched.
+Компонент гидратируется в момент отправки указанных событий DOM.
 
 ```tsx
 <MUISlider client:event="click"></MUISlider>
@@ -195,23 +192,23 @@ The component eagerly hydrates when specified DOM events are dispatched.
 
 ### `client:only`
 
-When `true`, the component will not run in SSR, only in the browser.
+Если `true`, компонент не будет запускаться в SSR, только в браузере.
 
 ```tsx
 <MUISlider client:only></MUISlider>
 ```
 
-## Listening to React events
+## Прослушивание событий React
 
-Events in React are handled by passing a function as a property to the component, for example:
+События в React обрабатываются путём передачи компоненту функции в качестве параметра, например:
 
 ```tsx
 import { Slider } from '@mui/material';
 
-<Slider onChange={() => console.log('value changed')}></Slider>
+<Slider onChange={() => console.log('значение изменено')}></Slider>
 ```
 
-The `qwikify()` function will convert this into a Qwik component that will also expose the React events as Qwik [QRLs](https://qwik.builder.io/docs/advanced/qrl/):
+Функция `qwikify()` преобразует его в компонент Qwik, который также будет определять события React как Qwik [QRLs](/docs/advanced/qrl/):
 
 ```tsx
 import { Slider } from '@mui/material';
@@ -220,15 +217,15 @@ const MUISlider = qwikify$(Slider);
 
 <MUISlider
   client:visible
-  onChange$={() => console.log('value changed')}
+  onChange$={() => console.log('значение изменено')}
 />
 ```
 
-> Notice that we use the `client:visible` property to eagerly hydrate the component, otherwise the component would not be interactive and the events would never be dispatched.
+> Обратите внимание, что мы используем свойство `client:visible` для безотлагательной гидратации компонента, иначе компонент не был бы интерактивным и события никогда бы не диспетчеризировались.
 
-## Host element
+## Хост-элемент
 
-When wrapping a React component with `qwikify$()`, under the hood, a new DOM element is created, such as:
+При обёртывании компонента React с помощью `qwikify$()` под капотом создается новый элемент DOM:
 
 ```html
 <qwik-react>
@@ -236,18 +233,18 @@ When wrapping a React component with `qwikify$()`, under the hood, a new DOM ele
 </qwik-react>
 ```
 
-> Notice, that the tag name of the wrapper element is configurable via `tagName`: `qwikify$(ReactCmp, { tagName: 'my-react' })`.
+> Обратите внимание, что имя тега элемента обёртки настраивается через `tagName`: `qwikify$(ReactCmp, { tagName: 'my-react' })`.
 
-### Listen to DOM events without hydration
+### Прослушивание событий DOM без гидратации
 
-The host element is not part of React, meaning that hydration is not necessary to listen for events, in order to add custom attributes and events to the host element, you can use the `host:` prefix in the JSX properties, such as:
+Хост-элемент не является частью React, что означает, что для прослушивания событий гидратация не требуется. Чтобы добавить пользовательские атрибуты и события к хост-элементу, вы можете использовать префикс `host:` в свойствах JSX, например:
 
 ```tsx
 <MUIButton host:onClick$={() => {
-  console.log('click a react component without hydration!!');
+  console.log('Клик по компоненту React без гидратации!');
 }}/>
 ```
 
-This will effectively allow you to respond to a click in a [MUI button](https://mui.com/material-ui/react-button/) without downloading a single byte of React code.
+Это позволит вам эффективно реагировать на нажатие кнопки [MUI button](https://mui.com/material-ui/react-button/), не загружая ни одного байта кода React.
 
-Happy hacking!
+Счастливого кодинга!
