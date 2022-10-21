@@ -17,8 +17,8 @@ contributors:
 ```typescript
 import { qwikCity } from '@builder.io/qwik-city/middleware/node';
 import express from 'express';
-import { fileURLToPath } from 'url';
-import { join } from 'path';
+import { fileURLToPath } from 'node:url';
+import { join } from 'node:path';
 import render from './entry.ssr';
 
 // Каталоги, в которых расположены статические ассеты

@@ -28,18 +28,31 @@
 - [Конечные точки](data/endpoints/index.mdx)
 - [Редиректы](data/redirects/index.mdx)
 
+## Создание контента
+
+- [Компоненты](content/component/index.mdx)
+- [MDX-файлы](content/mdx/index.mdx)
+- [Меню](content/menu/index.mdx)
+
+## Интеграция
+
+- [React](integrations/react/index.mdx)
+- [Partytown](integrations/partytown/index.mdx)
+- [Tailwind](integrations/tailwind/index.mdx)
+
+## Серверные адаптеры
+
+- [Обзор](adaptors/overview/index.mdx)
+- [Cloudflare Pages](adaptors/cloudflare-pages/index.mdx)
+- [Netlify Edge](adaptors/netlify-edge/index.mdx)
+- [Node](adaptors/node/index.mdx)
+
 ## Предварительная загрузка
 
 - [Обзор](prefetching/overview/index.mdx)
 - [Сервис-воркер](prefetching/service-worker-prefetching/index.mdx)
 - [Кэширование ответов](prefetching/request-response-cache/index.mdx)
 - [Распараллеливание запросов](prefetching/parallelizing-network-requests/index.mdx)
-
-## Создание контента
-
-- [Компоненты](content/component/index.mdx)
-- [MDX-файлы](content/mdx/index.mdx)
-- [Меню](content/menu/index.mdx)
 
 ## Генерация (SSG)
 
@@ -56,15 +69,3 @@
 - [useContent()](api/use-content/index.mdx)
 - [useDocumentHead()](api/use-document-head/index.mdx)
 - [useLocation()](api/use-location/index.mdx)
-
-## Адаптеры
-
-- [Обзор](adaptors/overview/index.mdx)
-- [Cloudflare Pages](adaptors/cloudflare-pages/index.mdx)
-- [Netlify Edge](adaptors/netlify-edge/index.mdx)
-- [Node](adaptors/node/index.mdx)
-
-## Стартовые скрипты
-
-- [Partytown](starters/partytown/index.mdx)
-- [Tailwind](starters/tailwind/index.mdx)
