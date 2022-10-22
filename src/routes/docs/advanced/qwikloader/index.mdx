@@ -7,31 +7,31 @@ contributors:
 
 # Qwikloader
 
-Qwik is designed for fine-grained lazy loading of your application. To achieve lazy-loading, Qwik requires a tiny piece of JavaScript to load at the beginning that knows how to download the rest of the application on an as-needed basis. We refer to that JavaScript as Qwikloader.
+Qwik предназначен для фрагментарной ленивой загрузки вашего приложения. Для достижения ленивой загрузки Qwik нуждается в крошечном фрагменте JavaScript-кода, который знает, как загружать остальную часть приложения по мере необходимости. Мы называем этот фрагмент JavaScript-кода Qwikloader.
 
-Qwikloader is:
+Qwikloader:
 
-- small: about 1 kb minified.
-- fast: it executes in less than 5ms even on mobile devices. (Initial cost, not per event cost.)
+- маленький: около 1 Кб (минифицированный);
+- быстрый: он выполняется менее чем за 5 мс даже на мобильных устройствах (первоначальные затраты, а не затраты на каждое событие).
 
-How is it delivered:
+Как осуществляется доставка:
 
-- Because of its size, we recommend delivering Qwikloader as inlined `<script>` tag. This way, the browser does not have to pay for the cost of creating another connection to the server.
+- Из-за его размера мы рекомендуем вставлять Qwikloader в виде встроенного тега `<script>`. Тогда браузеру не придётся создавать ещё одно соединение с сервером.
 
-What is the purpose of Qwikloader:
+Каково назначение Qwikloader:
 
-- register global browser events.
-- if an event occurs, search the DOM for the corresponding event attribute pointing to the QRL to lazy-load.
-- Lazy-load the event handler and execute it.
+- Регистрировать глобальные события браузера;
+- Если происходит событие, поиск в DOM соответствующего атрибута события, указывающего на QRL для ленивой загрузки;
+- Ленивая загрузка обработчика события и его выполнение.
 
-## How does it work
+## Как это работает
 
-Below you can find a simple HTML with Qwikloader and a button with associated behavior.
+Ниже представлен простой HTML с Qwikloader и кнопка с соответствующим поведением.
 
 ```html
 <html>
   <body q:base="/build/">
-    <button on:click="./myHandler.js#clickHandler">push me</button>
+    <button on:click="./myHandler.js#clickHandler">нажми меня</button>
     <script>
       /* Qwikloader */
     </script>
@@ -39,23 +39,22 @@ Below you can find a simple HTML with Qwikloader and a button with associated be
 </html>
 ```
 
-1. The browser downloads the HTML and executes the inlined Qwikloader script. The Qwikloader sets up global listeners for all browser events.
-2. The user clicks on the `<button>`. The browser generates a `click` event that bubbles up the DOM until the Qwikloader's global listener intercepts it.
-3. The Qwikloader retraces the event path and searches for `on:click` attribute on the elements.
-4. The Qwikloader uses the `on:click` and `q:base` attributes along with the `document.baseURI` to build a full URL for fetching the lazy-loaded handler. Assuming the original page was served up from `http://localhost/` the fetch URL becomes `http://localhost/build/myHandler.js`.
-5. Qwikloader retrieves the `clickHandler` symbol, exported from `http://localhost/build/myHandler.js` and invokes it.
+1. Браузер загружает HTML и выполняет встроенный сценарий Qwikloader. Qwikloader устанавливает глобальные слушатели для всех событий браузера.
+2. Пользователь нажимает на `<button>`. Браузер генерирует событие `click`, которое распространяется по DOM, пока глобальный слушатель Qwikloader не перехватит его.
+3. Qwikloader прослеживает путь события и ищет атрибут `on:click` на элементах.
+4. Qwikloader использует атрибуты `on:click` и `q:base` вместе с `document.baseURI` для построения полного URL для ленивой загрузки обработчика события. Если предположить, что исходная страница была загружена с `http://localhost/`, то URL для получения обработчика становится `http://localhost/build/myHandler.js`.
+5. Qwikloader извлекает символ `clickHandler`, экспортированный из `http://localhost/build/myHandler.js`, и вызывает его.
 
+## События и Qwikloader
 
-## Events and qwikloader
+Регистрация слушателя создает две проблемы в контексте SSR/SSG, которые Qwik должен решить (для контекста вспомним, что Qwik возобновляемый, то есть он может продолжить выполнение приложения с того места, где сервер сделал паузу, без необходимости загружать и выполнять весь код).
 
-The registration of the listener creates two problems in the context of the SSR/SSG that Qwik needs to solve. (For context, remember that Qwik is resumable, that is, it can continue executing the application from where the server paused without being forced to download and execute code eagerly.)
+1. **местонахождение слушателя**: Qwik должен знать, где в HTML находятся события, которые пришли из SSR/SSG.
+2. **код слушателя**: Qwik необходимо знать, какой код должен быть выполнен при срабатывании события.
 
-1. **listener location**: Qwik needs to know where the events are in the HTML which came from the SSR/SSG.
-2. **listener code**: Qwik needs to know what code should run if the event is triggered.
+Без вышеуказанной информации Qwik будет вынужден загрузить шаблон компонента и выполнить его, чтобы можно было восстановить местоположение и замыкание слушателя. Этот процесс известен как гидратация, и Qwik пытается избежать гидратации.
 
-Without the above information, Qwik would be forced to download the component template and execute it so that the listener location and closure can be recovered. This process is known as hydration, and Qwik explicitly tries to avoid hydration.
-
-Qwik serializes the event listeners into DOM in the form of [QRLs](../qrl/index.mdx). For example:
+Qwik сериализует слушателей событий в DOM в виде [QRLs](../qrl/index.mdx). Например:
 
 ```html
 <div>
@@ -63,5 +62,4 @@ Qwik serializes the event listeners into DOM in the form of [QRLs](../qrl/index.
 </div>
 ```
 
-The critical thing to notice is that Qwik generated an `on:click` attribute, containing the value `./chunk-a.js#Counter_button_onClick[0]`. In the above example the `on:click` attribute solves the listener location problem, and the attribute value solves the listener code location problem. By serializing the listeners into the HTML Qwik-applications do not need to perform hydration on startup.
-
+Важно отметить, что Qwik создал атрибут `on:click`, содержащий значение `./chunk-a.js#Counter_button_onClick[0]`. В приведённом выше примере атрибут `on:click` решает проблему расположения слушателя, а значение атрибута решает проблему расположения кода слушателя. Благодаря сериализации слушателей в HTML Qwik-приложениям не нужно выполнять гидратацию при запуске.
