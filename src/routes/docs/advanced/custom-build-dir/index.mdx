@@ -1,19 +1,19 @@
 ---
-title: Custom Build Output Directory
+title: Изменение каталога сборки
 contributors:
   - manucorporat
   - adamdbradley
 ---
 
-# Custom Build Output Directory
+# Изменение каталога сборки
 
-By default, the build output directory for Qwik is the `dist` folder in the root folder of the project.
+По умолчанию выходным каталогом сборки для Qwik является папка `dist` в корневой папке проекта.
 
-In certain cases, sometimes we need to make the build output directory different from the default package.
+В некоторых случаях нам необходимо сделать выходной каталог сборки отличным от каталога по умолчанию.
 
-## Wrong Way
+## Неправильный путь
 
-Usually with Vite.js we do it like this:
+Обычно в Vite.js мы делаем это следующим образом:
 
 ```js
 // vite.config.js
@@ -29,7 +29,7 @@ export default defineConfig(() => {
   return {
     /* VITE_CONFIG */
     build: {
-      outDir: '../resources/', // This will be overrided to `dist` by qwikVite() setting
+      outDir: '../resources/', // Это значение будет переопределено на `dist` при установке qwikVite().
     },
     plugins: [
       qwikCity({
@@ -45,11 +45,11 @@ export default defineConfig(() => {
 });
 ```
 
-However, it will be overridden by the settings of QwikVite() so nothing happens and the build output directory is still in the `dist` folder
+Однако он будет переопределён настройками QwikVite(), поэтому ничего не произойдет, и каталог вывода сборки по-прежнему будет находиться в папке `dist`.
 
-## The Right Way
+## Правильный путь
 
-So instead of changing the settings in Vite.js directly, we just need to change the settings in QwikVite() like this:
+Поэтому вместо того, чтобы изменять настройки в Vite.js напрямую, нам просто нужно изменить настройки в QwikVite() следующим образом:
 
 ```ts
 import { defineConfig } from 'vite';
@@ -64,7 +64,7 @@ export default defineConfig(() => {
       qwikCity(),
       qwikVite({
         client: {
-          outDir: 'resources/', // This is the right setting
+          outDir: 'resources/', // Это правильная настройка.
         },
       }),
       tsconfigPaths(),
@@ -73,4 +73,4 @@ export default defineConfig(() => {
 });
 ```
 
-So that the output build directory becomes `resources`, please rename this folder name as needed.
+Чтобы выходным каталогом сборки стал каталог `resources`, переименуйте эту папку.
