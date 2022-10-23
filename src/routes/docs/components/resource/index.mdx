@@ -18,8 +18,8 @@ const store = useStore({
   bar: 'foo'
 })
 const resource = useResource$(async (ctx) => {
-  ctx.track(store, 'bar'); // Ресурс будет генерировать значение при изменении store.bar.
-  ctx.track(props, 'url'); // track() можно вызывать несколько раз, чтобы отслеживать несколько значений.
+  ctx.track(() => store.bar); // Ресурс будет генерировать значение при изменении store.bar.
+  ctx.track(() => props.url); // track() можно вызывать несколько раз, чтобы отслеживать несколько значений.
   ctx.cleanup(() => {
     // В случае, если ресурс необходимо очистить, будет вызвана эта функция.
     // Позволяет очищать такие ресурсы, как таймеры, подписки, запросы на выборку и т.д.
@@ -72,7 +72,7 @@ export const Cmp = component$(() => {
   });
 
   const weatherResource = useResource$<any>(async ({ track, cleanup }) => {
-    const cityName = track(store, 'city');
+    const cityName = track(() => store.city);
     const abortController = new AbortController();
     cleanup(() => abortController.abort('cleanup'));
     const res = await fetch(`http://weatherdata.com?city=${cityName}`, {
@@ -106,7 +106,7 @@ export const Cmp = component$(() => {
   });
 
   const weatherResource = useResource$<any>(async ({ track, cleanup }) => {
-    const cityName = track(store, 'city');
+    const cityName = track(() => store.city);
     const abortController = new AbortController();
     cleanup(() => abortController.abort('cleanup'));
     const res = await fetch(`http://weatherdata.com?city=${cityName}`, {
