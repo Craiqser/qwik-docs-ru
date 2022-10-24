@@ -15,7 +15,7 @@ contributors:
 Для начала рассмотрим простой пример `Counter`:
 
 ```tsx
-const Counter = component$(() => {
+export const Counter = component$(() => {
   const store = useStore({ count: 0 });
 
   return <button onClick$={() => store.count++}>{store.count}</button>;
@@ -121,7 +121,7 @@ onScroll$(() => alert('scroll'));
 Предположим, что у вас есть такой код:
 
 ```tsx
-const MyComp = component$(() => {
+export const MyComp = component$(() => {
   /* определение компонента */
 });
 ```
@@ -154,7 +154,7 @@ export const MyComp_onMount = () => {
 Давайте рассмотрим простой случай:
 
 ```tsx
-const Greeter = component$(() => {
+export const Greeter = component$(() => {
   return <span>Привет, мир!</span>;
 });
 ```
@@ -182,7 +182,7 @@ const Greeter_onRender = () => <span>Привет, мир!</span>;
 Вышесказанное относится к простым случаям, когда извлечённое замыкание функции не захватывает никаких переменных. Рассмотрим более сложный случай, когда извлечённое замыкание функции лексически захватывает переменные.
 
 ```tsx
-const Greeter = component$((props: { name: string }) => {
+export const Greeter = component$((props: { name: string }) => {
   const salutation = 'Привет';
 
   return (

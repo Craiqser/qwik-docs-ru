@@ -12,12 +12,12 @@ contributors:
 
 ```tsx
 // Легковесный компонент: объявлен с использованием стандартной функции.
-function MyButton(props: { text: string }) {
+export const MyButton = (props: { text: string }) => {
   return <button>{props.text}</button>;
-}
+};
 
 // Компонент: объявлен с использованием функции `component$()`.
-const MyApp = component$(() => {
+export const MyApp = component$(() => {
   return (
     <div>
       Немного текста:

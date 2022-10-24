@@ -45,7 +45,7 @@ QRL-адреса также могут восстанавливать перем
 Разработчик пишет код простого компонента.
 
 ```tsx
-const Counter = component$((props: { step: number }) => {
+export const Counter = component$((props: { step: number }) => {
   const state = useStore({ count: 0 });
 
   return <button onClick$={() => (state.count += props.step || 1)}>{state.count}</button>;

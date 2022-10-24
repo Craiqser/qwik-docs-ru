@@ -14,7 +14,7 @@ contributors:
 Для того чтобы веб-приложение было интерактивным, оно нуждается в реагировании на пользовательские события. Это делается путем регистрации функций обратного вызова в шаблоне JSX.
 
 ```tsx
-const Counter = component$(() => {
+export const Counter = component$(() => {
   const store = useStore({ count: 0 });
 
   return <button onClick$={() => store.count++}>{store.count}</button>;
@@ -32,7 +32,7 @@ const Counter = component$(() => {
 ```tsx
 import { component$, useStore, $ } from "@builder.io/qwik";
 
-const Counter = component$(() => {
+export const Counter = component$(() => {
   const store = useStore({ count: 0 });
   const incrementCount = $(() => store.count++)
 
@@ -45,7 +45,7 @@ const Counter = component$(() => {
 Из-за асинхронной природы Qwik выполнение обработчика события может быть отложено, поскольку реализация еще не загружена. Это создает проблему, когда обработчику события необходимо предотвратить поведение события по умолчанию. Традиционный `event.preventDefault()` не будет работать, поэтому вместо этого используйте атрибут Qwik `preventdefault:{eventName}`:
 
 ```tsx
-const PreventDefaultExample = component$(() => {
+export const PreventDefaultExample = component$(() => {
   return (
     <a
       href="/about"
@@ -67,7 +67,7 @@ const PreventDefaultExample = component$(() => {
 До сих пор мы обсуждали, как прослушивать события, идущие от элементов разметки. Есть события (например, `scroll` и `mousemove`), которые требуют прослушивания на объекте `window` или `document`. По этой причине Qwik позволяет использовать префиксы `document:on` и `window:on`.
 
 ```tsx
-const EventExample = component$(() => {
+export const EventExample = component$(() => {
   const store = useStore({
     scroll: 0,
     mouse: { x: 0, y: 0 },
@@ -109,7 +109,7 @@ interface CmpButtonProps {
   onClick$?: PropFunction<() => void>;
 }
 
-const CmpButton = component$((props: CmpButtonProps) => {
+export const CmpButton = component$((props: CmpButtonProps) => {
   return (
     <button onDblclick$={props.onClick$}>
       <Slot />
@@ -135,7 +135,7 @@ interface CmpButtonProps {
   onClick$?: PropFunction<() => number>;
 }
 
-const CmpButton = component$((props: CmpButtonProps) => {
+export const CmpButton = component$((props: CmpButtonProps) => {
   return (
     <button
       onDblclick$={props.onClick$}
@@ -163,7 +163,7 @@ const CmpButton = component$((props: CmpButtonProps) => {
 ## Восстановление состояния
 
 ```tsx
-const Counter = component$(() => {
+export const Counter = component$(() => {
   const store = useStore({ count: 0 });
 
   return <button onClick$={() => store.count++}>{store.count}</button>;
