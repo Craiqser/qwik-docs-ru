@@ -36,3 +36,26 @@ export { onRequest } from '../server/entry.cloudflare-pages';
 
 - [Cloudflare Pages Middleware Source](https://github.com/BuilderIO/qwik/tree/main/packages/qwik-city/middleware/cloudflare-pages/index.ts)
 - [Cloudflare Pages Functions](https://developers.cloudflare.com/pages/platform/functions/)
+
+
+## Использование
+
+### Контекст
+
+Вы можете получить доступ к переменным окружения Cloudflare Pages в параметре `platform` методов конечной точки:
+
+```javascript
+export const onRequest = async ({ platform }) => {
+  const secret = platform.env["SUPER_SECRET_TOKEN"];
+};
+```
+
+Кроме того, вы можете импортировать тип `RequestHandlerCloudflarePages`, чтобы иметь автокомплит типов в вашем редакторе.
+
+```typescript
+import {type RequestHandlerCloudflarePages} from '@builder.io/qwik-city/middleware/cloudflare-pages';
+
+export const onGet: RequestHandlerCloudflarePages = (({ platform }) => {
+ //...
+})
+```

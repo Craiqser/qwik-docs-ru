@@ -87,6 +87,16 @@ export const onRequest = async ({ platform }) => {
 };
 ```
 
+Кроме того, вы можете импортировать тип `RequestHandlerNetlify`, чтобы иметь автокомплит типов в вашем редакторе.
+
+```typescript
+import {type RequestHandlerNetlify} from '@builder.io/qwik-city/middleware/netlify-edge';
+
+export const onGet: RequestHandlerNetlify = (({platform}) => {
+ //...
+})
+```
+
 ### Переменные окружения
 
 ```javascript
