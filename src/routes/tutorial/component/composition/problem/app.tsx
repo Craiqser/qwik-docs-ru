@@ -3,12 +3,12 @@ import { component$ } from '@builder.io/qwik';
 export const App = component$(() => {
   return (
     <div>
-      Insert Greeter component here. By composing components together large applications can be
-      written without putting all of the code into a single file/component.
+      Вставьте сюда компонент `Greeter`. Составляя компоненты вместе, можно
+      писать большие приложения, не помещая весь код в один файл/компонент.
     </div>
   );
 });
 
 export const Greeter = component$(() => {
-  return <div>Hello World!</div>;
+  return <div>Привет, мир!</div>;
 });
