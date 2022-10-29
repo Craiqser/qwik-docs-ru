@@ -11,7 +11,7 @@ export const App = component$(() => {
   return (
     <div>
       <span>
-        GitHub username:
+        Имя пользователя GitHub:
         <input value={github.org} />
       </span>
       <div>
@@ -26,7 +26,7 @@ export const App = component$(() => {
             ))}
           </ul>
         ) : (
-          'loading...'
+          'загрузка...'
         )}
       </div>
     </div>
