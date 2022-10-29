@@ -1,28 +1,28 @@
 ---
-title: Light Component
+title: Встроенные компоненты
 contributors:
   - adamdbradley
   - the-r3aper7
   - manucorporat
 ---
 
-One of Qwik's super powers lies in its lazy-loading features.
+Одна из сверхспособностей Qwik заключается в его функциях ленивой загрузки.
 
-Qwik lazy-loads:
+Qwik лениво загружает:
 
-- **Independent of hierarchy**: Components can be loaded out of order. For example, the code for a child component can load before its parent code.
-- **Based on interaction**: Code loading is deferred until a user interacts with a component.
-- **More than just components**: Qwik lazy-loads any closure including components, event listeners, effects, and behaviors.
+- **Независимо от иерархии**: Компоненты могут быть загружены не по порядку. Например, код дочернего компонента может загружаться раньше его родительского кода.
+- **На основе взаимодействия**: Загрузка кода откладывается до тех пор, пока пользователь не взаимодействует с компонентом.
+- **Больше, чем просто компоненты**: Qwik лениво загружает любое замыкание, включая компоненты, слушателей событий, эффекты и поведение.
 
-`$` marks a closure as lazy-loadable. For example `component$()` method makes the component lazy-loadable. When you see a `$` in Qwik code, you're crossing a lazy-loading boundary and have to be aware of special rules:
+`$` помечает замыкание как лениво загружаемое. Например, метод `component$()` делает компонент доступным для ленивой загрузки. Когда вы видите `$` в коде Qwik, вы пересекаете границу отложенной загрузки и должны знать о специальных правилах:
 
-- any lexically scoped variables must be declared as `const`
-- a captured variable/symbol must be either:
-  - serializable
-  - importable (Either from a different file as `import` or from this file using `export`)
+- любые переменные с лексической областью действия должны быть объявлены как `const`;
+- захваченная переменная/символ должны быть либо:
+  - сериализуемы;
+  - импортируемы (либо из другого файла с помощью `import`, либо из этого файла с помощью `export`).
 
-If you want to ensure a component loads with another component, you create an inline component. Inline components load as a part of the parent component and are equivalent to how most other frameworks deal with components.
+Если вы хотите, чтобы компонент загружался вместе с другим компонентом, вы создаёте встроенный компонент. Встроенные компоненты загружаются как часть родительского компонента, это эквивалентно тому, как большинство других фреймворков работают с компонентами.
 
-In this example, the `<App>` and a `<Greeter>` components are prepared for you. The `<Greeter />` component is declared using the `component$()` method and is a Qwik component. Remove the `component$()` to convert `<Greeter>` to an inline component.
+В этом примере для вас подготовлены компоненты `<App>` и `<Greeter>`. Компонент `<Greeter />` объявляется с помощью метода `component$()` и является компонентом Qwik. Удалите `component$()`, чтобы преобразовать `<Greeter>` во встроенный компонент.
 
-Open the `Symbols` tab and notice that the `<Greeter />` component is no longer an independent export, but instead is bundled as part of the `<App>` component.
+Откройте вкладку `Symbols` и обратите внимание, что компонент `<Greeter />` больше не является независимым, а включен как часть компонента `<App>`.
