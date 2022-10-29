@@ -1,5 +1,10 @@
 # Qwik Docs Site ⚡️
 
+## Current status
+
+- Qwik, QwikCity: translated (28.10.2022)
+- Tutorial: WIP
+
 ## Development Builds
 
 ### Client only
