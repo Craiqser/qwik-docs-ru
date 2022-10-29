@@ -1,11 +1,11 @@
 [
   {
     "id": "welcome",
-    "title": "Start here",
+    "title": "Введение",
     "apps": [
       {
         "id": "overview",
-        "title": "Qwik Tutorial Overview",
+        "title": "Обзор учебника Qwik",
         "enableHtmlOutput": true,
         "enableClientOutput": true,
         "enableSsrOutput": false
@@ -14,32 +14,32 @@
   },
   {
     "id": "introduction",
-    "title": "Simple Application",
+    "title": "Простое приложение",
     "apps": [
       {
         "id": "component",
-        "title": "Basic Component",
+        "title": "Базовый компонент",
         "enableHtmlOutput": false,
         "enableClientOutput": false,
         "enableSsrOutput": false
       },
       {
         "id": "store",
-        "title": "State management",
+        "title": "Управление состоянием",
         "enableHtmlOutput": false,
         "enableClientOutput": false,
         "enableSsrOutput": false
       },
       {
         "id": "listeners",
-        "title": "Event listeners",
+        "title": "Слушатели событий",
         "enableHtmlOutput": false,
         "enableClientOutput": false,
         "enableSsrOutput": false
       },
       {
         "id": "resource",
-        "title": "Fetching resource on state change",
+        "title": "Получение ресурса при изменении состояния",
         "enableHtmlOutput": false,
         "enableClientOutput": false,
         "enableSsrOutput": false
@@ -48,32 +48,32 @@
   },
   {
     "id": "component",
-    "title": "Components",
+    "title": "Компоненты",
     "apps": [
       {
         "id": "basic",
-        "title": "Basic Component",
+        "title": "Базовый компонент",
         "enableHtmlOutput": false,
         "enableClientOutput": false,
         "enableSsrOutput": false
       },
       {
         "id": "binding",
-        "title": "Binding Expressions",
+        "title": "Выражения привязки",
         "enableHtmlOutput": false,
         "enableClientOutput": false,
         "enableSsrOutput": false
       },
       {
         "id": "composition",
-        "title": "Composing Components",
+        "title": "Композиция компонентов",
         "enableHtmlOutput": false,
         "enableClientOutput": false,
         "enableSsrOutput": false
       },
       {
         "id": "inline",
-        "title": "Inline Components",
+        "title": "Встроенные компоненты",
         "enableHtmlOutput": true,
         "enableClientOutput": true,
         "enableSsrOutput": true
@@ -82,39 +82,39 @@
   },
   {
     "id": "events",
-    "title": "Events",
+    "title": "События",
     "apps": [
       {
         "id": "basic",
-        "title": "Listening on events",
+        "title": "Прослушивание событий",
         "enableHtmlOutput": true,
         "enableClientOutput": true,
         "enableSsrOutput": true
       },
       {
         "id": "document",
-        "title": "Listening on document/window",
+        "title": "Прослушивание объектов document/window",
         "enableHtmlOutput": false,
         "enableClientOutput": false,
         "enableSsrOutput": false
       },
       {
         "id": "preventdefault",
-        "title": "Preventing default behavior",
+        "title": "Предотвращение поведения по умолчанию",
         "enableHtmlOutput": false,
         "enableClientOutput": false,
         "enableSsrOutput": false
       },
       {
         "id": "synchronous",
-        "title": "Synchronous Events",
+        "title": "Синхронные события",
         "enableHtmlOutput": false,
         "enableClientOutput": false,
         "enableSsrOutput": false
       },
       {
         "id": "programmatic",
-        "title": "useOn() / useOnDocument() / useOnWindow() - Programmatic Listeners",
+        "title": "useOn() / useOnDocument() / useOnWindow() - Программные слушатели",
         "enableHtmlOutput": false,
         "enableClientOutput": false,
         "enableSsrOutput": false
@@ -123,32 +123,32 @@
   },
   {
     "id": "store",
-    "title": "Stores",
+    "title": "Хранилища",
     "apps": [
       {
         "id": "basic",
-        "title": "Storing State",
+        "title": "Хранение состояния",
         "enableHtmlOutput": true,
         "enableClientOutput": false,
         "enableSsrOutput": false
       },
       {
         "id": "recursive",
-        "title": "Recursive Store",
+        "title": "Рекурсивное хранилище",
         "enableHtmlOutput": false,
         "enableClientOutput": false,
         "enableSsrOutput": false
       },
       {
         "id": "serialization",
-        "title": "Serialization Graph",
+        "title": "Граф сериализации",
         "enableHtmlOutput": false,
         "enableClientOutput": false,
         "enableSsrOutput": false
       },
       {
         "id": "no-serialize",
-        "title": "Non-serializable Properties",
+        "title": "Несериализуемые свойства",
         "enableHtmlOutput": false,
         "enableClientOutput": false,
         "enableSsrOutput": false
@@ -157,25 +157,25 @@
   },
   {
     "id": "props",
-    "title": "Component Props",
+    "title": "Параметры компонента",
     "apps": [
       {
         "id": "basic",
-        "title": "Passing Data to Components",
+        "title": "Передача данных компонентам",
         "enableHtmlOutput": false,
         "enableClientOutput": false,
         "enableSsrOutput": false
       },
       {
         "id": "store",
-        "title": "Passing Stores",
+        "title": "Передача состояния",
         "enableHtmlOutput": false,
         "enableClientOutput": false,
         "enableSsrOutput": false
       },
       {
         "id": "closures",
-        "title": "Passing Closures",
+        "title": "Передача замыканий",
         "enableHtmlOutput": false,
         "enableClientOutput": false,
         "enableSsrOutput": false
@@ -184,25 +184,25 @@
   },
   {
     "id": "reactivity",
-    "title": "Reactivity",
+    "title": "Реактивность",
     "apps": [
       {
         "id": "template",
-        "title": "Implicit Template Updates",
+        "title": "Неявные обновления шаблонов",
         "enableHtmlOutput": false,
         "enableClientOutput": false,
         "enableSsrOutput": false
       },
       {
         "id": "explicit",
-        "title": "useWatch$() - Explicit Reactivity",
+        "title": "useWatch$() - Явная реактивность",
         "enableHtmlOutput": false,
         "enableClientOutput": false,
         "enableSsrOutput": false
       },
       {
         "id": "resource",
-        "title": "useResource$() - Explicit Reactivity",
+        "title": "useResource$() - Явная реактивность",
         "enableHtmlOutput": false,
         "enableClientOutput": false,
         "enableSsrOutput": false
@@ -211,11 +211,11 @@
   },
   {
     "id": "context",
-    "title": "Context",
+    "title": "Контекст",
     "apps": [
       {
         "id": "basic",
-        "title": "Using context",
+        "title": "Использование контекста",
         "enableHtmlOutput": false,
         "enableClientOutput": false,
         "enableSsrOutput": false
@@ -224,7 +224,7 @@
   },
   {
     "id": "hooks",
-    "title": "Lifecycle Hooks",
+    "title": "Хуки жизненного цикла",
     "apps": [
       {
         "id": "use-mount",
@@ -272,25 +272,25 @@
   },
   {
     "id": "projection",
-    "title": "Projection",
+    "title": "Проекция",
     "apps": [
       {
         "id": "basic",
-        "title": "Basic Projection",
+        "title": "Основная проекция",
         "enableHtmlOutput": false,
         "enableClientOutput": false,
         "enableSsrOutput": false
       },
       {
         "id": "slots",
-        "title": "Named Slots",
+        "title": "Именованные слоты",
         "enableHtmlOutput": false,
         "enableClientOutput": false,
         "enableSsrOutput": false
       },
       {
         "id": "fallback",
-        "title": "Fallback content",
+        "title": "Содержимое по умолчанию",
         "enableHtmlOutput": false,
         "enableClientOutput": false,
         "enableSsrOutput": false
@@ -299,18 +299,18 @@
   },
   {
     "id": "style",
-    "title": "Styling",
+    "title": "Стилизация",
     "apps": [
       {
         "id": "styles",
-        "title": "useStyles() - Styles",
+        "title": "useStyles() - Стили",
         "enableHtmlOutput": false,
         "enableClientOutput": false,
         "enableSsrOutput": false
       },
       {
         "id": "scoped",
-        "title": "useStylesScoped() - Scoped styles",
+        "title": "useStylesScoped() - Локальные стили",
         "enableHtmlOutput": false,
         "enableClientOutput": false,
         "enableSsrOutput": false
@@ -319,25 +319,25 @@
   },
   {
     "id": "qrl",
-    "title": "$ and QRL",
+    "title": "$ и QRL",
     "apps": [
       {
         "id": "optimizer",
-        "title": "Optimizer",
+        "title": "Оптимизатор",
         "enableHtmlOutput": true,
         "enableClientOutput": true,
         "enableSsrOutput": true
       },
       {
         "id": "data",
-        "title": "Lazy Loading constants",
+        "title": "Ленивая загрузка данных",
         "enableHtmlOutput": true,
         "enableClientOutput": true,
         "enableSsrOutput": true
       },
       {
         "id": "closures",
-        "title": "Lazy Loading closures",
+        "title": "Ленивая загрузка замыканий",
         "enableHtmlOutput": true,
         "enableClientOutput": true,
         "enableSsrOutput": true
@@ -346,18 +346,18 @@
   },
   {
     "id": "composing",
-    "title": "Composing new APIs",
+    "title": "Создание новых API",
     "apps": [
       {
         "id": "dollar",
-        "title": "Creating APIs with $",
+        "title": "Создание API с $",
         "enableHtmlOutput": false,
         "enableClientOutput": false,
         "enableSsrOutput": false
       },
       {
         "id": "use",
-        "title": "Composing use Hooks",
+        "title": "Создание use-хука",
         "enableHtmlOutput": false,
         "enableClientOutput": false,
         "enableSsrOutput": false
@@ -366,15 +366,15 @@
   },
   {
     "id": "understanding",
-    "title": "Understanding Qwik difference",
+    "title": "Понимание различий Qwik",
     "apps": [
       {
         "id": "treeshaking",
-        "title": "Tree-shaking static components"
+        "title": "Тришейкинг статических компонентов"
       },
       {
         "id": "capturing",
-        "title": "Capturing lexical scope"
+        "title": "Захват лексической области"
       }
     ]
   }
