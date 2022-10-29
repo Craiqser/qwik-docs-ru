@@ -1,58 +1,58 @@
 ---
-title: Basics - Qwik Tutorial
+title: Учебник Qwik - Ресурс
 contributors:
   - adamdbradley
   - manucorporat
 ---
 
-For this tutorial, we would like to fetch the list of repositories for a given GitHub organization. To aid you, we have added the `getRepositories()` function to the bottom of the file. Your task is to use the `getRepositories()` function to fetch the list of repositories whenever the user updates the `org` input.
+В этом руководстве мы хотим получить список репозиториев для заданной организации GitHub. Чтобы помочь вам, мы добавили функцию `getRepositories()` в нижнюю часть файла. Ваша задача - использовать функцию `getRepositories()` для получения списка репозиториев каждый раз, когда пользователь обновляет элемент `org`.
 
-Qwik provides `useResource$()` and `<Resource>` to help you fetch and display data from the server. When fetching data the application can be in one of three states:
+Qwik предоставляет `useResource$()` и `<Resource>`, чтобы помочь вам получить и отобразить данные с сервера. При получении данных приложение может находиться в одном из трёх состояний:
 
-- `pending`: the data is being fetched from the server => Render `loading...` indicator.
-- `resolved`: the data has successfully been fetched from the server => Render the data.
-- `rejected`: the data could not be fetched from the server due to an error => Render the error.
+- `pending`: идёт получение данных с сервера => Отображается индикатор `загрузка...`;
+- `resolved`: данные успешно получены с сервера => Отображение данных;
+- `rejected`: данные не могут быть получены с сервера из-за ошибки => Отображение ошибки.
 
-Use `useResource$()` function to set up how the data is fetched from the server. Use `<Resource>` to display the data.
+Используйте функцию `useResource$()`, чтобы настроить способ получения данных с сервера. Используйте `<Resource>` для отображения данных.
 
-## Fetching data
+## Получение данных
 
-Use `useResource$()` to set up how the data is fetched from the server.
+Используйте `useResource$()`, чтобы настроить способ получения данных с сервера.
 
 ```jsx
   const reposResource = useResource$<string[]>(({ track, cleanup }) => {
-    // We need a way to re-run fetching data whenever the `github.org` changes.
-    // Use `track` to trigger re-running of this data fetching function.
+    // Нам нужен способ повторной выборки данных при каждом
+    // изменении `github.org`. Используйте `track` для
+    // повторного запуска этой функции получения данных.
     track(() => github.org);
 
-    // A good practice is to use `AbortController` to abort the fetching of data if
-    // new request comes in. We create a new `AbortController` and register a `cleanup`
-    // function which is called when this function re-runs.
+    // Хорошей практикой является использование `AbortController`
+    // для прерывания получения данных, если поступает новый запрос.
+    // Мы создаем новый `AbortController` и регистрируем функцию
+    // `cleanup`, которая вызывается при повторном запросе.
     const controller = new AbortController();
     cleanup(() => controller.abort());
 
-    // Fetch the data and return the promises.
+    // Получаем данные и возвращаем промис.
     return getRepositories(github.org, controller);
   });
 ```
 
-The `useResource$()` function returns a `ResourceReturn` object, which is a Promise-like object that can be serialized by Qwik. The `useResource$()` function allows you to `track` story properties so that the `useResource$()` function can be reactive on store changes. The `cleanup` function allows you to register a code that needs to be run to release resources from the previous run. Finally, the `useResource$()` function returns a promise that will resolve to the value.
+Функция `useResource$()` возвращает объект `ResourceReturn`, который представляет собой объект, подобный промисам, и может быть сериализован Qwik. Функция `useResource$()` позволяет с помощью `track` отслеживать свойства для того, чтобы функция `useResource$()` могла реагировать на изменения состояния. Функция `cleanup` позволяет зарегистрировать код, который необходимо выполнить, чтобы освободить ресурсы от предыдущего запроса. Наконец, функция `useResource$()` возвращает промис, который разрешается в значение.
 
-## Rendering data
+## Рендер данных
 
-Use `<Resource>` to display the data of `useResource$()` function. The `<Resource>` allows you to render different content depending if the resource is `pending`, `resolved` or `rejected`.
-
-On the server the `<Resource>` does not render `loading` state, instead, it pauses rendering until the resource is resolved and will always render as either `resolved` or `rejected`. (On the client, the `<Resource>` renders all states including `pending`.)
+Используйте `<Resource>` для отображения данных функции `useResource$()`. `<Resource>` позволяет вам отображать различное содержимое в зависимости от текущего состояния ресурса: `pending`, `resolved` или `rejected`.
 
 ```jsx
   <Resource
      value={resourceToRender}
-     onPending={() => <div>Loading...</div>}
-     onRejected={(reason) => <div>Error: {reason}</div>}
+     onPending={() => <div>Загрузка...</div>}
+     onRejected={(reason) => <div>Ошибка: {reason}</div>}
      onResolved={(data) => <div>{data}</div>}
   />
 ```
 
-## SSR vs Client
+## Сервер vs Клиент
 
-Notice that the same code can render on both server and client (with slightly different behavior, which skips the `pending` state rendering on the server.)
+Обратите внимание, что один и тот же код может рендериться как на сервере, так и на клиенте (с немного другим поведением, которое пропускает рендер состояния `pending` на сервере).

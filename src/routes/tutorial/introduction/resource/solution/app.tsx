@@ -25,7 +25,7 @@ export const App = component$(() => {
   return (
     <div>
       <span>
-        GitHub username:
+        Имя пользователя GitHub:
         <input
           value={github.org}
           onInput$={(ev) => (github.org = (ev.target as HTMLInputElement).value)}
@@ -34,8 +34,8 @@ export const App = component$(() => {
       <div>
         <Resource
           value={reposResource}
-          onPending={() => <>Loading...</>}
-          onRejected={(error) => <>Error: {error.message}</>}
+          onPending={() => <>Загрузка...</>}
+          onRejected={(error) => <>Ошибка: {error.message}</>}
           onResolved={(repos) => (
             <ul>
               {repos.map((repo) => (

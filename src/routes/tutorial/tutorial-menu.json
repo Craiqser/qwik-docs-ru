@@ -39,7 +39,7 @@
       },
       {
         "id": "resource",
-        "title": "Получение ресурса при изменении состояния",
+        "title": "Загрузка ресурса при изменении состояния",
         "enableHtmlOutput": false,
         "enableClientOutput": false,
         "enableSsrOutput": false

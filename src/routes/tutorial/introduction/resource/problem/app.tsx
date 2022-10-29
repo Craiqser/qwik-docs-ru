@@ -7,25 +7,25 @@ export const App = component$(() => {
   });
 
   const reposResource = useResource$<string[]>(({ track, cleanup }) => {
-    // We need a way to re-run fetching data whenever the `github.org` changes.
-    // Use `track` to trigger re-running of the this data fetching function.
+    // Нам нужен способ повторного получения данных при каждом изменении `github.org`.
+    // Используйте `track` для запуска повторного запуска функции получения данных.
     track(() => github.org);
 
-    // A good practice is to use `AbortController` to abort the fetching of data if
-    // new request comes in. We create a new `AbortController` and register a `cleanup`
-    // function which is called when this function re-runs.
+    // Хорошей практикой является использование `AbortController` для прерывания
+    // получения данных, если поступает новый запрос. Мы создаем новый `AbortController`
+    // и регистрируем функцию `cleanup`, которая вызывается при повторном запросе.
     const controller = new AbortController();
     cleanup(() => controller.abort());
 
-    // Fetch the data and return the promises.
+    // Получение данных и возврат промиса.
     return getRepositories(github.org, controller);
   });
 
-  console.log('Render');
+  console.log('Рендер');
   return (
     <div>
       <span>
-        GitHub username:
+        Имя пользователя GitHub:
         <input
           value={github.org}
           onInput$={(ev) => (github.org = (ev.target as HTMLInputElement).value)}
@@ -34,8 +34,8 @@ export const App = component$(() => {
       <div>
         <Resource
           value={reposResource}
-          onPending={() => <>Loading...</>}
-          onRejected={(error) => <>Error: {error.message}</>}
+          onPending={() => <>Загрузка...</>}
+          onRejected={(error) => <>Ошибка: {error.message}</>}
           onResolved={(repos) => (
             <ul>
               {repos.map((repo) => (
