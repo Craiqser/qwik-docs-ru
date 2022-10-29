@@ -3,12 +3,12 @@ import { component$, useStore } from '@builder.io/qwik';
 export const App = component$(() => {
   return (
     <>
-      <h1>Hello World!</h1>
-      Look! I am a static component.
+      <h1>Привет, мир!</h1>
+      Смотри! Я - статический компонент.
       <br />
-      Qwik will never download me to the client. I am only rendered on the server.
+      Qwik никогда не загрузит меня на клиента. Я рендерюсь только на сервере.
       <br />
-      <button onClick$={() => alert('Hello')}>greet!</button>
+      <button onClick$={() => alert('Привет')}>Приветствовать!</button>
       <hr />
       <Counter />
     </>
@@ -19,10 +19,9 @@ export const Counter = component$(() => {
   const store = useStore({ count: 0 });
   return (
     <>
-      I am a dynamic component. Qwik will download me only when it is time to re-render me after the
-      user clicks on the <tt>+1</tt> button.
+      Я - динамический компонент. Qwik загрузит меня только тогда, когда потребуется рендер после нажатия пользователем на кнопку<tt>+1</tt>.
       <br />
-      Current count: {store.count}
+      Текущее значение: {store.count}
       <br />
       <button onClick$={() => store.count++}>+1</button>
     </>
