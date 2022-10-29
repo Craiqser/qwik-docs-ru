@@ -24,7 +24,7 @@ export default component$(() => {
     return (
       <Resource
         value={builderContentRsrc}
-        onPending={() => <div>Loading...</div>}
+        onPending={() => <div>Загрузка...</div>}
         onResolved={(content) => (
           <RenderContent model={MODEL} content={content} apiKey={BUILDER_PUBLIC_API_KEY} />
         )}
@@ -43,7 +43,7 @@ export default component$(() => {
           onRejected={(r) => {
             return (
               <div>
-                Unable to load content <span hidden>{r}</span>
+                Невозможно загрузить содержимое <span hidden>{r}</span>
               </div>
             );
           }}
@@ -71,5 +71,5 @@ interface BuilderContent {
 }
 
 export const head: DocumentHead = {
-  title: 'Framework reimagined for the edge!',
+  title: 'Крайне продуманный фреймворк!',
 };

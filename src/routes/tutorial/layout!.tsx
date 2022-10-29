@@ -66,17 +66,17 @@ export default component$(() => {
               {store.next ? (
                 <p class="next-link">
                   <a href={`/tutorial/${store.next.id}/`} class="next">
-                    Next: {store.next.title}
+                    Далее: {store.next.title}
                   </a>
                 </p>
               ) : null}
               <p class="edit-tutorial">
                 <a
-                  href={`https://github.com/BuilderIO/qwik/edit/main/packages/docs/src/routes/tutorial/${store.appId}`}
+                  href={`https://github.com/Craiqser/qwik-docs-ru/edit/main/src/routes/tutorial/${store.appId}`}
                   target="_blank"
                 >
                   <EditIcon width={16} height={16} />
-                  <span>Edit Tutorial</span>
+                  <span>Редактировать учебник</span>
                 </a>
               </p>
             </div>
@@ -140,7 +140,7 @@ export const Root = () => {
   return (
     <html>
       <head>
-        <title>Tutorial</title>
+        <title>Учебник</title>
       </head>
       <body>
         <App />
