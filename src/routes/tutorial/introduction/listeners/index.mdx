@@ -1,12 +1,12 @@
 ---
-title: Qwik Tutorial - Listeners
+title: Учебник Qwik - Слушатели
 contributors:
   - adamdbradley
   - manucorporat
 ---
 
-In this tutorial, we will add an event listener to the input. We will use the `keyup` event to listen to changes on the input. The goal is to update the `org` as the user types.
+В этом уроке мы добавим слушателя событий для элемента `<input>`. Для этого мы будем использовать событие `keyup`. Цель состоит в том, чтобы обновлять `org` по мере того, как пользователь набирает текст.
 
-Use the `onInput$` property on the `<input>` element to add an event listener.
+Используйте свойство `onInput$` для элемента `<input>`, чтобы добавить слушателя событий.
 
-Notice that the assignment to the store (`github.org = ...`) automatically triggers the component re-rendering.
+Обратите внимание, что присвоение хранилищу (`github.org = ...`) автоматически вызывает повторный рендер компонента.
