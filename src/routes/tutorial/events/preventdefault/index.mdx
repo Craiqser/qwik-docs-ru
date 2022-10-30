@@ -1,16 +1,16 @@
 ---
-title: Event Prevent Default
+title: Предотвращение поведения по умолчанию
 contributors:
   - manucorporat
   - adamdbradley
 ---
 
-For some events browsers have default behavior. For example, when you click a link, the browser will usually navigate to the link's `href`. There are times when we would like to prevent that. For this reason `Event` API contains `preventDefault()` method.
+Для некоторых событий браузеры имеют поведение по умолчанию. Например, когда вы нажимаете на ссылку, браузер обычно переходит к ссылке атрибута `href`. Бывают случаи, когда мы хотели бы предотвратить это. По этой причине API событий содержит метод `preventDefault()`.
 
-Browser events are synchronous, but because Qwik is fine-grained loadable Qwik execution model is asynchronous. This means that at the time when the event is triggered, the event handler is not yet loaded. By the time the event is loaded the event has already been processed by the browser and calling `preventDefault()` will have no effect.
+События браузера синхронны, но поскольку у Qwik фрагментарно-загружаемая модель выполнения, она асинхронна. Это означает, что в момент срабатывания события обработчик события может быть ещё не загружен. К моменту загрузки событие уже было обработано браузером, и вызов `preventDefault()` не будет иметь никакого эффекта.
 
-To solve this Qwik provides a declarative API to automatically call `preventDefault()` when the event is triggered. This is achieved by adding `preventdefault:<event-name>` attribute to the element. This allows the Qwikloader to synchronously call `preventDefault()` when the event is triggered.
+Для решения этой проблемы Qwik предоставляет декларативный API для автоматического вызова `preventDefault()` при наступлении события. Это достигается путем добавления к элементу атрибута `preventdefault:<event-name>`. Это позволяет Qwikloader синхронно вызывать `preventDefault()`, когда срабатывает событие.
 
-### Example
+### Пример
 
-Clicking on the link will cause a navigation event. We wish to prevent this and call our callback instead. Add `preventdefault:click` to the `<a href>` to achieve this.
+Щелчок по ссылке вызывает событие навигации. Мы хотим предотвратить это, и затем вызвать наш метод обратного вызова. Для этого добавьте `preventdefault:click` к `<a href>`.
