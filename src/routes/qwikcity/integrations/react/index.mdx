@@ -167,7 +167,7 @@ Qwik из коробки поставляется с различными стр
 
 ```tsx
 export default component$(() => {
-  const hydrateReact = useSignal$(false);
+  const hydrateReact = useSignal(false);
   return (
     <>
       <button onClick$={() => hydrateReact.value = true}>
