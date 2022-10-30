@@ -2,8 +2,8 @@
 
 ## Current status
 
-- Qwik, QwikCity: translated (29.10.2022)
-- Tutorial: WIP
+- Qwik, QwikCity: translated (30.10.2022)
+- Tutorial: WIP (events)
 
 ## Development Builds
 
