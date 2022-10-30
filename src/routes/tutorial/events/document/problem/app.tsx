@@ -10,7 +10,7 @@ export const App = component$(() => {
         store.y = event.clientY;
       }}
     >
-      Your mouse location is ({store.x}, {store.y}).
+      Позиция мыши: ({store.x}, {store.y}).
     </div>
   );
 });
