@@ -8,25 +8,25 @@ contributors:
   - manucorporat
 ---
 
-Props must be serializable so that Qwik can resume and render each component independently from other components on the page. This poses a problem if we wish to pass a callback to a child component. Callbacks are functions and functions are not directly serializable, but they are serializable through the `$()` by converting them to QRLs first.
+Параметры должны быть сериализуемыми, чтобы Qwik мог возобновлять и рендерить каждый компонент независимо от других компонентов на странице. Это создаёт проблему, если мы хотим передать обратный вызов дочернему компоненту. Обратные вызовы - это функции, а функции не являются непосредственно сериализуемыми, но они сериализуемы через `$()`, если их сначала преобразовать в QRL.
 
-## QRLs
+## QRL-адреса
 
-Functions passing across serializable boundaries must be done through QRLs. QRLs are serialized forms of a function. (See [QRL](../../../docs/advanced/qrl/index.mdx) in advanced section.)
+Передача функций через сериализуемые границы должна осуществляться через QRL-адреса. QRL - это сериализованная форма функции (смотри [QRL](../../../docs/advanced/qrl/index.mdx) в разделе "Дополнительно").
 
-Qwik has convenience APIs which end in `$` that are equivalent to calling `$()` directly. These two lines are equivalent:
+В Qwik есть удобный API, оканчивающийся на `$`, который эквивалентен прямому вызову `$()`. Эти две строчки эквивалентны:
 
-- inline: `useWatch$(() => {...}/>`
-- explicit: `const callbackQrl = $(() => {...}); useWatchQrl(callbackQrl)`
+- инлайн: `useWatch$(() => {...}/>`
+- явно: `const callbackQrl = $(() => {...}); useWatchQrl(callbackQrl)`
 
-Most of the time we use the first form as it allows us to inline our callbacks directly into the API. But at times it is necessary to use the second form so that we can separate where the function is declared and where it is used.
+Чаще всего мы используем первую форму, поскольку она позволяет нам встраивать наши обратные вызовы непосредственно в API. Но иногда необходимо использовать вторую форму, чтобы мы могли провести разделение объявления функции и её использования.
 
-## Declaring callback props
+## Объявление параметров обратного вызова
 
-A component can declare a callback in its props by:
+Компонент может объявить обратный вызов в своих параметрах:
 
-- Property that ends in `$` (as in `goodbye$`)
-- The type of the property is `PropFunction<T>` where `T` is the lazy reference type that the QRL points to (function signature).
+- Свойство, которое заканчивается на `$` (как в `goodbye$`);
+- Тип свойства - `PropFunction<T>`, где `T` - ленивый ссылочный тип, на который указывает QRL (сигнатура функции).
 
 ```typescript
 interface MyComponentProps {
@@ -37,32 +37,32 @@ interface MyComponentProps {
 export const MyComponent = component$((props: MyComponentProps) => { ... });
 ```
 
-This allows the user of `<MyComponent>` to use `goodbye$` form as shown here:
+Это позволяет пользователю компонента `<MyComponent>` использовать `goodbye$`, как показано здесь:
 
 ```jsx
 <MyComponent goodbye$={goodbyeQrl} hello$={() => {...}} />
 ```
 
-## Using callback props
+## Использование параметров обратного вызова
 
-Notice that the `<MyComponent>` component receives a callback function.
+Обратите внимание, что компонент `<MyComponent>` получает функцию обратного вызова.
 
-Passing the `props.goodbye$` as a reference to the `<button>`
+Передача `props.goodbye$` в качестве ссылки на элементе `<button>`:
 
 ```jsx
-<button onClick$={props.goodbye$}>good bye</button>
+<button onClick$={props.goodbye$}>пока</button>
 ```
 
-Creating a new callback for `<button>` and internally invoking the callback QRL.
+Создание новой функции обратного вызова для `<button>` и вызов QRL.
 
 ```jsx
 <button
   onClick$={async () => {
-    await props.hello$?.invoke('World');
+    await props.hello$?.invoke('мир');
   }}
 >
-  hello
+  привет
 </button>
 ```
 
-This form allows the `<button>` to invoke the callback with custom parameters. Notice that the invocation requires `async` and `await` as the QRLs are lazy-loaded.
+Эта форма позволяет элементу `<button>` вызывать функцию обратного вызова с пользовательскими параметрами. Обратите внимание, что для вызова требуются `async` и `await`, поскольку QRL являются лениво загружаемыми.
