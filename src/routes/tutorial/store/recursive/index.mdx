@@ -1,20 +1,20 @@
 ---
-title: Recursive Store
+title: Рекурсивное хранилище
 contributors:
   - adamdbradley
   - manucorporat
 ---
 
-This example features a store that contains other objects rather than just primitives. The `store.counter` property is an object literal.
+В этом примере показано хранилище, содержащее и другие объекты, а не только примитивы. Свойство `store.counter` является литералом объекта.
 
-The example doesn't work as is, because by default the `useStore` function only watches top-level properties.
+Пример в таком виде не работает, потому что по умолчанию функция `useStore` отслеживает только свойства верхнего уровня.
 
-To make the example work, you need to do one of two things:
+Чтобы пример заработал, вам нужно сделать одно из двух:
 
-1. Wrap `{count:0}` in another `useStore()` call (which is a bit cumbersome)
+1. Обернуть `{count:0}` в ещё один вызов `useStore()` (что немного громоздко);
 
-1. Allow `useStore` to recursively apply reactivity to all properties by passing the additional argument: `{recursive:true}`.
+1. Разрешить `useStore` применять реактивность ко всем свойствам рекурсивно, передав дополнительный аргумент: `{recursive:true}`.
 
-> **Your task:** Update the sample with the `useStore()` function.
+> **Ваша задача:** Обновить в примере функцию `useStore()`.
 
-Note that stores are not tied to any single component. In fact, you can pass stores from one component to another.
+Обратите внимание, что хранилища не привязаны к какому-то одному компоненту. На самом деле вы можете передавать хранилища от одного компонента к другому.
