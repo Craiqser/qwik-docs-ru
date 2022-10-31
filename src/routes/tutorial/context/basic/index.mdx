@@ -1,18 +1,18 @@
 ---
-title: Context
+title: Контекст
 contributors:
   - adamdbradley
   - manucorporat
 ---
 
-Use context to pass data to child components without explicitly passing it through components (known as prop drilling). Context is useful to share data that is needed throughout the application components. For example styling information, application state, or currently logged-in user.
+Используйте контекст для передачи данных дочерним компонентам без их явной передачи через компоненты (`prop drilling`). Контекст полезен для обмена данными, которые необходимы всем компонентам приложения. Например, информация о стиле, состоянии приложения или текущем пользователе, вошедшем в систему.
 
-To use context you need three parts:
+Для использования контекста вам понадобятся три вещи:
 
-- `createContext()`: this creates a serializable ID for the context. Make sure that this id is unique within your application.
-- `useContextProvider()`: At a parent component call this method to publish the context value. All children (and grandchildren) that are descendants of this component will be able to retrieve the context.
-- `useContext()` to retrieve the context and use it in any component.
+- `createContext()`: Создаёт сериализуемый идентификатор для контекста. Убедитесь, что этот идентификатор уникален в вашем приложении.
+- `useContextProvider()`: Вызов в родительском компоненте приводит к публикации значения контекста. Все дочерние компоненты, являющиеся потомками этого компонента (и внуками), смогут получить контекст.
+- `useContext()`: Для получения контекста и использования его в любом дочернем компоненте.
 
-In this example, we would like to pass the `TodosStore` to the `<Items>` component. Update the code to use `useContext()` to retrieve the value.
+В этом примере мы хотим передать `TodosStore` компоненту `<Items>`. Обновите код, чтобы использовать `useContext()` для получения значения.
 
-Contexts typically are stores, and as such, they must be serializable.
+Контексты обычно являются хранилищами, и поэтому они должны быть сериализуемыми.
