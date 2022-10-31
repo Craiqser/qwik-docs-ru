@@ -114,7 +114,7 @@
       },
       {
         "id": "programmatic",
-        "title": "useOn() / useOnDocument() / useOnWindow() - Программные слушатели",
+        "title": "useOn() / useOnDocument() / useOnWindow()",
         "enableHtmlOutput": false,
         "enableClientOutput": false,
         "enableSsrOutput": false

@@ -3,8 +3,8 @@ import { component$, useOn, $ } from '@builder.io/qwik';
 export const App = component$(() => {
   useOn(
     'click',
-    $(() => alert('Hello World!'))
+    $(() => alert('Привет, мир!'))
   );
 
-  return <div>App Component. Click me.</div>;
+  return <div>Компонент приложения. Кликни меня.</div>;
 });
