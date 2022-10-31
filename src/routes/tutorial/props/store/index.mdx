@@ -1,22 +1,20 @@
 ---
-title: Passing Stores
+title: Передача состояния
 contributors:
   - manucorporat
   - adamdbradley
 ---
 
-The previous tutorial introduced you how you could pass primitives and objects to components. In this tutorial, we will learn how to pass stores to components, which is way more efficient in terms of rerendering.
+В предыдущем уроке вы познакомились с тем, как можно передавать примитивы и объекты компонентам. В этом уроке мы узнаем, как передавать компонентам хранилища, что намного эффективнее с точки зрения повторного рендера.
 
-When you click on the `+1` button, the `<App>` is re-rendered to update the `<Display>` bindings. The re-rendering of `<App>` is needed to update the props of `<Display>`, but this process doesn't update to what the user sees, so it is a waste of resources.
+Когда вы нажимаете кнопку `+1`, `<App>` повторно рендерится для обновления привязок `<Display>`. Повторный рендер `<App>` необходим для обновления свойств `<Display>`, но этот процесс не происходит до тех пор, пока это не должен увидеть пользователь, иначе это пустая трата ресурсов.
 
-A better approach is to only re-render `<Display>` component by passing in the `CountStore` rather than the `count` value. Since the store reference never changes, the `<App>` component doesn't need to re-render.
+Лучшим подходом является ререндер компонента `<Display>` путем передачи `CountStore` целиком, а не только значения `count`. Поскольку ссылка на хранилище никогда не меняется, компонент `<App>` не нужно повторно рендерить.
 
-> **Your task**: Change the code to pass in `store` rather than `store.count`.
+> **Ваша задача**: Изменить компонент так, чтобы он получал `store`, а не `store.count`.
 
-Two benefits emerge by making the above change:
+Внесение вышеуказанных изменений дает преимущество в том, что компонент `<App>` не нужно загружать или повторно рендерить.
 
-- The `<App>` component doesn't need to be downloaded or re-rendered.
+## Лучшая практика
 
-## Best Practice
-
-A best practice to follow in Qwik features passing a store to child components rather than individual primitives. When you use primitives, the parent component needs to rerender just to pass in the new value. When you pass in a store, the parent component doesn't need to rerender.
+Лучшей практикой, которой следует придерживаться в Qwik, является передача дочерним компонентам хранилища, а не отдельных примитивов. Когда вы используете примитивы, родительский компонент должен перерисовываться только для того, чтобы передать новое значение. Когда вы передаете хранилище, родительский компонент не должен ререндериться.

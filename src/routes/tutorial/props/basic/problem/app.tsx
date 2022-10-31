@@ -10,5 +10,5 @@ export const App = component$(() => {
 
 interface GreeterProps {}
 export const Greeter = component$((props: GreeterProps) => {
-  return <div>Bind props here</div>;
+  return <div>Привяжите параметры здесь</div>;
 });

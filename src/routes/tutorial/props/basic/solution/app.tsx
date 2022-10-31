@@ -3,7 +3,7 @@ import { component$ } from '@builder.io/qwik';
 export const App = component$(() => {
   return (
     <div>
-      <Greeter salutation="Hello" name="World" />
+      <Greeter salutation="Привет" name="мир" />
     </div>
   );
 });
@@ -15,7 +15,7 @@ interface GreeterProps {
 export const Greeter = component$((props: GreeterProps) => {
   return (
     <div>
-      {props.salutation} {props.name}!
+      {props.salutation}, {props.name}!
     </div>
   );
 });
