@@ -42,3 +42,74 @@ export const onGet: RequestHandler<ProductData> = async ({ params }) => {
 | `abort` | Запрос функции прерывания |
 | `params` | Пользовательские параметры, найденные в URL |
 | `platform` | Объект данных платформы (полезен для Cloudflare, Netlify и т.д.) |
+| `cookie` | Получение и установка кук |
+
+### Куки
+
+```typescript
+interface Cookie {
+  get: (key: string) => CookieValue | null,
+  set: (key: string, value: string | number | Record<string, any>, options?: CookieOptions) => void,
+  delete: (key: string) => void,
+  has: (key: string) => boolean
+}
+```
+
+Класс `cookie` используется для получения и установки кук в вашем приложении Qwik City. Он предоставляет следующие методы:
+
+**get**
+
+Принимает строку с названием ключа и возвращает `CookieValue`, если значение присутствует, или null в противном случае.
+
+```typescript
+interface CookieValue {
+  value: string;
+  json: <T = unknown>() => T;
+  number: () => number;
+}
+```
+
+Полученное значение - это простой объект с тремя полями:
+  1. `value`: Содержит значение кук в виде строки;
+  2. `json()`: Выполняет `JSON.parse()` над значением и возвращает результат;
+  3. `number()`: Выполняет функцию `Number()` над значением и возвращает результат.
+
+**set**
+
+Принимает ключ и значение и создает заголовок, который будет добавлен к ответу. Значение может быть типа `string | number | Record<string, any>`.
+
+В качестве третьего аргумента вы можете опционально передать запись типа `CookieOptions` для установки дополнительных полей.
+
+```typescript
+export interface CookieOptions {
+  domain?: string;
+  expires?: Date | string;
+  httpOnly?: boolean;
+  maxAge?: number | [number, 'seconds' | 'minutes' | 'hours' | 'days' | 'weeks'];
+  path?: string;
+  sameSite?: 'lax' | 'none' | 'strict';
+  secure?: boolean;
+}
+```
+
+Более подробную информацию об этих атрибутах и их значениях можно найти в [статье MDN о заголовке Set-Cookie](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Set-Cookie#attributes).
+
+**delete**
+
+Добавляет к кукам заголовок с указанным ключом. Новый заголовок будет содержать дату истечения срока действия в поле `expires`, указывая браузерам на необходимость его удаления.
+
+Эквивалентно вызову:
+
+```typescript
+cookie.set('my-cookie', 'deleted', new Date(0))
+```
+
+**has**
+
+Удобный метод, возвращающий `true` или `false` в зависимости от наличия предоставленного ключа в куках.
+
+Эквивалентно вызову:
+
+```typescript
+!!cookie.get('my-cookie')
+```
