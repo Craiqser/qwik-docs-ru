@@ -10,7 +10,7 @@ export const App = component$(() => {
     count: 0,
     delayCount: 0,
   });
-  console.log('Render: <App>');
+  console.log('Рендер: <App>');
   useWatch$(({ track }) => {
     // tracking `store.count`
     // setup a timer to copy `count => delayCount` after 2 seconds.
@@ -28,11 +28,11 @@ export const App = component$(() => {
 });
 
 export const DisplayCount = component$((props: { store: AppStore }) => {
-  console.log('Render: <DisplayA>');
+  console.log('Рендер: <DisplayA>');
   return <>{props.store.count}</>;
 });
 
 export const DisplayDelayCount = component$((props: { store: AppStore }) => {
-  console.log('Render: <DisplayB>');
+  console.log('Рендер: <DisplayB>');
   return <>{props.store.delayCount}</>;
 });

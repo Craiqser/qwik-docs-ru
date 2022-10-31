@@ -10,7 +10,7 @@ export const App = component$(() => {
     count: 0,
     delayCount: 0,
   });
-  console.log('Render: <App>');
+  console.log('Рендер: <App>');
   useWatch$(({ track }) => {
     track(() => store.count);
     const id = setTimeout(() => (store.delayCount = store.count), 2000);
@@ -26,11 +26,11 @@ export const App = component$(() => {
 });
 
 export const DisplayCount = component$((props: { store: AppStore }) => {
-  console.log('Render: <DisplayA>');
+  console.log('Рендер: <DisplayA>');
   return <>{props.store.count}</>;
 });
 
 export const DisplayDelayCount = component$((props: { store: AppStore }) => {
-  console.log('Render: <DisplayB>');
+  console.log('Рендер: <DisplayB>');
   return <>{props.store.delayCount}</>;
 });
