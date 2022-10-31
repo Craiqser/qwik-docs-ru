@@ -1,18 +1,18 @@
 ---
-title: Implicit Template Updates
+title: Неявные обновления шаблонов
 contributors:
   - adamdbradley
   - manucorporat
 ---
 
-This example demonstrates how mutating stores automatically update the templates.
+Этот пример демонстрирует как изменения состояний хранилищ автоматически обновляют шаблоны.
 
-During SSR rendering the server needs to render all of the components in the application. As it is rendering the components the bindings in those components perform reads on store properties. For example, when `<DisplayA>` reads the `countA` property from the store, Qwik records that as a subscription. Qwik now knows that if `countA` changes then `<DisplayA>` needs to be re-rendered. Rendering templates will automatically set up subscriptions on the store. Each time the template re-renders the old subscriptions are thrown away and new subscriptions are created. This means that the template can change the set of things it is listening to during its lifecycle.
+Во время SSR-рендера серверу необходимо отрисовать все компоненты приложения. В процессе рендера привязки в этих компонентах выполняют чтение свойств хранилища. Например, когда `<DisplayA>` считывает свойство `countA` из хранилища, Qwik записывает это как подписку. Qwik теперь знает, что если `countA` меняется, то `<DisplayA>` должен быть перерендерен. Рендер шаблонов будет автоматически устанавливать подписки на хранилище. При повторном рендере шаблона старые подписки удаляются и создаются новые. Это означает, что шаблон может изменять набор подписок, которые он прослушивает в течение своего жизненного цикла.
 
-Currently, the buttons don't do anything. Implement the buttons to increment the respective store properties.
+Сейчас кнопки не работают. Внесите в них исправления для увеличения соответствующих свойств хранилища.
 
-Once you make the buttons work, notice that even though all state is stored in a single store, the updates are very focused. `a++` button will only cause the re-rendering of `<DisplayA>` and `b++` button will only cause re-rendering of `<DisplayB>`. The fine-grained re-rendering is an important property of Qwik. It is what allows Qwik applications to stay lean and not download too much code unnecessarily.
+Когда вы заставите кнопки работать, обратите внимание, что несмотря на то, что всё состояние хранится в одном хранилище, обновления проходят фокусно. Кнопка `a++` будет вызывать только ререндер компонента `<DisplayA>`, а кнопка `b++` - только ререндер `<DisplayB>`. Фрагментарный рендер - важное свойство Qwik. Именно это позволяет приложениям Qwik оставаться компактными и не загружать слишком много кода без необходимости.
 
-Template subscriptions are automatically created and released when the component is removed. There is no need to keep track of them or release them manually.
+Подписки шаблона автоматически создаются и освобождаются при удалении компонента. Нет необходимости следить за ними и удалять их вручную.
 
-Qwik is a reactive system. All reactive systems require a single full execution of the application to create subscriptions. Qwik applications also require full execution to set up all subscriptions. However, Qwik applications perform the full execution on the server and transfer the subscription information to the client. In this way, the client knows which component needs to be re-rendered when without being forced to do one full rendering of the whole application. Doing so would force all components to be eagerly downloaded, and Qwik wants to avoid that.
+Qwik - это реактивная система. Все реактивные системы требуют однократного полного выполнения приложения для создания подписок. Приложения Qwik также требуют полного выполнения для настройки всех подписок. Однако приложения Qwik выполняют все действия на сервере и передают информацию о подписке клиенту. Таким образом, клиент знает, какой компонент нуждается в повторном рендере, без необходимости выполнять полный рендер всего приложения. Это заставило бы все компоненты загружаться сразу, а Qwik этого избегает.

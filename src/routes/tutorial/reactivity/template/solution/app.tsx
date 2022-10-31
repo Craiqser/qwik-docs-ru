@@ -10,7 +10,7 @@ export const App = component$(() => {
     countA: 0,
     countB: 0,
   });
-  console.log('Render: <App>');
+  console.log('Рендер: <App>');
   return (
     <>
       <button onClick$={() => store.countA++}>a++</button>
@@ -23,11 +23,11 @@ export const App = component$(() => {
 });
 
 export const DisplayA = component$((props: { store: AppStore }) => {
-  console.log('Render: <DisplayA>');
+  console.log('Рендер: <DisplayA>');
   return <>{props.store.countA}</>;
 });
 
 export const DisplayB = component$((props: { store: AppStore }) => {
-  console.log('Render: <DisplayB>');
+  console.log('Рендер: <DisplayB>');
   return <>{props.store.countB}</>;
 });
