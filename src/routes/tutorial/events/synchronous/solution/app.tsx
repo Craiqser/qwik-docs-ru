@@ -13,7 +13,7 @@ export const App = component$(() => {
 
   return (
     <a href="/" ref={aHref}>
-      click me!
+      Нажми меня!
     </a>
   );
 });
