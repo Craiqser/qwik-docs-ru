@@ -1,18 +1,18 @@
 ---
-title: Serialization Graph
+title: Граф сериализации
 contributors:
   - adamdbradley
   - the-r3aper7
 ---
 
-Stores are serializable as the application is paused on the server and resumed on the client.
+Хранилища сериализуемы, поскольку приложение приостанавливается на сервере и возобновляется на клиенте.
 
-Data in a store isn't required to be free of nested references. Qwik is perfectly happy serializing stores that feature data [cycles](https://wikipedia.org/wiki/Directed_acyclic_graph).
+Данные в хранилище не обязательно должны быть свободны от вложенных ссылок. Qwik вполне успешно сериализует хранилища, содержащие [циклические ссылки](https://wikipedia.org/wiki/Directed_acycle_graph).
 
-Stores can also include [Qwik URLs (QRLs)](../../../docs/advanced/qrl/index.mdx).
+Хранилища также могут включать [URL-адреса Qwik (QRL)](../../../docs/advanced/qrl/index.mdx).
 
-There is no limit to how many stores can be created per component, nor to where they are passed. While the best practice is to implement top-down data flows, Qwik doesn't require this design philosophy.
+Нет никаких ограничений ни на то, сколько хранилищ может быть создано для конкретного компонента, ни на то, куда они передаются. Хотя наилучшей практикой является реализация потоков данных сверху вниз, Qwik не требует такой философии проектирования.
 
-> **Your task**: Insert a few items into `parent.children` to create a circular reference between the parent and child stores.
+> **Ваша задача**: Вставьте несколько элементов в `parent.children`, чтобы создать циклическую ссылку между родительским и дочерним магазинами.
 
-This example also shows how to attach and invoke closures to a store using `$` and `QRL`.
+В этом примере также показано, как создавать и вызывать замыкания для хранилища с помощью `$` и `QRL`.
