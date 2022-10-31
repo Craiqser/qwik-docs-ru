@@ -7,12 +7,12 @@ export const App = component$(() => {
   });
 
   useServerMount$(async () => {
-    // Put code here to fetch data from the server.
+    // Поместите сюда код для получения данных с сервера.
   });
 
   return (
     <div>
-      <span>GitHub username: {github.org}</span>
+      <span>Имя пользователя GitHub: {github.org}</span>
       <div>
         {github.repos ? (
           <ul>
@@ -23,7 +23,7 @@ export const App = component$(() => {
             ))}
           </ul>
         ) : (
-          'loading...'
+          'загрузка...'
         )}
       </div>
     </div>
