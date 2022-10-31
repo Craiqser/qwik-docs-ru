@@ -1,27 +1,27 @@
 ---
-title: Storing State
+title: Хранение состояния
 contributors:
   - adamdbradley
   - manucorporat
 ---
 
-Applications need to store state to be useful, otherwise they're just static pages.
+Приложения должны уметь работать с состоянием, чтобы быть полезными, иначе они будут являться просто статическими страницами.
 
-Qwik tracks application state for two reasons:
+Qwik отслеживает состояние приложения по двум причинам:
 
-1. To serialize data when the application pauses on the server, and deserialize as the application resumes on the client.
+1. Для сериализации данных, когда приложение приостанавливается на сервере, и для десериализации, когда приложение возобновляет работу на клиенте.
 
-1. To create subscriptions on stores so that Qwik knows which components to re-render. If Qwik didn't track subscriptions, it would have to re-render the whole application - which would defeat the purpose of lazy-loading.
+1. Для создания подписок на изменения в хранилище, чтобы Qwik знал, какие компоненты нужно перерендерить. Если бы Qwik не отслеживал подписки, ему пришлось бы заново отображать всё приложение, что лишало бы смысла процесс отложенной загрузки.
 
-The component on the right doesn't work yet because `counter` is just a plain object with no subscriptions. As a result, Qwik doesn't know when `counter.count` changes, and therefore doesn't know to re-render the `<App>` component.
+Компонент справа ещё не работает, потому что `counter` — это просто объект без подписок. В результате Qwik не знает, когда изменяется `counter.count`, и когда выполнить ререндер компонента `<App>`.
 
-> **Your task:** Wrap `counter` in `useStore()` to enable dependency tracking and automatic re-rendering.
+> **Ваша задача:** Заключить `counter` в `useStore()`, чтобы включить отслеживание зависимостей и автоматический повторный рендер.
 
-## Serialization
+## Сериализация
 
-Open the _HTML_ tab to see what information is serialized by the server. Look in the `<script type="qwik/json">` block for serialization information and notice that:
+Откройте вкладку _HTML_, чтобы увидеть, какая информация сериализуется сервером. Найдите в блоке `<script type="qwik/json">` сериализованную информацию и обратите внимание на следующее:
 
-1. `{count: 0}` is in the serialized state.
-1. At the end of the serialized state are `subs` which contain `"count"`. These subscriptions tell Qwik which component to re-render as the state changes.
+1. `{count: 0}` находится в сериализованном состоянии.
+1. В конце сериализованного состояния находятся `subs`, которые содержат `"count"`. Эти подписки сообщают Qwik, какой компонент следует повторно отображать при изменении состояния.
 
-Qwik state is in no way tied to the component that created it. The state can be passed to any component in the application and Qwik creates the needed subscriptions and re-renders only the affected components.
+Состояние Qwik никоим образом не привязано к компоненту, который его создал. Состояние может быть передано любому компоненту в приложении, и Qwik создает необходимые подписки для повторного рендера только требуемых компонентов.
