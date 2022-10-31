@@ -1,5 +1,5 @@
 ---
-title: Non-serializable Properties
+title: Несериализуемые свойства
 contributors:
   - jmmon
   - adamdbradley
@@ -7,9 +7,9 @@ contributors:
   - tidiview
 ---
 
-Stores must always be serializable, however sometimes you may want to persist a value on a store that can't be serialized. Values like these persist in the browser only when the application is resumed on the client. 
+Хранилища всегда должны быть сериализуемыми, однако иногда вы можете захотеть сохранить такое значение, которое не может быть сериализовано. Подобные значения сохраняются в браузере только при возобновлении работы приложения на клиенте.
 
-When the application is paused, non-serializable properties are discarded.
+Когда приложение приостанавливается, несериализуемые свойства отбрасываются.
 
-> **Your task**: Add a cleanup function in `store.cleanup` so that the `stop` button can clear the interval with `clearInterval()`.
-> For that, add `noSerialize` import from '@builder.io/qwik' and use `noSerialize` function to wrap clearInterval function.
+> **Ваша задача**: Добавить функцию очистки в `store.cleanup`, чтобы кнопка `stop` могла очищать интервал с помощью `clearInterval()`.
+> Для этого добавьте импорт `noSerialize` из '@builder.io/qwik' и используйте функцию `noSerialize` как обёртку для функции `clearInterval`.

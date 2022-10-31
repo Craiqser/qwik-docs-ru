@@ -11,14 +11,14 @@ export const App = component$(() => {
   });
   return (
     <>
-      <div>Current Time: {store.time}</div>
+      <div>Текущее время: {store.time}</div>
       <button
         onClick$={() => {
           const id = setInterval(() => (store.time = new Date().toString()), 1000);
           store.cleanup = noSerialize(() => clearInterval(id));
         }}
       >
-        start
+        старт
       </button>
       <button
         onClick$={() => {
@@ -26,7 +26,7 @@ export const App = component$(() => {
           store.cleanup = undefined;
         }}
       >
-        stop
+        стоп
       </button>
     </>
   );

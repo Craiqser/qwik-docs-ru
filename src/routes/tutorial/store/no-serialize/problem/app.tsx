@@ -11,7 +11,7 @@ export const App = component$(() => {
   });
   return (
     <>
-      <div>Current Time: {store.time}</div>
+      <div>Текущее время: {store.time}</div>
       <button
         onClick$={() => {
           // @ts-ignore
@@ -19,7 +19,7 @@ export const App = component$(() => {
           // assign a cleanup function to: store.cleanup
         }}
       >
-        start
+        старт
       </button>
       <button
         onClick$={() => {
@@ -27,7 +27,7 @@ export const App = component$(() => {
           store.cleanup = undefined;
         }}
       >
-        stop
+        стоп
       </button>
     </>
   );
