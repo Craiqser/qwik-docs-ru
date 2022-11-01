@@ -16,7 +16,7 @@ export const Clock = component$(() => {
   });
 
   useClientEffect$(() => {
-    // Put code here to periodically call updateClock().
+    // Поместите сюда код для периодического вызова updateClock().
   });
 
   return (
@@ -42,10 +42,10 @@ export function updateClock(store: ClockStore) {
 export const App = component$(() => {
   return (
     <div>
-      <p>This is an example of Lazy executing code on component when component becomes visible.</p>
+      <p>Это пример ленивого выполнения кода компонента, когда он становится видимым.</p>
 
       <p style={{ height: '800px' }}>
-        ⬇️ <strong>Scroll down</strong> until the clock is in view.
+        ⬇️ <strong>Прокрутите вниз</strong> пока часы не окажутся в поле зрения.
       </p>
 
       <Clock />
