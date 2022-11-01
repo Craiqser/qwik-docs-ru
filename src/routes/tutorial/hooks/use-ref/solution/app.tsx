@@ -17,10 +17,10 @@ export const App = component$(() => {
   return (
     <div>
       <div style={{ border: '1px solid red', width: '100px' }} ref={outputRef}>
-        Change text value here to stretch the box.
+        Измените здесь текст, чтобы растянуть поле.
       </div>
       <div>
-        The above red box is {store.height} pixels high and {store.width} pixels wide.
+        Приведенное выше красное поле имеет высоту {store.height} пикселей и ширину {store.width} пикселей.
       </div>
     </div>
   );
