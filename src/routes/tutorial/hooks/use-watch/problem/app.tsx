@@ -6,11 +6,11 @@ export const App = component$(() => {
     debouncedValue: '',
   });
   useWatch$(({ track }) => {
-    // rerun this function  when `value` property changes.
+    // Повторный запуск этой функции при изменении свойства `value`.
     track(() => store.value);
-    // Set up timeout for debounced value.
+    // Установка тайм-аута для дебаунса.
     const id = setTimeout(() => (store.debouncedValue = store.value), 500);
-    // return cleanup function in case `value` property changes before time is up.
+    // Возвращает функцию очистки для случая, если свойство `value` изменится до истечения времени.
     return () => clearTimeout(id);
   });
   return (
@@ -20,9 +20,9 @@ export const App = component$(() => {
         onInput$={(event) => (store.value = (event.target as HTMLInputElement).value)}
       />
       <br />
-      Current value: {store.value}
+      Текущее значение: {store.value}
       <br />
-      Debounced value: {store.debouncedValue}
+      Дебаунс-значение: {store.debouncedValue}
     </>
   );
 });
