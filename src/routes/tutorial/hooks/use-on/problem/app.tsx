@@ -19,13 +19,13 @@ export const App = component$(() => {
   return (
     <ul>
       <li>
-        Element: ({store.element.x}, {store.element.y})
+        Элемент: ({store.element.x}, {store.element.y})
       </li>
       <li>
-        Document: ({store.document.x}, {store.document.y})
+        Объект document: ({store.document.x}, {store.document.y})
       </li>
       <li>
-        Window: ({store.window.x}, {store.window.y})
+        Объект window: ({store.window.x}, {store.window.y})
       </li>
     </ul>
   );
