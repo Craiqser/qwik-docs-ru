@@ -1,17 +1,17 @@
 ---
-title: Named Slots
+title: Именованные слоты
 contributors:
   - manucorporat
   - adamdbradley
   - KenAKAFrosty
 ---
 
-In simple cases, projection allows content from the parent component to be projected into the child component. In more complex cases there may be more than one content slot that needs to be projected. Having multiple content slots is achieved by naming them.
+В простых случаях проекция позволяет отображать переданное содержимое родительского компонента в дочерний компонент. В более сложных случаях слотов контента, который необходимо спроецировать, может быть несколько. Наличие нескольких слотов контента достигается путем присвоения им имен.
 
-### Example
+### Пример
 
-In this example, we have created `<Collapsable>` component that toggles between open and closed states. Currently, when the `<Collapsable>` is closed it shows content that was implemented within `<Collapsable>`. Change that to an additional `<Slot>` to project the `q:slot="closed"` content from the parent instead.
+В этом примере мы создали компонент `<Collapsable>`, который переключается между открытым и закрытым состояниями. В настоящее время, когда `<Collapsable>` закрыт, он показывает содержимое, которое было реализовано внутри `<Collapsable>`. Добавьте ещё `<Slot>`, чтобы проецировать содержимое `q:slot="closed"` из родителя.
 
-## Unprojected Slots
+## Непроецируемые слоты
 
-We have added console statements to show when individual components re-render. Notice that the `<App>` component never re-renders on the client. Also notice that the `<Collapsable>` projects only one content at a time. This means that when `<App>` renders on the server it has to produce both default as well as `closed` content that Qwik must serialize. The benefit is that when `<Collapsable>` toggles between open and closed states, it does not need to re-render the `<App>` component to recover the content that was projected into it.
+Мы добавили консольные сообщения, чтобы показать, когда отдельные компоненты повторно рендерятся. Обратите внимание, что компонент `<App>` никогда не рендерится на клиенте. Также обратите внимание, что `<Collapsable>` проецирует только одно содержимое за один раз. Это означает, что при рендере `<App>` на сервере он должен создавать как содержимое по умолчанию, так и `закрытое` содержимое, которое Qwik должен сериализовать. Преимуществом является то, что когда `<Collapsable>` переключается между открытым и закрытым состояниями, ему не нужно перерисовывать компонент `<App>`, чтобы восстановить содержимое, которое было спроецировано на него.

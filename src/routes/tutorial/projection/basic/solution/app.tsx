@@ -3,7 +3,7 @@ import { component$, Slot, useStore } from '@builder.io/qwik';
 
 export const App = component$(() => {
   const store = useStore({ count: 0 });
-  console.log('Render: <App>');
+  console.log('Рендер: <App>');
   return (
     <Panel>
       Count: {store.count}. <button onClick$={() => store.count++}>+1</button>
@@ -12,7 +12,7 @@ export const App = component$(() => {
 });
 
 export const Panel = component$(() => {
-  console.log('Render: <Panel>');
+  console.log('Рендер: <Panel>');
   return (
     <div style={{ border: '2px solid red;', padding: '1em' }}>
       <Slot />
