@@ -6,8 +6,8 @@ export const App = component$(() => {
 
   return (
     <div class="parent">
-      <button onClick$={() => (store.open = !store.open)}>toggle</button>
-      <button onClick$={() => store.siblings.push(0)}>addSibling</button>
+      <button onClick$={() => (store.open = !store.open)}>переключить</button>
+      <button onClick$={() => store.siblings.push(0)}>добавить</button>
       {store.open ? <Child key="child" /> : null}
       {store.siblings.map(() => (
         <Sibling />
@@ -20,7 +20,7 @@ export const Child = component$(() => {
   useStyles$(ChildCSS);
   return (
     <div class="child">
-      <div>Child</div>
+      <div>Дочерний элемент</div>
     </div>
   );
 });
@@ -30,13 +30,13 @@ export const Sibling = component$(() => {
 
   return (
     <div class="sibling">
-      <div>Sibling</div>
+      <div>Соседний элемент</div>
     </div>
   );
 });
 
-//TODO: These should be import as: import AppCSS from './app.css';
-// however the playground does not yet support such imports.
+//TODO: Они должны быть импортированы так: import AppCSS from './app.css'
+// Однако песочница пока не поддерживает такой импорт.
 export const AppCSS = `
 .parent {
   border: 1px solid black;
