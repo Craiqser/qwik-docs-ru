@@ -5,7 +5,7 @@ export const App = component$(() => {
   const store = useStore({ count: 0 });
   return (
     <>
-      Count: {store.count} <button onClick$={() => store.count++}>+1</button>
+      Счётчик: {store.count} <button onClick$={() => store.count++}>+1</button>
     </>
   );
 });

@@ -1,24 +1,24 @@
 ---
-title: Optimizer
+title: Оптимизатор
 contributors:
   - manucorporat
   - adamdbradley
 ---
 
-For the application to be resumable it needs to have lots of entry points. For example, clicking on button `A` is a different entry point than clicking on button `B`. When we implement an application we don't usually think about entry points and so we typically end up with just one entry point or the `main()` function.
+Для того чтобы приложение было возобновляемым, оно должно иметь много точек входа. Например, клик по кнопке `A` является одной точкой входа, а клик по кнопке `B` - другой. Когда мы реализуем приложение, мы обычно не думаем о точках входа, и поэтому обычно у нас есть только одна точка входа, или функция - `main()`.
 
-The Optimizer does its job by looking for functions that end in `$` character. For example, the Optimizer will transform a call to `component$()` into an entry point. Notice that the name of the function doesn't matter only that it ends with the `$`.
+Оптимизатор выполняет свою работу находя функции, оканчивающиеся символом `$`. Например, оптимизатор преобразует вызов `component$()` в точку входа. Обратите внимание, что имя функции не имеет значения, главное, что она заканчивается символом `$`.
 
-Every time you see `$` you should think, there is a lazy-loaded boundary here. The implication is that the lazy-loaded content may require lazy-loading and hence can't be accessed synchronously.
+Каждый раз, когда вы видите `$`, вы должны понимать, что здесь граница ленивой загрузки. Подразумевается, что содержимое требует ленивую загрузки и, следовательно, не может быть доступно синхронно.
 
-While the Optimizer can serialize any data that Qwik can serialize, it has special handling for closures. Closures are functions that are created inside of other functions and that may capture variables in the lexical scope. The ability to serialize closures is a key property that makes Qwik resumable. Without closure serialization, it would be difficult to have resumable applications.
+Хотя оптимизатор может сериализовать любые данные, которые может сериализовать Qwik, для замыканий он делает специальную обработку. Замыкания - это функции, которые создаются внутри других функций и могут захватывать переменные в лексической области видимости. Возможность сериализации замыканий является ключевым свойством, которое делает Qwik возобновляемым. Без сериализации замыканий было бы трудно иметь возобновляемые приложения.
 
-### Example
+### Пример
 
-In this example notice that we have two lazy-loaded chunks because we have two `$` in our code.
+Обратите внимание, что в примере у нас есть два лениво-загружаемых фрагмента, так как в нашем коде есть два символа `$`.
 
-Open the `Symbols` tab and notice how Optimizer turned the `onClick$` function into an entry point. Specifically, notice that the `onClick$` entry point does not import the `@builder.io/qwik` module.
+Откройте вкладку `Symbols` и посмотрите, как оптимизатор превратил функцию `onClick$` в точку входа. В частности, обратите внимание, что точка входа `onClick$` не импортирует модуль `@builder.io/qwik`.
 
-Now change the `onClick$` callback to `store.count++`.
+Теперь измените обратный вызов `onClick$` на `store.count++`.
 
-Open the `Symbols` tab again and notice that this time the Optimizer imported `@builder.io/qwik` and inserted `useLexicalScope()` call to restore the captured state of the event handler. Restoring the captured state of the function is what makes Qwik resumable.
+Снова откройте вкладку `Symbols`, и вы увидите, что на этот раз оптимизатор импортировал `@builder.io/qwik` и вставил вызов `useLexicalScope()` для восстановления захваченного состояния обработчика события. Восстановление захваченного состояния функции - это то, что делает Qwik возобновляемым.
