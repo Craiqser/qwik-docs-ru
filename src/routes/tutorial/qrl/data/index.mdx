@@ -1,19 +1,19 @@
 ---
-title: Loading Data
+title: Загрузка данных
 contributors:
   - manucorporat
   - adamdbradley
   - felixsanz
 ---
 
-The Optimizer can be used to lazy-load data, not just functions. The benefit of doing that is that lazy loading any part of your application becomes easy.
+Оптимизатор можно использовать и для ленивой загрузки данных, а не только функций. Преимуществом этого является то, что ленивая загрузка любой части вашего приложения становится простой.
 
-Use the stand-alone `$()` function to mark the data that you wish to lazy load. The `$()` function returns a `QRL` that is a reference that can be serialized by Qwik and that can later be resolved into the original value.
+Используйте отдельную функцию `$()` для пометки данных, которые вы хотите загрузить лениво. Функция `$()` возвращает `QRL`-адрес, который является ссылкой и может быть сериализован Qwik, а впоследствии может быть восстановлен в исходное значение.
 
-### Example
+### Пример
 
-Load the data representing the message lazily as part of the click listener.
+Лениво загрузите данные, представляющие сообщение, как часть слушателя клика.
 
-For this exercise imagine that we wish to lazy load the `'Hello World!'` string. Use the `$()` function to mark the string as lazy-loadable. Then use `await` to resolve the lazy-loadable value.
+Представьте, что в этом упражнении мы хотим лениво загрузить строку `'Привет, мир!'`. Используйте функцию `$()`, чтобы пометить строку как лениво-загружаемую. Затем используйте `await` для разрешения значения.
 
-Go to the `Symbols` tab and examine how the code was broken down into parts.
+Перейдите на вкладку `Symbols` и изучите, как код был разбит на части.
