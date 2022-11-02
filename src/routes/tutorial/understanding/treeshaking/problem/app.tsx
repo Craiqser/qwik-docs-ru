@@ -10,12 +10,10 @@ export const App = component$(() => {
   return (
     <>
       <tt>&lt;App&gt;</tt>
-      This component is static! After initial rendering as part of SSR, it will never rerender on
-      the client. This means that it will also never load an the client. The component is
-      tree-shaken on the client.
+      Этот компонент является статическим! После первоначального рендера в рамках SSR, он никогда не будет повторно рендериться на клиенте. Это означает, что он также никогда не будет загружаться на клиента. Компонент тришейкается на клиенте.
       <br />
-      Click <button onClick$={() => store.count++}>+1</button> to observe what code Qwik loads as a
-      result of modifying the application state.
+      Нажми <button onClick$={() => store.count++}>+1</button> чтобы наблюдать, какой код
+      Qwik загружает в качестве результата изменения состояния приложения.
       <Child store={store} />
     </>
   );
@@ -26,7 +24,7 @@ export const Child = component$((props: { store: CountStore }) => {
   return (
     <>
       <tt>&lt;Child&gt;</tt>
-      This component is dynamic because it is bound to <tt>props.store.count</tt>
+      Этот компонент является динамическим, поскольку он привязан к <tt>props.store.count</tt>.
       {props.store.count}
       <GrandChild store={props.store} />
     </>
@@ -38,7 +36,7 @@ export const GrandChild = component$((props: { store: CountStore }) => {
   return (
     <>
       <tt>&lt;GrandChild&lt;</tt>
-      This component is also dynamic because it is bound to <tt>props.store.count</tt>
+      Этот компонент также является динамическим, поскольку он привязан к <tt>props.store.count</tt>.
       {props.store.count}
     </>
   );

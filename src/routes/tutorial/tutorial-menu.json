@@ -366,7 +366,7 @@
   },
   {
     "id": "understanding",
-    "title": "Понимание различий Qwik",
+    "title": "Понимание особенностей Qwik",
     "apps": [
       {
         "id": "treeshaking",

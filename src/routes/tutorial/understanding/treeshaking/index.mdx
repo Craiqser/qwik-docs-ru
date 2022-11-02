@@ -1,29 +1,29 @@
 ---
-title: Understanding Qwik Difference - Tree-shaking
+title: Понимание особенностей Qwik - Тришейкинг
 contributors:
   - manucorporat
   - adamdbradley
 ---
 
-A key concept of Qwik is that Qwik only loads code for components in the client that need to be re-rendered. If a component is static (does not need to be re-rendered), Qwik will not load the component. This is a form of dynamic tree-shaking. Here word dynamic is used to differentiate it from the classical static tree-shaking.
+Ключевая концепция Qwik заключается в том, что Qwik загружает код только для тех компонентов на клиенте, которые нуждаются в повторном рендере. Если компонент статичен (не требует повторного рендера), Qwik не будет загружать компонент. Это одна из форм динамического тришейкинга. Здесь слово динамический используется для того, чтобы отличить его от классического статического тришейкинга.
 
-## Static vs. Dynamic Tree-shaking
+## Сравнение статического и динамического тришейкинга
 
-Static tree-shaking is how the bundler removes unreachable code. In the case of an application, all components are reachable. This is because the component is reachable on the initial render in SSR. Otherwise, the component would not be visible to the client. So static tree-shaker can't remove any components from our initial application render tree.
+Статический тришейкинг - это когда бандлер удаляет недоступный код при сборке. В случае приложения все компоненты доступны. Это происходит потому, что компонент доступен при первоначальном рендере в случае SSR. Иначе компонент не будет виден клиенту. Поэтому статический тришейкинг не может удалить ни одного компонента из нашего начального дерева рендера приложения.
 
-Dynamic tree-shaking refers to the fact that after the initial render, the component is no longer reachable from operations the user can perform. The component is only reachable under initial SSR rendering but not from subsequent user interactions. This is why we use the term dynamic tree-shaking to differentiate it from the static tree-shaking that bundler will do.
+Динамический тришейкинг учитывает тот факт, что после первоначального рендера компонент больше не доступен для операций, которые может выполнить пользователь. Компонент доступен только при первоначальном рендере SSR, но не при последующих взаимодействиях с пользователем. Именно поэтому мы используем термин динамический тришейкинг, чтобы отличить его от статического тришейкинга, который будет выполнять бандлер при сборке.
 
-Static tree-shaking has the disadvantage that it does not take the runtime context into account when deciding if a particular component is reachable. It must assume a worst-case scenario and therefore retain the component as it is reachable on the server during SSR.
+Недостатком статического тришейкинга является то, что он не учитывает контекст рантайма при принятии решения о достижимости конкретного компонента. Он должен предполагать наихудший сценарий и поэтому сохраняет компонент в том виде, в котором он доступен на сервере во время SSR.
 
-### Example
+### Пример
 
-Interact with the example by clicking on the `+1` button. Few things to notice:
+Поработайте с примером, кликнув на кнопку `+1`. Несколько моментов, на которые стоит обратить внимание:
 
-- Server must execute all components. So from the server point of view, all of the components are needed.
-- On the client hitting `+1` does not require loading the `<App>` because it does not need to re-render. Therefore `<App>` is never loaded on the client.
+- Сервер должен выполнить все компоненты. Таким образом, с точки зрения сервера, все компоненты необходимы.
+- На клиенте нажатие `+1` не требует загрузки `<App>`, поскольку ему не нужно перерисовываться. Поэтому `<App>` никогда не загружается на клиенте.
 
-Now edit `Child` and delete the binding to `{props.store.count}`. Notice that now the child is no longer rendered on the client, and its associated render code is never loaded.
+Теперь отредактируйте `Child` и удалите привязку к `{props.store.count}`. Обратите внимание, что теперь дочерний элемент больше не отображается на клиенте, а связанный с ним код рендера никогда не загружается.
 
-Qwik determines which components are need-based in the runtime context of the application. Databinding determines whether the component is considered static or dynamic and, therefore, whether the component will be tree-shaken.
+Qwik определяет, какие компоненты необходимы в контексте выполнения приложения. Привязка данных определяет, считать компонент статическим или динамическим и, следовательно, будет ли компонент тришейкаться.
 
-In practice, many components are static in the application, and they never need to be loaded into the client.
+На практике многие компоненты приложения являются статичными, и их никогда не нужно загружать на клиента.
