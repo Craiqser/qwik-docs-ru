@@ -1,16 +1,16 @@
 ---
-title: Lazy Loading Closures
+title: Ленивая загрузка замыканий
 contributors:
   - manucorporat
   - adamdbradley
 ---
 
-A closure can be converted into a lazy-loaded reference using the `$()` function. This generates a `QRL<Function>` type. A QRL is a lazy-loadable reference of the closure. In our case, we have extracted the closure associated with the `onInput` event into the component body. Because it is no longer inlined we need to change how the JSX refers to it from `onInput$` to `onInputQrl`.
+Замыкание может быть преобразовано в ссылку с ленивой загрузкой с помощью функции `$()`. Такая ссылка генерирует тип `QRL<Function>`. QRL - это лениво загружаемая ссылка замыкания. В нашем случае мы извлекли замыкание, связанное с событием `onInput`, в тело компонента. Поскольку оно больше не вставляется, нам нужно изменить способ обращения к нему в JSX с `onInput$` на `onInputQrl`.
 
-Notice that our closure closes over the `store` that is captured by the Optimizer and then restored as needed.
+Обратите внимание, что наше замыкание захватывает `store`, которое захватывается оптимизатором и затем восстанавливается при необходимости.
 
-### Example
+### Пример
 
-In this example, we would like to demonstrate how easy it is to lazy-load behavior in Qwik. Let's lazy load the code that is executed when the `Enter` key is pressed. Wrap the code associated with `Enter` with `$()` to mark it for lazy loading. The resulting `QRL<()=>void>` can then be lazy-invoked with `.invoke()` and the result can be awaited with `await` keyword.
+В этом примере мы хотим продемонстрировать, как легко в Qwik можно реализовать ленивую загрузку. Давайте лениво загрузим код, который выполняется при нажатии клавиши `Enter`. Оберните код, связанный с `Enter`, в `$()`, чтобы пометить его для ленивой загрузки. Полученный `QRL<()=>void>` можно вызвать с помощью `.invoke()` и ожидать результата с помощью ключевого слова `await`.
 
-Look at the `Symbols` tab to see how the code was broken up into pieces.
+Посмотрите на вкладку `Symbols`, чтобы увидеть, как код был разбит на части.

@@ -4,7 +4,7 @@ export const App = component$(() => {
   const store = useStore({ name: '' });
   return (
     <>
-      Enter your name followed by the enter key:{' '}
+      Введите свое имя и нажмите клавишу ввода:{' '}
       <input
         onInput$={$(async (event) => {
           const input = event.target as HTMLInputElement;
