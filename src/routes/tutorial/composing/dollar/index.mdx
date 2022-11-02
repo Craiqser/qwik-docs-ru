@@ -1,37 +1,37 @@
 ---
-title: Creating APIs with $
+title: Создание API с $
 contributors:
   - manucorporat
   - adamdbradley
 ---
 
-The powerful, part of Optimizer is that you can create your own APIs with `$` suffix.
+Мощной частью оптимизатора является возможность создания собственных API с суффиксом `$`.
 
-Imagine that we would like to have a delay method that lazy loads its callback. Normally we would have to write something like this:
+Представьте, что мы хотим иметь метод задержки, который лениво загружает свою функцию обратного вызова. Обычно мы пишем что-то вроде этого:
 
 ```typescript
 setTimeout(() => {
-  // I am eagerly loaded, but it would be better if I was lazy-loaded.
+  // Я загружаюсь сразу, но было бы лучше, если бы я загружался лениво.
   ...
 }, timeout);
 ```
 
-The issue with the example above is that the callback has to be downloaded and created eagerly. This may be an issue if the closure is large or if the callback is never executed (or only executed later.)
+Проблема с приведённым выше примером заключается в том, что обратный вызов должен быть загружен и создан безотлагательно. Это может быть проблемой, если замыкание имеет большой размер или если обратный вызов никогда не выполняется (или выполняется, но позже).
 
-A better solution would be to have `delay$` method that can lazy-load the closure associated with the callback. Something like this.
+Лучшим решением было бы иметь метод `delay$`, который может лениво загружать замыкание, связанное с обратным вызовом. Что-то вроде этого:
 
 ```typescript
 delay$(() => {
-  // I am lazy-loaded only when I need to be executed.
+  // Я лениво загружаюсь только тогда, когда нужно выполниться.
   ...
 }, 1000)
 ```
 
-In the above solution, the callback is only downloaded when `delay$` is ready to execute it.
+В приведённом выше решении обратный вызов загружается только тогда, когда `delay$` готов его выполнить.
 
-## Creating your APIs with `$` suffix
+## Создание своего API с суффикосм $
 
-Qwik runtime works with `QRL`s. For this reason we define a method like so:
+Среда выполнения Qwik работает с `QRL`. Для этого мы определяем метод следующим образом:
 
 ```typescript
 export function delayQrl<T>(fn: QRL<() => T>, delayInMs: number): Promise<T> {
@@ -43,15 +43,15 @@ export function delayQrl<T>(fn: QRL<() => T>, delayInMs: number): Promise<T> {
 }
 ```
 
-This method knows how to take a `QRL` and execute it after a certain delay. The key part here is that the `QRL.invoke()` method is called when the delay is ready and is therefore lazy.
+Этот метод умеет принимать `QRL` и выполнять его после определённой задержки. Ключевым моментом здесь является то, что метод `QRL.invoke()` вызывается, когда задержка готова, и поэтому является ленивым.
 
-The next step is to convert the `delayQrl` method to a `delay$` alias. This is done with `implicit$FirstArg` like so:
+Следующим шагом будет преобразование метода `delayQrl` в псевдоним `delay$`. Это делается с помощью `implicit$FirstArg` таким образом:
 
 ```typescript
 export const delay$ = implicit$FirstArg(delayQrl);
 ```
 
-Here are the types to make it clearer as to what is going on.
+Вот типы, чтобы было понятнее, что происходит.
 
 ```typescript
 declare;
@@ -60,15 +60,15 @@ declare;
 delay$: (fn: () => T, delayInMs: number) => Promise<T>;
 ```
 
-The above allows us to use `delay$` in an inlined fashion, but the Optimizer converts the `delay$` to `delayQrl` form.
+Вышеприведённое позволяет нам использовать `delay$` во вложенном виде, но оптимизатор преобразует `delay$` в форму `delayQrl`.
 
-> **NOTE** the two methods must have the same prefix. So a general form is:
+> **ПРИМЕЧАНИЕ** Два метода должны иметь одинаковый префикс. Итак, общая форма такова:
 
 ```typescript
 export const SOME_NAME_Qrl = ...;
 export const SOME_NAME_$ = implicit$FirstArg(SOME_NAME_Qrl);
 ```
 
-### Example
+### Пример
 
-In our example we are executing `store.count++` and `store.delay++` together. Wrap the `store.delay` in `delay$()` call so that it updates with a one second delay.
+В нашем примере мы выполняем `store.count++` и `store.delay++` одновременно. Оберните вызов `store.delay` в вызов `delay$()`, чтобы обновление происходило с задержкой в одну секунду.

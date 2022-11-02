@@ -14,8 +14,8 @@ export const App = component$(() => {
   const store = useStore({ count: 0, delay: 0 });
   return (
     <>
-      Count: {store.count} <br />
-      Delay: {store.delay} <br />
+      Счётчик: {store.count} <br />
+      Задержка: {store.delay} <br />
       <button
         onClick$={async () => {
           store.count++;

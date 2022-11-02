@@ -1,12 +1,12 @@
 ---
-title: Composing use Hooks
+title: Создание use-хука
 contributors:
   - adamdbradley
   - manucorporat
 ---
 
-Hooks are a way to abstract common logic away from the components that use it. They are a way to share logic between components. While Qwik provides many hooks, there will always be one that is not provided out of the box. This tutorial will show you how to create your own hook.
+Хуки - это способ абстрагировать общую логику от компонентов, которые её используют. Они являются способом обмена логикой между компонентами. Хотя Qwik предоставляет множество хуков, всегда найдётся один, который не предоставляется "из коробки". Этот учебник покажет вам, как создать свой собственный хук.
 
-In this example, the registering of `mousemove` events is something that could be shared between multiple components. Refactor the code by pulling out the code before JSX into its own `useMousePosition()` function.
+В данном примере регистрация событий `mousemove` - это то, что может быть совместно использовано несколькими компонентами. Переработайте код, вытащив код перед JSX в собственную функцию `useMousePosition()`.
 
-Congratulations, you have successfully created your own hook! You can now use it in any component that needs to listen to the mouse position.
+Поздравляем, вы успешно создали свой собственный хук! Теперь вы можете использовать его в любом компоненте, которому необходимо отслеживать положение мыши.
