@@ -9,25 +9,25 @@ export const App = component$(() => {
   const store = useStore<AppStore>(
     {
       counter: { count: 1 },
-      largeData: { data: 'PRETEND THIS IS LARGE DATASET' },
+      largeData: { data: 'ПРИТВОРЯЕТСЯ БОЛЬШИМ НАБОРОМ ДАННЫХ' },
     },
     { recursive: true }
   );
-  console.log('Render: <App/>');
+  console.log('Рендер: <App/>');
   const counter = store.counter;
   return (
     <>
       <tt>&lt;App&gt;</tt>
       <tt>largeData</tt>: {JSON.stringify(store.largeData)}
       <br />
-      Click <button onClick$={() => counter.count++}>+1</button>
+      Нажми <button onClick$={() => counter.count++}>+1</button>
       <Child counter={counter} />
     </>
   );
 });
 
 export const Child = component$((props: { counter: AppStore['counter'] }) => {
-  console.log('Render: <Child/>');
+  console.log('Рендер: <Child/>');
   return (
     <>
       <tt>&lt;Child&gt;</tt> {props.counter.count}
