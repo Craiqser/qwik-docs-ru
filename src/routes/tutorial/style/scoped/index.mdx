@@ -1,15 +1,15 @@
 ---
-title: Scoped Styling
+title: Локальная стилизация
 contributors:
   - manucorporat
   - adamdbradley
   - mhevery
 ---
 
-In previous sections, we have discussed how styles can be loaded lazily as they are needed using `useStyles$()` hook. Browser styles are global and apply to all DOM elements, for this reason, Qwik also provides a way to load styles that are specific to a specific component. This is achieved by generating a unique class for each component and then inserting that unique class id into the stylesheet.
+В предыдущем разделе мы обсуждали, как можно лениво загружать стили по мере необходимости с помощью хука `useStyles$()`. Стили браузера являются глобальными и применяются ко всем элементам DOM, по этой причине Qwik также предоставляет способ загрузки стилей, специфичных для конкретного компонента. Это достигается путем создания уникального класса для каждого компонента и последующей вставки этого уникального идентификатора класса в таблицу стилей.
 
-Use `useStylesScoped$()` to load and scope the style to a specific component only.
+Используйте `useStylesScoped$()` для загрузки и применения стиля только к определённому компоненту.
 
-### Example
+### Пример
 
-In this example, there are two components both of which have a class with the same name. Because of that, the two styles collide which results in undesirable behavior. Use the `useStylesScoped$()` hook to scope the styles to a specific component and fix the collision.
+В этом примере есть два компонента, и они оба имеют класс с одинаковым именем. Из-за этого происходит коллизия двух стилей, что приводит к нежелательному поведению. Используйте хук `useStylesScoped$()`, чтобы применить стили к определенному компоненту и исправить коллизию.
