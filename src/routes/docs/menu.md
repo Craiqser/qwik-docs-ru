@@ -40,6 +40,7 @@
 - [QRL](advanced/qrl/index.mdx)
 - [Qwikloader](advanced/qwikloader/index.mdx)
 - [Каталог сборки](advanced/custom-build-dir/index.mdx)
+- [Интернационализация](advanced/i18n/index.mdx)
 
 ## Сообщество
 

@@ -2,7 +2,7 @@
 
 ## Current status
 
-- Qwik, QwikCity, Tutorial: last update 2.11.2022.
+- Qwik, QwikCity, Tutorial: last update 3.11.2022.
 
 ## Development Builds
 
