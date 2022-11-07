@@ -6,53 +6,52 @@ contributors:
 
 ## Глобальные стили
 
-Многие приложения используют глобальную таблицу стилей для выполнения сброса браузера и/или определения глобальных стилей. Это хорошая практика, но не рекомендуется использовать ее для стилизации компонентов. Qwik оптимизирован для того, чтобы браузер загружал только те стили, которые необходимы для текущего представления. Если вы используете глобальную таблицу стилей, все стили будут загружены при первой загрузке, даже если они не нужны для текущего представления.
-
-Many apps use a global stylesheet to do browser resets and/or defining global styles. This is a good practice, but it is not recommended to use it for styling your components. Qwik is optimized to let the browser just download the styles that are needed for the current view. If you use a global stylesheet, all the styles will be downloaded on the first load, even if they are not needed for the current view.
+Многие приложения используют глобальные стили для выполнения сброса стилей браузера и/или определения глобальных стилей. Это нормальная практика, но её не рекомендуется использовать для стилизации компонентов. Qwik оптимизирован для того, чтобы браузер загружал только те стили, которые необходимы для текущего представления. Если вы используете глобальные стили, то они будут загружены при первой загрузке, даже если они не нужны на текущей странице.
 
 ```tsx
 import './global.css'
 ```
 
-## Inline critical styles
-To reduce the blocking time of the first paint, Qwik can inline the critical styles for the current view. This means that the browser will not need to download the styles for the current view. To tell Qwik to inline styles, just add the `?inline` query parameter to the import.
+## Встраиваемые критические стили
+
+Чтобы сократить время блокировки первой отрисовки, Qwik может встраивать критические стили текущего представления. Это означает, что браузеру не нужно будет загружать стили для текущего представления. Чтобы указать Qwik на встраивание стилей, просто добавьте к импорту параметр запроса `?inline`.
 
 ```tsx
 import from './my-component.css?inline'
 ```
 
-## Why not inline styles using the `<style>` tag?
+## Почему не встроить стили с помощью тега `<style>`?
 
-A naive way to ensure that a component has the correct styles loaded is to inline the style information into a component like so.
+Простейший способ убедиться, что в компонент загружены корректные стили, заключается в том, чтобы встроить информацию о стилях в компонент следующим образом:
 
 ```typescript
 export const MyComponent = () => {
   return (
     <>
-    <style>.my-class { color: red; }</style
+      <style>.my-class { color: red; }</style>
       My Component
     </>
   );
 }
 ```
 
-The problem with this approach is that we will load styles twice.
+Проблема этого подхода заключается в том, что мы будем загружать стили дважды.
 
-1. The styles are inserted into the HTML as part of the SSR.
-2. Then when the component is invalidated and needs to be re-rendered, the styles are loaded again because they are inlined.
+1. Стили вставляются в HTML как часть процесса SSR.
+2. Когда компонент меняется и нужно сделать ререндер, стили загружаются снова, поскольку они встроены.
 
-What is needed is to load the styles independently from the component. This is what `useStyles$()` is for. There are two scenarios:
+Необходимо загружать стили независимо от компонента. Для этого и существует метод `useStyles$()`. Есть два сценария:
 
-1. The component is rendered on the server and the styles are inserted into `<head>` as part of the SSR.
-   - Adding a new instance of a component to the application does not require that we load the styles as they are already included as part of SSR.
-2. The component is rendered on the client for the first time. In that case, the new component does not have styles in the `<head>` as the component was not part of SSR.
-   - Adding a new component that was not part of SSR requires that styles are loaded and inserted into `<head>`.
-
+1. Компонент рендерится на сервере, и стили вставляются в секцию `<head>`, как часть SSR.
+  - Добавление нового экземпляра компонента в приложение не требует загрузки стилей, так как они уже подключены в процессе SSR.
+2. Компонент рендерится на клиенте в первый раз. В этом случае новый компонент не будет иметь стилей в `<head>`, так как компонент не был частью SSR.
+  - Добавление нового компонента, который не был частью SSR, требует загрузки и вставки стилей в `<head>`.
 
 ## `useStyles$()`
-A lazy-loadable reference to component's styles.
 
-Component styles allow Qwik to lazy load the style information for the component only when needed. (And avoid double loading it in case of SSR hydration.)
+Это лениво-загружаемая ссылка на стили компонента.
+
+Стили компонентов позволяют Qwik лениво загружать информацию о стиле для компонента только тогда, когда это необходимо (и избегать двойной загрузки в случае гидратации SSR).
 
 ```tsx
 import {useStyles$} from '@builder.io/qwik';
@@ -60,7 +59,7 @@ import styles from './code-block.css';
 
 export const CmpStyles = component$(() => {
   useStyles$(styles);
-  return <span class="my-text">Some text</span>;
+  return <span class="my-text">Какой-то текст</span>;
 });
 ```
 
@@ -72,9 +71,10 @@ export const CmpStyles = component$(() => {
 ```
 
 ## `useStylesScope$`
-In previous sections, we have discussed how styles can be loaded lazily as they are needed using the `useStyles$()` hook.
-Browser styles are global and apply to all DOM elements, for this reason, Qwik also provides a way to load styles that are specific to a specific component.
-This is achieved by generating a unique class for each component and then inserting that unique class id into the stylesheet.
+
+В предыдущем разделе мы обсуждали, как можно лениво загружать стили по мере необходимости с помощью хука `useStyles$()`.
+Стили браузера являются глобальными и применяются ко всем элементам DOM, по этой причине Qwik также предоставляет способ загрузки стилей, специфичных для определённого компонента.
+Это достигается путем создания уникального класса для каждого компонента и последующей вставки этого уникального идентификатора класса в таблицу стилей.
 
 ```tsx
 import {useStylesScoped$} from '@builder.io/qwik';
@@ -82,7 +82,7 @@ import styles from './code-block.css';
 
 export const CmpStyles = component$(() => {
   useStylesScoped$(styles);
-  return <span class="my-text">Some text</span>;
+  return <span class="my-text">Какой-то текст</span>;
 });
 ```
 
@@ -94,8 +94,11 @@ export const CmpStyles = component$(() => {
 ```
 
 ## Preprocessors
+
 ### SASS / SCSS
-Qwik works nicely with SCSS and SASS without any additional installs. Make sure that your files have the `.scss` or `.sass` extension.
+
+Qwik прекрасно работает с SCSS и SASS без каких-либо дополнительных библиотек. Просто убедитесь, что ваши файлы имеют расширение `.scss` или `.sass`.
 
 ### Tailwind
-To use Tailwind on your app, follow these [instructions](../../../qwikcity/integrations/tailwind).
+
+Чтобы использовать в своём приложении Tailwind, следуйте этим [инструкциям](../../../qwikcity/integrations/tailwind).
