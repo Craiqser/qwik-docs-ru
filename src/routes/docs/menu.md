@@ -20,6 +20,7 @@
 - [Легковесные компоненты](components/lite-components/index.mdx)
 - [Отображение содержимого](components/projection/index.mdx)
 - [Рендер](components/rendering/index.mdx)
+- [Стилизация](components/styles/index.mdx)
 
 ## Шпаргалка
 
