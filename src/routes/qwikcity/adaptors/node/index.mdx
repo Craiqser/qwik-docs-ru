@@ -15,18 +15,19 @@ contributors:
 Ниже приведен пример использования в приложении с [Express](https://expressjs.com/). Обратите внимание, что пользователь может сам определить порядок работы промежуточного ПО, включая обработку статических ассетов и способ обработки ответов 404.
 
 ```typescript
-import { qwikCity } from '@builder.io/qwik-city/middleware/node';
+import { createQwikCity } from '@builder.io/qwik-city/middleware/node';
+import qwikCityPlan from '@qwik-city-plan';
+import render from './entry.ssr';
 import express from 'express';
 import { fileURLToPath } from 'node:url';
 import { join } from 'node:path';
-import render from './entry.ssr';
 
 // Каталоги, в которых расположены статические ассеты
 const distDir = join(fileURLToPath(import.meta.url), '..', '..', 'dist');
 const buildDir = join(distDir, 'build');
 
 // Создание Qwik City middleware
-const { router, notFound } = qwikCity(render);
+const { router, notFound } = createQwikCity({ render, qwikCityPlan });
 
 // Создание сервера Express
 const app = express();
