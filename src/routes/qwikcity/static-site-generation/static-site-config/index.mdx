@@ -3,43 +3,38 @@ title: Настройка генерации статических сайтов
 contributors:
   - adamdbradley
   - wtho
+  - gmadar
 ---
 
 # Настройка генерации статических сайтов
 
-Ниже приведён пример файла `src/entry.static.tsx`, который является начальным файлом, используемым для сборки статического сайта (SSG). Как и файл точки входа для SSR, такой как `src/entry.server.tsx`, он должен импортировать функцию `render` вашего приложения из файла `./entry.ssr`.
+Генерация статического сайта делается встроенным адаптером, для запуска которого наберите:
 
-```typescript
-// Файл: src/entry.static.tsx
-import { qwikCityGenerate } from '@builder.io/qwik-city/static/node';
-import render from './entry.ssr';
-import { fileURLToPath } from 'node:url';
-import { join } from 'node:path';
-
-qwikCityGenerate(render, {
-  origin: 'https://qwik.builder.io',
-  outDir: join(fileURLToPath(import.meta.url), '..', '..', 'dist'),
-});
+```bash
+npm run qwik add
 ```
 
-Затем вы можете добавить скрипт `build.ssg` в `package.json` для сборки кода и добавить его в скрипт `build`, чтобы он работал после каждой сборки:
+Выберите `Adaptor: Static site (.html files)`
 
-```json
-  "build": "npm run build.client && npm run build.ssr && npm run build.ssg",
-  "build.ssg": "vite build --ssr src/entry.static.tsx",
-```
+Готово!
+
+## Изменения
+
+Выполнение приведённой выше команды внесёт следующие изменения в ваш проект:
+  - Скрипт `build.server` будет автоматически добавлен в ваш файл `package.json`.
+  - Будет создан файл ``adaptors/vite.config.ts``.
 
 В среде Node.js вы можете запустить генерацию после сборки с помощью:
 
 ```bash
-node server/entry.static.js
+node server/enty.ssr.js
 ```
 
-Ваши файлы сборки будут сгенерированы в папке `dist`, как настроено в `src/entry.static.tsx`.
+Файлы сборки будут сгенерированы в папке `dist`.
 
 ## Настройка SSG
 
-Файл `src/entry.static.tsx` также включает конфигурацию SSG, которая будет индивидуальной для каждой реализации.
+Файл `adaptors/vite.config.ts` также включает конфигурацию SSG, которая будет индивидуальной для каждой реализации.
 
 ### `origin`
 
