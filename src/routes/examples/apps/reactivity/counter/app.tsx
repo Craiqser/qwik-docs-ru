@@ -5,9 +5,9 @@ export const App = component$(() => {
 
   return (
     <div>
-      <p>Count: {store.count}</p>
+      <p>Счёт: {store.count}</p>
       <p>
-        <button onClick$={() => store.count++}>Click</button>
+        <button onClick$={() => store.count++}>Нажми</button>
       </p>
     </div>
   );

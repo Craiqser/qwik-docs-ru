@@ -1,60 +1,60 @@
 [
   {
     "id": "introduction",
-    "title": "Introduction",
+    "title": "Введение",
     "apps": [
       {
         "id": "hello-world",
-        "title": "Hello World",
-        "description": "The simplest Qwik app.",
+        "title": "Привет, мир!",
+        "description": "Простое Qwik-приложение.",
         "icon": "🌎"
       }
     ]
   },
   {
     "id": "reactivity",
-    "title": "Reactivity",
+    "title": "Реактивность",
     "apps": [
       {
         "id": "watch",
-        "title": "Simple useWatch()",
-        "description": "Learn how to react to changes in variables.",
+        "title": "Простой useWatch()",
+        "description": "Узнайте, как реагировать на изменения переменных.",
         "icon": "👀"
       },
       {
         "id": "counter",
-        "title": "Counter",
-        "description": "A simple standard counter example.",
+        "title": "Счётчик",
+        "description": "Простой пример обычного счётчика.",
         "icon": "⏲"
       },
       {
         "id": "auto-complete",
-        "title": "Auto-complete",
-        "description": "Auto-complete searching for Star Wars characters using the SWAPI API",
+        "title": "Автозаполнение",
+        "description": "Автозаполнение при поиске персонажей Звездных войн с использованием SWAPI API",
         "icon": "🎬"
       }
     ]
   },
   {
     "id": "visibility",
-    "title": "Visibility",
+    "title": "Видимость",
     "apps": [
       {
         "id": "clock",
-        "title": "Below the fold Clock",
-        "description": "Component which requires lazy initialization when it comes into view.",
+        "title": "Часы ниже по тексту",
+        "description": "Компонент, требующий ленивой инициализации при появлении в поле зрения.",
         "icon": "⏰"
       }
     ]
   },
   {
     "id": "partial",
-    "title": "Partial",
+    "title": "На части",
     "apps": [
       {
         "id": "hackernews-index",
         "title": "HackerNews",
-        "description": "HackerNews landing page.",
+        "description": "Посадочная страница HackerNews.",
         "icon": "📰"
       }
     ]

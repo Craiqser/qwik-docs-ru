@@ -85,7 +85,7 @@ export default component$(() => {
             class="example-button-new"
             target="_blank"
           >
-            👏 Add new examples
+            👏 Добавить пример
           </a>
         </div>
 

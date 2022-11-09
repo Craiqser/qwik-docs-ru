@@ -13,7 +13,7 @@ export const App = component$(() => {
           div.style.background = 'yellow';
         }}
       >
-        Action
+        Действие
       </button>
     </div>
   );

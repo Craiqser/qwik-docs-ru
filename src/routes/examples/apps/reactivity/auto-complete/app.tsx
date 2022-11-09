@@ -3,13 +3,13 @@ import { component$, useStore, useWatch$ } from '@builder.io/qwik';
 export const App = component$(() => {
   return (
     <div>
-      This example features an auto-complete component with a debounce of 150 ms.
+      В этом примере представлен компонент автозаполнения с задержкой 150 мс.
       <br />
-      The function `debouncedGetPeople` needs to be exported because it is used in `useWatch$`.
+      Функция `debouncedGetPeople` должна быть экспортирована, поскольку она используется в `useWatch$`.
       <br />
       <br />
-      Go ahead, search for Star Wars characters such as "Luke Skywalker", it uses the{' '}
-      <a href="https://swapi.dev/">Star Wars API</a>
+      Ищите персонажей Звёздных войн, например "Luke Skywalker", с помощью{' '}
+      <a href="https://swapi.dev/">API Звёздных войн</a>
       <AutoComplete></AutoComplete>
     </div>
   );
@@ -65,7 +65,7 @@ export const SuggestionsListComponent = (props: { state: IState }) => {
     </ul>
   ) : (
     <div class="no-results">
-      <em>No suggestions, you re on your own!</em>
+      <em>Никаких предположений, вы сами по себе!</em>
     </div>
   );
 };

@@ -12,9 +12,9 @@ export const App = component$(() => {
   });
 
   useWatch$(({ track }) => {
-    // track changes in store.count
+    // отслеживает изменения в store.count
     track(() => store.count);
-    console.log('count changed');
+    console.log('счёт изменён');
 
     const timer = setTimeout(() => {
       store.debounced = store.count;
@@ -24,7 +24,7 @@ export const App = component$(() => {
     };
   });
 
-  console.log('<App> renders');
+  console.log('Рендер <App>');
   return (
     <div>
       <Child state={store} />
@@ -36,7 +36,7 @@ export const App = component$(() => {
 });
 
 export const Child = component$((props: { state: State }) => {
-  console.log('<Child> render');
+  console.log('Рендер <Child>');
   return (
     <div>
       <div id="child">{props.state.count}</div>
@@ -46,6 +46,6 @@ export const Child = component$((props: { state: State }) => {
 });
 
 export const GrandChild = component$((props: { state: State }) => {
-  console.log('<GrandChild> render');
-  return <div id="debounced">Debounced: {props.state.debounced}</div>;
+  console.log('Рендер <GrandChild>');
+  return <div id="debounced">С задержкой: {props.state.debounced}</div>;
 });

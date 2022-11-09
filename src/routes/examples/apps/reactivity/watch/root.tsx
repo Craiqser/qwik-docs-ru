@@ -4,7 +4,7 @@ export const Root = () => {
   return (
     <html>
       <head>
-        <title>Hello Qwik</title>
+        <title>Привет, Qwik!</title>
       </head>
       <body>
         <App />
