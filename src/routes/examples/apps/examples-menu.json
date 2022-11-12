@@ -8,6 +8,12 @@
         "title": "Привет, мир!",
         "description": "Простое Qwik-приложение.",
         "icon": "🌎"
+      },
+      {
+        "id": "runtime-less",
+        "title": "Runtime-less",
+        "description": "An app interactive app without runtime.",
+        "icon": "🪶"
       }
     ]
   },

@@ -5,7 +5,8 @@ interface AppStore {
   countA: number;
   countB: number;
 }
-export const App = component$(() => {
+
+export default component$(() => {
   const store = useStore({
     countA: 0,
     countB: 0,

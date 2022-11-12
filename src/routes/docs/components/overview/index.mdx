@@ -177,44 +177,44 @@ const Parent_onRender = () => (
 
 ### Состояние
 
-- `useStore(initialState)` - создаёт реактивное состояние
-- `useRef$(initialState)` - создаёт ссылку
-- `createContext(contentName)` - создаёт контекст
-- `useContextProvider$()` - создаёт провайдер контекста
-- `useContext$()` - использование контекста
+- [`useStore(initialState)`](../state/index.mdx) - создает реактивный объект, который может быть использован для хранения состояния
+- [`useSignal$(initialState)`](../state/index.mdx) - создает реактивное значение
+- [`createContext(contentName)`](../context/index.mdx) - создает ссылку контекста
+- [`useContextProvider$()`](../context/index.mdx) - предоставляет значение данного контекста
+- [`useContext$()`](../context/index.mdx) - считывает значение текущего контекста
 
 ### Стили
 
-- `useStylesScoped$()` - создаёт локальный стиль
-- `useStyles$()` - создаёт глобальный стиль
+- [`useStylesScoped$()`](../styles/index.mdx) - добавляет стили к текущему экземпляру компонента
+- [`useStyles$()`](../styles/index.mdx) - добавляет стили к текущему компоненту
 
 ### События
 
-- `useOn()` - создаёт слушателя событий
-- `useOnWindow()` - создаёт слушателя событий объекта window
-- `useOnDocument()` - создаёт слушателя событий объекта document
+- [`useOn()`](../events/index.mdx) styles - программно добавляет слушателя к компоненту
+- [`useOnWindow()`](../events/index.mdx) - программно добавляет к компоненту слушателя объекта window
+- [`useOnDocument()`](../events/index.mdx) - программно добавляет к компоненту слушателя объекта document
 
 ### События жизненного цикла
 
-- `useMount$()`
-- `useServerMount$()`
-- `useWatch$()` - создаёт наблюдателя
-- `useClientEffect$()`
-- `useResource$()` - создаёт ресурс
+- [`useMount$()`](../lifecycle/index.mdx) - определяет функцию обратного вызова, которая будет выполняться во время монтирования
+- [`useServerMount$()`](../lifecycle/index.mdx) - определяет функцию обратного вызова, которая будет выполняться только во время монтирования на сервере
+- [`useWatch$()`](../lifecycle/index.mdx) - определяет функцию обратного вызова, которая будет выполняться перед рендерингом и/или изменениями в наблюдаемом хранилище
+- [`useClientEffect$()`](../lifecycle/index.mdx) - определяет функцию обратного вызова, которая будет выполняться после рендера, только на клиенте (в браузере)
+- [`useResource$()`](../resource/index.mdx) - создаёт ресурс для асинхронной загрузки данных
 
 ### Другое
 
-- `$()` - создаёт QRL
+- [`$()`](../../advanced/qrl/index.mdx) - создаёт QRL
 - `noSerialize()`
 - `useErrorBoundary()`
 
 ### Компоненты
 
-- `<Slot>` - создаёт слот
-- `<SSRStreamBlock>` - создаёт блок потока
-- `<SSRStream>` - создаёт поток
-- `<Fragment>` - создаёт фрагмент
+- [`<Slot>`](../projection/index.mdx) - объявляет слот для отображения контента
+- `<SSRStreamBlock>` - объявляет блок потока
+- `<SSRStream>` - объявляет поток
+- `<Fragment>` - объявляет JSX-фрагмент
 
 ## Другие ссылки
 
-- [Облегчённые компоненты](./../lite-components/index.mdx)
+- [Облегчённые компоненты](../lite-components/index.mdx)

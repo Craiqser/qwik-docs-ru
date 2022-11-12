@@ -1,6 +1,6 @@
 import { component$, useStore, useWatch$ } from '@builder.io/qwik';
 
-export const App = component$(() => {
+export default component$(() => {
   return (
     <div>
       В этом примере представлен компонент автозаполнения с задержкой 150 мс.

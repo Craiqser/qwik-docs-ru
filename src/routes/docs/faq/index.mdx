@@ -40,20 +40,20 @@ contributors:
 
 ## Что значат все эти "$"?
 
-Вы могли заметить, что в приложениях Qwik больше [`$`](./../advanced/optimizer/index.mdx#the-meaning-of-), чем обычно: `component$()`, `useWatch$()`, `<div onClick$={() => console.log('click')} />`. Это не просто так. Qwik разбивает ваше приложение на небольшие фрагменты, меньшие, чем сам компонент: обработчики событий, хуки и прочие. Знак `$` сигнализирует как [оптимизатору](./../advanced/optimizer/index.mdx), так и разработчику, когда это происходит.
+Вы могли заметить, что в приложениях Qwik больше [`$`](./../advanced/dollar/index.mdx), чем обычно: `component$()`, `useWatch$()`, `<div onClick$={() => console.log('click')} />`. Это не просто так. Qwik разбивает ваше приложение на небольшие фрагменты, меньшие, чем сам компонент: обработчики событий, хуки и прочие. Знак `$` сигнализирует как [оптимизатору](./../advanced/optimizer/index.mdx), так и разработчику, когда это происходит.
 
 **Пример:**
 
 ```tsx
 import { component$ } from '@builder.io/qwik';
 
-export const App = component$(() => {
-  console.log('render');
-  return <p onClick$={() => console.log('hello')}>Hello Qwik</p>;
+export default component$(() => {
+  console.log('рендер');
+  return <p onClick$={() => console.log('привет')}>Привет, Qwik</p>;
 });
 ```
 
-Компонент выше разделен благодаря `$` на:
+Благодаря `$`, компонент из примера выше разделён на:
 
 **app.js**
 ```js
@@ -70,10 +70,10 @@ export { App };
 import { jsx as _jsx } from "@builder.io/qwik/jsx-runtime";
 import { qrl } from "@builder.io/qwik";
 export const App_component_AkbU84a8zes = ()=>{
-    console.log('render');
+    console.log('рендер');
     return /*#__PURE__*/ _jsx("p", {
         onClick$: qrl(()=>import("./app_component_p_onclick_01pegc10cpw"), "App_component_p_onClick_01pEgC10cpw"),
-        children: "Hello Qwik"
+        children: "Привет, Qwik"
     });
 };
 ```
@@ -81,7 +81,7 @@ export const App_component_AkbU84a8zes = ()=>{
 **app_component_p_onclick_01pegc10cpw.js**
 
 ```js
-export const App_component_p_onClick_01pEgC10cpw = ()=>console.log('hello');
+export const App_component_p_onClick_01pEgC10cpw = ()=>console.log('привет');
 ```
 
 ## Qwik загружает JS при взаимодействии с пользователем?

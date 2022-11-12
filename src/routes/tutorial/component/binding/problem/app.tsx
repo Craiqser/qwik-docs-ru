@@ -1,6 +1,6 @@
 import { component$ } from '@builder.io/qwik';
 
-export const App = component$(() => {
+export default component$(() => {
   // @ts-ignore
   const data = {
     name: 'Qwik',

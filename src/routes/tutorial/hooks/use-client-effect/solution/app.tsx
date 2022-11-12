@@ -41,7 +41,7 @@ export function updateClock(store: ClockStore) {
   store.hour = now.getHours() * (360 / 12);
 }
 
-export const App = component$(() => {
+export default component$(() => {
   return (
     <div>
       <p>Это пример ленивого выполнения кода компонента, когда он становится видимым.</p>

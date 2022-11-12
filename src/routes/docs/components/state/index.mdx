@@ -11,15 +11,45 @@ contributors:
 
 # Состояние
 
-Управление состоянием - важная часть любого приложения. В Qwik мы различаем два типа состояния - реактивное и статическое.
+Управление состоянием - важная часть любого приложения. В Qwik мы различаем два типа состояния - реактивное и статичное.
 
 Статичное состояние - это всё, что может быть сериализовано: строка, число, объект, массив... что угодно. Реактивное состояние, напротив, создаётся с помощью `useStore()`.
 
 Важно отметить, что состояние в Qwik - это не состояние компонента, а скорее состояние приложения, которое может быть инстанцировано любым компонентом.
 
+## `useSignal()`
+
+`const signal = useSignal(initialState)` - это хук, который создает реактивный сигнал. Он принимает начальное значение и возвращает реактивный сигнал.
+
+Реактивный сигнал, возвращаемый функцией `useSignal()`, состоит из объекта с единственным свойством `signal.value`. Если вы измените значение свойства value объекта, то любой компонент, который зависит от него, будет обновлён.
+
+### Пример
+
+Пример, показывающий использование `useSignal` в компоненте для отслеживания счёта.
+
+```tsx
+export default component$(() => {
+  const count = useSignal(0);
+
+  return (
+    <>
+      <button onClick$={() => count.value++}>Увеличить</button>
+      Счёт: {count.value}
+    </>
+  );
+});
+
+```
+
+В приведённом выше примере компонент App использует `useSignal()` для создания сигнала. Затем сигнал используется для отслеживания счета.
+
+Простое обращение к свойству `count.value` приведёт к обновлению компонента при изменении значения сигнала, когда свойство будет изменено в обработчике клика.
+
 ## `useStore()`
 
-`const reactive = useStore(initialState)` - это хук, который создает реактивный объект. Он принимает в качестве параметра начальное состояние и возвращает реактивный объект.
+Работает аналогично `useSignal()`, но принимает объект в качестве начального значения, думайте о хранилище как о сигнале с несколькими значениями, или как об объекте, состоящем из множества сигналов.
+
+`const reactive = useStore(initialState)` - это хук, который создает реактивный объект. Он принимает в качестве параметра начальный объект и возвращает реактивный объект.
 
 Реактивный объект, возвращаемый `useStore()`, похож на любой другой объект, но он реактивен: если вы измените свойство объекта, любой компонент, зависящий от него, будет обновлен.
 
@@ -28,16 +58,16 @@ contributors:
 
 ### Пример
 
-Пример, показывающий, как `useStore` используется в примере Counter для отслеживания значения счётчика.
+Пример, показывающий использование `useStore` в компоненте для отслеживания счёта.
 
 ```tsx
-export const App = component$(() => {
+export default component$(() => {
   const state = useStore({ count: 0 });
 
   return (
     <>
-      <button onClick$={() => state.count++}>Increment</button>
-      Count: {state.count}
+      <button onClick$={() => state.count++}>Увеличить</button>
+      Счёт: {state.count}
     </>
   );
 });
@@ -56,15 +86,15 @@ export const App = component$(() => {
 ```tsx
 import { component$, useStore } from '@builder.io/qwik';
 
-export const App = component$(() => {
+export default component$(() => {
   const store = useStore({
-    nested: { fields: { are: "not tracked" }}
+    nested: { fields: { are: "не отслеживается" }}
   })
 
   return (
     <>
       <p>{store.nested.fields.are}</p>
-      <button onClick$={() => store.nested.fields.are = "tracked"}>Click me</button>
+      <button onClick$={() => store.nested.fields.are = "отслеживается"}>Нажми меня</button>
     </>
   );
 });
@@ -73,21 +103,21 @@ export const App = component$(() => {
 Чтобы обновить это поле не ломая реактивность, нам придётся обновить поле верхнего уровня `nested`:
 
 ```ts
-store.nested = { fields: { are: { "tracked" } } }
+store.nested = { fields: { are: { "отслеживается" } } }
 ```
 
 Для того чтобы первый пример работал, мы можем передать второй аргумент нашему методу useStore и указать ему использовать рекурсивное отслеживание всех значений в нашем хранилище, независимо от его глубины.
 
 ```tsx
-export const App = component$(() => {
+export default component$(() => {
   const store = useStore({
-    nested: { fields: { are: "not tracked" }}
+    nested: { fields: { are: "не отслеживается" }}
   }, { recursive: true })
 
   return (
     <>
       <p>{store.nested.fields.are}</p>
-      <button onClick$={() => store.nested.fields.are = "tracked"}>Click me</button>
+      <button onClick$={() => store.nested.fields.are = "отслеживается"}>Нажми меня</button>
     </>
   );
 });
@@ -98,7 +128,7 @@ export const App = component$(() => {
 ```tsx
 import { component$, useStore } from '@builder.io/qwik';
 
-export const App = component$(() => {
+export default component$(() => {
   const store = useStore({
     letters: ["A", "B", "C"]
   }, { recursive: true })
@@ -106,7 +136,7 @@ export const App = component$(() => {
   return (
     <>
       {store.letters.map(letter => <p>{letter}</p>)}
-      <button onClick$={() => { store.letters[2] = "Z"}}>Click me</button>
+      <button onClick$={() => { store.letters[2] = "Z"}}>Нажми меня</button>
     </>
   );
 });
@@ -192,7 +222,7 @@ export const Child = component$(() => {
 ### Пример `useWatch$()`
 
 ```tsx
-export const App = component$(() => {
+export default component$(() => {
   const state = useStore({
     count: 0,
     doubleCount: 0
@@ -205,9 +235,9 @@ export const App = component$(() => {
 
   return (
     <>
-      <button onClick$={() => state.count++}>Increment</button>
-      Count: {state.count}
-      Count * 2: {state.doubleCount}
+      <button onClick$={() => state.count++}>Увеличить</button>
+      Счёт: {state.count}
+      Счёт * 2: {state.doubleCount}
     </>
   );
 });
@@ -216,7 +246,7 @@ export const App = component$(() => {
 ### Пример `useResource$()`
 
 ```tsx
-export const App = component$(() => {
+export default component$(() => {
   const state = useStore({
     count: 0,
   });
@@ -228,9 +258,9 @@ export const App = component$(() => {
 
   return (
     <>
-      <button onClick$={() => state.count++}>Increment</button>
-      Count: {state.count}
-      Count * 2: {doubleCount.promise}
+      <button onClick$={() => state.count++}>Увеличить</button>
+      Счёт: {state.count}
+      Счёт * 2: {doubleCount.promise}
     </>
   );
 });
@@ -241,3 +271,26 @@ export const App = component$(() => {
 ## Реактивность
 
 Благодаря фрагментарной реактивности Qwik, обновляться будут только те компоненты, которые зависят от состояния. Это огромный выигрыш в производительности, так как обновляются только те компоненты, которые действительно необходимо обновить.
+
+## `noSerialize()`
+
+Иногда вы можете захотеть сохранить значение в состоянии, но не хотите, чтобы оно было сериализовано. Это полезно для хранения значений, которые не являются сериализуемыми, например, функций или классов.
+
+```tsx
+import {component$, useStore, noSerialize} from '@builder.io/qwik';
+
+export const App = component$(() => {
+  const state = useStore({
+    monacoInstance: null
+  });
+
+  useClientEffect$(() => {
+    // Monaco не является сериализуемым, поэтому мы не можем хранить его в состоянии, не используя `noSerialize()`.
+    state.monacoInstance = noSerialize(new Monaco());
+  });
+  return (
+    <>
+    </>
+  );
+});
+```
