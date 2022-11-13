@@ -1,5 +1,5 @@
 ---
-title: Отображение
+title: Слоты
 contributors:
   - RATIU5
   - manucorporat
@@ -7,159 +7,110 @@ contributors:
   - adamdbradley
 ---
 
-# Отображение содержимого
+# Слоты
 
-Отображение содержимого позволяет компоненту рассматривать дочерние элементы JSX компонента как форму ввода и отображать дочерние элементы в JSX компонента.
+Слоты позволяют компоненту рассматривать дочерние JSX-элементы компонента как форму ввода и отображать эти элементы в DOM-дереве компонента.
 
-Пример сворачиваемого компонента, который отображает своё содержимое по условию.
+Эта концепция имеет разные названия в различных фреймворках:
 
-```tsx
-export const Collapsible = component$(() => {
-  const store = useStore({ isOpen: true });
+ - В Angular это называется Content Projection;
+ - В React это `children` параметров;
+ - В Vue и веб-компонентах это тоже называется слотами.
 
-  return (
-    <div class="collapsible">
-      <div class="title" onClick$={() => (store.isOpen = !store.isOpen)}>
-        <Slot name="title"></Slot>
-      </div>
-      {store.isOpen ? <Slot /> : null}
-    </div>
-  );
-});
-```
+Слоты в Qwik являются символическими, что позволяет Qwik рендерить родительские и дочерние компоненты в полной изоляции друг от друга, позволяя отображать родительский компонент без повторного рендера дочерних и наоборот.
 
-Вышеупомянутый компонент можно использовать из родительского компонента следующим образом:
+> Примечание: Поскольку слоты являются символическими, дочерние элементы НЕ могут быть прочитаны или преобразованы компонентами, как это возможно в React.
+
+## Использование
+
+Основным API для достижения этой цели является компонент `<Slot>`, экспортируемый в `@builder.io/qwik`:
 
 ```tsx
-export const MyApp = component$(() => {
+import { Slot } from '@builder.io/qwik';
+
+export const Button = component$(() => {
   return (
-    <Collapsible>
-      <span q:slot="title">Текст заголовка</span>
-      Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus vulputate accumsan pretium.
-    </Collapsible>
-  );
-});
-```
-
-Компонент `Collapsible` всегда будет отображать заголовок, но основной текст будет отображаться только в том случае, если `store.isOpen` имеет значение `true`.
-
-## Вывод рендерера
-
-Приведённый выше пример рендерится в следующий HTML, если `isOpen === true`:
-
-```html
-<my-app>
-  <collapsible>
-    <q:slot q:key="title" has-content>
-      <span q:slot="title" has-content>Текст заголовка</span>
-    </q:slot>
-    <q:slot>
-      Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus vulputate accumsan pretium.
-    </q:slot>
-  </collapsible>
-</my-app>
-```
-
-## Слоты
-
-Qwik использует слоты как способ включения содержимого родительского компонента к дочернему содержимому.
-
-Родительский компонент использует атрибут `q:slot` для определения источника содержимого и элемент `<Slot>` для определения места назначения содержимого. Предполагается, что безымянный (или развернутый) контент имеет атрибут `q:slot=""`.
-
-```tsx
-export const Project = component$(() => {
-  return (
-    <div>
+    <button>
       <Slot />
-    </div>
-  );
-});
-
-export const MyApp = component$(() => {
-  return (
-    <Project>
-      внешний текст
-      <span>внутренний текст без q:slot</span>
-      <span q:slot="">внутренний текст с q:slot с именем по умолчанию</span>
-    </Project>
+    </button>
   );
 });
 ```
 
-Результат рендера:
+Компонент `<Slot>` является заполнителем для дочерних элементов компонента. Компонент `<Slot>` будет заменён дочерними элементами этого компонента при рендере приложения.
 
-```html
-<my-app>
-  <project>
-    <div>
-      <q:slot q:key has-content>
-        внешний текст
-        <span>внутренний текст без q:slot</span>
-        <span q:slot="">внутренний текст с q:slot с именем по умолчанию</span>
-      </q:slot>
-    </div>
-  </project>
-</my-app>
+Давайте посмотрим, как используется этот компонент:
+
+```tsx
+<Button>
+  {... это будет размещено там, где используется <Slot> внутри компонента Button ...}
+</Button>
 ```
 
 ### Именованные слоты
 
-Используйте атрибуты `q:slot` для именования слотов.
+Компонент `Slot` может использоваться несколько раз в одном и том же компоненте, если он имеет другое свойство `name`:
 
 ```tsx
-export const Project = component$(() => {
-  return (
-    <div>
-      <div class="title">
-        <Slot name="title" />
-      </div>
-      <Slot />
-    </div>
-  );
-});
+import { Slot } from '@builder.io/qwik';
 
-export const MyApp = component$(() => {
+export const Button = component$(() => {
   return (
-    <Project>
-      внешний текст
-      <span q:slot="title">первый заголовок</span>
-      <span>внутренний текст без q:slot</span>
-      <span q:slot="title">второй заголовок</span>
-    </Project>
+    <button>
+      <div>
+        <Slot name="start"/>  {/* "start" slot */}
+      </div>
+      <Slot /> {/* default slot */}
+      <div>
+        <Slot name="end"/> {/* "end" slot */}
+      </div>
+    </button>
   );
 });
+```
+
+Теперь, при использовании компонента `<Button>`, мы можем передавать дочерние элементы и указывать, в какой слот они должны быть помещены, используя атрибут `q:slot`:
+
+```tsx
+<Button>
+  <div q:slot="start">Start</div>
+  <div>Default</div>
+  <div q:slot="end">End</div>
+  <icon q:slot="end"></icon>
+
+</Button>
 ```
 
 Результат:
 
 ```html
-<my-app>
-  <project>
-    <div>
-      <div class="title">
-        <span q:slot="title">первый заголовок</span>
-        <span q:slot="title">второй заголовок</span>
-      </div>
-      <q:slot q:key="" has-content>
-        внешний текст
-        <span>внутренний текст без q:slot</span>
-      </q:slot>
-    </div>
-  </project>
-</my-app>
+<button>
+  <div>
+    <!-- Slot name=start -->
+    <div q:slot="start">Start</div>
+  </div>
+  <!-- Slot (default) -->
+  <div>Default</div>
+  <div>
+    <!-- Slot name=end -->
+    <div q:slot="end">End</div>
+    <icon q:slot="end"></icon>
+  </div>
+</button>
 ```
 
 Помните что:
 
-- Атрибут `name=""` ведёт себя так же, как отсутствие атрибута или элемента-обертки.
-- Несколько атрибутов `q:slot="title"` объединяют элементы в отображении контента.
+- Если `q:slot` не указан или это пустая строка, содержимое будет проецироваться в `<Slot>` по умолчанию, т.е. `<Slot>` без свойства `name`.
+- Несколько атрибутов `q:slot ="end"` объединяют элементы вместе в отображении содержимого.
 
-### Не отображаемое содержимое
+### Неотображаемое содержимое
 
 Qwik хранит весь контент, даже если он не отображается. Это потому, что контент может быть отображён позднее.
 
 ```tsx
 export const Project = component$(() => {
+  // Обратите внимание, у этого компонента нет компонента <Slot>
   return <div />;
 });
 
@@ -172,70 +123,14 @@ export const MyApp = component$(() => {
 
 ```html
 <my-app>
-  <project>
-    <q:template q:slot="">текст без обёртки</q:template>
-    <div></div>
-  </project>
+  <q:template q:slot="">текст без обёртки</q:template>
+  <div></div>
 </my-app>
 ```
 
 Обратите внимание, что неотображаемое содержимое перемещено в инертный `<q:template>`. Это делается на тот случай, если компонент `Project` перерендерится и вставит `<Slot>`. В этом случае мы не хотим повторно отображать родительский компонент только для создания проецируемого содержимого. Благодаря сохранению неотображаемого содержимого при первоначальном рендере родителя, рендер двух компонентов может оставаться независимым.
 
-### Содержание слота по умолчанию
-
-Можно вставить содержимое слота по умолчанию, если родительский компонент не предоставляет значения.
-
-```tsx
-export const Project = component$(() => {
-  return (
-    <>
-      <Slot name="title">заголовок по умолчанию</Slot>
-      <Slot>содержимое по умолчанию</Slot>
-    </>
-  );
-});
-
-export const MyApp = component$(() => {
-  return <Project>Переданное содержимое</Project>;
-});
-```
-
-Результат:
-
-```html
-<my-app>
-  <project>
-    <q:slot q:key="title">
-      <q:slot-default>заголовок по умолчанию</q:slot-default>
-    </q:slot>
-    <q:slot has-content>
-      <q:slot-default>содержимое по умолчанию</q:slot-default>
-      Переданное содержимое
-    </q:slot>
-  </project>
-</my-app>
-```
-
-Обратите внимание, что содержимое по умолчанию может быть включено в `<Slot>default content</Slot>`. Этот контент всегда будет вставляться в результирующий вывод HTML, заключенный в `<q:slot-default/>`. Видимость `<q:slot-default/>` контролируется атрибутом `has-content`. Подробнее в следующем разделе `CSS`.
-
-## CSS
-
-Для того чтобы Qwik мог самостоятельно отрисовывать компоненты, он должен уметь считывать правила отображения из HTML. Это достигается с помощью элемента `<q:slot>`, элемента `<q:slot-default/>` и атрибута `q:slot`. Чтобы сделать эти элементы инертными, Qwik добавляет в тег `<style>` следующий код CSS:
-
-```html
-<style>
-  q:slot,q:slot-default {
-    /** This marks the extra elements inert for flex, etc... **/
-    display: contents;
-  }
-  q:slot.has-content > q:slot-default {
-    /** Suppress the default value of Slot if parent provided content **/
-    display: none:
-  }
-</style>
-```
-
-## Ошибка отображения
+### Некорректное отображение
 
 Атрибут `q:slot` должен быть прямым потомком компонента.
 
@@ -254,7 +149,7 @@ export const MyApp = component$(() => {
 });
 ```
 
-## Отображение vs `наследник`
+### Отображение vs `наследник`
 
 Все фреймворки нуждаются в том, чтобы компонент мог обернуть своё сложное содержимое условным образом. Эта проблема решается по-разному, но есть два преобладающих подхода:
 
@@ -274,3 +169,52 @@ Qwik использует декларативный подход отображ
 Чтобы два компонента имели независимый жизненный цикл, отображение должно быть декларативным. Таким образом, либо родитель, либо потомок могут изменить то, что отображается, или то, как это отображается, без повторного рендера другого компонента.
 
 С императивным подходом компонент может принудительно изменять дочерние элементы бесконечным числом способов. Это чрезвычайно затруднило бы создание фреймворка, который не заставлял бы повторно рендерить как родительский, так и дочерний элементы.
+
+## Advanced Example
+
+An example of a collapsible component which conditionally projects it's content.
+
+```tsx
+export const Collapsible = component$(() => {
+  const store = useStore({ isOpen: true });
+
+  return (
+    <div class="collapsible">
+      <div class="title" onClick$={() => (store.isOpen = !store.isOpen)}>
+        <Slot name="title"></Slot>
+      </div>
+      {store.isOpen ? <Slot /> : null}
+    </div>
+  );
+});
+```
+
+The above component can be used from a parent component like so:
+
+```tsx
+export const MyApp = component$(() => {
+  return (
+    <Collapsible>
+      <span q:slot="title">Title text</span>
+      Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus vulputate accumsan pretium.
+    </Collapsible>
+  );
+});
+```
+
+The `Collapsible` component will always display the title, but the body of the text will only display if `store.isOpen` is `true`.
+
+### Rendered output
+
+The above example would render into this HTML if `isOpen===true`:
+
+```html
+<my-app>
+  <div class="collapsible">
+    <div class="title">
+      <span q:slot="title" has-content>Title text</span>
+    </div>
+    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus vulputate accumsan pretium.
+  </div>
+</my-app>
+```

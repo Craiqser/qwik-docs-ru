@@ -24,12 +24,12 @@ import diagram from './diagram2.svg';
 useHook() // <-- ❌ не работает
 
 export default component$(() => {
-  useHook() // <-- ✅ работает
+  useCustomHook() // <-- ✅ работает
   if (condition) {
     useHook() // <-- ❌ не работает
   }
-  const myQrl = $(() => useHook()) // <-- ✅ работает
-  return <button onClick$={() => useHook()}></button> // <-- ✅ работает
+  const myQrl = $(() => useHook()) // <-- ❌ не работает
+  return <button onClick$={() => useHook()}></button> // <-- ❌ не работает
 })
 
 const useCustomHook = () => {

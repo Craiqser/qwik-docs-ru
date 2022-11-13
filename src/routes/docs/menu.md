@@ -9,7 +9,7 @@
 - [FAQ](faq/index.mdx)
 - [QwikCity (маршрутизация)](../qwikcity/overview/index.mdx)
 
-## Компоненты
+## API компонента
 
 - [Обзор](components/overview/index.mdx)
 - [Состояние](components/state/index.mdx)
@@ -17,10 +17,10 @@
 - [Жизненный цикл](components/lifecycle/index.mdx)
 - [Контекст](components/context/index.mdx)
 - [Ресурсы](components/resource/index.mdx)
-- [Легковесные компоненты](components/lite-components/index.mdx)
-- [Отображение содержимого](components/projection/index.mdx)
+- [Слоты](components/projection/index.mdx)
 - [Рендер](components/rendering/index.mdx)
 - [Стилизация](components/styles/index.mdx)
+- [Легковесные компоненты](components/lite-components/index.mdx)
 
 ## Шпаргалка
 
