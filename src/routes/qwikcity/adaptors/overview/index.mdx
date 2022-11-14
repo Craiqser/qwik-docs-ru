@@ -1,10 +1,18 @@
 ---
-title: Qwik City адаптеры и промежуточное ПО
+title: Развёртывание
 contributors:
   - adamdbradley
 ---
 
-# Адаптеры и промежуточное ПО
+# Развёртывание
+
+Когда придёт время развернуть ваше приложение, Qwik предлагает готовые к использованию средства интеграции, которые делают этот процесс очень простым!
+
+```shell
+npm run qwik add
+```
+
+## Адаптеры и промежуточное ПО
 
 Промежуточное ПО Qwik City - это код, который соединяет серверный фреймворк рендеринга (такой как Cloudflare, Netlify, Express и т.д.) с мета-фреймворком Qwik City.
 
@@ -14,33 +22,17 @@ contributors:
 - [netlify-edge](../netlify-edge/index.mdx)
 - [node](../node/index.mdx)
 
-## Сборка
+## Сборка для рабочей среды
 
-Используйте Qwik City vite cli с аргументом `--ssr` для указания точки входа для SSR:
+Когда в проект добавляется новая интеграция, в файл `package.json` добавляется скрипт `build.server`. Этот скрипт используется для сборки проекта для рабочей среды.
 
-```bash
-vite build --ssr src/entry.MIDDLEWARE.ts
+Единственное, что вам нужно сделать, это запустить следующую команду:
+
+```shell
+npm run build
 ```
 
-Каталогом вывода по умолчанию является `./server`, он настраивается путём установки опции плагина `qwikVite`.
-
-```typescript
-// Файл vite.config.ts
-import { qwikVite } from '@builder.io/qwik/optimizer';
-
-export default defineConfig(() => {
-  return {
-    plugins: [
-      // ...другие плагины
-      qwikVite({
-        ssr: {
-          outDir: 'CUSTOM_DIR',
-        },
-      }),
-    ],
-  };
-});
-```
+> Под капотом выполнятся скрипты `build`, `build.server` и `build.client`.
 
 ## Дополнительно
 

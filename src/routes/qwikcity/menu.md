@@ -20,7 +20,7 @@
 - [Именование](layout/named/index.mdx)
 - [Верхний уровень](layout/top/index.mdx)
 
-## Данные
+## Получение данных
 
 - [Обзор](data/overview/index.mdx)
 - [Получение данных](data/retrieve/index.mdx)
@@ -28,25 +28,33 @@
 - [Конечные точки](data/endpoints/index.mdx)
 - [Редиректы](data/redirects/index.mdx)
 
-## Создание контента
+## Страницы
 
 - [Компоненты](content/component/index.mdx)
 - [MDX-файлы](content/mdx/index.mdx)
 - [Меню](content/menu/index.mdx)
 
-## Интеграция
-
-- [React](integrations/react/index.mdx)
-- [Partytown](integrations/partytown/index.mdx)
-- [Tailwind](integrations/tailwind/index.mdx)
-- [Vitest](integrations/vitest/index.mdx)
-
-## Серверные адаптеры
+## Развёртывание
 
 - [Обзор](adaptors/overview/index.mdx)
 - [Netlify Edge](adaptors/netlify-edge/index.mdx)
 - [Cloudflare Pages](adaptors/cloudflare-pages/index.mdx)
 - [Node](adaptors/node/index.mdx)
+
+## Интеграция
+
+- [Обзор](integrations/overview/index.mdx)
+- [React](integrations/react/index.mdx)
+- [Partytown](integrations/partytown/index.mdx)
+- [Tailwind](integrations/tailwind/index.mdx)
+- [Vitest](integrations/vitest/index.mdx)
+- [Сервера](adaptors/overview/index.mdx)
+
+## Генерация (SSG)
+
+- [Обзор](static-site-generation/overview/index.mdx)
+- [Конфигурация](static-site-generation/static-site-config/index.mdx)
+- [Динамические маршруты](static-site-generation/dynamic-routes/index.mdx)
 
 ## Предварительная загрузка
 
@@ -55,18 +63,9 @@
 - [Кэширование ответов](prefetching/request-response-cache/index.mdx)
 - [Распараллеливание запросов](prefetching/parallelizing-network-requests/index.mdx)
 
-## Генерация (SSG)
+## API
 
-- [Обзор](static-site-generation/overview/index.mdx)
-- [Конфигурация](static-site-generation/static-site-config/index.mdx)
-- [Динамические маршруты](static-site-generation/dynamic-routes/index.mdx)
-
-## Заголовок
-
-- [Название](head/title/index.mdx)
-
-## Интерфейсы
-
+- [Настройка <head>](head/title/index.mdx)
 - [useContent()](api/use-content/index.mdx)
 - [useDocumentHead()](api/use-document-head/index.mdx)
 - [useLocation()](api/use-location/index.mdx)

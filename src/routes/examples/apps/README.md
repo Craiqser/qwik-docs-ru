@@ -1,24 +1,24 @@
-# Qwik Examples
+# Примеры Qwik
 
-## Contribute new examples
+## Добавление нового примера
 
-The current folder includes all the examples present in: http://qwik.builder.io/examples/introduction/hello-world
+Текущая папка включает в себя все примеры, представленные в: http://qwik.builder.io/examples/introduction/hello-world
 
-### 1. Example category
+### 1. Категория примера
 
-The first level of folders are the categories. Feel free to add a new root-level folder to create a new category if your new example does not fit one of the existing ones.
+Первый уровень папок - это категории. Не стесняйтесь добавлять новую папку корневого уровня для создания новой категории, если ваш новый пример не подходит ни к одной из существующих категорий.
 
-### 2. Create a new example folder
+### 2. Создайте новую папку примера
 
-The easiest way to create a new example is copying the `hello-world` folder inside the `introduction` and renaming it with the name of your new app.
+Самый простой способ создать новый пример - скопировать папку `hello-world` внутри папки `introduction` и переименовать её в соответствии с названием вашего нового приложения.
 
 ```
 cp -r introduction/hello-world introduction/my-new-example
 ```
 
-### 3. Add new example metadata
+### 3. Добавить новые метаданные примера
 
-Open the `examples-menu.json` and add your new example in the right section:
+Откройте `examples-menu.json` и добавьте свой новый пример в правый раздел:
 
 ```diff
 [
@@ -42,11 +42,11 @@ Open the `examples-menu.json` and add your new example in the right section:
   },
 ```
 
-### 4. Run fmt
+### 4. Форматирование
 
-At the root of the qwik repo, run:
+В корне репозитория qwik запустите:
 
-```bash
+```shell
 yarn
 yarn build
 yarn lint

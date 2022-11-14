@@ -8,9 +8,11 @@ contributors:
 
 Адаптер Cloudflare Pages из Qwik City позволяет подключить Qwik City к [Cloudflare Pages](https://pages.cloudflare.com/).
 
-Чтобы интегрировать адаптер `cloudflare-pages` в проект, используйте команду `npm run qwik add`:
+## Установка
 
-```bash
+Чтобы интегрировать адаптер `cloudflare-pages`, используйте команду `add`:
+
+```shell
 npm run qwik add cloudflare-pages
 ```
 
@@ -26,7 +28,35 @@ npm run qwik add cloudflare-pages
 
 Кроме того, в `package.json` будет обновлен скрипт `build.server` для сборки Cloudflare.
 
-## Промежуточное ПО Cloudflare Pages
+## Сборка рабочей среды
+
+Чтобы собрать приложение для рабочей среды, используйте команду `build`, эта команда автоматически запустит `npm run build.server` и `npm run build.client`:
+
+```shell
+npm run build
+```
+
+[Читайте полное руководство здесь](https://github.com/BuilderIO/qwik/blob/main/starters/adaptors/netlify-edge/README.md)
+
+## Развёртывание в тестовой среде
+
+Для развёртывания приложения для разработки:
+
+```shell
+npm run deploy
+```
+
+Обратите внимание, что вам может понадобиться [учётная запись Netlify](https://docs.netlify.com/get-started/) для того, чтобы завершить этот шаг!
+
+## Развёртывание в рабочей среде
+
+После установки интеграции с помощью `npm run qwik add` проект готов к развёртыванию в Netlify. Однако вам нужно будет создать репозиторий git и поместить в него код.
+
+Пожалуйста, обратитесь к документам Netlify для получения дополнительной информации о том, как развернуть ваш сайт: [Документация Netlify](https://docs.netlify.com/site-deploys/create-deploys/)
+
+## Дополнительно
+
+### Промежуточное ПО Cloudflare Pages
 
 При добавлении адаптера `cloudflare-pages` будет создан новый файл точки входа - `src/entry.cloudflare-pages.tsx`. Ниже приведен пример использования встроенного промежуточного программного обеспечения в файле точки входа.
 
@@ -55,7 +85,7 @@ export { onRequest } from '../server/entry.cloudflare-pages';
 - [Cloudflare Pages Functions](https://developers.cloudflare.com/pages/platform/functions/)
 - [Function Invocation Route Config](https://developers.cloudflare.com/pages/platform/functions/function-invocation-routes/)
 
-## Маршруты вызова функций Cloudflare Pages
+### Маршруты вызова функций Cloudflare Pages
 
 Параметры [function-invocation-routes config](https://developers.cloudflare.com/pages/platform/functions/function-invocation-routes/) Cloudflare Page можно использовать для включения или исключения определенных путей, которые будут использоваться рабочими функциями. Наличие файла `_routes.json` даёт разработчикам более детальный контроль над тем, когда вызывается ваша функция.
 
@@ -84,8 +114,6 @@ export { onRequest } from '../server/entry.cloudflare-pages';
 В приведённом выше примере говорится, что _все_ страницы должны быть SSR. Однако корневые статические файлы, такие как `/favicon.ico`, и любые статические ассеты в `/build/*` должны быть исключены, и рассматриваться как статические файлы.
 
 В большинстве случаев сгенерированный файл `dist/_routes.json` идеально подходит. Однако, если вам нужен более детальный контроль над каждым каталогом, вы можете предоставить собственный файл `public/_routes.json`. Если проект предоставляет собственный файл `public/_routes.json`, то адаптер Cloudflare не будет автоматически генерировать конфигурацию маршрутов, а вместо этого будет использовать конфигурацию в директории `public`.
-
-## Использование
 
 ### Контекст
 

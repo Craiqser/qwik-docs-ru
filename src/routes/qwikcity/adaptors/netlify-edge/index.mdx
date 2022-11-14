@@ -8,11 +8,15 @@ contributors:
 
 Адаптер Qwik City Netlify Edge позволяет подключить Qwik City к [Netlify Edge Functions](https://docs.netlify.com/netlify-labs/experimental-features/edge-functions/).
 
-Чтобы интегрировать адаптер `netlify-edge` в проект, используйте команду `npm run qwik add`:
+## Установка
 
-```bash
+Чтобы интегрировать адаптер `netlify-edge` в проект, используйте команду `add`:
+
+```shell
 npm run qwik add netlify-edge
 ```
+
+> Она автоматически установит необходимые зависимости, включая [Netlify CLI](https://cli.netlify.com/).
 
 Адаптер добавит новый файл `vite.config.ts` в каталог `adaptors/`, и создаст файл точки входа, как показано ниже:
 
@@ -26,7 +30,35 @@ npm run qwik add netlify-edge
 
 Кроме того, в `package.json` будет обновлен скрипт `build.server` для сборки Netlify Edge.
 
-## Промежуточное ПО Netlify Edge
+## Производственная сборка
+
+Чтобы собрать приложение для производственной среды, используйте команду `build`, эта команда автоматически запустит `npm run build.server` и `npm run build.client`:
+
+```shell
+npm run build
+```
+
+[Читайте полное руководство здесь](https://github.com/BuilderIO/qwik/blob/main/starters/adaptors/netlify-edge/README.md)
+
+## Развёртывание в среде разработки
+
+Чтобы развернуть приложение для разработки:
+
+```shell
+npm run deploy
+```
+
+Обратите внимание, что для выполнения этого шага вам может понадобиться [учётная запись Netlify](https://docs.netlify.com/get-started/)!
+
+## Развёртывание в производственной среде
+
+После установки интеграции с помощью `npm run qwik add` проект готов к развёртыванию в Netlify. Однако вам нужно будет создать репозиторий git и отправить в него код.
+
+Пожалуйста, обратитесь к документации Netlify для получения дополнительных сведений о том, как развернуть ваш сайт: [Документация Netlify](https://docs.netlify.com/site-deploys/create-deploys/)
+
+## Дополнительно
+
+### Промежуточное ПО Netlify Edge
 
 При добавлении адаптера `netlify-edge` будет создан новый файл точки входа - `src/entry.netlify-edge.tsx`. Ниже приведен пример использования встроенного промежуточного программного обеспечения в файле точки входа.
 
@@ -42,7 +74,7 @@ export default createQwikCity({ render, qwikCityPlan });
 
 Скомпилированный модуль будет собран в каталоге `.netlify/edge-functions`.
 
-## Объявление функций Netlify Edge
+### Объявление функций Netlify Edge
 
 [Объявление функций Netlify Edge](https://docs.netlify.com/edge-functions/declarations/) может быть настроено на выполнение по опредёленным шаблонам URL. Каждое объявление функции ассоциирует один шаблон пути к сайту с одной функцией для выполнения запросов, соответствующей этому пути. Один запрос может выполнить цепочку функций из серии объявлений. Одна функция может быть связана с несколькими путями в различных объявлениях.
 
@@ -57,6 +89,39 @@ export default createQwikCity({ render, qwikCityPlan });
   path = "/admin"
   function = "auth"
 ```
+
+### Контекст
+
+[Netlify context](https://docs.netlify.com/edge-functions/api/#netlify-specific-context-object) доступен в параметре `platform` метода конечной точки:
+
+```javascript
+export const onRequest = async ({ platform }) => {
+  platform.log('requested ip:', platform.ip)
+};
+```
+
+Кроме того, вы можете импортировать тип `RequestHandlerNetlify`, чтобы иметь автокомплит типов в вашем редакторе.
+
+```typescript
+import {type RequestHandlerNetlify} from '@builder.io/qwik-city/middleware/netlify-edge';
+
+export const onGet: RequestHandlerNetlify = (({platform}) => {
+ //...
+})
+```
+
+### Переменные окружения
+
+```javascript
+export const onRequest = async ({ platform }) => {
+  platform.log('Vite env read from .dev file', import.meta.env.VITE_DEV)
+  platform.log('netlify serverless env read from Netlify UI or CLI', Deno.env.toObject())
+  return {}
+};
+```
+
+- [Netlify Environment Variables](https://docs.netlify.com/environment-variables/overview/#environment-variable-options)
+- [Netlify Edge Middleware Source](https://github.com/BuilderIO/qwik/blob/main/packages/qwik-city/middleware/netlify-edge/index.ts)
 
 ## Миграция
 
@@ -96,45 +161,3 @@ export default defineConfig(() => {
 -path = "/*"
 -function = "entry.netlify-edge"
 ```
-
-## Использование
-
-Используйте Netlify CLI для предварительного просмотра или развёртывания. [Полный текст руководства читайте здесь.](https://github.com/BuilderIO/qwik/blob/main/starters/servers/netlify-edge/README.md)
-
-```bash
-vite build --ssr src/entry.netlify-edge.tsx
-netlify dev
-```
-
-### Контекст
-
-[Netlify context](https://docs.netlify.com/edge-functions/api/#netlify-specific-context-object) доступен в параметре `platform` метода конечной точки:
-
-```javascript
-export const onRequest = async ({ platform }) => {
-  platform.log('requested ip:', platform.ip)
-};
-```
-
-Кроме того, вы можете импортировать тип `RequestHandlerNetlify`, чтобы иметь автокомплит типов в вашем редакторе.
-
-```typescript
-import {type RequestHandlerNetlify} from '@builder.io/qwik-city/middleware/netlify-edge';
-
-export const onGet: RequestHandlerNetlify = (({platform}) => {
- //...
-})
-```
-
-### Переменные окружения
-
-```javascript
-export const onRequest = async ({ platform }) => {
-  platform.log('Vite env read from .dev file', import.meta.env.VITE_DEV)
-  platform.log('netlify serverless env read from Netlify UI or CLI', Deno.env.toObject())
-  return {}
-};
-```
-
-- [Netlify Environment Variables](https://docs.netlify.com/environment-variables/overview/#environment-variable-options)
-- [Netlify Edge Middleware Source](https://github.com/BuilderIO/qwik/blob/main/packages/qwik-city/middleware/netlify-edge/index.ts)
