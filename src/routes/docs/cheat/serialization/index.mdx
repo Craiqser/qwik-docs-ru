@@ -5,6 +5,7 @@ contributors:
   - wuweiweiwu
   - manucorporat
   - adamdbradley
+  - voluntadpear
 ---
 
 # Граница `$`
@@ -24,6 +25,14 @@ import { component$ } from '@builder.io/qwik';
 
 export const topLevel = Promise.resolve('несериализуемые данные');
 
+export class MyCustomClass {
+  val: string;
+
+  constructor(val: string) {
+    this.val = val;
+  }
+}
+
 export const Greeter = component$(() => {
   // НАЧАЛО границы сериализации компонента.
 
@@ -31,7 +40,9 @@ export const Greeter = component$(() => {
   console.log(topLevel); // OK.
 
   const captureSerializable = 'сериализуемые данные';
-  const captureNonSerializable = Promise.resolve('несериализуемые данные');
+  const capturePromise = Promise.resolve('Qwik сериализует промисы');
+  // Экземпляры пользовательских классов не являются сериализуемыми.
+  const captureNonSerializable = new MyCustomClass('несериализуемые данные');
 
   return (
     <button
@@ -46,6 +57,7 @@ export const Greeter = component$(() => {
         // - объявлена как `const`
         // - значение является сериализуемым (ошибка времени выполнения)
         console.log(captureSerializable); // OK
+        console.log(capturePromise); // OK
 
         // Ссылка на captureNonSerializable пройдет статический анализ, но
         // приведёт к ошибке времени выполнения, потому что Qwik не знает, как её сериализовать.
