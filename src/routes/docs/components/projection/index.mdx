@@ -170,9 +170,9 @@ Qwik использует декларативный подход отображ
 
 С императивным подходом компонент может принудительно изменять дочерние элементы бесконечным числом способов. Это чрезвычайно затруднило бы создание фреймворка, который не заставлял бы повторно рендерить как родительский, так и дочерний элементы.
 
-## Advanced Example
+## Расширенный пример
 
-An example of a collapsible component which conditionally projects it's content.
+Пример сворачиваемого компонента, который проецирует своё содержимое по условию.
 
 ```tsx
 export const Collapsible = component$(() => {
@@ -189,30 +189,30 @@ export const Collapsible = component$(() => {
 });
 ```
 
-The above component can be used from a parent component like so:
+Вышеупомянутый компонент можно использовать из родительского компонента следующим образом:
 
 ```tsx
 export const MyApp = component$(() => {
   return (
     <Collapsible>
-      <span q:slot="title">Title text</span>
+      <span q:slot="title">Текст заголовка</span>
       Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus vulputate accumsan pretium.
     </Collapsible>
   );
 });
 ```
 
-The `Collapsible` component will always display the title, but the body of the text will only display if `store.isOpen` is `true`.
+Компонент `Collapsible` всегда будет отображать заголовок, но основной текст будет отображаться только в том случае, если `store.isOpen` имеет значение `true`.
 
-### Rendered output
+### Вывод рендера
 
-The above example would render into this HTML if `isOpen===true`:
+Приведённый выше пример в HTML будет выглядеть так, если `isOpen === true`:
 
 ```html
 <my-app>
   <div class="collapsible">
     <div class="title">
-      <span q:slot="title" has-content>Title text</span>
+      <span q:slot="title" has-content>Текст заголовка</span>
     </div>
     Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus vulputate accumsan pretium.
   </div>
