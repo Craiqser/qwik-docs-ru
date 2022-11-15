@@ -24,7 +24,7 @@ export default component$(() => {
   useStyles$(styles);
   return (
     <article class="showcase">
-      <h1>Демо</h1>
+      <h1>Галерея</h1>
 
       <ul class="grid">
         {pages.map((entry) => (
@@ -44,6 +44,20 @@ export default component$(() => {
           </a>
         </p>
       </section>
+      <section>
+        <h2>Как подсчитываются баллы?</h2>
+        <p>
+          Баллы рассчитываются с использованием{' '}
+          <a href="https://developers.google.com/speed/docs/insights/v5/get-started">
+            PageSpeed Insights API
+          </a>
+          , проанализированы с помощью{' '}
+          <a href="https://developers.google.com/speed/docs/insights/rest/v5/pagespeedapi/runpagespeed#strategy">
+            MOBILE strategy
+          </a>
+          .
+        </p>
+      </section>
     </article>
   );
 });
@@ -52,7 +66,7 @@ export const SiteLink = component$((props: { entry: MediaEntry }) => {
   return (
     <li class={props.entry.size}>
       <Score speedScore={props.entry.perf.score} url={props.entry.href}></Score>
-      <a class="card" href={props.entry.href} target="_blank" rel="noreferrer">
+      <a class="card" href={props.entry.href} target="_blank" rel="nofollow noreferrer">
         <img width="1440" height="980" loading="lazy" src={props.entry.imgSrc} aria-hidden="true" />
         <div class="backdrop">
           <div class="metrics">
@@ -95,6 +109,7 @@ export const Score = ({ speedScore, url }: { speedScore: number; url: string }) 
       style={{
         '--color': getLighthouseColorForScore(speedScore),
       }}
+      title="Оценка производительности мобильных устройств по данным PageSpeed Insights"
       target="_blank"
       rel="noreferrer"
       href={getPagespeedInsightsUrl(url)}
@@ -131,6 +146,7 @@ export function getLighthouseColorForScore(score: number) {
 export function getPagespeedInsightsUrl(url: string) {
   return `https://pagespeed.web.dev/report?url=${encodeURIComponent(url)}`;
 }
+
 export const head: DocumentHead = {
-  title: 'Презентации Qwik, беседы, видео и подкасты',
+  title: 'Витрина Qwik-сайтов',
 };
