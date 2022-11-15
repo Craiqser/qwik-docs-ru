@@ -24,40 +24,63 @@ export const MEDIA = mediaObj({
     youtube('Qwik: Under-The-Hood of a Resumable JavaScript Framework', 'BxGbnLb5i9Q'),
     youtube('Is Qwik + RxJS actually possible?', 'qKCX7Qz1oG8'),
     youtube('Qwik-ifying React SPA to create the fastest possible website', 'dbxP9FX5j2o'),
-    youtube('Après Angular : place à Qwik!', 'Ts2IWXMYiXk'),
-    youtube('🇪🇸 Qwik Framework, Un nuevo Framework Super Rápido (Lazy Loading)', 'kT-Y17mEUZs'),
-    youtube('🇪🇸 Qwik - nuevo framework para Js', 'GzUMPnsDopM'),
-    youtube('🇪🇸 ¿Qué onda Qwik?', 'H7TL4SqcC3E'),
     youtube('Exploring Qwik, the Resumable Framework', 'gT5NWKZZPQM'),
     youtube('Building Qwik w/ Misko Hevery', 'lY6e7Hw4uVo'),
-    youtube(
-      'Qwik: A no hydration instant on personalized web applications by Misko Hevery',
-      'Zddw6qy5pf0'
-    ),
+    youtube('Qwik, an SSR resumable framework', 'tdEelSqDj0E'),
     youtube('Why the world needs Qwik with Miško Hevery', 'IRw9efkn9UA'),
     youtube('Exploring Qwik City w/ Adam Bradley & Manu Martínez-Almeida', 'XoeJisRJjlo'),
+    youtube('Building resumable websites using Qwik with Manu Almeida', 'umASDvjaKTY'),
+    youtube('Breaking Down the Web: SSR with Miško Hevery (Qwik!)', 'fYATmnlxX4A'),
+    youtube('🇪🇸 Qwik - nuevo framework para Js', 'GzUMPnsDopM'),
+    youtube('🇪🇸 Qwik Framework, Un nuevo Framework Super Rápido (Lazy Loading)', 'kT-Y17mEUZs'),
     youtube('Construindo Apps instantâneos com Qwik', 'yrROy1vLwkE'),
+    youtube('Après Angular : place à Qwik!', 'Ts2IWXMYiXk'),
     youtube('🇪🇸 Hablemos de Qwik', 'XMLMS2NVC1g'),
+    youtube('🇪🇸 ¿Qué onda Qwik?', 'H7TL4SqcC3E'),
   ],
   podcasts: [
     youtube('Build Resumable Apps with Qwik', '_PDpoJUacuc'),
     youtube('Qwik + React State (and a new mic!)', 'fa6-Mn0Eybg'),
+    youtube(
+      'Miško Hevery: Qwik, PartyTown, and Lessons from Angular [Swyx Mixtape]',
+      'T3K_DrgLPXM'
+    ),
     youtube('Introducing Qwik w/ Misko Hevery & Shai Reznik', 'iJZaT-AvJ-o'),
     youtube('Resumable Apps in Qwik', 'LbMRs7l4czI'),
     youtube('Qwik: A no-hydration instant-on personalized web applications', '0tCuUQe_ZA0'),
     youtube('QWIK - Set of great demos by Misko Hevery', '7MgNMIPISY4'),
+    youtube('Qwik the HTML First Framework', 'GdIZh42etYk'),
+    youtube('Introduction to Qwik – Misko Hevery (English)', 'gYbHdss_y04'),
+    youtube(
+      'Build Performant, Resumable Sites with Qwik and Partytown (with Miško Hevery) | Some Antics',
+      'aGuJPcIdX0A'
+    ),
+    youtube('Qwik with Miško Hevery (JS Party Live!)', 'rS8hXFHWKJQ'),
+    youtube(
+      'JSMP 4: Misko Hevery on Qwik - No hydration, auto lazy-loading, edge cacheable, and fun',
+      'wMnqgjHkLiY'
+    ),
   ],
   presentations: [
+    youtube('Qwik framework overview', 'Jf_E1_19aB4', 629),
+    youtube(
+      'Mindblowing Google PageSpeed Scores with Qwik | Misko Hevery | Reliable Web Summit 2021',
+      'sCPLWf2cEY0'
+    ),
     youtube(
       'WWC22 - Qwik + Partytown: How to remove 99% of JavaScript from main thread',
       '0dC11DMR3fU',
       154
     ),
+    youtube(
+      'Qwik: A holly grail of progressive hydration for ultimate speed by Miško Hevery',
+      'JxYbg7eZNLY'
+    ),
+    youtube('Qwik: A no hydration instant', 'Zddw6qy5pf0'),
     youtube('Qwik City: Reimangined meta-framework for the edge', 'Znd11rVHQOE', 34314),
     youtube('Qwik Workshop Part 1 - Live Coding', 'GHbNaDSWUX8'),
-    youtube('Qwik framework overview', 'Jf_E1_19aB4', 629),
+    youtube('Qwik: Beta and Beyond', 'Tfd62DiRTKc'),
     youtube('Qwik Core Developers Training', 'Mi7udzhcCDQ'),
-    youtube('Qwik: A no hydration instant', 'Zddw6qy5pf0'),
   ],
   blogs: [
     {
@@ -121,6 +144,10 @@ export const MEDIA = mediaObj({
     {
       href: 'https://docs.google.com/presentation/d/1Jj1iw0lmaecxtUpqyNdF1aBzbCVnSlbPGLbOpN2xydc/edit#slide=id.g13225ffe116_6_234',
       title: 'Qwik - Google Presentation Template',
+    },
+    {
+      href: 'https://docs.google.com/presentation/d/1cGbC-FFMrLCQ62YDGG17jf3Eh0hqwMBlyDQZGeoFNyw/edit#slide=id.g1620a79b097_0_300',
+      title: 'Qwik the O(1) framework',
     },
     { href: '/logos/qwik-logo.svg', title: 'Qwik SVG Logo [svg]' },
     { href: '/logos/qwik.svg', title: 'Qwik Logo and Text [svg]' },
@@ -191,7 +218,7 @@ export default component$(() => {
   useStyles$(styles);
   return (
     <article class="media">
-      <h1>Qwik Presentations, Talks, Videos and Podcasts</h1>
+      <h1>Презентации Qwik, беседы, видео и подкасты</h1>
 
       <Section id="videos" listStyle="thumbnails" imgLoading="eager" />
 
@@ -204,15 +231,15 @@ export default component$(() => {
       <Section id="resources" listStyle="bullets" />
 
       <section>
-        <h2>Add Media</h2>
-        <p>This page missing any great resources or in need of an update?</p>
+        <h2>Добавить ресурс</h2>
+        <p>На этой странице отсутствует замечательный ресурс или она нуждается в обновлении?</p>
         <p>
           <a
             href="https://github.com/BuilderIO/qwik/edit/main/packages/docs/src/routes/media/index.tsx"
             target="_blank"
             class="edit-page"
           >
-            Edit this page!
+            Редактировать страницу!
           </a>
         </p>
       </section>
@@ -221,7 +248,7 @@ export default component$(() => {
 });
 
 export const head: DocumentHead = {
-  title: 'Qwik Presentations, Talks, Videos and Podcasts',
+  title: 'Презентации Qwik, беседы, видео и подкасты',
 };
 
 // Media Listing

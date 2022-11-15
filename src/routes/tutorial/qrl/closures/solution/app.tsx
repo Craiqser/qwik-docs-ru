@@ -6,13 +6,13 @@ export default component$(() => {
     <>
       Введите свое имя и нажмите клавишу ввода:{' '}
       <input
-        onInput$={$(async (event) => {
+        onInput$={(event) => {
           const input = event.target as HTMLInputElement;
           store.name = input.value;
-        })}
-        onChange$={$(async (event) => {
+        }}
+        onChange$={(_) => {
           if (store.name) alert(store.name);
-        })}
+        }}
         value={store.name}
       />
     </>
