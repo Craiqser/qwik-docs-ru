@@ -5,6 +5,7 @@
 - [Обзор](overview/index.mdx)
 - [Структура каталога](directory-layout/index.mdx)
 - [Статические ресурсы](static-assets/index.mdx)
+- [Справочник по API](api/index.mdx)
 
 ## Маршрутизация
 
@@ -33,6 +34,7 @@
 - [Компоненты](content/component/index.mdx)
 - [MDX-файлы](content/mdx/index.mdx)
 - [Меню](content/menu/index.mdx)
+- [<head>](content/head/index.mdx)
 
 ## Развёртывание
 
@@ -62,10 +64,3 @@
 - [Сервис-воркер](prefetching/service-worker-prefetching/index.mdx)
 - [Кэширование ответов](prefetching/request-response-cache/index.mdx)
 - [Распараллеливание запросов](prefetching/parallelizing-network-requests/index.mdx)
-
-## API
-
-- [Настройка <head>](head/title/index.mdx)
-- [useContent()](api/use-content/index.mdx)
-- [useDocumentHead()](api/use-document-head/index.mdx)
-- [useLocation()](api/use-location/index.mdx)

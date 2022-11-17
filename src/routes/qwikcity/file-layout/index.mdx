@@ -1,5 +1,5 @@
 ---
-title: Qwik City - file layout
+title: Qwik City - расположение файлов
 contributors:
   - manucorporat
   - adamdbradley
@@ -7,39 +7,39 @@ contributors:
   - mhevery
 ---
 
-# File Layout
+# Расположение файлов
 
-The core responsibility of Qwik City is to provide a simple, intuitive, and efficient way to create content for your site. Qwik City achieves this through file-based routing. In a nutshell layout of your files determines the structure of your site.
+Основная задача Qwik City - предоставить простой, интуитивно понятный и эффективный способ создания контента для вашего сайта. Qwik City достигает этого благодаря маршрутизации на основе файлов. В двух словах, расположение ваших файлов определяет структуру вашего сайта.
 
-## The `routes` directory
+## Каталог `routes`
 
-All file-based route information is placed in `src/routes` directory. This is the only directory where file naming conventions have implications for your site. (In all other folders, the names have no meaning to Qwik City.)
+Вся информация о маршрутах, основанная на файлах, помещается в каталог `src/routes`. Это единственный каталог, где соглашения об именовании файлов имеют значение для вашего сайта (во всех остальных папках названия не имеют никакого значения для Qwik City).
 
-(the `src` folder also typically contains `components`, but the name and location have no meaning to Qwik City.)
+Папка `src` обычно также содержит папку `components`, но их название и расположение не имеют значения для Qwik City.
 
-## Sample `routes` directory example
+## Пример директории `routes`
 
 ```
 src/
-├── components/                # Put your reusable components here.
+├── components/                # Поместите сюда свои переиспользуемые компоненты.
 │    └── counter.tsx
-└── routes/                    # Put your route specific components here.
+└── routes/                    # Поместите сюда компоненты, специфичные для вашего маршрута.
     ├── docs/
     │   ├── overview/
     │   │   └── index.mdx      # https://example.com/docs/overview
     │   └── index.mdx          # https://example.com/docs
     ├── index.tsx              # https://example.com/
-    └── layout.tsx             # All nested pages use this layout
+    └── layout.tsx             # Все вложенные страницы используют этот макет.
 ```
 
-## Sample Component
+## Пример компонента
 
-Qwik City expects that `index.tsx` files that are in the `src/routes` folder have a `default` export.
+Qwik City ожидает, что файлы `index.tsx`, находящиеся в папке `src/routes`, имеют экспорт `default`.
 
-```typescript
+```tsx
 import { component$ } from '@builder.io/qwik';
 
 export default component$(() => {
-  return <>Hello World!</>;
+  return <>Привет, мир!</>;
 });
 ```

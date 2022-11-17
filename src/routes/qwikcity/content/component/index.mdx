@@ -23,7 +23,7 @@ src/
             └── index.tsx              # https://example.com/some/path
 ```
 
-```typescript
+```tsx
 // Файл: src/routes/some/path/index.tsx
 import { component$ } from '@builder.io/qwik';
 
@@ -51,7 +51,7 @@ src/
 Внутри `index.tsx` вы можете создать компонент, который экспортируется как `default`. Контент создаётся с помощью синтаксиса шаблона [JSX](https://reactjs.org/docs/introducing-jsx.html). Каждая функция компонента возвращает шаблон, который должен быть отрендерен на экране. Если вы хотите узнать больше об анатомии компонентов, обратитесь к документации [компонентов](../../../docs/components/overview/index.mdx).
 Следующий компонент будет отрендерен по адресу `https://example.com/some/path` в соответствии со структурой каталога, которую мы создали выше.
 
-```typescript
+```tsx
 // Файл: src/routes/some/path/index.tsx
 import { component$ } from '@builder.io/qwik';
 import Heading from '../../../components/heading';
@@ -68,7 +68,7 @@ export default component$(() => {
 });
 ```
 
-```typescript
+```tsx
 // Файл: src/components/heading.tsx
 import { component$ } from '@builder.io/qwik';
 
@@ -77,7 +77,7 @@ export default component$(() => {
 });
 ```
 
-```typescript
+```tsx
 // Файл: src/routes/some/path/sub_component.tsx
 import { component$ } from '@builder.io/qwik';
 

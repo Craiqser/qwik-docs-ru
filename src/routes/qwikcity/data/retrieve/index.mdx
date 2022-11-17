@@ -26,7 +26,7 @@ contributors:
 
 В этом примере функция `onGet` возвращает данные о продукте, которые используются внутри нашего компонента с помощью функции `useEndpoint()`.
 
-```typescript
+```tsx
 // Файл: src/routes/product/[skuId]/details/index.tsx
 import type { RequestHandler } from '@builder.io/qwik-city';
 
@@ -50,7 +50,7 @@ export const onGet: RequestHandler<ProductData> = async ({ params }) => {
 
 Функция `onGet` получает данные и делает их доступными для компонента с помощью `useEndpoint()`.
 
-```typescript
+```tsx
 import { Resource, component$, useStore } from '@builder.io/qwik';
 import type { RequestHandler } from '@builder.io/qwik-city';
 import { useEndpoint } from "@builder.io/qwik-city";

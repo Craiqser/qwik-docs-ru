@@ -78,7 +78,7 @@ src/
 
 Чтобы вернуть HTML для определённого маршрута, необходимо реализовать компонент. Для файлов `.tsx` компонент должен быть экспортирован по умолчанию (`export default`). В качестве альтернативы можно использовать расширение `.mdx`, рассмотренное [далее](../../../qwikcity/content/mdx/index.mdx).
 
-```typescript
+```tsx
 export default component$(() => {
   return <H1>Hello World!</H1>;
 });
@@ -88,7 +88,7 @@ export default component$(() => {
 
 Qwik City хранит информацию о маршрутах в файлах на диске. Это отлично подходит для эргономики разработчика, но не подходит для создания бандлов и чанков. Кроме того, в некоторых средах, таких как облачные функции, нет файловой системы, к которой можно получить доступ. По этой причине необходимо сериализовать информацию о маршруте в один файл. Это делается с помощью импорта `@qwik-city-plan`.
 
-```typescript
+```tsx
 import cityPlan from '@qwik-city-plan';
 ```
 
@@ -98,8 +98,8 @@ import cityPlan from '@qwik-city-plan';
 
 Qwik City также поддерживает:
 
-- [Параметры маршрута](../../../qwikcity/routing/route-parameters/index.mdx)
-- [Вложенные макеты](../../../qwikcity/layout/overview/index.mdx)
-- [Меню](../../../qwikcity/content/menu/index.mdx)
+- [Параметры маршрута](../route-parameters/index.mdx)
+- [Вложенные макеты](../../layout/overview/index.mdx)
+- [Меню](../../content/menu/index.mdx)
 
 Они обсуждаются далее.

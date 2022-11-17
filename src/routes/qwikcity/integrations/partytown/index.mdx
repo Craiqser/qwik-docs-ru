@@ -1,5 +1,6 @@
 ---
 title: Qwik City и Partytown
+keywords: third party scripts, google analytics, 3rd party, scripts, performance
 contributors:
   - manucorporat
   - leifermendez
@@ -25,14 +26,13 @@ npm run qwik add partytown
 
 Она также добавляет новые файлы в папку `components`.
 
-```typescript
-// Файл root.tsx
-
+**/src/root.tsx**
+```tsx
 import { QwikPartytown } from './components/partytown/partytown';
 
 export default component$(() => {
   return (
-    <QwikCity>
+    <QwikCityProvider>
       <head>
         <meta charSet="utf-8" />
         <QwikPartytown forward={["dataLayer.push"]} />;
@@ -46,11 +46,11 @@ export default component$(() => {
       </head>
       <body lang="en">
       </body>
-    </QwikCity>
+    </QwikCityProvider>
   );
 });
 ```
 
 ## Дополнительно
 
-Для настройки дополнительных опций смотрите документацию [Partytown](https://partytown.builder.io/configuration).
+Для настройки дополнительных опций смотрите [Документацию Partytown](https://partytown.builder.io/configuration).

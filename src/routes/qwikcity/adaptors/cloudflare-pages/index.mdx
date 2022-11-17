@@ -60,7 +60,7 @@ npm run deploy
 
 При добавлении адаптера `cloudflare-pages` будет создан новый файл точки входа - `src/entry.cloudflare-pages.tsx`. Ниже приведен пример использования встроенного промежуточного программного обеспечения в файле точки входа.
 
-```typescript
+```tsx
 // src/entry.cloudflare-pages.tsx
 import { createQwikCity } from '@builder.io/qwik-city/middleware/cloudflare-pages';
 import qwikCityPlan from '@qwik-city-plan';
@@ -73,7 +73,7 @@ export { onRequest };
 
 Скомпилированный модуль будет собран в каталоге `server/` и затем может быть использован в любом месте каталога `/functions` на Cloudflare pages.
 
-```typescript
+```tsx
 // Экспортируйте скомпилированный модуль туда, где его смогут найти страницы Cloudflare.
 // Например, используйте /functions/[[path]].ts или /functions/_middleware.ts
 // чтобы Qwik City обрабатывал все запросы.
@@ -127,7 +127,7 @@ export const onRequest = async ({ platform }) => {
 
 Кроме того, вы можете импортировать тип `RequestHandlerCloudflarePages`, чтобы иметь автокомплит типов в вашем редакторе.
 
-```typescript
+```tsx
 import {type RequestHandlerCloudflarePages} from '@builder.io/qwik-city/middleware/cloudflare-pages';
 
 export const onGet: RequestHandlerCloudflarePages = (({ platform }) => {

@@ -9,7 +9,7 @@ contributors:
 
 Представьте, что мы хотим иметь метод задержки, который лениво загружает свою функцию обратного вызова. Обычно мы пишем что-то вроде этого:
 
-```typescript
+```tsx
 setTimeout(() => {
   // Я загружаюсь сразу, но было бы лучше, если бы я загружался лениво.
   ...
@@ -20,7 +20,7 @@ setTimeout(() => {
 
 Лучшим решением было бы иметь метод `delay$`, который может лениво загружать замыкание, связанное с обратным вызовом. Что-то вроде этого:
 
-```typescript
+```tsx
 delay$(() => {
   // Я лениво загружаюсь только тогда, когда нужно выполниться.
   ...
@@ -33,7 +33,7 @@ delay$(() => {
 
 Среда выполнения Qwik работает с `QRL`. Для этого мы определяем метод следующим образом:
 
-```typescript
+```tsx
 export function delayQrl<T>(fn: QRL<() => T>, delayInMs: number): Promise<T> {
   return new Promise((res) => {
     setTimeout(() => {
@@ -47,13 +47,13 @@ export function delayQrl<T>(fn: QRL<() => T>, delayInMs: number): Promise<T> {
 
 Следующим шагом будет преобразование метода `delayQrl` в псевдоним `delay$`. Это делается с помощью `implicit$FirstArg` таким образом:
 
-```typescript
+```tsx
 export const delay$ = implicit$FirstArg(delayQrl);
 ```
 
 Вот типы, чтобы было понятнее, что происходит.
 
-```typescript
+```tsx
 declare;
 delayQrl: (fn: QRL<() => T>, delayInMs: number) => Promise<T>;
 declare;
@@ -64,7 +64,7 @@ delay$: (fn: () => T, delayInMs: number) => Promise<T>;
 
 > **ПРИМЕЧАНИЕ** Два метода должны иметь одинаковый префикс. Итак, общая форма такова:
 
-```typescript
+```tsx
 export const SOME_NAME_Qrl = ...;
 export const SOME_NAME_$ = implicit$FirstArg(SOME_NAME_Qrl);
 ```

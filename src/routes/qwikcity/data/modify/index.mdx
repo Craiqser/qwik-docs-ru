@@ -8,7 +8,7 @@ contributors:
 
 Конечные точки могут определять способ получения данных, а также они могут определять HTTP-методы для изменения данных. Это `GET`, `POST`, `PUT`, `PATCH`, `DELETE`. Мы уже обсуждали операцию `GET` в предыдущем разделе. Каждая из этих операций имеет соответствующий метод `on___`, такой как `onGet`, `onPost`, `onPut`, `onPatch` и `onDelete`.
 
-```typescript
+```tsx
 // Файл: src/routes/product/[skuId]/index.tsx
 import type { RequestHandler } from '@builder.io/qwik-city';
 

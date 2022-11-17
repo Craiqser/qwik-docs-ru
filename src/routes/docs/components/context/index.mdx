@@ -80,9 +80,9 @@ export const QwikCityContext = createContext('io.builder.qwik.city');
 
 ### `useContextProvider()`
 
-Как и все `use`-методы, его можно использовать только в корне `component$()`. Этот метод вызывается компонентом более высокого уровня, и именно он предоставляет значение контексту. Значение будет доступно только для дочерних компонентов, на глобальном уровне его не будет.
+Как и все `use`-методы, его можно использовать только в корне [`component$()`](/docs/components/overview/index.mdx#component). Этот метод вызывается компонентом более высокого уровня, и именно он предоставляет значение контексту. Значение будет доступно только для дочерних компонентов, на глобальном уровне его не будет.
 
-Значение, передаваемое в `useContextProvider()`, может быть любым примитивом, объектом (в том числе из `useStore`) или массивом, содержащим сериализуемые значения.
+Значение, передаваемое в [`useContextProvider()`](/docs/components/context/index.mdx#usecontextprovider), может быть любым примитивом, объектом (в том числе из `useStore`) или массивом, содержащим сериализуемые значения.
 
 ```tsx
 export const Parent = component$(() => {
@@ -136,7 +136,7 @@ export interface SharedState {
 export const MyContext = createContext<SharedState>('my-context');
 ```
 
-Теперь при использовании `MyContext` в функциях `useContextProvider()` и `useContext()` значение будет иметь тип `SharedState`.
+Теперь при использовании `MyContext` в функциях [`useContextProvider()`](/docs/components/context/index.mdx#usecontextprovider) и `useContext()` значение будет иметь тип `SharedState`.
 
 Давайте посмотрим на рабочий пример:
 

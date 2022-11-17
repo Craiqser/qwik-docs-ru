@@ -16,7 +16,7 @@ contributors:
 
 Кроме того, функция `onRequest` может быть использована для обработки любого метода запроса, а не конкретного. Например, если объявлены две функции - `onGet` и `onRequest`, то для запроса с методом `GET` будет вызвана функция `onGet`. Однако, если бы пришел запрос с методом `POST`, то была бы вызвана функция `onRequest`, так как функция `onPost` не была предусмотрена. Функция `onRequest` доступна для всех методов запроса, для которых не указана конкретная функция.
 
-```typescript
+```tsx
 import type { RequestHandler } from '@builder.io/qwik-city';
 
 export const onGet: RequestHandler<ProductData> = async ({ params }) => {
@@ -46,7 +46,7 @@ export const onGet: RequestHandler<ProductData> = async ({ params }) => {
 
 ### Куки
 
-```typescript
+```tsx
 interface Cookie {
   get: (key: string) => CookieValue | null,
   set: (key: string, value: string | number | Record<string, any>, options?: CookieOptions) => void,
@@ -61,7 +61,7 @@ interface Cookie {
 
 Принимает строку с названием ключа и возвращает `CookieValue`, если значение присутствует, или null в противном случае.
 
-```typescript
+```tsx
 interface CookieValue {
   value: string;
   json: <T = unknown>() => T;
@@ -80,7 +80,7 @@ interface CookieValue {
 
 В качестве третьего аргумента вы можете опционально передать запись типа `CookieOptions` для установки дополнительных полей.
 
-```typescript
+```tsx
 export interface CookieOptions {
   domain?: string;
   expires?: Date | string;
@@ -98,19 +98,19 @@ export interface CookieOptions {
 
 Добавляет к кукам заголовок с указанным ключом. Новый заголовок будет содержать дату истечения срока действия в поле `expires`, указывая браузерам на необходимость его удаления.
 
-```typescript
+```tsx
 cookie.delete('my-cookie')
 ```
 
 Эквивалентно вызову:
 
-```typescript
+```tsx
 cookie.set('my-cookie', 'deleted', new Date(0))
 ```
 
 По желанию при удалении кук можно задать путь и/или домен. Если ваши куки были созданы с указанием пути/домена, необходимо установить эти поля, чтобы удаление имело эффект.
 
-```typescript
+```tsx
 cookie.delete('my-cookie', { domain: 'https://qwik.builder.io', path: '/docs/'})
 ```
 
@@ -120,6 +120,6 @@ cookie.delete('my-cookie', { domain: 'https://qwik.builder.io', path: '/docs/'})
 
 Эквивалентно вызову:
 
-```typescript
+```tsx
 !!cookie.get('my-cookie')
 ```

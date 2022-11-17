@@ -28,7 +28,7 @@ contributors:
 - Свойство, которое заканчивается на `$` (как в `goodbye$`);
 - Тип свойства - `PropFunction<T>`, где `T` - ленивый ссылочный тип, на который указывает QRL (сигнатура функции).
 
-```typescript
+```tsx
 interface MyComponentProps {
   goodbye$: PropFunction<() => void>;
   hello$: PropFunction<() => void>;
