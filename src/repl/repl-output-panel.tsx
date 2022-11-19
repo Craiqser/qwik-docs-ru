@@ -102,7 +102,7 @@ export const ReplOutputPanel = ({ input, store }: ReplOutputPanelProps) => {
 
         {store.selectedOutputPanel === 'html' ? (
           <div class="output-result output-html">
-            <CodeBlock language="markup" code={store.html} theme="light" />
+            <CodeBlock language="markup" code={store.html} />
           </div>
         ) : null}
 
@@ -121,7 +121,7 @@ export const ReplOutputPanel = ({ input, store }: ReplOutputPanelProps) => {
         {store.selectedOutputPanel === 'diagnostics' ? (
           <div class="output-result output-diagnostics">
             {diagnosticsLen === 0 ? (
-              <p class="no-diagnostics">- No Reported Diagnostics -</p>
+              <p class="no-diagnostics">- Нет сообщений диагностики -</p>
             ) : (
               [...store.diagnostics, ...store.monacoDiagnostics].map((d) => <p>{d.message}</p>)
             )}

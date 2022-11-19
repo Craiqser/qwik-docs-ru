@@ -36,23 +36,24 @@ npm run qwik add cloudflare-pages
 npm run build
 ```
 
-[Читайте полное руководство здесь](https://github.com/BuilderIO/qwik/blob/main/starters/adaptors/netlify-edge/README.md)
+[Читайте полное руководство здесь](https://github.com/BuilderIO/qwik/tree/main/starters/adaptors/cloudflare-pages/README.md)
 
-## Развёртывание в тестовой среде
+## Развёртывание для локальной разработки
 
-Для развёртывания приложения для разработки:
+Чтобы развернуть приложение для локальной разработки:
 
 ```shell
-npm run deploy
+npm run build
+npm run serve
 ```
 
-Обратите внимание, что вам может понадобиться [учётная запись Netlify](https://docs.netlify.com/get-started/) для того, чтобы завершить этот шаг!
+## Развертывание на Cloudflare Pages
 
-## Развёртывание в рабочей среде
+После установки интеграции с помощью `npm run qwik add` проект готов к развёртыванию в Cloudflare Pages. Однако вам нужно будет создать репозиторий git и поместить в него код.
 
-После установки интеграции с помощью `npm run qwik add` проект готов к развёртыванию в Netlify. Однако вам нужно будет создать репозиторий git и поместить в него код.
+Пожалуйста, обратитесь к [документации Cloudflare Pages](https://developers.cloudflare.com/pages/framework-guides/deploy-a-qwik-site/) для получения дополнительной информации о том, как развернуть ваш сайт.
 
-Пожалуйста, обратитесь к документам Netlify для получения дополнительной информации о том, как развернуть ваш сайт: [Документация Netlify](https://docs.netlify.com/site-deploys/create-deploys/)
+Обратите внимание, что для выполнения этого шага вам может понадобиться [учётная запись Cloudflare](https://dash.cloudflare.com/sign-up?lang=en-US)!
 
 ## Дополнительно
 
