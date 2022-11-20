@@ -1,0 +1,50 @@
+---
+title: Хук useSignal()
+contributors:
+  - manucorporat
+  - adamdbradley
+---
+
+Используйте `useSignal()` для хранения любого отдельного значения, аналогично `useStore()`. `useSignal` сильнее оптимизирован, когда дело доходит до повторного рендера компонентов. Он способен пропускать повторный рендер родительских компонентов, даже если сам сигнал определён в родительском компоненте. `useSignal` работает со всеми [примитивными типами](https://developer.mozilla.org/en-US/docs/Glossary/Primitive), а также с не вложенными/плоскими объектами. Если вам нужно хранить массивы или сложные объекты, используйте вместо этого [useStore](../../../docs/components/state/index.mdx) с опцией `{recursive: true}`.
+
+Пример:
+
+```tsx
+const intStore = useSignal(0);
+const stringStore = useSignal('foo');
+const booleanStore = useSignal(true);
+const objectStore = useSignal({fruite: 'apple', color: 'green'});
+
+// НЕ ДЕЛАЙТЕ ТАК!
+const arrayStore = useSignal(['banana','oranges']);
+const nestedObjectStore = useSignal({
+  fruits: {
+    banana: 10,
+    apple: 5
+  },
+  vegetables: {
+    tomato: 7,
+    broccoli: 14
+  }
+);
+```
+
+Чтобы прочитать или обновить значение, вы можете просто обратиться к свойству `value`:
+
+```tsx
+<>
+  <button onClick$={() => intStore.value++}>Click me</button>
+  <div>{intStore.value}</div>
+</>
+```
+
+Он также может содержать ссылку на элемент DOM, созданный компонентом.
+
+Получение ссылки на элемент DOM состоит из двух частей:
+
+1. `useSignal()` возвращает объект хранилища, содержащее свойство `value`, которое в конечном итоге будет содержать ссылку.
+2. `ref={_ref_variable_}` - это привязка свойства, которая установит свойство `value` объекта `ref` в элемент DOM.
+
+### Пример
+
+Пример справа использует `useSignal()` для получения ссылки на элемент `input`. Однако в нём отсутствует привязка реквизита `ref`. Добавьте её, чтобы пример работал должным образом.
