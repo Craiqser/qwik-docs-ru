@@ -6,6 +6,8 @@ export default component$(() => {
     org: 'BuilderIO',
   });
 
+  // Используйте useResource$(), чтобы установить, как данные будут получены с сервера.
+  // См. пример получения данных в тексте слева.
   const reposResource = useResource$<string[]>(({ track, cleanup }) => {
     // Нам нужен способ повторного получения данных при каждом изменении `github.org`.
     // Используйте `track` для запуска повторного запуска функции получения данных.
@@ -32,11 +34,9 @@ export default component$(() => {
         />
       </span>
       <div>
-        <Resource
-          value={reposResource}
-          onPending={() => <>Загрузка...</>}
-          onRejected={(error) => <>Ошибка: {error.message}</>}
-          onResolved={(repos) => (
+        {/* Используйте <Resource> для отображения данных из функции useResource$(). */}
+        {/* Чтобы помочь, вот функция обратного вызова для отображения данных при разрешении ресурса. */}
+        {/* (repos) => (
             <ul>
               {repos.map((repo) => (
                 <li>
@@ -44,8 +44,7 @@ export default component$(() => {
                 </li>
               ))}
             </ul>
-          )}
-        />
+          ) */}
       </div>
     </div>
   );
