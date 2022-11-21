@@ -64,13 +64,9 @@ import { MUIAlert, MUIButton } from '~/integrations/react/mui';
 export default component$(() => {
   return (
     <>
-      <MUIButton client:hover>
-        Привет, это кнопка
-      </MUIButton>
+      <MUIButton client:hover>Привет, это кнопка</MUIButton>
 
-      <MUIAlert severity="warning">
-        Это предупреждение от Qwik
-      </MUIAlert>
+      <MUIAlert severity="warning">Это предупреждение от Qwik</MUIAlert>
     </>
   );
 });
@@ -80,7 +76,7 @@ export default component$(() => {
 
 Функция `qwikify$(ReactCmp, опции?): QwikCmp` позволяет реализовать частичную гидратацию компонентов React. Она работает, оборачивая логику SSR и гидратации React в компонент Qwik, который может выполнять метод React `renderToString()` во время SSR и динамически вызывать `hydrateRoot()`, когда требуется.
 
-Обратите внимание, что по умолчанию никакой код React не будет выполняться в браузере, то есть компонент React по умолчанию НЕ будет интерактивным. В следующем примере мы квикифицируем компонент [Слайдер](https://mui.com/material-ui/react-slider/) из библиотеки MUI, но он не будет интерактивным.
+Обратите внимание, что по умолчанию никакой код React не будет выполняться в браузере, то есть компонент React по умолчанию НЕ будет интерактивным. В следующем примере мы _квикифицируем_ компонент [Слайдер](https://mui.com/material-ui/react-slider/) из библиотеки MUI, но он не будет интерактивным.
 
 ```tsx
 /** @jsxImportSource react */
@@ -98,6 +94,149 @@ export default component$(() => {
     <>
       <MUISlider></MUISlider>
     </>
+  );
+});
+```
+
+## Ограничения
+
+### Каждый квикифицированный react-компонент изолирован
+
+Каждый экземпляр квикифицированного react-компонента становится независимым приложением React. Полностью изолированным.
+
+```tsx
+export const MUISlider = qwikify$(Slider);
+
+<MUISlider></MUISlider>
+<MUISlider></MUISlider>
+```
+
+- Каждый `MUISlider` - это полностью изолированное React-приложение, со своим состоянием, жизненным циклом и т.д.;
+- Стили будут продублированы;
+- Состояние будет изолировано;
+- [Контекст](https://reactjs.org/docs/context.html) не наследуется;
+- Острова будут [гидратироваться](https://beta.reactjs.org/apis/react-dom/client/hydrateRoot) независимо.
+
+### По умолчанию интерактивность отключена
+
+По умолчанию квикифицированные компоненты не являются интерактивными, обратитесь к следующему разделу, чтобы узнать, как включить интерактивность.
+
+### Использование `qwikify$()` в качестве стратегии миграции
+
+Использование компонентов React в Qwik - это отличный способ перенести ваше приложение на Qwik, но это не серебряная пуля, вам придётся переписать ваши компоненты, чтобы воспользоваться возможностями Qwik.
+
+Это также отличный способ насладиться экосистемой React, например, [threejs](https://github.com/pmndrs/react-three-fiber) или [data-grid libs](https://mui.com/x/react-data-grid/).
+
+> Не злоупотребляйте `qwikify$()` при создании собственного приложения, иначе весь прирост производительности будет потерян.
+
+### Стройте широкие острова, а не листовые узлы
+
+Например, если вам нужно использовать несколько компонентов MUI для создания списка, не надо квикифицировать каждый компонент MUI по отдельности, вместо этого создайте один квикифицированный React-компонент.
+
+#### ХОРОШО: Широкий остров
+
+Единственный квикифицированный компонент, внутри которого находятся все компоненты MUI. Стили не будут дублироваться, а контекст и темы будут работать так, как ожидается.
+
+```tsx
+import * as React from 'react';
+import List from '@mui/material/List';
+import ListItem from '@mui/material/ListItem';
+import ListItemText from '@mui/material/ListItemText';
+import ListItemAvatar from '@mui/material/ListItemAvatar';
+import Avatar from '@mui/material/Avatar';
+import ImageIcon from '@mui/icons-material/Image';
+import WorkIcon from '@mui/icons-material/Work';
+import BeachAccessIcon from '@mui/icons-material/BeachAccess';
+
+// Квикифицируется весь список
+export const FolderList = qwikify$(() {
+  return (
+    <List sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}>
+      <ListItem>
+        <ListItemAvatar>
+          <Avatar>
+            <ImageIcon />
+          </Avatar>
+        </ListItemAvatar>
+        <ListItemText primary="Photos" secondary="Jan 9, 2014" />
+      </ListItem>
+      <ListItem>
+        <ListItemAvatar>
+          <Avatar>
+            <WorkIcon />
+          </Avatar>
+        </ListItemAvatar>
+        <ListItemText primary="Work" secondary="Jan 7, 2014" />
+      </ListItem>
+      <ListItem>
+        <ListItemAvatar>
+          <Avatar>
+            <BeachAccessIcon />
+          </Avatar>
+        </ListItemAvatar>
+        <ListItemText primary="Vacation" secondary="July 20, 2014" />
+      </ListItem>
+    </List>
+  );
+});
+```
+
+#### ПЛОХО: Листовые узлы
+
+Листовые узлы работают независимо, эффективно создавая десятки вложенных приложений React, каждое из которых полностью изолировано от других, а стили дублируются.
+
+```tsx
+import * as React from 'react';
+import List from '@mui/material/List';
+import ListItem from '@mui/material/ListItem';
+import ListItemText from '@mui/material/ListItemText';
+import ListItemAvatar from '@mui/material/ListItemAvatar';
+import Avatar from '@mui/material/Avatar';
+import ImageIcon from '@mui/icons-material/Image';
+import WorkIcon from '@mui/icons-material/Work';
+import BeachAccessIcon from '@mui/icons-material/BeachAccess';
+
+export const MUIList = qwikify$(List);
+export const MUIListItem = qwikify$(ListItem);
+export const MUIListItemText = qwikify$(ListItemText);
+export const MUIListItemAvatar = qwikify$(ListItemAvatar);
+export const MUIAvatar = qwikify$(Avatar);
+export const MUIImageIcon = qwikify$(ImageIcon);
+export const MUIWorkIcon = qwikify$(WorkIcon);
+export const MUIBeachAccessIcon = qwikify$(BeachAccessIcon);
+```
+
+```tsx
+// Компонент Qwik, использующий десятки вложенных островков React
+// Каждый MUI-* - это независимое приложение React
+export const FolderList = component$(() {
+  return (
+    <MUIList sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}>
+      <MUIListItem>
+        <MUIListItemAvatar>
+          <MUIAvatar>
+            <MUIImageIcon />
+          </MUIAvatar>
+        </MUIListItemAvatar>
+        <MUIListItemText primary="Photos" secondary="Jan 9, 2014" />
+      </MUIListItem>
+      <MUIListItem>
+        <MUIListItemAvatar>
+          <MUIAvatar>
+            <MUIWorkIcon />
+          </MUIAvatar>
+        </MUIListItemAvatar>
+        <MUIListItemText primary="Work" secondary="Jan 7, 2014" />
+      </MUIListItem>
+      <MUIListItem>
+        <MUIListItemAvatar>
+          <MUIAvatar>
+            <MUIBeachAccessIcon />
+          </MUIAvatar>
+        </MUIListItemAvatar>
+        <MUIListItemText primary="Vacation" secondary="July 20, 2014" />
+      </MUIListItem>
+    </MUIList>
   );
 });
 ```
@@ -170,9 +309,7 @@ export default component$(() => {
   const hydrateReact = useSignal(false);
   return (
     <>
-      <button onClick$={() => hydrateReact.value = true}>
-        При клике выполнить гидратацию слайдера
-      </button>
+      <button onClick$={() => (hydrateReact.value = true)}>При клике выполнить гидратацию слайдера</button>
 
       <MUISlider client:signal={hydrateReact}></MUISlider>
     </>
@@ -204,6 +341,7 @@ export default component$(() => {
 
 ```tsx
 // Код React (не будет работать в Qwik).
+
 import { Slider } from '@mui/material';
 
 <Slider onChange={() => console.log('значение изменено')}></Slider>
@@ -216,10 +354,7 @@ import { Slider } from '@mui/material';
 import { qwikify$ } from '@builder.io/qwik-react';
 const MUISlider = qwikify$(Slider);
 
-<MUISlider
-  client:visible
-  onChange$={() => console.log('значение изменено')}
-/>
+<MUISlider client:visible onChange$={() => console.log('значение изменено')} />;
 ```
 
 > Обратите внимание, что мы используем свойство `client:visible` для безотлагательной гидратации компонента, иначе компонент не был бы интерактивным и события никогда бы не диспетчеризировались.
@@ -241,9 +376,11 @@ const MUISlider = qwikify$(Slider);
 Хост-элемент не является частью React, что означает, что для прослушивания событий гидратация не требуется. Чтобы добавить пользовательские атрибуты и события к хост-элементу, вы можете использовать префикс `host:` в свойствах JSX, например:
 
 ```tsx
-<MUIButton host:onClick$={() => {
-  console.log('Клик по компоненту React без гидратации!');
-}}/>
+<MUIButton
+  host:onClick$={() => {
+    console.log('Клик по компоненту React без гидратации!');
+  }}
+/>
 ```
 
 Это позволит вам эффективно реагировать на нажатие кнопки [MUI button](https://mui.com/material-ui/react-button/), не загружая ни одного байта кода React.

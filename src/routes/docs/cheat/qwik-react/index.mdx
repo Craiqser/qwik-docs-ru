@@ -23,7 +23,7 @@ export const HelloWorld = component$(() => {
 ```tsx
 export function HelloWorld() {
   return <div>Привет, мир</div>;
-};
+}
 ```
 
 ### Кнопка с обработкой нажатия
@@ -41,7 +41,7 @@ export const Button = component$(() => {
 ```tsx
 export function Button() {
   return <button onClick={() => console.log('click')}>Нажми меня</button>;
-};
+}
 ```
 
 ### Объявление локального состояния
@@ -63,7 +63,7 @@ export const LocalStateExample = component$(() => {
 export function UseStateExample() {
   const [value, setValue] = useState(0);
   return <div>Значение: {value}</div>;
-};
+}
 ```
 
 ### Создание компонента счётчика
@@ -95,7 +95,7 @@ export function Counter() {
       <button onClick={() => setCount(count + 1)}>Увеличить</button>
     </>
   );
-};
+}
 ```
 
 ### Создание часов, которые тикают каждую секунду
@@ -130,7 +130,7 @@ export function Clock() {
     return () => clearInterval(interval);
   });
   return <div>Секунды: {seconds}</div>;
-};
+}
 ```
 
 ### Выполнение запроса при каждом изменении состояния
@@ -177,7 +177,7 @@ export function Fetch() {
       <input name="url" onInput={(ev) => setUrl(ev.target.value)} />
     </>
   );
-};
+}
 ```
 
 ### Объявление и использование контекста
@@ -208,11 +208,11 @@ export const Child = component$(() => {
 #### ⚛️ React
 
 ```tsx
-export const MyContext = createContext({ message: "значение для примера" });
+export const MyContext = createContext({ message: 'значение для примера' });
 
 export default function Parent() {
   return (
-    <MyContext.Provider value={{ message: "обновлённое значение" }}>
+    <MyContext.Provider value={{ message: 'обновлённое значение' }}>
       <Child />
     </MyContext.Provider>
   );
@@ -256,7 +256,7 @@ export const DebouncedInput = component$(() => {
 
 ```tsx
 export const DebouncedInput = () => {
-  const [value, setValue] = useState("");
+  const [value, setValue] = useState('');
   const [debouncedValue, setDebouncedValue] = useState(value);
 
   useEffect(() => {
@@ -289,14 +289,18 @@ export const DynamicBackground = component$(() => {
   });
 
   return (
-    <div style={{
-      background: `rgb(${state.red}, ${state.green}, ${state.blue})`
-    }}>
-      <button onClick$={() => {
-        state.red = Math.random() * 256;
-        state.green = Math.random() * 256;
-        state.blue = Math.random() * 256;
-      }}>
+    <div
+      style={{
+        background: `rgb(${state.red}, ${state.green}, ${state.blue})`,
+      }}
+    >
+      <button
+        onClick$={() => {
+          state.red = Math.random() * 256;
+          state.green = Math.random() * 256;
+          state.blue = Math.random() * 256;
+        }}
+      >
         Изменить фон
       </button>
     </div>
@@ -312,19 +316,23 @@ export function DynamicBackground() {
   const [green, setGreen] = useState(0);
   const [blue, setBlue] = useState(0);
   return (
-    <div style={{
-      background: `rgb(${red}, ${green}, ${blue})`
-    }}>
-      <button onClick={() => {
-        setRed(Math.random() * 256);
-        setGreen(Math.random() * 256);
-        setBlue(Math.random() * 256);
-      }}>
+    <div
+      style={{
+        background: `rgb(${red}, ${green}, ${blue})`,
+      }}
+    >
+      <button
+        onClick={() => {
+          setRed(Math.random() * 256);
+          setGreen(Math.random() * 256);
+          setBlue(Math.random() * 256);
+        }}
+      >
         Изменить фон
       </button>
     </div>
   );
-};
+}
 ```
 
 ### Создание компонента со списком президентов
@@ -406,5 +414,5 @@ export function Presidents() {
       ))}
     </ul>
   );
-};
+}
 ```

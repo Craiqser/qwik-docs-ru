@@ -96,9 +96,7 @@ export { onRequest } from '../server/entry.cloudflare-pages';
 
 ```json
 {
-  "include": [
-    "/*"
-  ],
+  "include": ["/*"],
   "exclude": [
     "/_headers",
     "/_redirects",
@@ -122,16 +120,16 @@ export { onRequest } from '../server/entry.cloudflare-pages';
 
 ```javascript
 export const onRequest = async ({ platform }) => {
-  const secret = platform.env["SUPER_SECRET_TOKEN"];
+  const secret = platform.env['SUPER_SECRET_TOKEN'];
 };
 ```
 
 Кроме того, вы можете импортировать тип `RequestHandlerCloudflarePages`, чтобы иметь автокомплит типов в вашем редакторе.
 
 ```tsx
-import {type RequestHandlerCloudflarePages} from '@builder.io/qwik-city/middleware/cloudflare-pages';
+import { type RequestHandlerCloudflarePages } from '@builder.io/qwik-city/middleware/cloudflare-pages';
 
-export const onGet: RequestHandlerCloudflarePages = (({ platform }) => {
- //...
-})
+export const onGet: RequestHandlerCloudflarePages = ({ platform }) => {
+  //...
+};
 ```

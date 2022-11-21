@@ -32,30 +32,38 @@ export default component$(() => {
 Компонент выше разделён благодаря синтаксису `$` на:
 
 **app.js**
-```js
-import { componentQrl, qrl } from "@builder.io/qwik";
 
-const App = /*#__PURE__*/ componentQrl(qrl(()=>import('./app_component_akbu84a8zes.js'), "App_component_AkbU84a8zes"));
+```js
+import { componentQrl, qrl } from '@builder.io/qwik';
+
+const App = /*#__PURE__*/ componentQrl(
+  qrl(() => import('./app_component_akbu84a8zes.js'), 'App_component_AkbU84a8zes')
+);
 
 export { App };
 ```
 
 **app_component_akbu84a8zes.js**
+
 ```js
-import { jsx as _jsx } from "@builder.io/qwik/jsx-runtime";
-import { qrl } from "@builder.io/qwik";
-export const App_component_AkbU84a8zes = ()=>{
-    console.log('рендер');
-    return /*#__PURE__*/ _jsx("p", {
-        onClick$: qrl(()=>import("./app_component_p_onclick_01pegc10cpw"), "App_component_p_onClick_01pEgC10cpw"),
-        children: "Привет, Qwik"
-    });
+import { jsx as _jsx } from '@builder.io/qwik/jsx-runtime';
+import { qrl } from '@builder.io/qwik';
+export const App_component_AkbU84a8zes = () => {
+  console.log('рендер');
+  return /*#__PURE__*/ _jsx('p', {
+    onClick$: qrl(
+      () => import('./app_component_p_onclick_01pegc10cpw'),
+      'App_component_p_onClick_01pEgC10cpw'
+    ),
+    children: 'Привет, Qwik',
+  });
 };
 ```
 
 **app_component_p_onclick_01pegc10cpw.js**
+
 ```js
-export const App_component_p_onClick_01pEgC10cpw = ()=>console.log('привет');
+export const App_component_p_onClick_01pEgC10cpw = () => console.log('привет');
 ```
 
 ## Правила
@@ -71,61 +79,70 @@ export const App_component_p_onClick_01pEgC10cpw = ()=>console.log('привет
 #### 1. Литералы без локальных идентификаторов
 
 **Неправильно**
+
 ```tsx
 const foo = 'foo';
-foo$({ value: foo }) // содержит локальный идентификатор "foo"
+foo$({ value: foo }); // содержит локальный идентификатор "foo"
 ```
 
 **Неправильно**
+
 ```tsx
 const bar = 'bar';
-foo$(`Hello, ${bar}`) // содержит локальный идентификатор "bar"
+foo$(`Hello, ${bar}`); // содержит локальный идентификатор "bar"
 ```
 
 **Неправильно**
+
 ```tsx
 const count = 0;
-foo$(count + 1) // содержит локальный идентификатор "count"
+foo$(count + 1); // содержит локальный идентификатор "count"
 ```
 
 **Правильно**
+
 ```tsx
-foo$(`Hello, bar`)
-foo$({ value: 'stuff' })
-foo$(1 + 3)
+foo$(`Hello, bar`);
+foo$({ value: 'stuff' });
+foo$(1 + 3);
 ```
 
 #### 2. Импортируемые идентификаторы
 
 **Неправильно**
+
 ```tsx
 const foo = 'foo';
-foo$(foo) // Идентификатор `foo` не экспортируется, поэтому не может быть импортирован
+foo$(foo); // Идентификатор `foo` не экспортируется, поэтому не может быть импортирован
 ```
 
 **Правильно**
+
 ```tsx
 export const bar = 'bar';
-foo$(bar)
+foo$(bar);
 ```
 
 **Правильно**
+
 ```tsx
-import {bar} from './bar';
-foo$(bar)
+import { bar } from './bar';
+foo$(bar);
 ```
 
-### 3. Замыкания
+#### 3. Замыкания
 
 Для замыканий правила мягче, и можно ссылаться на локальные идентификаторы и захватывать их.
 
 >**ПРАВИЛО**: Если функция лексически захватывает переменную (или параметр), эта переменная должна быть:
+>
 > 1. `const` и
 > 2. значение должно быть сериализуемым
 
-#### 3.1. Захваченные переменные должны быть объявлены как `const`.
+##### 3.1. Захваченные переменные должны быть объявлены как `const`.
 
 **Неправильно**
+
 ```tsx
 component$(() => {
   let foo = 'value'; // переменная не объявлена как `const`
@@ -134,6 +151,7 @@ component$(() => {
 ```
 
 **Правильно**
+
 ```tsx
 component$(() => {
   const foo = 'значение';
@@ -141,9 +159,10 @@ component$(() => {
 });
 ```
 
-#### 3.2. Локальные захваченные переменные должны быть сериализуемыми
+##### 3.2. Локальные захваченные переменные должны быть сериализуемыми
 
 **Неправильно**
+
 ```tsx
 component$(() => {
   const foo = new MyCustomClass(12); // MyCustomClass не сериализуется
@@ -152,6 +171,7 @@ component$(() => {
 ```
 
 **Правильно**
+
 ```tsx
 component$(() => {
   const foo = { data: 12 };
@@ -159,11 +179,12 @@ component$(() => {
 });
 ```
 
-#### 3.3. Объявленные переменные модуля должны быть импортируемыми
+##### 3.3. Объявленные переменные модуля должны быть импортируемыми
 
 > **ПРАВИЛО**: Если функция, извлекаемая оптимизатором, ссылается на символ верхнего уровня, этот символ должен быть либо импортирован, либо экспортирован.
 
 **Правильно**
+
 ```tsx
 import { foo } from './foo';
 component$(() => {
@@ -172,6 +193,7 @@ component$(() => {
 ```
 
 **Правильно**
+
 ```tsx
 export const foo = new MyCustomClass(12);
 component$(() => {
@@ -180,6 +202,7 @@ component$(() => {
 ```
 
 **Неправильно**
+
 ```tsx
 // Foo объявлен на уровне модуля, но не экспортирован
 const foo = new MyCustomClass(12);
@@ -280,8 +303,6 @@ export const MyComp_onMount = () => {
 
 - Родительский компонент может ссылаться на `MyComp` не вдаваясь в детали реализации `MyComp`;
 - Теперь у приложения больше точек входа, что даёт сборщику больше способов разбить кодовую базу на части.
-
-См. также: Захват лексической области.
 
 # Захват лексическй области
 

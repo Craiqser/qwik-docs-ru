@@ -40,7 +40,6 @@ export default component$(() => {
     </>
   );
 });
-
 ```
 
 В приведённом выше примере компонент App использует `useSignal()` для создания сигнала. Затем сигнал используется для отслеживания счета.
@@ -90,13 +89,13 @@ import { component$, useStore } from '@builder.io/qwik';
 
 export default component$(() => {
   const store = useStore({
-    nested: { fields: { are: "не отслеживается" }}
-  })
+    nested: { fields: { are: 'не отслеживается' }}
+  });
 
   return (
     <>
       <p>{store.nested.fields.are}</p>
-      <button onClick$={() => store.nested.fields.are = "отслеживается"}>Нажми меня</button>
+      <button onClick$={() => (store.nested.fields.are = 'отслеживается')}>Нажми меня</button>
     </>
   );
 });
@@ -112,14 +111,17 @@ store.nested = { fields: { are: { "отслеживается" } } }
 
 ```tsx
 export default component$(() => {
-  const store = useStore({
-    nested: { fields: { are: "не отслеживается" }}
-  }, { recursive: true })
+  const store = useStore(
+    {
+      nested: { fields: { are: 'не отслеживается' }}
+    },
+    { recursive: true }
+  );
 
   return (
     <>
       <p>{store.nested.fields.are}</p>
-      <button onClick$={() => store.nested.fields.are = "отслеживается"}>Нажми меня</button>
+      <button onClick$={() => (store.nested.fields.are = 'отслеживается')}>Нажми меня</button>
     </>
   );
 });
@@ -131,14 +133,25 @@ export default component$(() => {
 import { component$, useStore } from '@builder.io/qwik';
 
 export default component$(() => {
-  const store = useStore({
-    letters: ["A", "B", "C"]
-  }, { recursive: true })
+  const store = useStore(
+    {
+      letters: ['A', 'B', 'C']
+    },
+    { recursive: true }
+  );
 
   return (
     <>
-      {store.letters.map(letter => <p>{letter}</p>)}
-      <button onClick$={() => { store.letters[2] = "Z"}}>Нажми меня</button>
+      {store.letters.map((letter) => (
+        <p>{letter}</p>
+      ))}
+      <button
+        onClick$={() => {
+          store.letters[2] = 'Z';
+        }}
+      >
+        Нажми меня
+      </button>
     </>
   );
 });
@@ -279,7 +292,7 @@ export default component$(() => {
 Иногда вы можете захотеть сохранить значение в состоянии, но не хотите, чтобы оно было сериализовано. Это полезно для хранения значений, которые не являются сериализуемыми, например, функций или классов.
 
 ```tsx
-import {component$, useStore, noSerialize} from '@builder.io/qwik';
+import { component$, useStore, noSerialize } from '@builder.io/qwik';
 
 export const App = component$(() => {
   const state = useStore({
@@ -290,9 +303,6 @@ export const App = component$(() => {
     // Monaco не является сериализуемым, поэтому мы не можем хранить его в состоянии, не используя `noSerialize()`.
     state.monacoInstance = noSerialize(new Monaco());
   });
-  return (
-    <>
-    </>
-  );
+  return <></>;
 });
 ```

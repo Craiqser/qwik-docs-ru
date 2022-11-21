@@ -48,10 +48,10 @@ export const onGet: RequestHandler<ProductData> = async ({ params }) => {
 
 ```tsx
 interface Cookie {
-  get: (key: string) => CookieValue | null,
-  set: (key: string, value: string | number | Record<string, any>, options?: CookieOptions) => void,
-  delete: (key: string) => void,
-  has: (key: string) => boolean
+  get: (key: string) => CookieValue | null;
+  set: (key: string, value: string | number | Record<string, any>, options?: CookieOptions) => void;
+  delete: (key: string) => void;
+  has: (key: string) => boolean;
 }
 ```
 
@@ -70,9 +70,10 @@ interface CookieValue {
 ```
 
 Полученное значение - это простой объект с тремя полями:
-  1. `value`: Содержит значение кук в виде строки;
-  2. `json()`: Выполняет `JSON.parse()` над значением и возвращает результат;
-  3. `number()`: Выполняет функцию `Number()` над значением и возвращает результат.
+
+1. `value`: Содержит значение кук в виде строки;
+2. `json()`: Выполняет `JSON.parse()` над значением и возвращает результат;
+3. `number()`: Выполняет функцию `Number()` над значением и возвращает результат.
 
 **set**
 
@@ -99,19 +100,19 @@ export interface CookieOptions {
 Добавляет к кукам заголовок с указанным ключом. Новый заголовок будет содержать дату истечения срока действия в поле `expires`, указывая браузерам на необходимость его удаления.
 
 ```tsx
-cookie.delete('my-cookie')
+cookie.delete('my-cookie');
 ```
 
 Эквивалентно вызову:
 
 ```tsx
-cookie.set('my-cookie', 'deleted', new Date(0))
+cookie.set('my-cookie', 'deleted', new Date(0));
 ```
 
 По желанию при удалении кук можно задать путь и/или домен. Если ваши куки были созданы с указанием пути/домена, необходимо установить эти поля, чтобы удаление имело эффект.
 
 ```tsx
-cookie.delete('my-cookie', { domain: 'https://qwik.builder.io', path: '/docs/'})
+cookie.delete('my-cookie', { domain: 'https://qwik.builder.io', path: '/docs/' });
 ```
 
 **has**
@@ -121,5 +122,5 @@ cookie.delete('my-cookie', { domain: 'https://qwik.builder.io', path: '/docs/'})
 Эквивалентно вызову:
 
 ```tsx
-!!cookie.get('my-cookie')
+!!cookie.get('my-cookie');
 ```

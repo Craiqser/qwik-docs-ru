@@ -14,13 +14,13 @@ contributors:
 
 # FAQ
 
-## *@QwikDev* - разумный ИИ?
+## _@QwikDev_ - разумный ИИ?
 
 Да, а ещё я весёлый! [Подпишись на меня](https://twitter.com/QwikDev)
 
 ## Почему он называется Qwik?
 
-Сначала он назывался *qoot*, но мы решили, что его будет трудно найти. Один из наших друзей, [@patrickjs__](https://twitter.com/PatrickJS__), придумал Qwik, и, после внутреннего голосования на [builder.io](https://www.builder.io/), мы изменили название!
+Сначала он назывался _qoot_, но мы решили, что его будет трудно найти. Один из наших друзей, [@patrickjs\_\_](https://twitter.com/PatrickJS__), придумал Qwik, и, после внутреннего голосования на [builder.io](https://www.builder.io/), мы изменили название!
 
 ## Зачем еще один фреймворк?
 
@@ -28,7 +28,7 @@ contributors:
 
 ## Что такое Qwik City?
 
-[Qwik City](./../../qwikcity/overview/index.mdx) - это дополнительный набор API поверх Qwik. Считайте, что *Qwik* - это ядро, а *City* - дополнительные возможности (маршрутизация, загрузка данных, конечные точки...).
+[Qwik City](../../qwikcity/overview/index.mdx) - это дополнительный набор API поверх Qwik. Считайте, что _Qwik_ - это ядро, а _City_ - дополнительные возможности (маршрутизация, загрузка данных, конечные точки...).
 
 ## Сложен ли Qwik в освоении?
 
@@ -56,10 +56,13 @@ export default component$(() => {
 Благодаря `$`, компонент из примера выше разделён на:
 
 **app.js**
-```js
-import { componentQrl, qrl } from "@builder.io/qwik";
 
-const App = /*#__PURE__*/ componentQrl(qrl(()=>import('./app_component_akbu84a8zes.js'), "App_component_AkbU84a8zes"));
+```js
+import { componentQrl, qrl } from '@builder.io/qwik';
+
+const App = /*#__PURE__*/ componentQrl(
+  qrl(() => import('./app_component_akbu84a8zes.js'), 'App_component_AkbU84a8zes')
+);
 
 export { App };
 ```
@@ -67,13 +70,15 @@ export { App };
 **app_component_akbu84a8zes.js**
 
 ```js
-import { jsx as _jsx } from "@builder.io/qwik/jsx-runtime";
-import { qrl } from "@builder.io/qwik";
-export const App_component_AkbU84a8zes = ()=>{
+import { jsx as _jsx } from '@builder.io/qwik/jsx-runtime';
+import { qrl } from '@builder.io/qwik';
+export const App_component_AkbU84a8zes = () => {
     console.log('рендер');
-    return /*#__PURE__*/ _jsx("p", {
-        onClick$: qrl(()=>import("./app_component_p_onclick_01pegc10cpw"), "App_component_p_onClick_01pEgC10cpw"),
-        children: "Привет, Qwik"
+    return /*#__PURE__*/ _jsx('p', {
+        onClick$: qrl(
+          () => import('./app_component_p_onclick_01pegc10cpw'), 'App_component_p_onClick_01pEgC10cpw'
+        ),
+        children: 'Привет, Qwik'
     });
 };
 ```
@@ -81,7 +86,7 @@ export const App_component_AkbU84a8zes = ()=>{
 **app_component_p_onclick_01pegc10cpw.js**
 
 ```js
-export const App_component_p_onClick_01pEgC10cpw = ()=>console.log('привет');
+export const App_component_p_onClick_01pEgC10cpw = () => console.log('привет');
 ```
 
 ## Qwik загружает JS при взаимодействии с пользователем?
@@ -114,7 +119,7 @@ JSX - это не React, на самом деле JSX - это просто си
 
 - **Очень простой синтаксис**: не изобретает колесо, а использует существующий JS для циклов, условий и т.д., [спецификация JSX удивительно проста и мала](https://facebook.github.io/jsx/)
 - **Экосистема**: он хорошо поддерживается IDE, линтерами, инструментами аудита безопасности, отладки, подсветки...
-- **Похож на HTML**: JSX визуально и концептуально похож на HTML-дерево. Другие системы шаблонов, такие как *html templates* (lit-html), представляют собой не деревья, а массивы лексем, что усложняет преобразование и работу с ними.
+- **Похож на HTML**: JSX визуально и концептуально похож на HTML-дерево. Другие системы шаблонов, такие как _html templates_ (lit-html), представляют собой не деревья, а массивы лексем, что усложняет преобразование и работу с ними.
 - **Популярен**: Нравится вам это или нет, но JSX является наиболее широко используемым синтаксисом шаблонов в мире.
 
 ## Существует ли маршрутизатор для Qwik?

@@ -14,9 +14,9 @@ contributors:
 
 Эта концепция имеет разные названия в различных фреймворках:
 
- - В Angular это называется Content Projection;
- - В React это `children` параметров;
- - В Vue и веб-компонентах это тоже называется слотами.
+- В Angular это называется Content Projection;
+- В React это `children` параметров;
+- В Vue и веб-компонентах это тоже называется слотами.
 
 Слоты в Qwik являются символическими, что позволяет Qwik рендерить родительские и дочерние компоненты в полной изоляции друг от друга, позволяя отображать родительский компонент без повторного рендера дочерних и наоборот.
 
@@ -59,11 +59,11 @@ export const Button = component$(() => {
   return (
     <button>
       <div>
-        <Slot name="start"/>  {/* "start" slot */}
+        <Slot name="start" /> {/* "start" slot */}
       </div>
       <Slot /> {/* default slot */}
       <div>
-        <Slot name="end"/> {/* "end" slot */}
+        <Slot name="end" /> {/* "end" slot */}
       </div>
     </button>
   );
@@ -78,7 +78,6 @@ export const Button = component$(() => {
   <div>Default</div>
   <div q:slot="end">End</div>
   <icon q:slot="end"></icon>
-
 </Button>
 ```
 

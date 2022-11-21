@@ -96,27 +96,27 @@ export default createQwikCity({ render, qwikCityPlan });
 
 ```javascript
 export const onRequest = async ({ platform }) => {
-  platform.log('requested ip:', platform.ip)
+  platform.log('requested ip:', platform.ip);
 };
 ```
 
 Кроме того, вы можете импортировать тип `RequestHandlerNetlify`, чтобы иметь автокомплит типов в вашем редакторе.
 
 ```tsx
-import {type RequestHandlerNetlify} from '@builder.io/qwik-city/middleware/netlify-edge';
+import { type RequestHandlerNetlify } from '@builder.io/qwik-city/middleware/netlify-edge';
 
-export const onGet: RequestHandlerNetlify = (({platform}) => {
- //...
-})
+export const onGet: RequestHandlerNetlify = ({ platform }) => {
+  //...
+};
 ```
 
 ### Переменные окружения
 
 ```javascript
 export const onRequest = async ({ platform }) => {
-  platform.log('Vite env read from .dev file', import.meta.env.VITE_DEV)
-  platform.log('netlify serverless env read from Netlify UI or CLI', Deno.env.toObject())
-  return {}
+  platform.log('Vite env read from .dev file', import.meta.env.VITE_DEV);
+  platform.log('netlify serverless env read from Netlify UI or CLI', Deno.env.toObject());
+  return {};
 };
 ```
 

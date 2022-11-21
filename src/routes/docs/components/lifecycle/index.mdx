@@ -115,11 +115,7 @@ export const Cmp = component$(() => {
     // Этот код будет запущен в браузере ТОЛЬКО один раз, когда компонент будет смонтирован.
     store.option = localStorage.getItem('option');
   });
-  return (
-    <>
-      Localstore: {store.option}
-    </>
-  );
+  return <>Localstore: {store.option}</>;
 });
 ```
 
@@ -232,7 +228,7 @@ export const Timer = component$(() => {
 
 ## Диаграмма
 
-<img src={diagram}/>
+<img src={diagram} />
 
 ## Правила использования метода Use
 
@@ -243,18 +239,18 @@ export const Timer = component$(() => {
 - Они могут быть вызваны только из другого метода `use*$`, что позволяет создавать композицию.
 
 ```tsx
-useHook() // <-- ❌ не работает
+useHook(); // <-- ❌ не работает
 
 export default component$(() => {
-  useCustomHook() // <-- ✅ работает
+  useCustomHook(); // <-- ✅ работает
   if (condition) {
-    useHook() // <-- ❌ не работает
+    useHook(); // <-- ❌ не работает
   }
-  const myQrl = $(() => useHook()) // <-- ❌ не работает
-  return <button onClick$={() => useHook()}></button> // <-- ❌ не работает
-})
+  const myQrl = $(() => useHook()); // <-- ❌ не работает
+  return <button onClick$={() => useHook()}></button>; // <-- ❌ не работает
+});
 
 const useCustomHook = () => {
-  useHook() // <-- ✅ работает
-}
+  useHook(); // <-- ✅ работает
+};
 ```

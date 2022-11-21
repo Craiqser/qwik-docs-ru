@@ -30,11 +30,11 @@ export const Counter = component$(() => {
 Вы также можете передавать QRL-выражения в качестве значений для слушателей событий. Например, приведённый выше пример можно записать следующим образом:
 
 ```tsx
-import { component$, useStore, $ } from "@builder.io/qwik";
+import { component$, useStore, $ } from '@builder.io/qwik';
 
 export const Counter = component$(() => {
   const store = useStore({ count: 0 });
-  const incrementCount = $(() => store.count++)
+  const incrementCount = $(() => store.count++);
 
   return <button onClick$={incrementCount}>{store.count}</button>;
 });
