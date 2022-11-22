@@ -30,7 +30,7 @@ npm run qwik add netlify-edge
 
 Кроме того, в `package.json` будет обновлен скрипт `build.server` для сборки Netlify Edge.
 
-## Производственная сборка
+## Сборка для производственной среды
 
 Чтобы собрать приложение для производственной среды, используйте команду `build`, эта команда автоматически запустит `npm run build.server` и `npm run build.client`:
 
@@ -54,14 +54,13 @@ npm run deploy
 
 После установки интеграции с помощью `npm run qwik add` проект готов к развёртыванию в Netlify. Однако вам нужно будет создать репозиторий git и отправить в него код.
 
-Пожалуйста, обратитесь к документации Netlify для получения дополнительных сведений о том, как развернуть ваш сайт: [Документация Netlify](https://docs.netlify.com/site-deploys/create-deploys/)
+Пожалуйста, обратитесь к документации Netlify для получения дополнительных сведений о том, как развернуть ваш сайт: [Документация Netlify](https://docs.netlify.com/site-deploys/create-deploys/).
 
 ## Дополнительно
 
 ### Промежуточное ПО Netlify Edge
 
 При добавлении адаптера `netlify-edge` будет создан новый файл точки входа - `src/entry.netlify-edge.tsx`. Ниже приведен пример использования встроенного промежуточного программного обеспечения в файле точки входа.
-
 
 ```tsx
 // src/entry.netlify-edge.tsx
@@ -90,7 +89,7 @@ export default createQwikCity({ render, qwikCityPlan });
   function = "auth"
 ```
 
-### Контекст
+### Контекст запроса Netlify
 
 [Netlify context](https://docs.netlify.com/edge-functions/api/#netlify-specific-context-object) доступен в параметре `platform` метода конечной точки:
 

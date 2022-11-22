@@ -1,0 +1,82 @@
+---
+title: Qwik City - Адаптер и промежуточное ПО Vercel Edge
+contributors:
+  - adamdbradley
+---
+
+# Адаптер Vercel Edge
+
+Адаптер Qwik City Vercel Edge позволяет подключить Qwik City к [Vercel Edge Functions](https://vercel.com/docs/concepts/functions/edge-functions).
+
+## Установка
+
+Чтобы интегрировать адаптер `vercel-edge` в проект, используйте команду `add`:
+
+```shell
+npm run qwik add vercel-edge
+```
+
+> Она автоматически установит необходимые зависимости, включая [Vercel CLI](https://vercel.com/docs/cli).
+
+Адаптер добавит новый файл `vite.config.ts` в каталог `adaptors/`, и создаст файл точки входа, как показано ниже:
+
+```
+└── adaptors/
+    └── vercel-edge/
+        └── vite.config.ts
+└── src/
+    └── entry.vercel-edge.tsx
+```
+
+Кроме того, в `package.json` будет обновлен скрипт `build.server` для сборки Vercel Edge.
+
+## Сборка для производственной среды
+
+Чтобы собрать приложение для производственной среды, используйте команду `build`, эта команда автоматически запустит `npm run build.server` и `npm run build.client`:
+
+```shell
+npm run build
+```
+
+[Читайте полное руководство здесь](https://github.com/BuilderIO/qwik/blob/main/starters/adaptors/Vercel-edge/README.md)
+
+## Развёртывание в среде разработки
+
+Чтобы развернуть приложение для разработки:
+
+```shell
+npm run deploy
+```
+
+Обратите внимание, что для выполнения этого шага вам может понадобиться [учётная запись Vercel](https://docs.Vercel.com/get-started/)!
+
+## Развёртывание в производственной среде
+
+После установки интеграции с помощью `npm run qwik add` проект готов к развёртыванию в Vercel. Однако вам нужно будет создать репозиторий git и отправить в него код.
+
+Пожалуйста, обратитесь к документации Vercel для получения дополнительных сведений о том, как развернуть ваш сайт: [Документация Vercel](https://vercel.com/docs/concepts/deployments/overview).
+
+## Дополнительно
+
+### Промежуточное ПО Vercel Edge
+
+При добавлении адаптера `vercel-edge` будет создан новый файл точки входа - `src/entry.vercel-edge.tsx`. Ниже приведен пример использования встроенного промежуточного программного обеспечения в файле точки входа.
+
+```tsx
+// src/entry.vercel-edge.tsx
+import { createQwikCity } from '@builder.io/qwik-city/middleware/vercel-edge';
+import qwikCityPlan from '@qwik-city-plan';
+import render from './entry.ssr';
+
+export default createQwikCity({ render, qwikCityPlan });
+```
+
+Скомпилированный модуль будет собран в каталоге `.vercel/output`.
+
+### Vercel Edge Functions
+
+[Vercel Edge Functions](https://vercel.com/docs/concepts/functions/edge-functions) по умолчанию развёрнуты в глобальной сети Vercel Edge Network и позволяют перенести логику на стороне сервера ближе к месту нахождения посетителя.
+
+Edge Functions используют Vercel Edge Runtime, который построен на том же высокопроизводительном движке V8 JavaScript и WebAssembly, который используется в браузере Chrome. Используя преимущества этой небольшой среды выполнения, Edge Functions могут иметь более быструю холодную загрузку и более высокую масштабируемость, чем Serverless Functions.
+
+Edge Functions запускаются после кэширования и могут как кэшировать, так и возвращать ответы.

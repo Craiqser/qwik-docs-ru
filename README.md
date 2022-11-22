@@ -5,6 +5,13 @@
 - Last update - 21.11.2022;
 - Translated: Qwik, QwikCity, Examples, Tutorials.
 
+Для просмотра документации на локальном компьютере выполните следующие команды:
+
+```
+yarn build
+yarn start
+```
+
 ## Development Builds
 
 ### Client only
