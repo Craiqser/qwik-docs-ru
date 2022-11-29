@@ -11,9 +11,7 @@ export default component$(() => {
     <>
       <input value="data.name должен быть здесь" />
       <br />
-      <textarea rows={10} cols={60}>
-        data.description должен быть здесь
-      </textarea>
+      <textarea rows={10} cols={60} value="data.description должен быть здесь"></textarea>
     </>
   );
 });
