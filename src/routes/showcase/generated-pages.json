@@ -257,5 +257,22 @@
       "ttiTime": 2657
     },
     "tags": "saas"
+  },
+  {
+    "title": "Qwind — Free template for starts a website using Qwik + Tailwind CSS",
+    "imgSrc": "/showcases/qwind_pages_dev_.webp",
+    "perf": {
+      "score": 1,
+      "fcpDisplay": "1.0 s",
+      "fcpScore": 1,
+      "lcpDisplay": "1.0 s",
+      "lcpScore": 1,
+      "ttiDisplay": "1.0 s",
+      "ttiScore": 1,
+      "ttiTime": 974
+    },
+    "href": "https://qwind.pages.dev/",
+    "tags": "template",
+    "repo": "https://github.com/onwidget/qwind"
   }
 ]
