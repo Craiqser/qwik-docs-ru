@@ -24,8 +24,7 @@ contributors:
 ```tsx
 import { component$, useStore } from '@builder.io/qwik';
 
-// Компоненты Qwik могут быть асинхронными.
-export const MyCmp = component$(async (props: MyCmpProps) => {
+export const MyCmp = component$((props: MyCmpProps) => {
   // Объявление локального состояния
   const state = useStore({
     count: 0,
