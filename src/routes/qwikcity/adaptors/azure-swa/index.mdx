@@ -1,0 +1,71 @@
+---
+title: Qwik City - Статические веб-приложения Azure
+contributors:
+  - derkoe
+---
+
+# Адаптер для статических веб-приложений Azure
+
+Промежуточное ПО Qwik City Azure Static Web Apps позволяет подключить Qwik City к [Azure Static Web Apps](https://learn.microsoft.com/azure/static-web-apps/).
+
+## Установка
+
+Чтобы интегрировать адаптер `azure-swa`, используйте команду `add`:
+
+```shell
+npm run qwik add azure-swa
+```
+
+Адаптер добавит новый файл `vite.config.ts` в каталог `adaptors/`, и создаст файл точки входа, как показано ниже:
+
+```
+└── adaptors/
+    └── azure-swa/
+        └── vite.config.ts
+└── src/
+    └── entry.azure-swa.tsx
+```
+
+Кроме того, в `package.json` будет обновлен скрипт `build.server` для сборки статического веб-приложения Azure.
+
+## Сборка для производственной среды
+
+Чтобы собрать приложение для производственной среды, используйте команду `build`, эта команда автоматически запустит `npm run build.server` и `npm run build.client`:
+
+```shell
+npm run build
+```
+
+## Развёртывание для локальной разработки
+
+Чтобы развернуть приложение для локальной разработки:
+
+```shell
+npm run build
+npm run serve
+```
+
+## Развёртывание в Azure
+
+После установки интеграции с помощью `npm run qwik add` проект готов к развёртыванию в Azure Static Web Apps.
+
+Существует два способа развёртывания:
+
+1. Развёртывание с помощью [Static Web Apps CLI](https://azure.github.io/static-web-apps-cli/)
+
+   Вы можете развернуть свое приложение из локальной среды с помощью:
+
+    ```shell
+    npx swa deploy
+    ```
+
+    Эта команда запустит мастер, который проведёт вас через логин и развёртывание в Azure.
+
+2. Развёртывание с помощью GitHub
+
+   Вы можете развернуть своё приложение через GitHub. Создайте репозиторий Git с кодом вашего приложения, а затем опубликуйте свою ветку на GitHub.
+
+   При настройке статического веб-приложения Azure через портал Azure вы можете выбрать для развёртывания репозиторий GitHub.
+   Это создаст рабочий процесс GitHub для автоматического развёртывания вашего приложения. Для получения дополнительной информации ознакомьтесь с [Azure Static Web Apps quickstart](https://learn.microsoft.com/azure/static-web-apps/get-started-portal?pivots=github).
+
+Обратите внимание, что для выполнения этого шага вам понадобится [учётная запись Azure](https://signup.azure.com/)!

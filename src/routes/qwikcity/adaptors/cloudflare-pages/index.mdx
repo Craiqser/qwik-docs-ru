@@ -28,9 +28,9 @@ npm run qwik add cloudflare-pages
 
 Кроме того, в `package.json` будет обновлен скрипт `build.server` для сборки Cloudflare.
 
-## Сборка рабочей среды
+## Сборка для производственной среды
 
-Чтобы собрать приложение для рабочей среды, используйте команду `build`, эта команда автоматически запустит `npm run build.server` и `npm run build.client`:
+Чтобы собрать приложение для производственной среды, используйте команду `build`, эта команда автоматически запустит `npm run build.server` и `npm run build.client`:
 
 ```shell
 npm run build
@@ -47,7 +47,7 @@ npm run build
 npm run serve
 ```
 
-## Развертывание на Cloudflare Pages
+## Развёртывание на Cloudflare Pages
 
 После установки интеграции с помощью `npm run qwik add` проект готов к развёртыванию в Cloudflare Pages. Однако вам нужно будет создать репозиторий git и поместить в него код.
 
