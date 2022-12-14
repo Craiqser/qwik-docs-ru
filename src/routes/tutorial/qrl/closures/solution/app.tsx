@@ -10,7 +10,7 @@ export default component$(() => {
           const input = event.target as HTMLInputElement;
           store.name = input.value;
         }}
-        onChange$={(_) => {
+        onChange$={() => {
           if (store.name) alert(store.name);
         }}
         value={store.name}

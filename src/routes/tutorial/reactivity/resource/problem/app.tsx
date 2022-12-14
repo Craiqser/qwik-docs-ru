@@ -1,4 +1,4 @@
-/* eslint-disable no-console */
+// @ts-ignore: Unused import
 import { component$, useStore, Resource, useResource$ } from '@builder.io/qwik';
 
 export default component$(() => {
@@ -8,6 +8,7 @@ export default component$(() => {
 
   // Используйте useResource$(), чтобы установить, как данные будут получены с сервера.
   // См. пример получения данных в тексте слева.
+  // @ts-ignore: Unused declaration
   const reposResource = useResource$<string[]>(({ track, cleanup }) => {
     // Нам нужен способ повторного получения данных при каждом изменении `github.org`.
     // Используйте `track` для запуска повторного запуска функции получения данных.
