@@ -26,7 +26,7 @@ npm run qwik add azure-swa
     └── entry.azure-swa.tsx
 ```
 
-Кроме того, в `package.json` будет обновлен скрипт `build.server` для сборки статического веб-приложения Azure.
+Кроме того, в `package.json` будут обновлены скрипты `build.server` и `deploy`.
 
 ## Сборка для производственной среды
 
@@ -36,18 +36,9 @@ npm run qwik add azure-swa
 npm run build
 ```
 
-## Развёртывание для локальной разработки
-
-Чтобы развернуть приложение для локальной разработки:
-
-```shell
-npm run build
-npm run serve
-```
-
 ## Развёртывание в Azure
 
-После установки интеграции с помощью `npm run qwik add` проект готов к развёртыванию в Azure Static Web Apps.
+После установки интеграции с помощью `npm run qwik add azure-swa` проект готов к развёртыванию в Azure Static Web Apps.
 
 Существует два способа развёртывания:
 

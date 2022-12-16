@@ -26,7 +26,7 @@ npm run qwik add cloudflare-pages
     └── entry.cloudflare-pages.tsx
 ```
 
-Кроме того, в `package.json` будет обновлен скрипт `build.server` для сборки Cloudflare.
+Кроме того, в `package.json` будут обновлены скрипты `build.server` и `deploy`.
 
 ## Сборка для производственной среды
 
@@ -38,18 +38,9 @@ npm run build
 
 [Читайте полное руководство здесь](https://github.com/BuilderIO/qwik/tree/main/starters/adaptors/cloudflare-pages/README.md)
 
-## Развёртывание для локальной разработки
-
-Чтобы развернуть приложение для локальной разработки:
-
-```shell
-npm run build
-npm run serve
-```
-
 ## Развёртывание на Cloudflare Pages
 
-После установки интеграции с помощью `npm run qwik add` проект готов к развёртыванию в Cloudflare Pages. Однако вам нужно будет создать репозиторий git и поместить в него код.
+После установки интеграции с помощью `npm run qwik add cloudflare-pages` проект готов к развёртыванию в Cloudflare Pages. Однако вам нужно будет создать репозиторий git и поместить в него код.
 
 Пожалуйста, обратитесь к [документации Cloudflare Pages](https://developers.cloudflare.com/pages/framework-guides/deploy-a-qwik-site/) для получения дополнительной информации о том, как развернуть ваш сайт.
 
