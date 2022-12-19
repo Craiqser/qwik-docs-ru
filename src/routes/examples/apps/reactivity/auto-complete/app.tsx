@@ -1,11 +1,11 @@
-import { component$, useStore, useWatch$ } from '@builder.io/qwik';
+import { component$, useStore, useTask$ } from '@builder.io/qwik';
 
 export default component$(() => {
   return (
     <div>
       В этом примере представлен компонент автозаполнения с задержкой 150 мс.
       <br />
-      Функция `debouncedGetPeople` должна быть экспортирована, поскольку она используется в `useWatch$`.
+      Функция `debouncedGetPeople` должна быть экспортирована, поскольку она используется в `useTask$`.
       <br />
       <br />
       Ищите персонажей Звёздных войн, например "Luke Skywalker", с помощью{' '}
@@ -28,7 +28,7 @@ export const AutoComplete = component$(() => {
     selectedValue: '',
   });
 
-  useWatch$(async ({ track }) => {
+  useTask$(async ({ track }) => {
     const searchInput = track(() => state.searchInput);
 
     if (!searchInput) {

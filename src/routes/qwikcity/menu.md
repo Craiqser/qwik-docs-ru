@@ -19,7 +19,6 @@
 - [Вложенность](layout/nested/index.mdx)
 - [Группы](layout/grouped/index.mdx)
 - [Именование](layout/named/index.mdx)
-- [Верхний уровень](layout/top/index.mdx)
 
 ## Получение данных
 

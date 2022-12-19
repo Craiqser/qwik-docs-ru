@@ -227,15 +227,15 @@
     "title": "Хуки жизненного цикла",
     "apps": [
       {
-        "id": "use-mount",
-        "title": "useMount$()",
+        "id": "use-task",
+        "title": "useTask$()",
         "enableHtmlOutput": false,
         "enableClientOutput": false,
         "enableSsrOutput": false
       },
       {
-        "id": "use-un-mount",
-        "title": "useUnMount$()",
+        "id": "use-signal",
+        "title": "useSignal$()",
         "enableHtmlOutput": false,
         "enableClientOutput": false,
         "enableSsrOutput": false
@@ -248,22 +248,15 @@
         "enableSsrOutput": false
       },
       {
-        "id": "use-watch",
-        "title": "useTask$()",
-        "enableHtmlOutput": false,
-        "enableClientOutput": false,
-        "enableSsrOutput": false
-      },
-      {
-        "id": "use-signal",
-        "title": "useSignal()",
-        "enableHtmlOutput": false,
-        "enableClientOutput": false,
-        "enableSsrOutput": false
-      },
-      {
         "id": "use-on",
         "title": "useOn() / useOnDocument() / useOnWindow()",
+        "enableHtmlOutput": false,
+        "enableClientOutput": false,
+        "enableSsrOutput": false
+      },
+      {
+        "id": "use-un-mount",
+        "title": "useUnMount$()",
         "enableHtmlOutput": false,
         "enableClientOutput": false,
         "enableSsrOutput": false

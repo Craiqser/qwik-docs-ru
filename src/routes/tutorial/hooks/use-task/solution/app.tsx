@@ -1,11 +1,11 @@
-import { component$, useWatch$, useStore } from '@builder.io/qwik';
+import { component$, useTask$, useStore } from '@builder.io/qwik';
 
 export default component$(() => {
   const store = useStore({
     value: '',
     debouncedValue: '',
   });
-  useWatch$(({ track }) => {
+  useTask$(({ track }) => {
     // Повторный запуск этой функции при изменении свойства `value`.
     track(() => store.value);
     // Установка тайм-аута для дебаунса.

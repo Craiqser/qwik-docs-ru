@@ -1,4 +1,4 @@
-import { component$, useWatch$, useStore } from '@builder.io/qwik';
+import { component$, useTask$, useStore } from '@builder.io/qwik';
 
 interface State {
   count: number;
@@ -11,7 +11,7 @@ export default component$(() => {
     debounced: 0,
   });
 
-  useWatch$(({ track }) => {
+  useTask$(({ track }) => {
     // отслеживает изменения в store.count
     track(() => store.count);
     console.log('счёт изменён');

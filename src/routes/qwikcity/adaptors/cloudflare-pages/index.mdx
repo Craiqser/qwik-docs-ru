@@ -111,7 +111,7 @@ export { onRequest } from '../server/entry.cloudflare-pages';
 
 ```javascript
 export const onRequest = async ({ platform }) => {
-  const secret = platform.env['SUPER_SECRET_TOKEN'];
+  const secret = platform['SUPER_SECRET_TOKEN'];
 };
 ```
 

@@ -62,11 +62,11 @@ export default component$(() => {
     <Resource
       value={resource}
       onPending={() => <div>Загрузка...</div>}
-      onError={() => <div>Ошибка</div>}
+      onRejected={() => <div>Ошибка</div>}
       onResolved={() => (
         <>
-          <h1>Product: {product.productId}</h1>
-          <p>Price: {product.price}</p>
+          <h1>Товар: {product.productId}</h1>
+          <p>Цена: {product.price}</p>
           <p>{product.description}</p>
         </>
       )}

@@ -1,11 +1,11 @@
-import { component$, useWatch$, useStore } from '@builder.io/qwik';
+import { component$, useTask$, useStore } from '@builder.io/qwik';
 
 export default component$(() => {
   const store = useStore({
     value: '',
     debouncedValue: '',
   });
-  useWatch$(({ track }) => {
+  useTask$(({ track }) => {
     // Используйте track для повторного запуска этой функции при изменении свойства `value` в хранилище.
 
     // Установите таймер для копирования `value => debouncedValue` через полсекунды.
