@@ -56,7 +56,7 @@ export const Parent = component$(() => {
 
   return (
     <>
-      <button onClick$={(store.step *= -1)}>направление</button>
+      <button onClick$={() => (store.step *= -1)}>направление</button>
       <button onClick$={() => (store.count += store.step)}>{store.step}</button>
       <Greeter name={'Мир_' + store.count} />
     </>
