@@ -26,6 +26,7 @@
 
 - [Qwik vs React](cheat/qwik-react/index.mdx)
 - [Сериализация](cheat/serialization/index.mdx)
+- [Лучшие практики](cheat/best-practices/index.mdx)
 
 ## Концепции
 

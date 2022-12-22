@@ -35,25 +35,6 @@
 - [Меню](content/menu/index.mdx)
 - [<head>](content/head/index.mdx)
 
-## Развёртывание
-
-- [Обзор](adaptors/overview/index.mdx)
-- [Статические веб-приложения Azure](adaptors/azure-swa/index.mdx)
-- [Netlify Edge](adaptors/netlify-edge/index.mdx)
-- [Cloudflare Pages](adaptors/cloudflare-pages/index.mdx)
-- [Vercel Edge](adaptors/vercel-edge/index.mdx)
-- [NodeJs](adaptors/node/index.mdx)
-- [Google Cloud Run](adaptors/cloud-run/index.mdx)
-
-## Интеграция
-
-- [Обзор](integrations/overview/index.mdx)
-- [React](integrations/react/index.mdx)
-- [Partytown](integrations/partytown/index.mdx)
-- [Tailwind](integrations/tailwind/index.mdx)
-- [Vitest](integrations/vitest/index.mdx)
-- [Сервера](adaptors/overview/index.mdx)
-
 ## Генерация (SSG)
 
 - [Обзор](static-site-generation/overview/index.mdx)
