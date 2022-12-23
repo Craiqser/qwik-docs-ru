@@ -47,7 +47,7 @@ import diagram from './diagram2.svg';
 
 ```tsx
 useTask$(({track}) => {
-  track(() => store.count));
+  track(() => store.count);
   // будет выполняться при монтировании компонента и каждый раз при изменении "store.count"
 })
 ```
