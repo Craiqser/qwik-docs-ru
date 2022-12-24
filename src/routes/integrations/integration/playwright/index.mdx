@@ -1,0 +1,24 @@
+---
+title: Qwik City и Playwright
+keywords: e2e, testing
+contributors:
+  - manucorporat
+  - zanettin
+---
+
+# Playwright
+
+Playwright обеспечивает надёжное сквозное тестирование современных веб-приложений, поддерживая все современные движки рендера и работая кросс-платформенно. [Сайт Playwright](https://playwright.dev/).
+
+## Использование
+
+Вы можете легко добавить Playwright с помощью следующего стартового шаблона Qwik:
+
+```shell
+npm run qwik add playwright
+```
+
+Предыдущая команда добавляет в ваши зависимости Playwright, добавляет команду `test.e2e` в раздел `scripts` файла `package.json` и создаёт конфигурацию по умолчанию в файле `playwright.config.ts` на уровне корня приложения.
+Она также добавляет новый файл во вновь созданный каталог `tests` под названием `example.spec.ts`, который содержит несколько простых тестовых примеров.
+
+Для получения дополнительной информации ознакомьтесь с документацией [Playwright](https://playwright.dev/docs/intro).
