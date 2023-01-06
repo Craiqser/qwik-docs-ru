@@ -37,6 +37,7 @@ export const MEDIA = mediaObj({
     youtube('Construindo Apps instantâneos com Qwik', 'yrROy1vLwkE'),
     youtube('Après Angular : place à Qwik!', 'Ts2IWXMYiXk'),
     youtube('🇪🇸 Hablemos de Qwik', 'XMLMS2NVC1g'),
+    youtube('🇪🇸 Qwik el framework más rápido para aplicaciones web', 'On5P_xw8zSw'),
     youtube('🇪🇸 ¿Qué onda Qwik?', 'H7TL4SqcC3E'),
     youtube('Qwik: The Lightest, Fastest Way to Build Web Apps', 'l2mBk9meSvc'),
   ],
@@ -220,7 +221,7 @@ export default component$(() => {
   useStyles$(styles);
   return (
     <article class="media">
-      <h1>Qwik Presentations, Talks, Videos and Podcasts</h1>
+      <h1>Презентации Qwik, беседы, видео и подкасты</h1>
 
       <Section id="videos" listStyle="thumbnails" imgLoading="eager" />
 
@@ -233,15 +234,15 @@ export default component$(() => {
       <Section id="resources" listStyle="bullets" />
 
       <section>
-        <h2>Add Media</h2>
-        <p>This page missing any great resources or in need of an update?</p>
+        <h2>Добавить ресурс</h2>
+        <p>На этой странице отсутствует замечательный ресурс или она нуждается в обновлении?</p>
         <p>
           <a
             href="https://github.com/BuilderIO/qwik/edit/main/packages/docs/src/routes/media/index.tsx"
             target="_blank"
             class="edit-page"
           >
-            Edit this page!
+            Редактировать страницу!
           </a>
         </p>
       </section>
@@ -250,7 +251,7 @@ export default component$(() => {
 });
 
 export const head: DocumentHead = {
-  title: 'Qwik Presentations, Talks, Videos and Podcasts',
+  title: 'Презентации Qwik, беседы, видео и подкасты',
 };
 
 // Media Listing

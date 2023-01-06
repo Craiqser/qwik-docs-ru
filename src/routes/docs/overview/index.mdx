@@ -7,6 +7,8 @@ contributors:
   - gabrielgrant
 ---
 
+import { SSRHint } from '@builder.io/qwik';
+
 import { getCommunity } from "./community";
 
 # Добро пожаловать в Qwik
@@ -33,7 +35,9 @@ Qwik — это новый вид веб-фреймворка, который п
     <h3>API</h3>
   </a>
   <a class="card card-center" href="https://qwik.builder.io/chat">
-    <p class="icon">{getCommunity()}</p>
+    <SSRHint dynamic>
+      <p class="icon">{getCommunity()}</p>
+    </SSRHint>
     <h3>Сообщество</h3>
   </a>
   <a class="card card-center" href="/qwikcity/overview/">
