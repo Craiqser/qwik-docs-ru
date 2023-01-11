@@ -11,7 +11,7 @@ export default component$(() => {
       counter: { count: 1 },
       largeData: { data: 'ПРИТВОРЯЕТСЯ БОЛЬШИМ НАБОРОМ ДАННЫХ' },
     },
-    { recursive: true }
+    { deep: true }
   );
   console.log('Рендер: <App/>');
   const counter = store.counter;
