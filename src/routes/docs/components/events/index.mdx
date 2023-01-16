@@ -96,6 +96,95 @@ export const EventExample = component$(() => {
 1. События могут быть зарегистрированы декларативно в вашем JSX;
 2. События автоматически очищаются при уничтожении компонента (не требуют явной очистки).
 
+## Хуки useOn
+
+- [useOn](../../../docs/components/events/index.mdx#useon)
+- [useOnWindow](../../../docs/components/events/index.mdx#useonwindow)
+- [useOnDocument](../../../docs/components/events/index.mdx#useondocument)
+
+### useOn
+
+Хук `useOn` добавит слушателя DOM-событий на уровне компонента.
+
+```tsx
+export const ClickableComponent = component$(() => {
+  useOn(
+    'click',
+    $(() => {
+      alert('Alert from Clickable Component.');
+    })
+  );
+  return <div>click from other component 1</div>;
+});
+
+export const HoverComponent = component$(() => {
+  const store = useStore({ isHover: false });
+  useOn(
+    'mouseover',
+    $(() => {
+      store.isHover = true;
+    })
+  );
+  return <div>{store.isHover ? 'Now Hovering' : 'Not Hovering'}</div>;
+});
+
+export default component$(() => {
+  return (
+    <>
+      <ClickableComponent />
+      <HoverComponent />
+    </>
+  );
+});
+```
+
+### useOnWindow
+
+Хук `useOnWindow` добавит слушателя событий к объекту `window`.
+
+```tsx
+export const Online = component$(() => {
+  useOnWindow(
+    'online',
+    $(() => {
+      alert('Your Device is now Online');
+    })
+  );
+  useOnWindow(
+    'offline',
+    $(() => {
+      alert('Your Device is now Offline');
+    })
+  );
+  return <div></div>;
+});
+
+export default component$(() => {
+  return <Online />;
+});
+```
+
+### useOnDocument
+
+Хук `useOnDocument` добавит слушателя событий к объекту `document`.
+
+```tsx
+export const KeyBoard = component$(() => {
+  const store = useStore({ keyPressed: '' });
+  useOnDocument(
+    'keydown',
+    $((event) => {
+      store.keyPressed = store.keyPressed + event.key;
+    })
+  );
+  return <div>{store.keyPressed}</div>;
+});
+
+export default component$(() => {
+  return <KeyBoard />;
+});
+```
+
 ## События и компоненты
 
 Компоненты - это функции, не элементы. Поскольку события DOM не существуют сами по себе, можно определить их в качестве параметров.

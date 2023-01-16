@@ -354,5 +354,21 @@
     },
     "href": "https://amirhbeigi.ir",
     "tags": "portfolio"
+  },
+  {
+    "title": "Home Page | Puzzled By CSharp",
+    "imgSrc": "/showcases/puzzledbycsharp_com_.webp",
+    "perf": {
+      "score": 1,
+      "fcpDisplay": "0.9 s",
+      "fcpScore": 1,
+      "lcpDisplay": "1.4 s",
+      "lcpScore": 1,
+      "ttiDisplay": "1.2 s",
+      "ttiScore": 1,
+      "ttiTime": 1167.461
+    },
+    "href": "https://puzzledbycsharp.com/",
+    "tags": "site"
   }
 ]
