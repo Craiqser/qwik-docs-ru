@@ -30,6 +30,34 @@ export const head: DocumentHead = {
 };
 ```
 
+```tsx
+// Файл: src/root.tsx
+export default component$(() => {
+  const head = useDocumentHead();
+
+  return (
+      <QwikCityProvider>
+          <head>
+              <meta charSet="utf-8" />
+              <title>{head.title}</title>
+              {head.meta.map((m) => (
+                  <meta {...m} />
+               ))}
+               {head.links.map((l) => (
+                  <link {...l} />
+                ))}
+               {head.styles.map((s) => (
+                  <style {...s.props} dangerouslySetInnerHTML={s.style} />
+               ))}
+          </head>
+          <body>
+              <RouterOutlet />
+          </body>
+      </QwikCityProvider>
+  );
+});
+```
+
 ## Динамический заголовок документа
 
 Приведённый выше случай работает для простых ситуаций - когда мы просто хотим установить статический заголовок страницы. В случае, когда нам нужно задать заголовок динамически, например, чтобы включить название продукта, мы можем использовать функцию:
