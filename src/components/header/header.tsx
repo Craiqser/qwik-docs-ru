@@ -1,6 +1,6 @@
 import { useLocation } from '@builder.io/qwik-city';
 import { component$, useStyles$, useContext, useClientEffect$ } from '@builder.io/qwik';
-import { DocSearch } from '../docsearch/doc-search';
+// import { DocSearch } from '../docsearch/doc-search';
 import { CloseIcon } from '../svgs/close-icon';
 import { DiscordLogo } from '../svgs/discord-logo';
 import { GithubLogo } from '../svgs/github-logo';
@@ -102,18 +102,26 @@ export const Header = component$(() => {
               <span>Учебник</span>
             </a>
           </li>
-          <li>
+          {/* <li>
             <DocSearch
               appId={import.meta.env.VITE_ALGOLIA_APP_ID}
               apiKey={import.meta.env.VITE_ALGOLIA_SEARCH_KEY}
               indexName={import.meta.env.VITE_ALGOLIA_INDEX}
             />
-          </li>
+          </li> */}
           <li>
             <ThemeToggle />
           </li>
           <li>
-            <a href="https://github.com/BuilderIO/qwik" target="_blank" title="GitHub">
+            <a href="https://github.com/BuilderIO/qwik" target="_blank" title="BuilderIO/Qwik">
+              <span class="lg:hidden">GitHub</span>
+              <span class="hidden lg:block">
+                <GithubLogo width={22} height={22} />
+              </span>
+            </a>
+          </li>
+          <li>
+            <a href="https://github.com/Craiqser/qwik-docs-ru" target="_blank" title="Craiqser/DocsRU">
               <span class="lg:hidden">GitHub</span>
               <span class="hidden lg:block">
                 <GithubLogo width={22} height={22} />
