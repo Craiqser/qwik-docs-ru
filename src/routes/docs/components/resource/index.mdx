@@ -145,7 +145,7 @@ export default component$(() => {
         {ageResource.loading && <div>Загрузка...</div>}
         {!ageResource.loading && store.name && (
           <div>
-            {ageResource.promise.then((ageGuess) => (
+            {ageResource.value.then((ageGuess) => (
               <div>
                 {ageGuess.name} {ageGuess.age} лет
               </div>
