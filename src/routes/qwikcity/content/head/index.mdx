@@ -36,24 +36,24 @@ export default component$(() => {
   const head = useDocumentHead();
 
   return (
-      <QwikCityProvider>
-          <head>
-              <meta charSet="utf-8" />
-              <title>{head.title}</title>
-              {head.meta.map((m) => (
-                  <meta {...m} />
-               ))}
-               {head.links.map((l) => (
-                  <link {...l} />
-                ))}
-               {head.styles.map((s) => (
-                  <style {...s.props} dangerouslySetInnerHTML={s.style} />
-               ))}
-          </head>
-          <body>
-              <RouterOutlet />
-          </body>
-      </QwikCityProvider>
+    <QwikCityProvider>
+      <head>
+        <meta charSet="utf-8" />
+        <title>{head.title}</title>
+        {head.meta.map((m) => (
+          <meta {...m} />
+        ))}
+        {head.links.map((l) => (
+          <link {...l} />
+        ))}
+        {head.styles.map((s) => (
+          <style {...s.props} dangerouslySetInnerHTML={s.style} />
+        ))}
+      </head>
+      <body>
+        <RouterOutlet />
+      </body>
+    </QwikCityProvider>
   );
 });
 ```

@@ -266,7 +266,7 @@ export const onScroll_1 = () => alert('scroll');
 Однако обёртывание кода в `$()` несколько неудобно. По этой причине Оптимизатор неявно обёртывает первый аргумент любого вызова функции, который заканчивается на `$` (кроме того, можно использовать `implicit$FirstArg()` для автоматического выполнения обёртывания и согласования типов функции, принимающей `QRL`).
 
 ```tsx
-const onScroll$ = implicit$FirstArg(onScroll);
+const onScroll$ = implicit$FirstArg(onScrollQrl);
 
 onScroll$(() => alert('scroll'));
 ```
