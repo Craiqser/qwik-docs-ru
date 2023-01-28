@@ -113,7 +113,7 @@ export const Header = component$(() => {
             <ThemeToggle />
           </li>
           <li>
-            <a href="https://github.com/BuilderIO/qwik" target="_blank" title="BuilderIO/Qwik">
+            <a href="https://github.com/BuilderIO/qwik" target="_blank" title="BuilderIO/qwik">
               <span class="lg:hidden">GitHub</span>
               <span class="hidden lg:block">
                 <GithubLogo width={22} height={22} />
@@ -121,7 +121,7 @@ export const Header = component$(() => {
             </a>
           </li>
           <li>
-            <a href="https://github.com/Craiqser/qwik-docs-ru" target="_blank" title="Craiqser/DocsRU">
+            <a href="https://github.com/Craiqser/qwik-docs-ru" target="_blank" title="Craiqser/qwik-docs-ru">
               <span class="lg:hidden">GitHub</span>
               <span class="hidden lg:block">
                 <GithubLogo width={22} height={22} />
