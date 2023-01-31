@@ -61,14 +61,17 @@ export interface RouteLocation {
 - Затем `skuId` можно получить через `useLocation().params.skuId`
 
 ```tsx
+import { component$ } from '@builder.io/qwik';
+import { useLocation } from '@builder.io/qwik-city';
+
 export default component$(() => {
-  const { pathname, params } = useLocation();
+  const loc = useLocation();
 
   return (
     <>
       <h1>Артикул</h1>
-      <p>Путь: {pathname}</p>
-      <p>Код: {params.skuId}</p>
+      <p>Путь: {loc.pathname}</p>
+      <p>Код: {loc.params.skuId}</p>
     </>
   );
 });
@@ -132,7 +135,7 @@ export const onGet: RequestHandler<number> = async ({ params }) => {
 };
 
 export default component$(() => {
-  const piResource = useEndpoint<ProductData>();
+  const piResource = useEndpoint<number>();
   return (
     <Resource
       value={piResource}
