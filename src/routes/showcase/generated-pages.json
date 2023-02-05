@@ -386,5 +386,37 @@
     },
     "href": "https://puzzledbycsharp.com/",
     "tags": "site"
+  },
+  {
+    "title": "Necati Koçlu - Front-end Developer",
+    "imgSrc": "/showcases/necatikcl_dev_.webp",
+    "perf": {
+      "score": 0.99,
+      "fcpDisplay": "0.8 s",
+      "fcpScore": 1,
+      "lcpDisplay": "2.1 s",
+      "lcpScore": 0.96,
+      "ttiDisplay": "0.8 s",
+      "ttiScore": 1,
+      "ttiTime": 811.995
+    },
+    "href": "https://necatikcl.dev/",
+    "tags": "personal"
+  },
+  {
+    "title": "TatbiqIT, the unique software company in Kuwait",
+    "imgSrc": "/showcases/tatbiqit_com_.webp",
+    "perf": {
+      "score": 0.92,
+      "fcpDisplay": "1.4 s",
+      "fcpScore": 0.97,
+      "lcpDisplay": "2.8 s",
+      "lcpScore": 0.84,
+      "ttiDisplay": "1.9 s",
+      "ttiScore": 1,
+      "ttiTime": 1905.5985136278423
+    },
+    "href": "https://tatbiqit.com/",
+    "tags": "company"
   }
 ]
