@@ -1,0 +1,127 @@
+---
+title: Qwik City - Меню
+contributors:
+  - manucorporat
+  - adamdbradley
+  - the-r3aper7
+  - Oyemade
+  - mhevery
+  - nnelgxorz
+---
+
+# Меню
+
+Меню позволяют описать навигационную структуру сайта в простой декларативной форме. Настройка происходит в два этапа:
+
+1. Определение файла `menu.md`, содержащего структуру меню для каталога, в котором он находится.
+2. Использование функции [`useContent()`](/qwikcity/api/index.mdx#usecontent) для получения структуры меню в шаблоне для рендеринга. [Подробнее здесь](/qwikcity/api/index.mdx#usecontent).
+
+## Структура файла
+
+Пусть структура файлов выглядит следующим образом:
+
+```
+src/
+└── routes/
+    └── some/
+        ├── menu.md
+        ├── layout.tsx
+        └── path/
+            └── index.tsx  # https://example.com/some/path
+```
+
+Переход по адресу `https://example.com/some/path` активирует:
+
+- `src/routes/some/path/index.tsx` - этот компонент будет использоваться для рендеринга содержимого страницы;
+- `src/routes/some/layout.tsx` - этот макет будет использоваться компонентом `src/routes/some/path/index.tsx`. Внутри макета можно использовать `src/routes/some/menu.md` для отображения меню;
+- `src/routes/some/menu.md` - этот файл будет использоваться для объявления структуры меню, которая будет отображаться в макете `src/routes/some/layout.tsx`.
+
+## Объявление структуры меню
+
+Используйте файл `menu.md` для объявления структуры меню.
+
+- Используйте заголовки (`#`, `##` и т.д.) для определения глубины меню
+- Используйте маркированный список (`-`) для определения пунктов меню.
+
+```markdown
+<!-- Файл: src/routes/some/menu.md -->
+
+# Документация
+
+## Обзор
+
+- [Введение](introduction/index.md)
+
+## Компоненты
+
+- [Основы](/docs/components/basics/index.mdx)
+```
+
+## Загрузка структуры меню
+
+Во время выполнения любой компонент может получить меню с помощью хука [`useContent()`](../../api/index.mdx#usecontent). Возвращаемый тип - `ContentMenu`.
+
+Для приведённого выше примера будет получен ответ:
+
+```javascript
+{
+  text: "Документация",
+  items: [
+    {
+      text: "Обзор",
+      items: [
+        {
+          text: "Введение",
+          href: "/docs/introduction"
+        }
+      ],
+    },
+    {
+      text: "Компоненты",
+      items: [
+        {
+          text: "Основы",
+          href: "/docs/components/basics"
+        }
+      ],
+    },
+  ],
+}
+```
+
+## Использование `ContentMenu` в макете
+
+Метод [`useContent()`](../../api/index.mdx#usecontent) может быть вызван из любого компонента, который является частью текущего маршрута. Но чаще отображение меню используется в макете (или компоненте, используемом макетом). Пример использования:
+
+```tsx
+export default component$(() => {
+  const { menu } = useContent();
+  const { pathname } = useLocation();
+
+  return (
+    <div class="menu">
+      {menu
+        ? menu.items?.map((item) => (
+            <>
+              <h5>{item.text}</h5>
+              <ul>
+                {item.items?.map((item) => (
+                  <li>
+                    <a
+                      href={item.href}
+                      class={{
+                        'is-active': pathname === item.href,
+                      }}
+                    >
+                      {item.text}
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </>
+          ))
+        : null}
+    </div>
+  );
+});
+```

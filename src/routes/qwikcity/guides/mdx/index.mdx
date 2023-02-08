@@ -1,0 +1,117 @@
+---
+title: Qwik City - MDX
+contributors:
+  - manucorporat
+  - adamdbradley
+  - Oyemade
+  - mhevery
+  - nnelgxorz
+---
+
+# MDX
+
+Альтернативным способом создания контента является использование файлов `.mdx` ([Markdown JSX](https://mdxjs.com/)). Эти файлы создаются в формате Markdown, но они компилируются в компоненты Qwik. Помимо синтаксиса Markdown, файлы `.mdx` могут ссылаться на другие компоненты.
+
+Предположим, что ваши маршруты построены следующим образом:
+
+```
+src/
+└── routes/
+    └── some/
+        └── path/
+            └── index.mdx    # https://example.com/some/path
+```
+
+```Markdown
+---
+# File: src/routes/some/path/index.mdx
+title: Hello World Title
+---
+
+This is a simple hello world component.
+
+```
+
+Приведённый выше компонент будет отрендерен по адресу `https://example.com/some/path`.
+
+## Импорт других компонентов
+
+[MDX](https://mdxjs.com/) - это творческая возможность быстро придумывать новый контент и, если вам нужно больше интерактива на странице, вы можете легко интегрировать ваши компоненты Qwik, например, так:
+
+```
+src/
+├── components/
+│   └──  counter.tsx
+└── routes/
+    └── some/
+        └── path/
+            └── index.mdx    # https://example.com/some/path
+```
+
+```Markdown
+---
+# File: src/routes/some/path/index.mdx
+title: Hello World Title
+---
+import { Counter } from "../../../components/counter/counter";
+
+This is a simple hello world component.
+
+<Counter />
+```
+
+```tsx
+// Файл: src/components/counter/counter.tsx
+import { component$, useStyles$, useStore } from '@builder.io/qwik';
+
+export const Counter = component$(() => {
+  const store = useStore({ count: 0 });
+
+  return (
+    <button class="counter" type="button" onClick$={() => store.count++}>
+      Увеличить {store.count}
+    </button>
+  );
+});
+```
+
+**Примечание**: Ключевым отличием Qwik City от многих современных мета-фреймворков является маршрутизация на основе файлов. Каждый маршрут должен быть определен как `a-directory/index.(tsx,ts,js,jsx,md,mdx)`.
+
+В других мета-фреймворках, к которым вы привыкли, `about.mdx` будет отображать маршрут `http://example.com/about`. Однако это не будет работать в Qwik City. Вы должны переименовать файл в `about/index.mdx`, чтобы Qwik City знал, что его нужно рендерить.
+
+## Отключение плагинов MDX, включенных по умолчанию.
+
+Qwik City по умолчанию включает 3 плагина:
+
+- [remarkGfm](https://github.com/remarkjs/remark-gfm): [GFM](https://github.github.com/gfm/)-поддержка (литералы автоматических ссылок, сноски, зачёркивание, таблицы, списки задач).
+- [rehypeSyntaxHighlight](https://github.com/wooorm/refractor): Легкая, надежная, элегантная виртуальная подсветка синтаксиса с помощью Prism.
+- [rehypeAutolinkHeadings](https://github.com/rehypejs/rehype-autolink-headings): Плагин для добавления ссылок к заголовкам в HTML.
+
+Эти плагины можно отключить независимо друг от друга следующим образом:
+
+```tsx
+import { defineConfig } from 'vite';
+import { qwikCity } from '@builder.io/qwik-city/vite';
+// Смотри ниже
+import rehypeAutolinkHeadings from 'rehype-autolink-headings';
+export default defineConfig(() => {
+  return {
+    plugins: [
+      qwikCity({
+        mdxPlugins: {
+          remarkGfm: false,
+          rehypeSyntaxHighlight: false,
+          rehypeAutolinkHeadings: false,
+        },
+        mdx: {
+          rehypePlugins: [
+            // Плагины теперь можно добавлять вручную, чтобы использовать другую конфигурацию сборки.
+            [rehypeAutolinkHeadings, { behavior: 'wrap' }],
+          ],
+        },
+      }),
+      /* остальная часть конфигурации */
+    ],
+  };
+});
+```

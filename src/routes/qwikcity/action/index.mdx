@@ -1,0 +1,259 @@
+---
+title: Qwik City - action$()
+contributors:
+  - manucorporat
+---
+
+# `action$()`
+
+Действия объявляются с помощью функции `action$()` в любом месте. Действия похожи на [загрузчики](/docs/qwik-city/loader$), но они не выполняются во время рендеринга. Вместо этого они выполняются при явном вызове, то есть запускаются после некоторого взаимодействия с пользователем, например, при нажатии кнопки мыши или при отправке формы.
+
+Внутри компонента Qwik на действия ссылаются с помощью метода `.use()`. Метод `use()` возвращает объект `ActionStore` с методами для запуска действия и получения его состояния.
+
+```tsx
+// src/routes/layout.tsx
+import { action$ } from '@builder.io/qwik';
+export const addUser = action$((user) => {
+  const userID = db.users.add(user);
+  return {
+    success: true,
+    userID,
+  };
+});
+
+export default component$(() => {
+  const action = addUser.use();
+  // action.actionPath: string;
+  // action.isRunning: boolean;
+  // action.status?: number;
+  // action.formData: FormData | undefined;
+  // action.value: {success: boolean, userID: string} | undefined;
+  // action.run: (data: any) => Promise<{success: boolean, userID: string}>;
+
+  return <>{...}</>
+});
+```
+
+> Поскольку действия не выполняются во время рендера, они могут иметь побочные эффекты, такие как запись в базу данных или отправка электронного письма. Действие выполняется только при явном вызове.
+
+## Использование действий с `<Form/>`
+
+Лучший способ вызвать действие - использовать компонент `<Form/>`, экспортированный из `@builder.io/qwik-city`.
+
+```tsx
+// src/routes/index.tsx
+
+import { action$, Form } from '@builder.io/qwik-city';
+import { component$ } from '@builder.io/qwik';
+
+export const addUser = action$((user) => {
+  const userID = db.users.add(user);
+  return {
+    success: true,
+    userID,
+  };
+});
+
+export default component$(() => {
+  const action = addUser.use();
+  return (
+    <Form action={action}>
+      <input name="name" />
+      <button type="submit">Добавить пользователя</button>
+      {action.value?.success && <div>Пользователь успешно добавлен</div>}
+    </Form>
+  );
+});
+```
+
+Под капотом компонент `<Form/>` использует собственный элемент HTML `<form>`, поэтому он будет работать без JavaScript. Когда JS включен, компонент `<Form/>` будет перехватывать отправку формы и запускать действие в режиме SPA, что позволяет полноценно использовать весь опыт SPA.
+
+## Программное использование действий
+
+Действия также могут быть запущены из кода с помощью метода `action.run()`, т.е. вам не обязательно нужен компонент `<Form/>`. Вы можете запустить действие по нажатию кнопки или при наступлении любого другого события, точно так же, как вы бы сделали это функцией.
+
+```tsx
+// src/routes/index.tsx
+
+import { action$ } from '@builder.io/qwik-city';
+import { component$ } from '@builder.io/qwik';
+
+export const addUser = action$((user) => {
+  const userID = db.users.add(user);
+  return {
+    success: true,
+    userID,
+  };
+});
+
+export default component$(() => {
+  const action = addUser.use();
+  return (
+    <div>
+      <button
+        onClick={async () => {
+          const { value } = await action.run({ name: 'John' });
+          console.log(value);
+        }}
+      >
+        Добавить пользователя
+      </button>
+      {action.value?.success && <div>Пользователь успешно добавлен</div>}
+    </div>
+  );
+});
+```
+
+В приведённом выше примере действие `addUser` срабатывает, когда пользователь нажимает на кнопку. Метод `action.run()` возвращает `Promise`, который разрешается, когда действие выполнено.
+
+### Zod-валидация
+
+Данные, передаваемые в действие, по умолчанию не проверяются.
+
+```tsx
+// src/routes/index.tsx
+
+import { action$, Form } from '@builder.io/qwik-city';
+
+export const addUser = action$((user) => {
+  // `user` типизирован как Record<string, any>
+  const userID = db.users.add(user);
+  return {
+    success: true,
+    userID,
+  };
+});
+```
+
+К счастью, действия имеют первоклассную поддержку библиотеки [Zod](https://zod.dev/) для проверки данных на основе TypeScript. Чтобы использовать Zod, просто передайте схему Zod в качестве второго аргумента функции `action$()`.
+
+```tsx
+// src/routes/index.tsx
+
+import { action$, zod$, z } from '@builder.io/qwik-city';
+
+export const addUser = action$(
+  (user) => {
+    // `user` типизирован как { name: string }
+    const userID = db.users.add(user);
+    return {
+      success: true,
+      userID,
+    };
+  },
+  zod$({
+    name: z.string(),
+  })
+);
+```
+
+При передаче данных в действие они проверяются на соответствие схеме Zod. Если данные недействительны, действие поместит ошибку валидации в свойство `action.fail`.
+
+```tsx
+import { action$, Form } from '@builder.io/qwik-city';
+
+export const addUser = action$(
+  (user) => {
+    // `user` типизирован как { name: string }
+    const userID = db.users.add(user);
+    return {
+      success: true,
+      userID,
+    };
+  },
+  zod$({
+    name: z.string(),
+  })
+);
+
+export default component$(() => {
+  const action = addUser.use();
+  return (
+    <Form action={action}>
+      <input name="name" />
+      {action.fail?.fieldErrors.name && <div>{action.fail.message}</div>}
+      {action.value?.success && <div>Пользователь успешно добавлен</div>}
+      <button type="submit">Добавить пользователя</button>
+    </Form>
+  );
+});
+```
+
+Пожалуйста, обратитесь к [документации Zod](https://zod.dev/) для получения дополнительной информации о том, как использовать Zod-схемы.
+
+## Ошибки действия
+
+Для возврата ошибок действия используется метод `fail()`.
+
+```tsx
+import { action$, Form } from '@builder.io/qwik-city';
+
+export const addUser = action$(
+  (user, { fail }) => {
+    // `user` типизирован как { name: string }
+    const userID = db.users.add(user);
+    if (!userID) {
+      return fail(500, {
+        message: 'Пользователь не может быть добавлен',
+      });
+    }
+    return {
+      userID,
+    };
+  },
+  zod$({
+    name: z.string(),
+  })
+);
+```
+
+Ошибки сохраняются в свойстве `action.value`, как и значение успешного завершения действия. Если действие не удалось, то свойство `action.value.failed` устанавливается в `true`.
+
+```tsx
+export default component$(() => {
+  const action = addUser.use();
+  return (
+    <Form action={action}>
+      <input name="name" />
+      <button type="submit">Добавить пользователя</button>
+      {action.value?.failed && <div>{action.value.message}</div>}
+      {action.value?.userID && <div>Пользователь успешно добавлен</div>}
+    </Form>
+  );
+});
+```
+
+Благодаря дискриминации типов Typescript, вы можете использовать свойство `action.value.failed` для определения успеха или неудачи.
+
+## Предыдущее состояние формы
+
+Когда действие запускается, предыдущее состояние сохраняется в свойстве action.formData. Это полезно для отображения состояния загрузки во время выполнения действия.
+
+```tsx
+import { action$, Form } from '@builder.io/qwik-city';
+
+export const addUser = action$(
+  (user) => {
+    // `user` типизирован как { name: string }
+    const userID = db.users.add(user);
+    return {
+      userID,
+    };
+  },
+  zod$({
+    name: z.string(),
+  })
+);
+
+export default component$(() => {
+  const action = addUser.use();
+  return (
+    <Form action={action}>
+      <input name="name" value={action.formData?.get('name')} />
+      <button type="submit">Добавить пользователя</button>
+    </Form>
+  );
+});
+```
+
+`action.formData` особенно полезен, так как позволяет сохранить данные формы, заполненные пользователем, даже при обновлении страницы, что позволяет иметь полноценную работу SPA даже с отключенным JS.

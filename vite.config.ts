@@ -10,7 +10,13 @@ export default defineConfig(() => {
 
   return {
     plugins: [
-      qwikCity(),
+      qwikCity({
+        // mdx: {
+        //   remarkPlugins: [
+        //     remarkCodeSnippets()
+        //   ],
+        // }
+      }),
       qwikVite({
         entryStrategy: {
           type: 'smart',

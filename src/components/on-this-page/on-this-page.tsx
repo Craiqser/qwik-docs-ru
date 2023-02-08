@@ -10,7 +10,7 @@ export const OnThisPage = component$(() => {
   useStyles$(styles);
 
   const { headings } = useContent();
-  const contentHeadings = headings?.filter((h) => h.level === 2 || h.level === 3) || [];
+  const contentHeadings = headings?.filter((h) => h.level <= 3) || [];
 
   const { pathname } = useLocation();
   const editUrl = `https://github.com/Craiqser/qwik-docs-ru/edit/main/src/routes${pathname}index.mdx`;

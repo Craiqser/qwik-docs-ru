@@ -9,7 +9,7 @@ contributors:
 
 # API reference
 
-# `useContent()`
+## `useContent()`
 
 Функция [`useContent()`](./index.mdx#usecontent) извлекает ближайшую информацию о содержимом для текущего маршрута. Возвращаемый объект включает в себя:
 
@@ -20,9 +20,9 @@ menu: ContentMenu | undefined;
 
 Массив `headings` содержит данные об [элементах заголовка html](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/Heading_Elements) `<h1>` - `<h6>` из файлов разметки.
 
-Меню - это контекстные данные, объявленные в файлах `menu.md`. Дополнительную информацию о формате и местоположении файла см. в разделе [определение файла меню](./../content/menu/index.mdx).
+Меню - это контекстные данные, объявленные в файлах `menu.md`. Дополнительную информацию о формате и местоположении файла см. в разделе [определение файла меню](/qwikcity/advanced/menu/index.mdx).
 
-# `useDocumentHead()`
+## `useDocumentHead()`
 
 Функция `useDocumentHead()` используется для получения метаданных заголовка документа.
 
@@ -35,7 +35,7 @@ menu: ContentMenu | undefined;
 
 Функция `useDocumentHead()` может быть использована в компоненте Qwik, таком как `<Head>`, для создания внутренних элементов в секции `head` страницы.
 
-# `useLocation()`
+## `useLocation()`
 
 Функция [`useLocation()`](./index.mdx#uselocation) возвращает объект `RouteLocation` для текущего маршрута.
 
@@ -50,9 +50,9 @@ export interface RouteLocation {
 
 Возвращаемое значение [`useLocation()`](./index.mdx#uselocation) аналогично `document.location`, но его безопасно использовать на сервере, где нет глобального объекта `location`.
 
-## Параметры маршрута
+### Параметры маршрута
 
-`useLocation()` извлекает [параметры маршрута](../routing/route-parameters/index.mdx) в объект `params`.
+`useLocation()` извлекает [параметры маршрута](/qwikcity/routing/index.mdx) в объект `params`.
 
 Предположим, что у вас есть:
 
@@ -91,7 +91,7 @@ export default component$(() => {
 
 Функция `useNavigate()` позволяет программно переходить на следующую страницу, не требуя вмешательства пользователя и не вызывая перезагрузки всей страницы. Это API, используемый внутри компонента `<Link>` для поддержки навигации SPA.
 
-Хотя он очень похож на `useLocation`, этот API **только для записи** и вы никогда не должны читать его значение, вместо этого вы можете использовать его для записи пути, куда вы хотите перейти в первую очередь.
+Эта функция возвращает функцию `goto()`, которая может быть использована для перехода к новому пути.
 
 ```tsx
 import { component$ } from '@builder.io/qwik';
@@ -105,10 +105,19 @@ export default component$(() => {
       <button
         onClick$={() => {
           // это присваивание вызывает SPA-навигацию
-          nav.path = '/dashboard';
+          nav('/dashboard');
         }}
       >
         Перейти к информационной панели
+      </button>
+
+      <button
+        onClick$={() => {
+          // вызов без аргументов для обновления текущей страницы
+          nav();
+        }}
+      >
+        Обновить страницу
       </button>
     </>
   );
@@ -117,45 +126,32 @@ export default component$(() => {
 
 Этот компонент будет содержать кнопку, при нажатии на которую QwikCity будет переходить к `/dashboard`, не вызывая перезагрузки страницы.
 
-## `useEndpoint()`
+> Обратите внимание, что для SEO и улучшения доступности лучше использовать компонент `<Link>` вместо `useNavigate()` для перехода на новую страницу после пользовательского взаимодействия.
 
-Это основной API для получения данных с сервера! Он работает как RPC, вызывая сервер и возвращая [ресурс](/docs/components/resource/index.mdx), который будет разрешаться в фактические данные.
+## `loader$()`
 
-Пожалуйста, ознакомьтесь с документацией [Выборка данных](../data/overview/index.mdx) для получения более подробной информации, в частности с разделом [получение](../data/retrieve/index.mdx).
+Функция `loader$()` используется для объявления нового серверного загрузчика для заданной страницы/конечной точки или макета. QwikCity выполнит все объявленные загрузчики для заданного маршрута. Компоненты Qwik могут позже ссылаться на загрузчики, импортируя их и вызывая метод `.use()` для получения данных.
 
 ```tsx
-import { Resource, component$, useStore } from '@builder.io/qwik';
-import type { RequestHandler } from '@builder.io/qwik-city';
-import { useEndpoint } from '@builder.io/qwik-city';
-
-export const onGet: RequestHandler<number> = async ({ params }) => {
-  // Этот код запускается на сервере
-  const PI = computePIinServer();
-  return PI;
-};
-
+export const getTime = loader$(() => {
+  return { time: new Date() }
+});
 export default component$(() => {
-  const piResource = useEndpoint<number>();
+  const signal = getTime.use(); // Signal<{time: Date}>
+  console.log('Date': signal.value.time);
   return (
-    <Resource
-      value={piResource}
-      onResolved={(pi) => (
-        <>
-          <p>Число PI равно: {pi}</h1>
-        </>
-      )}
-    />
-  );
+    <div>{signal.value.time.toISOString()}</div>
+  )
 });
 ```
 
-В результате получается следующий HTML:
+Для получения дополнительной информации обратитесь к разделу [Серверные загрузчики](/qwikcity/loader/index.mdx).
 
-```html
-<p>Число PI равно: 3.14159</p>
-```
+## `action$()`
 
-> `useEndpoint()` абстрагирует необходимость запуска логики на сервере и получения этих данных на клиенте, способом, который является дружественным для SSR!
+Функция `action$()` используется для объявления нового серверного действия на данной странице/конечной точке или макете. QwikCity будет выполнять только вызванное после некоторого взаимодействия с пользователем действие (например, нажатие кнопки или отправка формы).
+
+Для получения дополнительной информации обратитесь к разделу [Действия сервера](/qwikcity/action/index.mdx).
 
 ## `<QwikCityProvider>`
 
@@ -187,6 +183,37 @@ export default function Root() {
 Этот компонент отвечает за рендер найденного в данный момент маршрута, он использует внутреннюю функцию [`useContent()`](./index.mdx#usecontent) и для рендера текущей страницы, а также всех вложенных макетов.
 
 Этот компонент обычно находится в дочернем элементе `<body>`, в большинстве интеграций вы найдёте его в файле `src/root.tsx`.
+
+## `<Form>`
+
+Компонент `Form` является обёрткой нативного элемента `<form>` и предназначен для работы с [серверными действиями](/qwikcity/action/index.mdx).
+
+Поскольку этот компонент использует нативный элемент `<form>`, он будет работать в любом браузере с включенным JavaScript и без него. Кроме того, он расширяет нативный элемент `<form>`, перехватывая событие `submit` и предотвращая поведение по умолчанию, поэтому он будет вести себя как SPA (Single Page Navigation) вместо вызова полной перезагрузки страницы.
+
+```tsx
+import { component$ } from '@builder.io/qwik';
+import { Form, action$ } from '@builder.io/qwik-city';
+
+// это действие будет вызвано при отправке формы
+export const loginAction = action$((data, { cookies, redirect }) => {
+  if (validate(data.username, data.password)) {
+    cookies.set('auth', getAuthToken(data.username));
+    throw redirect(302, '/dashboard');
+  }
+});
+
+export default component$(() => {
+  const login = loginAction.use();
+
+  return (
+    <Form action={login}>
+      <input type="text" name="username" />
+      <input type="password" name="password" />
+      <button type="submit">Войти</button>
+    </Form>
+  );
+});
+```
 
 ## `<Link>`
 

@@ -1,49 +1,30 @@
-# Qwik City Guide
+# Руководство Qwik City
 
 ## Qwik City
 
-- [Обзор](overview/index.mdx)
-- [Структура каталога](directory-layout/index.mdx)
-- [Статические ресурсы](static-assets/index.mdx)
-- [Справочник по API](api/index.mdx)
+- [Введение](overview/index.mdx)
+- [Структура проекта](project-structure/index.mdx)
+- [Справочник API](api/index.mdx)
 
-## Маршрутизация
+## Основы
 
-- [Обзор](routing/overview/index.mdx)
-- [Параметры маршрута](routing/route-parameters/index.mdx)
-- [Страницы ошибок](routing/error-responses/index.mdx)
+- [Маршрутизация](routing/index.mdx)
+- [Загрузчики данных](loader/index.mdx)
+- [Действия формы](action/index.mdx)
+- [Макеты](layout/index.mdx)
+- [Страницы](pages/index.mdx)
+- [Конечные точки](endpoints/index.mdx)
 
-## Макет
+## Инструкции
 
-- [Обзор](layout/overview/index.mdx)
-- [Вложенность](layout/nested/index.mdx)
-- [Группы](layout/grouped/index.mdx)
-- [Именование](layout/named/index.mdx)
+- [Markdown & MDX](guides/mdx/index.mdx)
+- [SSG](guides/static-site-generation/index.mdx)
+- [Развёртывание](guides/deploy/index.mdx)
 
-## Получение данных
+## Дополнительно
 
-- [Обзор](data/overview/index.mdx)
-- [Получение данных](data/retrieve/index.mdx)
-- [Изменение данных](data/modify/index.mdx)
-- [Конечные точки](data/endpoints/index.mdx)
-- [Редиректы](data/redirects/index.mdx)
-
-## Страницы
-
-- [Компоненты](content/component/index.mdx)
-- [MDX-файлы](content/mdx/index.mdx)
-- [Меню](content/menu/index.mdx)
-- [<head>](content/head/index.mdx)
-
-## Генерация (SSG)
-
-- [Обзор](static-site-generation/overview/index.mdx)
-- [Конфигурация](static-site-generation/static-site-config/index.mdx)
-- [Динамические маршруты](static-site-generation/dynamic-routes/index.mdx)
-
-## Предварительная загрузка
-
-- [Обзор](prefetching/overview/index.mdx)
-- [Сервис-воркер](prefetching/service-worker-prefetching/index.mdx)
-- [Кэширование ответов](prefetching/request-response-cache/index.mdx)
-- [Распараллеливание запросов](prefetching/parallelizing-network-requests/index.mdx)
+- [Расширенная маршрутизация](advanced/routing/index.mdx)
+- [Меню](advanced/menu/index.mdx)
+- [Переменные среды](advanced/environment-variables/index.mdx)
+- [Предварительная выборка](advanced/prefetching/index.mdx)
+- [Статические ассеты](advanced/static-assets/index.mdx)
