@@ -1,33 +1,33 @@
 ---
-title: QwikCity - Project Structure
+title: QwikCity - Структура проекта
 contributors:
   - manucorporat
 ---
 
-# Project Structure
+# Структура проекта
 
-## Create a new project
+## Создание нового проекта
 
-To follow along with this guide, run the Qwik CLI in your command line:
+Чтобы следовать этому руководству, запустите интерфейс командной строки Qwik:
 
 ```shell
 npm create qwik@latest
 ```
 
-> Notice that you can also use the package manager of your choice, `yarn create qwik` or `pnpm create qwik`.
+> Обратите внимание, что вы можете использовать менеджер пакетов по вашему выбору, `yarn create qwik@latest` или `pnpm create qwik@latest`.
 
-When prompted, choose a name for your project and Basic as your starter.
+При появлении запроса выберите имя для своего проекта и `Basic` в качестве стартового шаблона.
 
-> Note: the `start` script attempts to launch the site in system’s browser,
-> which in headless environments (e.g., within a container)
-> could cause the command to fail with an error.
-> Edit `package.json` to remove the `--open` flag.
+> Примечание: скрипт `start` пытается запустить сайт в системном браузере,
+> который в средах без локального интерфейса (например, внутри контейнера)
+> может привести к сбою команды с ошибкой.
+> Отредактируйте файл `package.json`, чтобы удалить флаг `--open`.
 
-The command will ask you a few questions and create a new project for you.
+Команда задаст вам несколько вопросов и создаст для вас новый проект.
 
-## Project structure
+## Структура проекта
 
-A typical Qwik project looks like this:
+Типичный проект Qwik выглядит так:
 
 ```bash
 qwik-app-dfdf
@@ -53,33 +53,32 @@ qwik-app-dfdf
 └── vite.config.ts
 ```
 
-## Project files
+## Файлы проекта
 
 ### `src/routes/`
 
-The `src/routes/` directory is an special directory for QwikCity, since it's the directory where QwikCity will look for your pages. Folders and files inside this directory have an special meaning and they will be mapped to the URL of your app.
+Каталог `src/routes/` является специальным каталогом для QwikCity, так как это каталог, в котором QwikCity будет искать ваши страницы. Папки и файлы в этом каталоге имеют особое значение, и они будут сопоставлены с URL-адресом вашего приложения.
 
-- `src/routes/index.tsx` is the homepage of your app.
-- `src/routes/layout.tsx` is the root layout of your app, all pages will be rendered inside this layout.
+- `src/routes/index.tsx` — домашняя страница вашего приложения;
+- `src/routes/layout.tsx` — это корневой макет вашего приложения, все страницы будут отображаться внутри этого макета.
 
-> Refer to the [Routing](/qwikcity/aanew/routing/overview) section for more information.
+> Дополнительную информацию см. в разделе [Маршрутизация](/qwikcity/routing).
 
 ### `src/components/`
 
-The `src/components/` directory is a directory by convention. All Qwik starters will have this directory, but you can change it if you want. This directory is where you should put your components, ie, reusable pieces of code that can be used in multiple places. They are not routes or layouts, but they can be used inside them.
+Каталог `src/components/` является каталогом по соглашению. Все стартовые шаблоны Qwik будут иметь этот каталог, но вы можете изменить его, если хотите. В этот каталог вы должны поместить свои компоненты, т. е. многократно используемые фрагменты кода, которые можно использовать в нескольких местах. Они не являются маршрутами или макетами, но их можно использовать внутри них.
 
-For example, a `Button` component should be inside `src/components/button/button.tsx`.
+Например, компонент `Button` должен находиться в файле `src/components/button/button.tsx`.
 
 ### `public/`
 
-The `public/` directory contains static assets such as images, fonts, and icons. When you build your app, these files will be copied to the `dist/` directory and served at the root.
+Каталог `public/` содержит статические ресурсы, такие как изображения, шрифты и иконки. Когда вы создаёте своё приложение, эти файлы будут скопированы в каталог `dist/` и размещены в корневом каталоге.
 
-Refer to [Vite configuration for more information](https://vitejs.dev/guide/build.html#public-base-path).
+Для получения дополнительной информации смотри раздел [Конфигурация Vite](https://vitejs.dev/guide/build.html#public-base-path).
 
 ### `src/entry.ssr.tsx`
 
-SSR entry point, in all cases the application is render outside the browser, this
-entry point will be the common one.
+Точка входа SSR. Эта точка входа будет общей во всех случаях, когда приложение рендерится вне браузера.
 
 - Server (express, cloudflare...)
 - npm run start
@@ -88,18 +87,18 @@ entry point will be the common one.
 
 ### `src/root.tsx`
 
-The `src/root.tsx` file is the entry point for the application tree. It's the first component that will be rendered. It's the root of the tree.
+Файл `src/root.tsx` является точкой входа в дерево приложения. Это первый компонент, который будет визуализирован. Это корень дерева.
 
 ### `src/global.css`
 
-The `src/global.css` file is a global CSS file, if you need to define some CSS that is used in multiple places in your app, you can define it here.
+Файл `src/global.css` — это глобальный файл CSS-стилей. Если вам нужно определить какой-либо CSS, который используется в нескольких местах вашего приложения, вы можете определить его здесь.
 
-The root component (`src/root.tsx`) imports this file by default.
+Корневой компонент (`src/root.tsx`) импортирует этот файл по умолчанию.
 
 ### `tsconfig.json`
 
-The `tsconfig.json` file contains the TypeScript compiler configuration. It's standard for any TypeScript project.
+Файл `tsconfig.json` содержит конфигурацию компилятора TypeScript. Это стандарт для любого TypeScript-проекта.
 
 ### `vite.config.ts`
 
-Qwik uses Vite to build the project. The `vite.config.ts` file contains the Vite configuration. It's standard for any Vite project. Please refer to the [Vite documentation](https://vitejs.dev/config/) for more information.
+Для сборки проекта Qwik использует Vite. Файл `vite.config.ts` содержит конфигурацию Vite. Это стандарт для любого проекта Vite. Для получения дополнительной информации обратитесь к [документации Vite](https://vitejs.dev/config/).

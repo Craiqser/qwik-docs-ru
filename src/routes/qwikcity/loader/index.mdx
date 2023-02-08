@@ -6,13 +6,13 @@ contributors:
 
 # `loader$()`
 
-Loaders allow data to flow from the server to the Qwik Components. For this reason, Qwik Loaders should be always understood in the context of **loading data in the server that is later consumed by a Qwik Component**, if you want to create a RESTful endpoint, please check the [endpoints](/qwikcity/endpoints/index.mdx) guide instead.
+Загрузчики позволяют передавать данные с сервера компонентам Qwik. По этой причине загрузчики Qwik всегда следует понимать в контексте **загрузки данных на сервере, которые впоследствии используются компонентом Qwik**. Если вы хотите создать конечную точку RESTful, то ознакомьтесь с руководством по [конечным точкам](/qwikcity/endpoints/index.mdx).
 
-They behave like RPC server-side functions that can be invoked by Qwik Components during rendering.
+Они ведут себя как серверные функции RPC, которые могут вызываться компонентами Qwik во время рендера.
 
-## Declaring a loader
+## Объявление загрузчика
 
-Loaders can only be declared inside the `src/routes` folder, in a `layout.tsx` or `index.tsx` file, and they MUST be exported.
+Загрузчики могут быть объявлены только внутри папки `src/routes`, в файле `layout.tsx` или `index.tsx`, и они ДОЛЖНЫ быть экспортированы.
 
 ```tsx
 // src/routes/layout.tsx
@@ -28,13 +28,13 @@ export const getProductData = loader$(() => {
 });
 ```
 
-> Loaders are not endpoints, it's an internal communication channel between the server and the Qwik Components. Also, loaders must return a JSON serializable value.
+> Загрузчики не являются конечными точками, это внутренний канал связи между сервером и компонентами Qwik. Кроме того, загрузчики должны возвращать сериализуемое JSON-значение.
 
-## Using a loader
+## Использование загрузчика
 
-Loaders are consumed using the `.use()` method from within a Qwik Component. The `use()` returns a `Signal` with the data returned by the loader function as it’s value.
+Загрузчики используются внутри компонента Qwik с помощью метода `.use()`. `use()` возвращает в качестве значения `Signal` с данными, возвращёнными функцией загрузчика.
 
-Loaders can be used by any component in the application, as long as the loader is declared in a `layout.tsx` or `index.tsx` file that is part of the existing route.
+Загрузчики могут использоваться любым компонентом приложения, если загрузчик объявлен в файле `layout.tsx` или `index.tsx`, который является частью существующего маршрута.
 
 ```tsx
 // src/routes/index.tsx
@@ -52,17 +52,17 @@ export default component$(() => {
   const signal = getServerTime.use(); // Signal<{time: number}>
   return (
     <div>
-      Server time: {signal.value.time}
+      Время на сервере: {signal.value.time}
     </div>
   );
 });
 ```
 
-> The `.use()` retrieves the loader data, but it does not execute the loader multiple times. Loaders execute eagerly\ at the beginning of the request in order to provide low latency. For this reason they are only allowed in the `src/routes` folder, in a `layout.tsx` or `index.tsx` file, and they MUST be exported.
+> `.use()` запрашивает данные загрузчика, но не выполняет загрузчик несколько раз. Загрузчики выполняются в начале запроса, чтобы обеспечить низкую задержку. По этой причине они разрешены только в папке `src/routes`, в файле `layout.tsx` или `index.tsx`, и они ДОЛЖНЫ быть экспортированы.
 
-## Multiple loaders
+## Несколько загрузчиков
 
-Multiple loaders are allowed across the whole application, and they can be used in any Qwik Component. **You can even declare multiple loaders in the same file**.
+В приложении разрешено использовать несколько загрузчиков, и их можно использовать в любом компоненте Qwik. **Вы даже можете объявить несколько загрузчиков в одном файле**.
 
 **File: `src/routes/layout.tsx`**
 
@@ -93,13 +93,13 @@ export default component$(() => {
 ```tsx
 import { component$ } from '@builder.io/qwik';
 
-// Import the loader from the layout
+// Импорт загрузчика из макета
 import { getServerTime } from '../routes/layout.tsx';
 
 export const Footer = component$(() => {
-  // Consume the loader data
+  // Использование данных загрузчика
   const signal = getServerTime.use();
-  return <footer>Server time: {signal.value.time}</footer>;
+  return <footer>Время на сервере: {signal.value.time}</footer>;
 });
 ```
 
@@ -126,22 +126,22 @@ export default component$(() => {
   const user = getCurrentUser.use();
   return (
     <section>
-      <h1>Admin</h1>
+      <h1>Администратор</h1>
       {logged.value.logged ? (
-        <p>Welcome {user.value.user.name}</p>
+        <p>Привет, {user.value.user.name}</p>
       ) : (
-        <p>You are not logged in</p>
+        <p>Вы не авторизованы</p>
       )}
     </section>
   );
 });
 ```
 
-## Loader context
+## Контекст загрузчика
 
-Just like request handlers such as `onRequest` and `onGet`, loaders have access to the `RequestEvent` object which includes information about the current request.
+Как и обработчики запросов, такие как `onRequest` и `onGet`, загрузчики имеют доступ к объекту `RequestEvent`, который содержит информацию о текущем запросе.
 
-This information comes in handly when the loader needs to conditionally return data based on the request, or it needs to override the response status, headers or body manually.
+Эта информация пригодится, когда загрузчику необходимо вернуть данные по условию на основе запроса или ему необходимо вручную переопределить статус ответа, заголовки или тело.
 
 ```tsx
 export const getServerTime = loader$((ev) => {
@@ -157,8 +157,8 @@ export const getServerTime = loader$((ev) => {
 });
 ```
 
-## When to use a loader?
+## Когда использовать загрузчик?
 
-A loader should be used when you need to provide some server-side data to your Qwik Components. For example, if you need to fetch some data from a database or an API, you can use a loader to do that.
+Загрузчик следует использовать, когда вам нужно предоставить некоторые серверные данные для ваших компонентов Qwik. Например, если вам нужно получить некоторые данные из базы данных или API, вы можете использовать для этого загрузчик.
 
-You should not use a loader to create a REST API, for that you’d be better off using an [Endpoint](/qwik-city/), which allows you to have tight control over the response headers and body.
+Вы не должны использовать загрузчик для создания REST API, для этого вам лучше использовать [Конечную точку](/qwik-city/), которая позволяет вам иметь жесткий контроль над заголовками и телом ответа.

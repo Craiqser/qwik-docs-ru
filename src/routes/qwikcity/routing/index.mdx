@@ -21,7 +21,7 @@ contributors:
 
 Для сопоставления входящих запросов к страницам/конечным точкам используются только имена каталогов.
 
-Например, если у вас есть файл по адресу `src/routes/some/path/index.tsx`, он будет сопоставлен с URL-путем `https://example.com/some/path`.
+Например, если у вас есть файл по пути `src/routes/some/path/index.tsx`, он будет сопоставлен с URL-адресом `https://example.com/some/path`.
 
 ```
 src/
@@ -40,14 +40,14 @@ src/
     └── layout.tsx            # This layout is used for all pages
 ```
 
-- **`[id]`** is a directory that represents a dynamic route segment, in this example `id` is the param.
-- **`[...catchall]`** is a directory that represents a dynamic catch-all route, in this example `catchall` is the param.
-- **`index.ext` files** are the pages/endpoints.
-- **`layout.ext` files** are the layouts.
+- **`[id]`** — это каталог, представляющий сегмент динамического маршрута, в этом примере `id` — это параметр;
+- **`[...catchall]`** — это каталог, представляющий динамический универсальный маршрут, в этом примере `catchall` — параметр;
+- **Файлы `index.ext`** являются страницами/конечными точками.
+- **Файлы `layout.ext`** являются макетами.
 
-### Dynamic route segments
+### Сегменты динамического маршрута
 
-Special named directories with square brackets, such as `[paramName]` and `[...catchAll]` can be used to match route segments which are dynamic:
+Специальные именованные каталоги с квадратными скобками, такие как `[paramName]` и `[...catchAll]`, могут использоваться для сопоставления сегментов маршрута, которые являются динамическими:
 
 ```
 src/routes/blog/index.tsx → /blog/:slug (/blog/hello-world)
@@ -68,45 +68,45 @@ src/
             └── index.tsx     # https://example.com/user/foo
 ```
 
-> The folder `[skuId]` can be any of the thousands of products that you have in your database. It would be impractical to create a route for each product. Instead, we need to define a Route Parameter (a part of the URL) that will be used to extract the `[skuId]`.
+> Папка `[skuId]` может быть любым из тысяч товаров, которые есть в вашей базе данных. Было бы нецелесообразно создавать маршрут для каждого продукта. Вместо этого нам нужно определить параметр маршрута (часть URL-адреса), который будет использоваться для извлечения `[skuId]`.
 
 ## `index.` files
 
-Inside the `src/routes` directory, all files named `index` are considered pages/endpoints, Qwik supports the following extensions: `.ts`, `.tsx`, `.md` and `.mdx`.
+Внутри каталога `src/routes` все файлы с именем `index` считаются страницами/конечными точками. Qwik поддерживает следующие расширения: `.ts`, `.tsx`, `.md` и `.mdx`.
 
-Pages/endpoints are the leaf nodes of the routing tree, ie, **the modules that will handle the request and return a HTTP response**.
+Страницы/конечные точки — это конечные узлы дерева маршрутизации, т. е. **модули, которые будут обрабатывать запрос и возвращать ответ HTTP**.
 
-### Page `index.tsx`
+### Страница `index.tsx`
 
-When `index.tsx` or `index.ts` exports a Qwik component as the default export, QwikCity will render the component and return a HTML response as a webpage.
+Когда `index.tsx` или `index.ts` экспортирует компонент Qwik в качестве экспорта по умолчанию, QwikCity рендерит компонент и возвращает HTML-ответ в виде веб-страницы.
 
 ```tsx
 // src/routes/index.tsx
 import { component$ } from '@builder.io/qwik';
 
 export default component$(() => {
-  return <h1>Hello World</h1>;
+  return <h1>Привет, мир</h1>;
 });
 ```
 
-### Endpoint `index.tsx`
+### Конечная точка `index.tsx`
 
-A `index.ts` can also access the HTTP request directly and return a raw HTTP response without involving any Qwik Component. This is done by exporting an `onRequest` method or `onGet`, `onPost`, `onPut`, `onDelete` depending if you only want to handle a specific request given its HTTP method.
+`index.ts` может напрямую обращаться к HTTP-запросу и возвращать необработанный HTTP-ответ без участия какого-либо компонента Qwik. Это делается путем экспорта метода `onRequest` или `onGet`, `onPost`, `onPut`, `onDelete` в зависимости от того, хотите ли вы обработать только конкретный запрос с учетом его метода HTTP.
 
 ```tsx
 // src/routes/index.ts
 import { component$ } from '@builder.io/qwik';
 
 export const onGet = ({ json }) => {
-  json(200, { message: 'Hello World' });
+  json(200, { message: 'Привет, мир' });
 };
 ```
 
-> Notice that in the last example, there is not a default export. This is because we are not rendering a Qwik component, but rather we are handling the request directly, and returning a JSON response. This is useful to implement RESTful APIs or any other type of HTTP endpoint.
+> Обратите внимание, что в последнем примере нет экспорта по умолчанию. Это связано с тем, что мы не рендерим компонент Qwik, а обрабатываем запрос напрямую и возвращаем ответ в формате JSON. Это полезно для реализации RESTful API или любого другого типа конечной точки HTTP.
 
-### Page + Endpoint
+### Страница + Конечная точка
 
-As you can see in Qwik City there is no a clear separation between pages and endpoints, in both cases it's a `index.tsx` file that exports a Qwik component or a `onRequest` method. However, it's possible to combine both approaches. For example, you can export a `onRequest` method that will handle the request, and then render a Qwik component.
+Как видите, в Qwik City нет чёткого разделения между страницами и конечными точками, в обоих случаях это файл `index.tsx`, который экспортирует компонент Qwik или метод `onRequest`. Однако можно комбинировать оба подхода. Например, вы можете экспортировать метод `onRequest`, который будет обрабатывать запрос, а затем рендерить компонент Qwik.
 
 ```tsx
 // src/routes/index.ts
@@ -115,59 +115,59 @@ import { component$ } from '@builder.io/qwik';
 export const onRequest = ({ headers, query }) => {
   headers.set('Cache-Control', 'private');
   if (query.get('format') === 'json') {
-    json(200, { message: 'Hello World' });
+    json(200, { message: 'Привет, мир' });
   }
 };
 
 export default component$(async () => {
-  return <h1>Hello World</h1>;
+  return <h1>Привет, мир</h1>;
 });
 ```
 
-> In this example, a request handle will always set the `Cache-Control` header to `private` and the page will be rendered as a HTML page, but if the request contains a `format=json` query param, the endpoint will return a JSON response instead.
+> В этом примере обработчик запроса всегда будет устанавливать для заголовка Cache-Control значение `private`, а страница будет рендериться как HTML-страница, но если запрос содержит параметр `format=json`, конечная точка будет вместо страницы возвращать ответ в формате JSON.
 
-## `layout.` files
+## Файлы `layout.`
 
-Layout modules are very similar to `index` files, both can handle requests and render Qwik components, however, layouts are designed to work like a middleware, allowing to **share UI and request handling (middleware)** to a set of routes.
+Модули макета очень похожи на файлы `index`, оба могут обрабатывать запросы и рендерить компоненты Qwik, однако макеты предназначены для работы в качестве слоя промежуточного программного обеспечения, позволяя **совместно использовать пользовательский интерфейс и обработку запросов (промежуточное ПО)** для набора маршрутов.
 
-Usually different pages need some common request handling, and share some UI. For example, picture a dashboard site where all the pages under the `/admin/*` directory:
+Обычно разные страницы нуждаются в некоторой общей обработке запросов и совместно используют пользовательский интерфейс. Например, представьте себе панель инструментов, где все страницы находятся в каталоге `/admin/*`:
 
-- **Shared request handling:** The request cookies need to be validated before even rendering the page, otherwise render a blank 401 page.
-- **Shared UI:** All pages share a common header showing the user's name and profile picture.
+- **Общая обработка запросов:** Куки запроса должны быть проверены до рендера страницы, в противном случае рендерится пустая страница 401;
+- **Общий пользовательский интерфейс:** Все страницы имеют общий заголовок, показывающий имя пользователя и изображение профиля.
 
-Instead of repeating the same code in each route, we can use layouts to automatically reuse common parts, and also to add middleware to the route.
+Вместо того, чтобы повторять один и тот же код в каждом маршруте, мы можем использовать макеты для автоматического повторного использования общих частей, а также для добавления в маршрут слоя промежуточного ПО.
 
-Take this `src/routes` directory as an example:
+Возьмите этот каталог `src/routes` в качестве примера:
 
 ```
 src/
 └── routes/
     ├── admin/
-    │   ├── layout.tsx  <-- This layout is used for all pages under /admin/*
+    │   ├── layout.tsx  <-- Этот макет используется для всех страниц в /admin/*
     │   └── index.tsx
-    ├── layout.tsx      <-- This layout is used for all pages
+    ├── layout.tsx      <-- Этот макет используется для всех страниц
     └── index.tsx
 ```
 
-### Middleware layouts
+### Макеты промежуточного ПО
 
-Since layouts can implement request handling with `onRequest` or `onGet`, `onPost`, `onPut`, `onDelete`, they can be used to implement middleware, for example, to validate the request cookies before rendering the page.
+Поскольку макеты могут реализовывать обработку запросов с помощью `onRequest` или `onGet`, `onPost`, `onPut`, `onDelete`, их можно использовать для реализации промежуточного ПО, например, для проверки куки-файлов в запросе перед рендером страницы.
 
-For the route `https://example.com/admin`, the `onRequest` methods will be executed in the following order:
+Для маршрута `https://example.com/admin` методы `onRequest` будут выполняться в следующем порядке:
 
-1. `src/routes/layout.tsx`'s `onRequest`
-2. `src/routes/admin/layout.tsx`'s `onRequest`
-3. `src/routes/admin/index.tsx`'s component
+1. `onRequest` в файле `src/routes/layout.tsx`;
+2. `onRequest` в файле `src/routes/admin/layout.tsx`;
+3. Компонент файла `src/routes/admin/index.tsx`.
 
-### Nested layouts
+### Вложенные макеты
 
-Layouts also **provide a way to add common UI to the rendered page**. For example, if we want to add a common header to all the routes, we can add a `Header` component to the root layout.
+Макеты также **обеспечивают возможность добавления общего пользовательского интерфейса на отображаемую страницу**. Например, если мы хотим добавить общий заголовок ко всем маршрутам, мы можем добавить компонент `Header` в корневой макет.
 
-For the given example, the Qwik components will be rendered in the following order:
+Для данного примера компоненты Qwik будут рендериться в следующем порядке:
 
-1. `src/routes/layout.tsx`'s component
-2. `src/routes/admin/layout.tsx`'s component
-3. `src/routes/admin/index.tsx`'s component
+1. Компонент файла `src/routes/layout.tsx`;
+2. Компонент файла `src/routes/admin/layout.tsx`;
+3. Компонент файла `src/routes/admin/index.tsx`.
 
 ```tsx
 <RootLayout>
@@ -177,12 +177,12 @@ For the given example, the Qwik components will be rendered in the following ord
 </RootLayout>
 ```
 
-## Advanced routing
+## Расширенная маршрутизация
 
-Qwik City also supports:
+Qwik City также поддерживает:
 
-- [Route Parameters](/qwikcity/advanced/routing/index.mdx)
-- [Nested layouts](/qwikcity/advanced/routing/index.mdx)
-- [Menus](/qwikcity/advanced/menu/index.mdx)
+- [Параметры маршрута](/qwikcity/advanced/routing/index.mdx)
+- [Вложенные макеты](/qwikcity/advanced/routing/index.mdx)
+- [Меню](/qwikcity/advanced/menu/index.mdx)
 
-These are discussed later.
+Они рассматриваются дальше.
