@@ -133,11 +133,11 @@ export default component$(() => {
 Функция `loader$()` используется для объявления нового серверного загрузчика для заданной страницы/конечной точки или макета. QwikCity выполнит все объявленные загрузчики для заданного маршрута. Компоненты Qwik могут позже ссылаться на загрузчики, импортируя их и вызывая метод `.use()` для получения данных.
 
 ```tsx
-export const getTime = loader$(() => {
+export const useGetTime = loader$(() => {
   return { time: new Date() }
 });
 export default component$(() => {
-  const signal = getTime.use(); // Signal<{time: Date}>
+  const signal = useGetTime(); // Signal<{time: Date}>
   console.log('Date': signal.value.time);
   return (
     <div>{signal.value.time.toISOString()}</div>
@@ -195,7 +195,7 @@ import { component$ } from '@builder.io/qwik';
 import { Form, action$ } from '@builder.io/qwik-city';
 
 // это действие будет вызвано при отправке формы
-export const loginAction = action$((data, { cookies, redirect }) => {
+export const useLoginAction = action$((data, { cookies, redirect }) => {
   if (validate(data.username, data.password)) {
     cookies.set('auth', getAuthToken(data.username));
     throw redirect(302, '/dashboard');
@@ -203,7 +203,7 @@ export const loginAction = action$((data, { cookies, redirect }) => {
 });
 
 export default component$(() => {
-  const login = loginAction.use();
+  const login = useLoginAction();
 
   return (
     <Form action={login}>

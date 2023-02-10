@@ -13,7 +13,7 @@ contributors:
 ```tsx
 // src/routes/layout.tsx
 import { action$ } from '@builder.io/qwik';
-export const addUser = action$((user) => {
+export const useAddUser = action$((user) => {
   const userID = db.users.add(user);
   return {
     success: true,
@@ -22,7 +22,7 @@ export const addUser = action$((user) => {
 });
 
 export default component$(() => {
-  const action = addUser.use();
+  const action = useAddUser();
   // action.actionPath: string;
   // action.isRunning: boolean;
   // action.status?: number;
@@ -46,7 +46,7 @@ export default component$(() => {
 import { action$, Form } from '@builder.io/qwik-city';
 import { component$ } from '@builder.io/qwik';
 
-export const addUser = action$((user) => {
+export const useAddUser = action$((user) => {
   const userID = db.users.add(user);
   return {
     success: true,
@@ -55,7 +55,7 @@ export const addUser = action$((user) => {
 });
 
 export default component$(() => {
-  const action = addUser.use();
+  const action = useAddUser();
   return (
     <Form action={action}>
       <input name="name" />
@@ -78,7 +78,7 @@ export default component$(() => {
 import { action$ } from '@builder.io/qwik-city';
 import { component$ } from '@builder.io/qwik';
 
-export const addUser = action$((user) => {
+export const useAddUser = action$((user) => {
   const userID = db.users.add(user);
   return {
     success: true,
@@ -87,7 +87,7 @@ export const addUser = action$((user) => {
 });
 
 export default component$(() => {
-  const action = addUser.use();
+  const action = useAddUser();
   return (
     <div>
       <button
@@ -167,7 +167,7 @@ export const addUser = action$(
 );
 
 export default component$(() => {
-  const action = addUser.use();
+  const action = useAddUser();
   return (
     <Form action={action}>
       <input name="name" />
@@ -211,7 +211,7 @@ export const addUser = action$(
 
 ```tsx
 export default component$(() => {
-  const action = addUser.use();
+  const action = useAddUser();
   return (
     <Form action={action}>
       <input name="name" />
@@ -232,7 +232,7 @@ export default component$(() => {
 ```tsx
 import { action$, Form } from '@builder.io/qwik-city';
 
-export const addUser = action$(
+export const useAddUser = action$(
   (user) => {
     // `user` типизирован как { name: string }
     const userID = db.users.add(user);
@@ -246,7 +246,7 @@ export const addUser = action$(
 );
 
 export default component$(() => {
-  const action = addUser.use();
+  const action = useAddUser();
   return (
     <Form action={action}>
       <input name="name" value={action.formData?.get('name')} />
