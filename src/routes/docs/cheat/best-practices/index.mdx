@@ -14,7 +14,7 @@ contributors:
 
 **Лучшая практика**:
 
-```typescript!
+```ts
 useClientEffect$(()=> {
     const listener = (event)=> {
         const mouseEvent = event as MouseEvent
@@ -38,7 +38,7 @@ useClientEffect$(()=> {
 
 **Вместо этого делайте так**:
 
-```typescript!
+```ts
 useOnDocument('mousemove', $((event)=> {
     const mouseEvent = event as MouseEvent;
     console.log(mouseEvent.x, mouseEvent.y)
@@ -61,7 +61,7 @@ useOnDocument('mousemove', $((event)=> {
 
 **Лучшая практика**:
 
-```typescript!
+```ts
 useClientEffect$(()=> {
     if (window.location.href).includes('foo') {
         //...делаем что-либо
@@ -91,7 +91,7 @@ if (typeof window !== "undefined") {
 
 **Вместо этого делайте так**:
 
-```typescript!
+```ts
 const location = useLocation();
 
 if (location.href.includes('foo')) {

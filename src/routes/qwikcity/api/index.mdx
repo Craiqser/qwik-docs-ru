@@ -37,7 +37,7 @@ menu: ContentMenu | undefined;
 
 ## `useLocation()`
 
-Функция [`useLocation()`](./index.mdx#uselocation) возвращает объект `RouteLocation` для текущего маршрута.
+Используйте функцию [`useLocation()`](./index.mdx#uselocation) для получения объекта `RouteLocation` текущего маршрута.
 
 ```tsx
 export interface RouteLocation {
@@ -45,10 +45,11 @@ export interface RouteLocation {
   readonly href: string;
   readonly pathname: string;
   readonly query: Record<string, string>;
+  readonly isNavigating: boolean;
 }
 ```
 
-Возвращаемое значение [`useLocation()`](./index.mdx#uselocation) аналогично `document.location`, но его безопасно использовать на сервере, где нет глобального объекта `location`.
+Возвращаемое значение [`useLocation()`](./index.mdx#uselocation) аналогично объекту `document.location`, но его безопасно использовать на сервере, где нет глобального объекта `location`.
 
 ### Параметры маршрута
 

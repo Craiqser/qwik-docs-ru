@@ -44,6 +44,7 @@
 - [Оптимизатор](advanced/optimizer/index.mdx)
 - [Каталог сборки](advanced/custom-build-dir/index.mdx)
 - [Интернационализация](advanced/i18n/index.mdx)
+- [Vite](advanced/vite/index.mdx)
 
 ## Сообщество
 
