@@ -195,7 +195,7 @@ API контекста - это способ передачи состояния
 Подробнее об этом можно прочитать в разделе [Контекст](./../context/index.mdx).
 
 ```tsx
-export const CTX = createContext('stuff');
+export const CTX = createContextId('stuff');
 
 export const Stores = component$(() => {
   const userData = useStore({

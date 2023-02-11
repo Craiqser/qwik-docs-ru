@@ -7,15 +7,15 @@ contributors:
   - adamdbradley
 ---
 
-# Контекст
+# ContextId
 
 Qwik предоставляет API контекста, очень похожий на функционал `useContext()` в React. На самом деле, контекстный API Qwik является наиболее эффективным способом передачи данных вниз по дереву, что снижает накладные расходы, генерирует меньше кода и позволяет Qwik более интенсивно тришейкать неиспользуемые данные.
 
 API контекста Qwik состоит из 3 методов, импортируемых из `@builder.io/qwik`:
 
-- `createContext(contextName: string): Context`
-- `useContextProvider(ctx: Context, value: VALUE): Context`
-- `useContext(ctx: Context): VALUE`
+- `createContextId(contextName: string): ContextId`
+- `useContextProvider(ctx: ContextId, value: VALUE): void`
+- `useContext(ctx: ContextId): VALUE`
 
 ### Пример
 
@@ -29,11 +29,11 @@ import {
   useStore,
   useContext,
   useContextProvider,
-  createContext,
+  createContextId,
 } from '@builder.io/qwik';
 
 // Создаём новый дескриптор контекста.
-export const MyContext = createContext('my-context');
+export const MyContext = createContextId('my-context');
 
 export const Parent = component$(() => {
   // Создаём реактивное состояние.
@@ -66,15 +66,15 @@ export const Child = component$(() => {
 
 ## Методы API
 
-### `createContext()`
+### `createContextId()`
 
 Этот метод принимает строку, которая задаёт уникальное имя контекста. Если ваше приложение использует много разных контекстов или вы пишете библиотеку компонентов, мы рекомендуем следовать соглашению об именах, которое позволяет избежать конфликтов:
 
 ```tsx
-export const QwikCityContext = createContext('io.builder.qwik.city');
+export const QwikCityContext = createContextId('io.builder.qwik.city');
 ```
 
-Обратите внимание, что значение, возвращаемое `createContext()`, не содержит никакого состояния, и оно неизменяемо. Оно используется только для описания имени и типа контекста, как ссылка или идентификатор.
+Обратите внимание, что значение, возвращаемое `createContextId()`, не содержит никакого состояния, и оно неизменяемо. Оно используется только для описания имени и типа контекста, как ссылка или идентификатор.
 
 Поскольку оно не хранит никакого состояния, его можно сделать синглтоном, экспортируемым в какой-нибудь общий модуль.
 
@@ -127,13 +127,13 @@ export const Children = component$(() => {
 
 ## Типизированные контексты
 
-Когда контекст создается с помощью `createContext()`, ему можно указать тип. На самом деле, это настоятельно рекомендуется делать, чтобы уменьшить количество ошибок и опечаток.
+Когда контекст создается с помощью `createContextId()`, ему можно указать тип. На самом деле, это настоятельно рекомендуется делать, чтобы уменьшить количество ошибок и опечаток.
 
 ```tsx
 export interface SharedState {
   count: number;
 }
-export const MyContext = createContext<SharedState>('my-context');
+export const MyContext = createContextId<SharedState>('my-context');
 ```
 
 Теперь при использовании `MyContext` в функциях [`useContextProvider()`](/docs/components/context/index.mdx#usecontextprovider) и `useContext()` значение будет иметь тип `SharedState`.
@@ -146,13 +146,13 @@ import {
   useStore,
   useContext,
   useContextProvider,
-  createContext,
+  createContextId,
 } from '@builder.io/qwik';
 
 export interface SharedState {
   count: number;
 }
-export const MyContext = createContext<SharedState>('my-context');
+export const MyContext = createContextId<SharedState>('my-context');
 
 export const Parent = component$(() => {
   const state = useStore<SharedState>({
