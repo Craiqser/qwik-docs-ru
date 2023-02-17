@@ -16,6 +16,22 @@
     "tags": "saas"
   },
   {
+    "title": "Jose Aguilar | Web developer 🚀",
+    "imgSrc": "/showcases/jose-aguilar_vercel_app_.webp",
+    "perf": {
+      "score": 1,
+      "fcpDisplay": "1.0 s",
+      "fcpScore": 1,
+      "lcpDisplay": "1.4 s",
+      "lcpScore": 1,
+      "ttiDisplay": "1.3 s",
+      "ttiScore": 1,
+      "ttiTime": 1309.8206565575642
+    },
+    "href": "https://jose-aguilar.vercel.app/",
+    "tags": "portfolio"
+  },
+  {
     "title": "Shaun Chander",
     "imgSrc": "/showcases/shaunchander_me.webp",
     "perf": {
