@@ -113,7 +113,7 @@ export const MyApp = component$(() => {
 Qwik предоставляет возможность хранения ссылки на любой компонент. Для этого необходимо создать сигнал и передать его компоненту в качестве атрибута `ref`. После того как компонент будет смонтирован, ссылка на него сохранится в сигнале. Посмотрите на приведенный ниже пример:
 
 ```tsx
-import { component$, useClientEffect$, useSignal, useStore } from '@builder.io/qwik';
+import { component$, useBrowserVisibleTask$, useSignal, useStore } from '@builder.io/qwik';
 
 export default component$(() => {
   const store = useStore({
@@ -121,7 +121,7 @@ export default component$(() => {
     height: 0,
   });
   const outputRef = useSignal<Element>();
-  useClientEffect$(() => {
+  useBrowserVisibleTask$(() => {
     if (outputRef.value) {
       const rect = outputRef.value.getBoundingClientRect();
       store.width = Math.round(rect.width);
@@ -229,9 +229,9 @@ const Parent_onRender = () => (
 
 ### События жизненного цикла
 
-- [`useTask$()`](../lifecycle/index.mdx) - определяет функцию обратного вызова, которая будет вызываться перед рендером и/или при изменении наблюдаемого хранилища;
+- [`useTask$()`](../lifecycle/index.mdx#usetask) - определяет функцию обратного вызова, которая будет вызываться перед рендером и/или при изменении наблюдаемого хранилища;
 - [`useResource$()`](../resource/index.mdx) - создаёт ресурс для асинхронной загрузки данных;
-- [`useClientEffect$()`](../lifecycle/index.mdx#useclienteffect) - определяет функцию обратного вызова, которая будет выполняться после рендера, только на клиенте (в браузере).
+- [`useBrowserVisibleTask$()`](../lifecycle/index.mdx#usebrowservisibletask) - определяет функцию обратного вызова, которая будет выполняться после рендера, только на клиенте (в браузере).
 
 ### Другое
 
