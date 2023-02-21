@@ -75,11 +75,11 @@ export { onRequest } from '../server/entry.cloudflare-pages';
 
 - [Cloudflare Pages Middleware Source](https://github.com/BuilderIO/qwik/tree/main/packages/qwik-city/middleware/cloudflare-pages/index.ts)
 - [Cloudflare Pages Functions](https://developers.cloudflare.com/pages/platform/functions/)
-- [Function Invocation Route Config](https://developers.cloudflare.com/pages/platform/functions/function-invocation-routes/)
+- [Function Invocation Route Config](https://developers.cloudflare.com/pages/platform/functions/routing/#functions-invocation-routes)
 
 ### Маршруты вызова функций Cloudflare Pages
 
-Параметры [function-invocation-routes config](https://developers.cloudflare.com/pages/platform/functions/function-invocation-routes/) Cloudflare Page можно использовать для включения или исключения определенных путей, которые будут использоваться рабочими функциями. Наличие файла `_routes.json` даёт разработчикам более детальный контроль над тем, когда вызывается ваша функция.
+Параметры [function-invocation-routes config](https://developers.cloudflare.com/pages/platform/functions/routing/#functions-invocation-routes/) Cloudflare Page можно использовать для включения или исключения определенных путей, которые будут использоваться рабочими функциями. Наличие файла `_routes.json` даёт разработчикам более детальный контроль над тем, когда вызывается ваша функция.
 
 Это используется для определения того, должен ли ответ быть рендерен сервером (SSR) или вместо этого использовать статический файл `index.html` (SSG).
 
@@ -115,12 +115,13 @@ export const onRequest = async ({ platform }) => {
 };
 ```
 
-Кроме того, вы можете импортировать тип `RequestHandlerCloudflarePages`, чтобы иметь автокомплит типов в вашем редакторе.
+Кроме того, вы можете импортировать типы `RequestHandler` и `PlatformCloudflarePages`, чтобы иметь автокомплит типов в вашем редакторе.
 
 ```tsx
-import { type RequestHandlerCloudflarePages } from '@builder.io/qwik-city/middleware/cloudflare-pages';
+import { type RequestHandler } from "@builder.io/qwik-city";
+import { type PlatformCloudflarePages } from "@builder.io/qwik-city/middleware/cloudflare-pages";
 
-export const onGet: RequestHandlerCloudflarePages = ({ platform }) => {
+export const onGet: RequestHandler<PlatformCloudflarePages> = ({ platform }) => {
   //...
 };
 ```
