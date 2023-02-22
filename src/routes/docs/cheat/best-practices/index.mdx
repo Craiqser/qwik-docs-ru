@@ -6,23 +6,23 @@ contributors:
 
 # Советы по отказу от гидратации
 
-## Не регистрируйте немедленные события с помощью `useClientEffect$()`.
+## Не регистрируйте немедленные события с помощью `useBrowserVisibleTask$()`.
 
-> ⚠ Используйте `useClientEffect$()` с осторожностью ⚠
+> ⚠ Используйте `useBrowserVisibleTask$()` с осторожностью ⚠
 
 Вместо этого => методы `useOn()`
 
 **Лучшая практика**:
 
 ```ts
-useClientEffect$(()=> {
+useBrowserVisibleTask$(()=> {
     const listener = (event)=> {
         const mouseEvent = event as MouseEvent
         console.log(mouseEvent.x, mouseEvent.y);
     }
     document.addEventListener('mousemove', listener);
 
-    return ()=> {document.removeEventListener(listener)}
+    return ()=> {document.removeEventListener('mousemove', listener)}
 })
 ```
 
@@ -30,7 +30,7 @@ useClientEffect$(()=> {
 
 Он заставляет немедленно загружать больше javascript-кода, вместо того, чтобы реагировать на события пользователя. Больше встроенного javascript => более низкая производительность приложения.
 
-Это также требует от вас, разработчика, большей осведомлённости о взаимоотношениях сервера и клиента (в конце концов, не зря же вы выбрали `use >Client< Effect`).
+Это также требует от вас, разработчика, большей осведомлённости о взаимоотношениях сервера и клиента (в конце концов, не зря же вы выбрали `use >BrowserVisible< Task`).
 
 Хотя иногда это необходимо, задача системы должна заключаться в том, чтобы максимально избавить вас от необходимости беспокоиться об этом.
 
@@ -62,7 +62,7 @@ useOnDocument('mousemove', $((event)=> {
 **Лучшая практика**:
 
 ```ts
-useClientEffect$(()=> {
+useBrowserVisibleTask$(()=> {
     if (window.location.href).includes('foo') {
         //...делаем что-либо
     }

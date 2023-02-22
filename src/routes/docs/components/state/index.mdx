@@ -290,14 +290,14 @@ export default component$(() => {
 Иногда вы можете захотеть сохранить значение в состоянии, но не хотите, чтобы оно было сериализовано. Это полезно для хранения значений, которые не являются сериализуемыми, например, функций или классов.
 
 ```tsx
-import { component$, useStore, noSerialize } from '@builder.io/qwik';
+import { component$, useStore, noSerialize, useBrowserVisibleTask$ } from '@builder.io/qwik';
 
 export const App = component$(() => {
   const state = useStore({
     monacoInstance: null
   });
 
-  useClientEffect$(() => {
+  useBrowserVisibleTask$(() => {
     // Monaco не является сериализуемым, поэтому мы не можем хранить его в состоянии, не используя `noSerialize()`.
     state.monacoInstance = noSerialize(new Monaco());
   });

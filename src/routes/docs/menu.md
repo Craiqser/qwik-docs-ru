@@ -32,7 +32,7 @@
 
 - [Возобновляемый](concepts/resumable/index.mdx)
 - [Прогрессивный](concepts/progressive/index.mdx)
-- [Реактивный](concepts/reactivity/index.mdx)
+- [Реактивность](concepts/reactivity/index.mdx)
 
 ## Дополнительно
 
