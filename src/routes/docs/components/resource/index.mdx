@@ -15,11 +15,9 @@ contributors:
 Как и все `use`-методы использования, он должен вызываться в контексте [`component$()`](./../overview/index.mdx#component), с соблюдением всех [правил хука](./../lifecycle/index.mdx#правила-использования-метода-use).
 
 ```tsx
-const store = useStore({
-  bar: 'foo'
-});
+const bar = useSignal('foo');
 const resource = useResource$(async (ctx) => {
-  ctx.track(() => store.bar); // Ресурс будет генерировать значение при изменении store.bar.
+  ctx.track(() => bar.value); // Ресурс будет генерировать значение при изменении bar.value.
   ctx.track(() => props.url); // track() можно вызывать несколько раз, чтобы отслеживать несколько значений.
   ctx.cleanup(() => {
     // В случае, если ресурс необходимо очистить, будет вызвана эта функция.
@@ -30,7 +28,7 @@ const resource = useResource$(async (ctx) => {
   ctx.cleanup(() => console.log('cleanup'));
 
   // Ресурсы могут содержать асинхронные вычисления.
-  const value = await expensiveCompute(store.bar, props.url);
+  const value = await expensiveCompute(bar.value, props.url);
   return value;
 });
 ```
@@ -70,20 +68,18 @@ const resource = useResource$(async (ctx) => {
 
 ```tsx
 export default component$(() => {
-  const store = useStore<{ name?: string }>({
-    name: undefined
-  });
+  const name = useSignal<string>();
 
   const ageResource = useResource$<{
     name: string;
     age: number;
     count: number;
   }>(async ({ track, cleanup }) => {
-    track(() => store.name);
+    track(() => name.value);
     const abortController = new AbortController();
     cleanup(() => abortController.abort('cleanup'));
-    const res = await fetch(`https://api.agify.io?name=${store.name}`, {
-      signal: abortController.signal
+    const res = await fetch(`https://api.agify.io?name=${name.value}`, {
+      signal: abortController.signal,
     });
     return res.json();
   });
@@ -91,7 +87,7 @@ export default component$(() => {
   return (
     <div>
       <h1>Введите своё имя, и я угадаю ваш возраст!</h1>
-      <input onInput$={(e: Event) => (store.name = (e.target as HTMLInputElement).value)} />
+      <input onInput$={(e: Event) => (name.value = (e.target as HTMLInputElement).value)} />
       <Resource
         value={ageResource}
         onPending={() => <div>Загрузка...</div>}
@@ -99,7 +95,7 @@ export default component$(() => {
         onResolved={(ageGuess) => {
           return (
             <div>
-              {store.name && (
+              {name.value && (
                 <>
                   {ageGuess.name} {ageGuess.age} years
                 </>
@@ -108,51 +104,6 @@ export default component$(() => {
           );
         }}
       />
-    </div>
-  );
-});
-```
-
-- #### Без `<Resource />`
-
-Компонент `<Resource />` оптимизирован в плане избегания ненужных ререндеров, а также для SSR. Мы настоятельно рекомендуем использовать `<Resource />` везде, где это возможно. Но вы можете столкнуться с исключительным случаем, когда вам необходимо больше контроля над процессом. В таких ситуациях Qwik позволяет вам использовать данные, возвращаемые из [`useResource()`](./index.mdx) непосредственно в вашем коде TSX, как показано ниже:
-
-```tsx
-export default component$(() => {
-  const store = useStore<{ name?: string }>({
-    name: undefined
-  });
-
-  const ageResource = useResource$<{
-    name: string;
-    age: number;
-    count: number;
-  }>(async ({ track, cleanup }) => {
-    track(() => store.name);
-    const abortController = new AbortController();
-    cleanup(() => abortController.abort('cleanup'));
-    const res = await fetch(`https://api.agify.io?name=${store.name}`, {
-      signal: abortController.signal
-    });
-    return res.json();
-  });
-
-  return (
-    <div>
-      <h1>Введите своё имя, и я угадаю ваш возраст!</h1>
-      <input onInput$={(e: Event) => (store.name = (e.target as HTMLInputElement).value)} />
-      <div>
-        {ageResource.loading && <div>Загрузка...</div>}
-        {!ageResource.loading && store.name && (
-          <div>
-            {ageResource.value.then((ageGuess) => (
-              <div>
-                {ageGuess.name} {ageGuess.age} лет
-              </div>
-            ))}
-          </div>
-        )}
-      </div>
     </div>
   );
 });

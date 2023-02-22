@@ -77,13 +77,11 @@ useTask$(({ track }) => {
 Функция `useTask$()` используется для наблюдения за свойством `state.count`. Любые изменения в `state.count` вызывают выполнение стрелочной функции, которая в свою очередь обновляет `state.doubleCount` до двойного значения `state.count`.
 
 ```tsx
-import { component$, useStore, useTask$ } from '@builder.io/qwik';
+import { component$, useSignal, useTask$ } from '@builder.io/qwik';
 
 export const Cmp = component$(() => {
-  const store = useStore({
-    count: 1,
-    doubleCount: 0,
-  });
+  const count = useSignal(1);
+  const doubleCount = useSignal(0);
 
   // эта задача будет вызвана ровно один раз, либо на сервере, либо в браузере
   useTask$(() => {
@@ -92,19 +90,19 @@ export const Cmp = component$(() => {
 
   // эта задача будет вызываться при монтировании и каждый раз, когда изменяется `store.count`
   useTask$(({ track }) => {
-    const count = track(() => store.count);
-    store.doubleCount = 2 * count;
+    const count = track(() => count.value);
+    doubleCount.value = 2 * count;
   });
 
   return (
     <div>
-      {store.count} / {store.doubleCount}
+      {count.value} / {doubleCount.value}
     </div>
   );
 });
 ```
 
-В примере выше используется функция `track` для отслеживания изменений в `() => store.count`. Обратный вызов будет выполняться один раз в SSR при монтировании компонента и каждый раз, когда `store.count` изменяется.
+В примере выше используется функция `track` для отслеживания изменений в `() => count.value`. Обратный вызов будет выполняться один раз в SSR при монтировании компонента и каждый раз, когда `count.value` изменяется.
 
 > Обратите внимание, что `useTask$()` выполняется **ДО** фактического рендера и на сервере, поэтому если вам нужно сделать какие-либо манипуляции с DOM, используйте вместо этого `useBrowserVisibleTask$()`, который выполняется на клиенте после рендера.
 
@@ -125,23 +123,21 @@ export const Cmp = component$(() => {
 import { isServer, isBrowser } from '@builder.io/qwik/build';
 
 export const Cmp = component$(() => {
-  const store = useStore({
-    users: [],
-  });
+  const users = useSignal([]);
   useTask$(async () => {
     if (isServer) {
       // Если компонент монтируется на сервере, вызовите базу данных напрямую.
-      store.users = await db.requestUsers();
+      users.value = await db.requestUsers();
     }
     if (isBrowser) {
       // Если компонент монтируется в браузере, получите пользователей через API.
-      store.users = await fetchGetUsers();
+      users.value = await fetchGetUsers();
     }
   });
 
   return (
     <>
-      {store.users.map((user) => (
+      {users.value.map((user) => (
         <User user={user} />
       ))}
     </>
@@ -187,19 +183,17 @@ useBrowserVisibleTask$(() => console.log('запущен в браузере'), 
 
 ```tsx
 export const Timer = component$(() => {
-  const store = useStore({
-    count: 0,
-  });
+  const count = useSignal(0);
   useBrowserVisibleTask$(() => {
     // Запускается только на клиенте.
     const timer = setInterval(() => {
-      store.count++;
+      count.value++;
     }, 500);
     return () => {
       clearInterval(timer);
     };
   });
-  return <>{store.count}</>;
+  return <>{count.value}</>;
 });
 ```
 

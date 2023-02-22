@@ -65,11 +65,11 @@ contributors:
 // Суффикс `$` для `component` указывает, что компонент должен быть
 // лениво загружен.
 export const Counter = component$(() => {
-  const store = useStore({ count: 0 });
+  const count = useSignal(0);
 
   // Суффикс `$` для `onClick` указывает на то, что реализация для
   // обработчика должна быть загружена лениво.
-  return <button onClick$={() => store.count++}>{store.count}</button>;
+  return <button onClick$={() => count.value++}>{count.value}</button>;
 });
 ```
 

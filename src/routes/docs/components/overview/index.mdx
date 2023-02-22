@@ -22,29 +22,27 @@ contributors:
 В Qwik они объявляются с помощью метода `component$`:
 
 ```tsx
-import { component$, useStore } from '@builder.io/qwik';
+import { component$, useSignal } from '@builder.io/qwik';
 
 export const MyCmp = component$((props: MyCmpProps) => {
   // Объявление локального состояния
-  const state = useStore({
-    count: 0,
-  });
+  const count = useSignal(0);
 
   // Возврат JSX
   return (
     <>
       <span>
-        Hello, {props.name} {state.count}
+        Привет, {props.name} {count.value}
       </span>
-      <div>Times: {state.count}</div>
+      <div>Счётчик: {count.value}</div>
       <button
         onClick$={() => {
           // Обновление локального состояния и вызов ререндеринга.
           // Реактивность лежит в основе Qwik!
-          state.count++;
+          count.value++;
         }}
       >
-        Increment
+        Увеличить
       </button>
     </>
   );
@@ -113,29 +111,27 @@ export const MyApp = component$(() => {
 Qwik предоставляет возможность хранения ссылки на любой компонент. Для этого необходимо создать сигнал и передать его компоненту в качестве атрибута `ref`. После того как компонент будет смонтирован, ссылка на него сохранится в сигнале. Посмотрите на приведенный ниже пример:
 
 ```tsx
-import { component$, useBrowserVisibleTask$, useSignal, useStore } from '@builder.io/qwik';
+import { component$, useBrowserVisibleTask$, useSignal } from '@builder.io/qwik';
 
 export default component$(() => {
-  const store = useStore({
-    width: 0,
-    height: 0,
-  });
+  const width = useSignal(0);
+  const height = useSignal(0);
   const outputRef = useSignal<Element>();
   useBrowserVisibleTask$(() => {
     if (outputRef.value) {
       const rect = outputRef.value.getBoundingClientRect();
-      store.width = Math.round(rect.width);
-      store.height = Math.round(rect.height);
+      width.value = Math.round(rect.width);
+      height.value = Math.round(rect.height);
     }
   });
 
   return (
     <div>
-      <div style={{ border: '1px solid red', width: '100px' }} ref={outputRef}>
-        Change text value here to stretch the box.
+      <div ref={outputRef} style={{ border: '1px solid red', width: '100px' }}>
+        Измените здесь текст, чтобы растянуть поле.
       </div>
       <div>
-        The above red box is {store.height} pixels high and {store.width} pixels wide.
+        Красный блок выше имеет высоту {height.value} пикселей и ширину {width.value} пикселей.
       </div>
     </div>
   );
@@ -210,8 +206,8 @@ const Parent_onRender = () => (
 
 ### Состояние
 
+- [`useSignal(initialStateObject)`](../state/index.mdx#usesignal) - создает реактивное значение
 - [`useStore(initialState)`](../state/index.mdx#usestore) - создает реактивный объект, который может быть использован для хранения состояния
-- [`useSignal(initialState)`](../state/index.mdx#usesignal) - создает реактивное значение
 - [`createContextId(contextName)`](../context/index.mdx#createcontext) - создает ссылку контекста
 - [`useContextProvider()`](../context/index.mdx#usecontextprovider) - предоставляет значение данного контекста
 - [`useContext()`](../context/index.mdx#usecontext) - считывает значение текущего контекста
