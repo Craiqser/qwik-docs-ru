@@ -24,9 +24,9 @@
       "fcpScore": 1,
       "lcpDisplay": "1.4 s",
       "lcpScore": 1,
-      "ttiDisplay": "1.3 s",
+      "ttiDisplay": "1.2 s",
       "ttiScore": 1,
-      "ttiTime": 1309.8206565575642
+      "ttiTime": 1249.6620919589063
     },
     "href": "https://jose-aguilar.vercel.app/",
     "tags": "portfolio"
@@ -410,11 +410,11 @@
       "score": 0.99,
       "fcpDisplay": "0.8 s",
       "fcpScore": 1,
-      "lcpDisplay": "2.1 s",
-      "lcpScore": 0.96,
+      "lcpDisplay": "2.0 s",
+      "lcpScore": 0.97,
       "ttiDisplay": "0.8 s",
       "ttiScore": 1,
-      "ttiTime": 811.995
+      "ttiTime": 811.244
     },
     "href": "https://necatikcl.dev/",
     "tags": "personal"
@@ -423,14 +423,14 @@
     "title": "TatbiqIT, the unique software company in Kuwait",
     "imgSrc": "/showcases/tatbiqit_com_.webp",
     "perf": {
-      "score": 0.92,
+      "score": 0.97,
       "fcpDisplay": "1.4 s",
       "fcpScore": 0.97,
-      "lcpDisplay": "2.8 s",
-      "lcpScore": 0.84,
-      "ttiDisplay": "1.9 s",
-      "ttiScore": 1,
-      "ttiTime": 1905.5985136278423
+      "lcpDisplay": "1.9 s",
+      "lcpScore": 0.98,
+      "ttiDisplay": "3.7 s",
+      "ttiScore": 0.9,
+      "ttiTime": 3725.370881979553
     },
     "href": "https://tatbiqit.com/",
     "tags": "company"
@@ -439,14 +439,14 @@
     "title": "Mechanikas - Hand-Assembled Keyboardz",
     "imgSrc": "/showcases/keyboardz_co_.webp",
     "perf": {
-      "score": 0.96,
+      "score": 0.95,
       "fcpDisplay": "1.7 s",
       "fcpScore": 0.92,
       "lcpDisplay": "2.6 s",
-      "lcpScore": 0.88,
+      "lcpScore": 0.87,
       "ttiDisplay": "2.9 s",
       "ttiScore": 0.96,
-      "ttiTime": 2884.46375667998
+      "ttiTime": 2871.039412290963
     },
     "href": "https://keyboardz.co/",
     "tags": "ecommerce"
@@ -456,13 +456,13 @@
     "imgSrc": "/showcases/travelcalc_pages_dev.webp",
     "perf": {
       "score": 1,
-      "fcpDisplay": "1.1 s",
+      "fcpDisplay": "1.0 s",
       "fcpScore": 1,
-      "lcpDisplay": "1.3 s",
+      "lcpDisplay": "1.5 s",
       "lcpScore": 1,
-      "ttiDisplay": "1.1 s",
+      "ttiDisplay": "1.0 s",
       "ttiScore": 1,
-      "ttiTime": 1059.3668809184035
+      "ttiTime": 1042.1924936849105
     },
     "href": "https://travelcalc.pages.dev",
     "tags": "app"

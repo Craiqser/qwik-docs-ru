@@ -33,7 +33,40 @@ menu: ContentMenu | undefined;
 - Обновить тэги `link` в `<head>`;
 - Обновить тэги `style` в `<head>`.
 
-Функция `useDocumentHead()` может быть использована в компоненте Qwik, таком как `<Head>`, для создания внутренних элементов в секции `head` страницы.
+Функция `useDocumentHead()` может быть использована в компоненте Qwik, таком как `<RouterHead>`, для создания внутренних элементов в секции `document.head` страницы.
+
+```tsx
+import { component$ } from '@builder.io/qwik';
+import { useDocumentHead } from '@builder.io/qwik-city';
+
+/**
+ * Компонент RouterHead размещается внутри элемента `<head>` документа.
+ */
+export const RouterHead = component$(() => {
+  const head = useDocumentHead();
+
+  return (
+    <>
+      <title>{head.title}</title>
+
+      <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+
+      {head.meta.map((m) => (
+        <meta {...m} />
+      ))}
+
+      {head.links.map((l) => (
+        <link {...l} />
+      ))}
+
+      {head.styles.map((s) => (
+        <style {...s.props} dangerouslySetInnerHTML={s.style} />
+      ))}
+    </>
+  );
+});
+```
 
 ## `useLocation()`
 
@@ -46,6 +79,7 @@ export interface RouteLocation {
   readonly pathname: string;
   readonly query: Record<string, string>;
   readonly isNavigating: boolean;
+  readonly url: URL;
 }
 ```
 

@@ -1,5 +1,5 @@
-import { component$, useStore, useStyles$, useClientEffect$ } from '@builder.io/qwik';
-import styles from './clock.css';
+import { component$, useStore, useStyles$, useBrowserVisibleTask$ } from '@builder.io/qwik';
+import styles from './clock.css?inline';
 
 interface ClockStore {
   hour: number;
@@ -15,11 +15,8 @@ export const Clock = component$(() => {
     second: 0,
   });
 
-  useClientEffect$(({ track }) => {
-    track(store);
-    updateClock(store);
-    const tmrId = setTimeout(() => updateClock(store), 1000);
-    return () => clearTimeout(tmrId);
+  useBrowserVisibleTask$(() => {
+    // Поместите сюда код для периодического вызова updateClock().
   });
 
   return (
