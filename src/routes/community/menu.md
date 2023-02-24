@@ -5,5 +5,5 @@
 - [Группы](groups/index.mdx)
 - [Проекты](projects/index.mdx)
 - [Ценности](values/index.mdx)
-- [Материалы](/media/)
-- [Галерея](/showcase/)
+- [Материалы](../media/index.tsx)
+- [Галерея](../showcase/index.tsx)
