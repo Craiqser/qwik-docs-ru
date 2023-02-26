@@ -2,12 +2,12 @@
 
 ## Current status
 
-- Last update - 25.02.2023;
+- Last update - 26.02.2023;
 - Translated: Qwik, QwikCity, Examples, Tutorials.
 
 Для просмотра документации на локальном компьютере выполните следующие команды:
 
-```
+```sh
 pnpm build
 pnpm start
 ```
@@ -18,7 +18,7 @@ pnpm start
 
 During development, the index.html is not a result of server-side rendering, but rather the Qwik app is built using client-side JavaScript only. This is ideal for development with Vite and its ability to reload modules quickly and on-demand. However, this mode is only for development and does not showcase "how" Qwik works since JavaScript is required to execute, and Vite imports many development modules for the app to work.
 
-```
+```sh
 pnpm dev
 ```
 
@@ -26,7 +26,7 @@ pnpm dev
 
 Server-side rendered index.html, with client-side modules prefetched and loaded by the browser. This can be used to test out server-side rendered content during development, but will be slower than the client-only development builds.
 
-```
+```sh
 pnpm dev.ssr
 ```
 
@@ -34,7 +34,7 @@ pnpm dev.ssr
 
 A production build should generate the client and server modules by running both client and server build commands.
 
-```
+```sh
 pnpm build
 ```
 
@@ -42,7 +42,7 @@ pnpm build
 
 Production build that creates only the client-side modules that are dynamically imported by the browser.
 
-```
+```sh
 pnpm build.client
 ```
 
@@ -50,7 +50,7 @@ pnpm build.client
 
 Production build that creates the server-side render (SSR) module that is used by the server to render the HTML.
 
-```
+```sh
 pnpm build.ssr
 ```
 
@@ -58,7 +58,7 @@ pnpm build.ssr
 
 Cloudflare's [wrangler](https://github.com/cloudflare/wrangler) CLI can be used to preview a production build locally. To start a local server, run:
 
-```
+```sh
 pnpm serve
 ```
 
@@ -86,7 +86,7 @@ Setup in https://crawler.algolia.com/
 
 To crawl localhost site for testing index settings for content hierarchy. use this docker command
 
-```shell
+```sh
 # create apiKey via https://www.algolia.com/account/api-keys
 touch .env
 # APPLICATION_ID=APPLICATION_ID
@@ -103,7 +103,7 @@ see guide of [DocSearch-legacy docker command](https://docsearch.algolia.com/doc
 
 Cloudflare's [wrangler](https://github.com/cloudflare/wrangler) CLI can be used to preview a production build locally. To start a local server, run:
 
-```
+```sh
 pnpm serve
 ```
 
