@@ -50,6 +50,9 @@ src/
 В этом примере `id` используется в качестве ключа для загрузки данных о товаре из базы данных. Если данные о товаре найдены, отлично, мы можем отобразить данные. Однако, если данные о товаре не найдены в базе данных, мы всё равно можем обработать рендер этой страницы, но ответить кодом состояния HTTP 404.
 
 ```tsx
+import { component$ } from '@builder.io/qwik';
+import { loader$ } from '@builder.io/qwik-city';
+
 export const useProductLoader = loader$(async ({ params, status }) => {
   // Пример вызова базы данных с использованием параметра id.
   // База данных может вернуть `null`, если товар не найден.
@@ -185,6 +188,8 @@ src/
 
 ```tsx
 // Файл: src/routes/layout.tsx
+import { component$ } from '@builder.io/qwik';
+
 export default component$(() => {
   return (
     <main>
@@ -196,6 +201,8 @@ export default component$(() => {
 
 ```tsx
 // Файл: src/routes/about/layout.tsx
+import { component$ } from '@builder.io/qwik';
+
 export default component$(() => {
   return (
     <section>
@@ -207,6 +214,8 @@ export default component$(() => {
 
 ```tsx
 // Файл: src/routes/about/index.tsx
+import { component$ } from '@builder.io/qwik';
+
 export default component$(() => {
   return <h1>О сайте</h1>;
 });

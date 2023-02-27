@@ -168,6 +168,9 @@ export default component$(() => {
 Функция `loader$()` используется для объявления нового серверного загрузчика для заданной страницы/конечной точки или макета. QwikCity выполнит все объявленные загрузчики для заданного маршрута. Компоненты Qwik могут позже ссылаться на загрузчики, импортируя их и вызывая метод `.use()` для получения данных.
 
 ```tsx
+import { component$ } from '@builder.io/qwik';
+import { loader$ } from '@builder.io/qwik-city';
+
 export const useGetTime = loader$(() => {
   return { time: new Date() }
 });
@@ -259,6 +262,9 @@ export default component$(() => {
 Под капотом компонент `<Link>` использует API [`useNavigate()`](./index.mdx#usenavigate) и предотвращает поведение по умолчанию встроенного `<a>`:
 
 ```tsx
+import { component$ } from '@builder.io/qwik';
+import { useNavigate } from '@builder.io/qwik-city';
+
 export const Link = component$<LinkProps>((props) => {
   const nav = useNavigate();
 

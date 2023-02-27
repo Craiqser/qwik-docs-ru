@@ -94,6 +94,8 @@ src/
 Метод [`useContent()`](../../api/index.mdx#usecontent) может быть вызван из любого компонента, который является частью текущего маршрута. Но чаще отображение меню используется в макете (или компоненте, используемом макетом). Пример использования:
 
 ```tsx
+import { component$ } from '@builder.io/qwik';
+import { useLocation, useContent } from '@builder.io/qwik-city';
 export default component$(() => {
   const { menu } = useContent();
   const { pathname } = useLocation();

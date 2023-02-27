@@ -24,6 +24,5 @@
 
 - [Расширенная маршрутизация](advanced/routing/index.mdx)
 - [Меню](advanced/menu/index.mdx)
-- [Переменные среды](advanced/environment-variables/index.mdx)
 - [Предварительная выборка](advanced/prefetching/index.mdx)
 - [Статические ассеты](advanced/static-assets/index.mdx)

@@ -142,6 +142,8 @@ export default component$(() => {
 Эта информация пригодится, когда загрузчику необходимо вернуть данные по условию на основе запроса или ему необходимо вручную переопределить статус ответа, заголовки или тело.
 
 ```tsx
+import { loader$ } from '@builder.io/qwik-city';
+
 export const getServerTime = loader$((ev) => {
   console.log('Request headers:', ev.headers);
   console.log('Request cookies:', ev.cookie);

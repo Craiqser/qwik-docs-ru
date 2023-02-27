@@ -12,6 +12,7 @@ contributors:
 
 ```tsx
 // src/routes/layout.tsx
+import { component$ } from '@builder.io/qwik';
 import { action$ } from '@builder.io/qwik-city';
 export const useAddUser = action$((user) => {
   const userID = db.users.add(user);
@@ -149,7 +150,8 @@ export const addUser = action$(
 При передаче данных в действие они проверяются на соответствие схеме Zod. Если данные недействительны, действие поместит ошибку валидации в свойство `action.fail`.
 
 ```tsx
-import { action$, Form } from '@builder.io/qwik-city';
+import { component$ } from '@builder.io/qwik';
+import { action$, Form, zod$, z } from '@builder.io/qwik-city';
 
 export const addUser = action$(
   (user) => {
@@ -185,7 +187,7 @@ export default component$(() => {
 Для возврата ошибок действия используется метод `fail()`.
 
 ```tsx
-import { action$, Form } from '@builder.io/qwik-city';
+import { action$, zod$, z } from '@builder.io/qwik-city';
 
 export const addUser = action$(
   (user, { fail }) => {
@@ -209,6 +211,9 @@ export const addUser = action$(
 Ошибки сохраняются в свойстве `action.value`, как и значение успешного завершения действия. Если действие не удалось, то свойство `action.value.failed` устанавливается в `true`.
 
 ```tsx
+import { component$ } from '@builder.io/qwik';
+import { Form } from '@builder.io/qwik-city';
+
 export default component$(() => {
   const action = useAddUser();
   return (
@@ -229,7 +234,8 @@ export default component$(() => {
 Когда действие запускается, предыдущее состояние сохраняется в свойстве action.formData. Это полезно для отображения состояния загрузки во время выполнения действия.
 
 ```tsx
-import { action$, Form } from '@builder.io/qwik-city';
+import { component$ } from '@builder.io/qwik';
+import { action$, Form, zod$, z } from '@builder.io/qwik-city';
 
 export const useAddUser = action$(
   (user) => {
