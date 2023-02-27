@@ -19,7 +19,6 @@
 
 - [Markdown & MDX](guides/mdx/index.mdx)
 - [SSG](guides/static-site-generation/index.mdx)
-- [Развёртывание](guides/deploy/index.mdx)
 
 ## Дополнительно
 
