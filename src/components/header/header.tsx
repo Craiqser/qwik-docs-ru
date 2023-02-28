@@ -21,7 +21,7 @@ import { BUILDER_MODEL, BUILDER_PUBLIC_API_KEY } from '../../constants';
 export const Header = component$(() => {
   useStyles$(styles);
   const globalStore = useContext(GlobalStore);
-  const pathname = useLocation().pathname;
+  const pathname = new URL(useLocation().url).pathname;
 
   useBrowserVisibleTask$(() => {
     globalStore.theme = getColorPreference();
@@ -31,13 +31,21 @@ export const Header = component$(() => {
     });
   });
 
+  const hasBuilderBar = !(
+    pathname.startsWith('/examples') ||
+    pathname.startsWith('/tutorial') ||
+    pathname.startsWith('/playground')
+  );
+
   return (
-    <header class="header-container">
-      <BuilderContentComp apiKey={BUILDER_PUBLIC_API_KEY} model={BUILDER_MODEL} tag="div" />
+    <header class={['header-container', ...(hasBuilderBar ? ['builder-bar'] : [])]}>
+      {hasBuilderBar && (
+        <BuilderContentComp apiKey={BUILDER_PUBLIC_API_KEY} model={BUILDER_MODEL} tag="div" />
+      )}
       <div class="header-inner">
         <div class="header-logo">
           <a href="/">
-            <span class="sr-only">Qwik Homepage</span>
+            <span class="sr-only">Qwik - Главная</span>
             <QwikLogo width={180} height={50} />
           </a>
         </div>
