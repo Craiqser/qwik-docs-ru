@@ -8,6 +8,7 @@
 - [Playwright](integration/playwright/index.mdx)
 - [Styled-Vanilla-Extract](integration/styled-vanilla-extract/index.mdx)
 - [Tailwind CSS](integration/tailwind/index.mdx)
+- [PostCSS](integration/postcss/index.mdx)
 - [Vitest](integration/vitest/index.mdx)
 
 ## Развёртывание
