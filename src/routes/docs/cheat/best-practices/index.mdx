@@ -15,15 +15,17 @@ contributors:
 **Лучшая практика**:
 
 ```ts
-useBrowserVisibleTask$(()=> {
-    const listener = (event)=> {
-        const mouseEvent = event as MouseEvent
-        console.log(mouseEvent.x, mouseEvent.y);
-    }
-    document.addEventListener('mousemove', listener);
+useBrowserVisibleTask$(() => {
+  const listener = (event) => {
+    const mouseEvent = event as MouseEvent;
+    console.log(mouseEvent.x, mouseEvent.y);
+  };
+  document.addEventListener('mousemove', listener);
 
-    return ()=> {document.removeEventListener('mousemove', listener)}
-})
+  return () => {
+    document.removeEventListener('mousemove', listener)
+  };
+});
 ```
 
 **Почему пример выше - проблема**:
@@ -39,11 +41,14 @@ useBrowserVisibleTask$(()=> {
 **Вместо этого делайте так**:
 
 ```ts
-useOnDocument('mousemove', $((event)=> {
+useOnDocument(
+  'mousemove',
+  $((event) => {
     const mouseEvent = event as MouseEvent;
-    console.log(mouseEvent.x, mouseEvent.y)
+    console.log(mouseEvent.x, mouseEvent.y);
     // Не требуется ручная очистка слушателя!
-}))
+  })
+);
 ```
 
 > ПРИМЕЧАНИЕ: Аналогичные хуки существуют для объекта window и отдельных компонентов.
@@ -95,11 +100,9 @@ if (typeof window !== "undefined") {
 const location = useLocation();
 
 if (location.href.includes('foo')) {
-    //...делаем что-либо
+  //...делаем что-либо
 }
-
 // ИЛИ
-
 doTheThing(location.query);
 ```
 

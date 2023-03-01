@@ -118,8 +118,8 @@ export const onRequest = async ({ platform }) => {
 Кроме того, вы можете импортировать типы `RequestHandler` и `PlatformCloudflarePages`, чтобы иметь автокомплит типов в вашем редакторе.
 
 ```tsx
-import { type RequestHandler } from "@builder.io/qwik-city";
-import { type PlatformCloudflarePages } from "@builder.io/qwik-city/middleware/cloudflare-pages";
+import { type RequestHandler } from '@builder.io/qwik-city';
+import { type PlatformCloudflarePages } from '@builder.io/qwik-city/middleware/cloudflare-pages';
 
 export const onGet: RequestHandler<PlatformCloudflarePages> = ({ platform }) => {
   //...
