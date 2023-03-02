@@ -10,4 +10,4 @@ contributors:
 
 Поскольку по умолчанию Qwik обрабатывает данные асинхронно, ваш код должен быть явно настроен на синхронные вызовы. В этом примере показано, как сразу загрузить обработчик события, который обрабатывает синхронное событие.
 
-> **Ваша задача:** Преобразуйте `onClick$` из асинхронного события в синхронное, используя событие жизненного цикла [`useBrowserVisibleTask`](https://qwik.builder.io/docs/components/lifecycle/#usebrowservisibletask) и [обычную регистрацию события](https://developer.mozilla.org/en-US/docs/Web/API/EventTarget/addEventListener).
+> **Ваша задача:** Преобразуйте `onClick$` из асинхронного события в синхронное, используя событие жизненного цикла [`useVisibleTask$`](https://qwik.builder.io/docs/components/lifecycle/#usevisibletask) и [обычную регистрацию события](https://developer.mozilla.org/en-US/docs/Web/API/EventTarget/addEventListener).

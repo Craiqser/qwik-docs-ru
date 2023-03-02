@@ -99,11 +99,11 @@ if (typeof window !== "undefined") {
 ```ts
 const location = useLocation();
 
-if (location.href.includes('foo')) {
+if (location.url.href.includes('foo')) {
   //...делаем что-либо
 }
 // ИЛИ
-doTheThing(location.query);
+doTheThing(location.url.searchParams);
 ```
 
 ## ИСКЛЮЧЕНИЕ
