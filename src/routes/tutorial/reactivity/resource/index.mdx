@@ -23,7 +23,7 @@ Qwik предоставляет [`useResource$()`](/docs/components/resource/ind
 
 ```jsx
   const reposResource = useResource$<string[]>(({ track, cleanup }) => {
-    // Нам нужен способ повторной выборки данных при каждом
+    // Нам нужен способ повторного получения данных при каждом
     // изменении `github.org`. Используйте `track` для
     // повторного запуска этой функции получения данных.
     track(() => github.org);

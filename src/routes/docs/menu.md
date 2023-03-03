@@ -38,10 +38,10 @@
 
 - [Знак доллара `$`](advanced/dollar/index.mdx)
 - [Контейнеры](advanced/containers/index.mdx)
-- [Предзагрузка](advanced/prefetching/index.mdx)
 - [QRL](advanced/qrl/index.mdx)
 - [Qwikloader](advanced/qwikloader/index.mdx)
 - [Оптимизатор](advanced/optimizer/index.mdx)
+- [Предзагрузка](advanced/prefetching/index.mdx)
 - [Каталог сборки](advanced/custom-build-dir/index.mdx)
 - [Интернационализация](advanced/i18n/index.mdx)
 - [Vite](advanced/vite/index.mdx)

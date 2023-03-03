@@ -23,6 +23,6 @@
 ## Дополнительно
 
 - [Расширенная маршрутизация](advanced/routing/index.mdx)
+- [Спекулятивное получение модуля](advanced/speculative-module-fetching/index.mdx)
 - [Меню](advanced/menu/index.mdx)
-- [Предварительная выборка](advanced/prefetching/index.mdx)
 - [Статические ассеты](advanced/static-assets/index.mdx)
