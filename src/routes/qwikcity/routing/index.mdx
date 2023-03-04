@@ -40,8 +40,8 @@ src/
     └── layout.tsx            # This layout is used for all pages
 ```
 
-- **`[id]`** — это каталог, представляющий сегмент динамического маршрута, в этом примере `id` — это параметр;
-- **`[...catchall]`** — это каталог, представляющий динамический универсальный маршрут, в этом примере `catchall` — параметр;
+- **`[id]`** — это каталог, представляющий сегмент динамического маршрута, в этом примере `id` — это параметр с типом строки, доступный с помощью `getLocation().params.id`;
+- **`[...catchall]`** — это каталог, представляющий динамический универсальный маршрут, в этом примере `catchall` — параметр с типом строки, доступный с помощью `getLocation().params.catchall`;
 - **Файлы `index.ext`** являются страницами/конечными точками.
 - **Файлы `layout.ext`** являются макетами.
 
@@ -50,8 +50,8 @@ src/
 Специальные именованные каталоги с квадратными скобками, такие как `[paramName]` и `[...catchAll]`, могут использоваться для сопоставления сегментов маршрута, которые являются динамическими:
 
 ```
-src/routes/blog/index.tsx → /blog/:slug (/blog/hello-world)
-src/routes/user/[username]/index.tsx → /user/:username/settings (/user/foo/)
+src/routes/blog/index.tsx → /blog
+src/routes/user/[username]/index.tsx → /user/:username (/user/foo)
 src/routes/post/[...all]/index.tsx → /post/* (/post/2020/id/title)
 ```
 
@@ -62,7 +62,7 @@ src/
     │   └── index.tsx         # https://example.com/blog
     ├── post/
     │   └── [...all]/
-    │       └── index.tsx     # https://example.com/post/2020/id/title/2020/12/03
+    │       └── index.tsx     # https://example.com/post/2020/id/title
     └── user/
         └── [username]/
             └── index.tsx     # https://example.com/user/foo
