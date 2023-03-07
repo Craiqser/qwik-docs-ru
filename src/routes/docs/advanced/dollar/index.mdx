@@ -238,7 +238,7 @@ onScroll(() => (await import('./some-chunk')).scrollHandler());
 ```tsx
 function onScroll(fnQrl: QRL<() => void>) {
   document.addEventListener('scroll', async () => {
-    fn = await qImport(document, fnQrl);
+    const fn = await fnQrl.resolve();
     fn();
   });
 }

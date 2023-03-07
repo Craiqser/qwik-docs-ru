@@ -4,7 +4,6 @@
 
 - [Введение](overview/index.mdx)
 - [Структура проекта](project-structure/index.mdx)
-- [Справочник API](api/index.mdx)
 
 ## Основы
 
@@ -15,7 +14,7 @@
 - [Страницы](pages/index.mdx)
 - [Конечные точки](endpoints/index.mdx)
 
-## Инструкции
+## Руководства
 
 - [Markdown & MDX](guides/mdx/index.mdx)
 - [SSG](guides/static-site-generation/index.mdx)
@@ -26,3 +25,4 @@
 - [Спекулятивное получение модуля](advanced/speculative-module-fetching/index.mdx)
 - [Меню](advanced/menu/index.mdx)
 - [Статические ассеты](advanced/static-assets/index.mdx)
+- [Справочник API](api/index.mdx)

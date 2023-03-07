@@ -1,13 +1,9 @@
 # Руководство
 
-## Руководства
+## Введение
 
 - [Обзор](overview/index.mdx)
-
 - [Начало работы](getting-started/index.mdx)
-- [Философия Qwik](think-qwik/index.mdx)
-- [FAQ](faq/index.mdx)
-- [QwikCity (маршрутизация)](../qwikcity/overview/index.mdx)
 
 ## API компонента
 
@@ -21,6 +17,12 @@
 - [Рендер](components/rendering/index.mdx)
 - [Стилизация](components/styles/index.mdx)
 - [Легковесные компоненты](components/lite-components/index.mdx)
+
+## Руководства
+
+- [Философия Qwik](think-qwik/index.mdx)
+- [Маршрутизация (QwikCity)](../qwikcity/overview/index.mdx)
+- [FAQ](faq/index.mdx)
 
 ## Шпаргалка
 
