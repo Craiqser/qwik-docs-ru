@@ -149,7 +149,7 @@ import WorkIcon from '@mui/icons-material/Work';
 import BeachAccessIcon from '@mui/icons-material/BeachAccess';
 
 // Квикифицируется весь список
-export const FolderList = qwikify$(() {
+export const FolderList = qwikify$(() => {
   return (
     <List sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}>
       <ListItem>
@@ -209,7 +209,7 @@ export const MUIBeachAccessIcon = qwikify$(BeachAccessIcon);
 ```tsx
 // Компонент Qwik, использующий десятки вложенных островков React
 // Каждый MUI-* - это независимое приложение React
-export const FolderList = component$(() {
+export const FolderList = component$(() => {
   return (
     <MUIList sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}>
       <MUIListItem>
