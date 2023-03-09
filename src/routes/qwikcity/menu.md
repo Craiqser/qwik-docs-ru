@@ -8,7 +8,7 @@
 ## Основы
 
 - [Маршрутизация](routing/index.mdx)
-- [Загрузчики данных](loader/index.mdx)
+- [Загрузчики маршрута](route-loader/index.mdx)
 - [Действия формы](action/index.mdx)
 - [Макеты](layout/index.mdx)
 - [Страницы](pages/index.mdx)
