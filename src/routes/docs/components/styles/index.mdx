@@ -36,6 +36,7 @@ export const blueClass = style({
 **component.tsx:**
 
 ```tsx
+import { component$ } from '@builder.io/qwik';
 import { blueClass } from './styles.css';
 
 export const Cmp = component$(() => {
@@ -77,6 +78,7 @@ export const BlueBox = styled.div`
 **component.tsx:**
 
 ```tsx
+import { component$ } from '@builder.io/qwik';
 import { BlueBox } from './styles.css';
 
 export const Cmp = component$(() => {
@@ -95,7 +97,7 @@ Qwik предоставил встроенную поддержку стилей
 Стили компонентов позволяют Qwik лениво загружать информацию о стиле для компонента только тогда, когда это необходимо (и избегать двойной загрузки в случае гидратации SSR).
 
 ```tsx
-import { useStyles$ } from '@builder.io/qwik';
+import { useStyles$, component$ } from '@builder.io/qwik';
 import styles from './code-block.css?inline';
 
 export const CmpStyles = component$(() => {
@@ -120,7 +122,7 @@ export const CmpStyles = component$(() => {
 Это достигается путем создания уникального класса для каждого компонента и последующей вставки этого уникального идентификатора класса в таблицу стилей.
 
 ```tsx
-import { useStylesScoped$ } from '@builder.io/qwik';
+import { useStylesScoped$, component$ } from '@builder.io/qwik';
 import styles from './code-block.css?inline';
 
 export const CmpStyles = component$(() => {
@@ -143,7 +145,7 @@ export const CmpStyles = component$(() => {
 При использовании `useStylesScoped$` все дочерние селекторы в наборе правил будут привязаны к компоненту. Если вам нужно стилизовать дочерние компоненты, отображаемые через `<Slot />`, вам нужно выйти за пределы области стилей текущего компонента с помощью селектора `:global()`.
 
 ```tsx
-import { useStylesScoped$ } from '@builder.io/qwik';
+import { useStylesScoped$, component$ } from '@builder.io/qwik';
 
 export const List = component$(() => {
   useStylesScoped$(`

@@ -32,6 +32,8 @@ contributors:
 Этот пример показывает, как `useSignal()` может быть использован в компоненте счётчика для отслеживания счёта.
 
 ```tsx
+import { component$, useSignal } from '@builder.io/qwik';
+
 export default component$(() => {
   const count = useSignal(0);
 
@@ -62,6 +64,8 @@ export default component$(() => {
 Этот пример показывает, как `useStore()` можно использовать в компоненте счётчика для отслеживания счета.
 
 ```tsx
+import { component$, useStore } from '@builder.io/qwik';
+
 export default component$(() => {
   const state = useStore({ count: 0 });
 
@@ -108,6 +112,8 @@ store.nested = { fields: { are: { "отслеживается" } } }
 Для того чтобы первый пример работал, мы можем передать второй аргумент в `useStore()` и указать ему использовать рекурсивное отслеживание всех значений в нашем хранилище, независимо от глубины.
 
 ```tsx
+import { component$, useStore } from '@builder.io/qwik';
+
 export default component$(() => {
   const store = useStore(
     {
@@ -166,6 +172,8 @@ export default component$(() => {
 Самый простой способ передачи состояния другим компонентам - это передача его в виде параметров. Так вы обычно делаете в React, и это также работает в Qwik.
 
 ```tsx
+import { component$, useStore } from '@builder.io/qwik';
+
 export const Parent = component$(() => {
   const userData = useStore({
     count: 0,
@@ -235,6 +243,8 @@ export const Child = component$(() => {
 ### Пример использования [`useTask$()`](./../lifecycle/index.mdx#usetask)
 
 ```tsx
+import { component$, useStore, useTask$ } from '@builder.io/qwik';
+
 export default component$(() => {
   const state = useStore({
     count: 0,
@@ -259,6 +269,8 @@ export default component$(() => {
 ### Пример использования [`useResource$()`](./../resource/index.mdx)
 
 ```tsx
+import { component$, useStore, useResource$ } from '@builder.io/qwik';
+
 export default component$(() => {
   const state = useStore({
     count: 0,

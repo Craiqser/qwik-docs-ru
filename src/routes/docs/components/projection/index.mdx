@@ -27,7 +27,7 @@ contributors:
 Основным API для достижения этой цели является компонент `<Slot>`, экспортируемый в `@builder.io/qwik`:
 
 ```tsx
-import { Slot } from '@builder.io/qwik';
+import { Slot, component$ } from '@builder.io/qwik';
 
 export const Button = component$(() => {
   return (
@@ -53,7 +53,7 @@ export const Button = component$(() => {
 Компонент `Slot` может использоваться несколько раз в одном и том же компоненте, если он имеет другое свойство `name`:
 
 ```tsx
-import { Slot } from '@builder.io/qwik';
+import { Slot, component$ } from '@builder.io/qwik';
 
 export const Button = component$(() => {
   return (
@@ -109,6 +109,8 @@ export const Button = component$(() => {
 Qwik хранит весь контент, даже если он не отображается. Это потому, что контент может быть отображён позднее.
 
 ```tsx
+import { component$ } from '@builder.io/qwik';
+
 export const Project = component$(() => {
   // Обратите внимание, у этого компонента нет компонента <Slot>
   return <div />;
@@ -135,6 +137,8 @@ export const MyApp = component$(() => {
 Атрибут `q:slot` должен быть прямым потомком компонента.
 
 ```tsx
+import { component$ } from '@builder.io/qwik';
+
 export const Project = component$(() => { ... })
 
 export const MyApp = component$(() => {
@@ -173,6 +177,8 @@ Qwik использует декларативный подход отображ
 Пример сворачиваемого компонента, который проецирует своё содержимое по условию.
 
 ```tsx
+import { Slot, component$, useSignal } from '@builder.io/qwik';
+
 export const Collapsible = component$(() => {
   const isOpen = useSignal(true);
 
@@ -190,6 +196,8 @@ export const Collapsible = component$(() => {
 Вышеупомянутый компонент можно использовать из родительского компонента следующим образом:
 
 ```tsx
+import { component$ } from '@builder.io/qwik';
+
 export const MyApp = component$(() => {
   return (
     <Collapsible>

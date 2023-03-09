@@ -23,6 +23,8 @@ contributors:
 Простой пример со счётчиком:
 
 ```tsx
+import { component$, useSignal } from '@builder.io/qwik';
+
 export const Counter = component$(() => {
   const count = useSignal(0);
 
@@ -51,6 +53,8 @@ export const Counter = component$(() => {
 Qwik лениво загружает компоненты по мере необходимости. Чтобы минимизировать количество компонентов для загрузки, Qwik спускается в дочерние компоненты только в том случае, если изменились параметры компонента.
 
 ```tsx
+import { component$, useSignal } from '@builder.io/qwik';
+
 export const Parent = component$(() => {
   const count = useSignal(0);
   const step = useSignal(1);
@@ -80,6 +84,8 @@ export const Greeter = component$((props: { name: string }) => {
 Во многих случаях вы захотите рендерить компоненты, сопоставив массив в функции рендера с помощью `data.map()`. В этих случаях требуется предоставить ключ к первому дочернему элементу функции сопоставления.
 
 ```tsx
+import { component$ } from '@builder.io/qwik';
+
 export const Parent = component$(() => {
   return (
     <>

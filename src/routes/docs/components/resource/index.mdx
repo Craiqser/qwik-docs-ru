@@ -15,6 +15,8 @@ contributors:
 Как и все `use`-методы использования, он должен вызываться в контексте [`component$()`](./../overview/index.mdx#component), с соблюдением всех [правил хука](./../lifecycle/index.mdx#правила-использования-метода-use).
 
 ```tsx
+import { useResource$, useSignal } from '@builder.io/qwik';
+
 const bar = useSignal('foo');
 const resource = useResource$(async (ctx) => {
   ctx.track(() => bar.value); // Ресурс будет генерировать значение при изменении bar.value.
@@ -67,6 +69,8 @@ const resource = useResource$(async (ctx) => {
 Данный пример показывает использование `useResource$` для выполнения запроса к API agify.io. Он позволяет определить возраст человека на основе имени, введённого пользователем, и будет обновляться всякий раз, когда пользователь вводит новое имя.
 
 ```tsx
+import { component$, useSignal, useResource$ } from '@builder.io/qwik';
+
 export default component$(() => {
   const name = useSignal<string>();
 

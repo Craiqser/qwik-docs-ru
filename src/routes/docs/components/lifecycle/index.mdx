@@ -52,6 +52,8 @@ import diagram from './diagram2.svg';
 Кроме того, эта задача может быть реактивной и повторно выполняться при изменении какого-либо **отслеживаемого** [сигнала или хранилища](/docs/components/state/index.mdx), например, так:
 
 ```tsx
+import { useTask$ } from '@builder.io/qwik';
+
 useTask$(({ track }) => {
   track(() => store.count);
   // будет выполняться при монтировании компонента и каждый раз при изменении "store.count"
@@ -121,6 +123,7 @@ export const Cmp = component$(() => {
 
 ```tsx
 import { isServer, isBrowser } from '@builder.io/qwik/build';
+import { component$, useSignal, useTask$ } from '@builder.io/qwik';
 
 export const Cmp = component$(() => {
   const users = useSignal([]);
@@ -156,6 +159,8 @@ export const Cmp = component$(() => {
 `useVisibleTask$()` регистрирует хук для выполнения при появлении компонента в области просмотра. Он выполнится в браузере по крайней мере один раз, и может реактивно выполняться при изменении какого-либо **отслеживаемого** [сигнала или состояния](/docs/components/state/index.mdx), например, так:
 
 ```tsx
+import { useVisibleTask$ } from '@builder.io/qwik';
+
 useVisibleTask$(({ track }) => {
   track(() => store.count);
   // выполняется, когда компонент становится видимым, и при каждом изменении "store.count".
@@ -168,6 +173,8 @@ useVisibleTask$(({ track }) => {
 Однако, эту `стратегию` можно изменить и запустить хук, например, когда объект `document` будет полностью загружен.
 
 ```tsx
+import { useVisibleTask$ } from '@builder.io/qwik';
+
 useVisibleTask$(() => console.log('запущен в браузере'), {
   strategy: 'document-ready', // 'intersection-observer' | 'document-idle'
 });
@@ -182,6 +189,8 @@ useVisibleTask$(() => console.log('запущен в браузере'), {
 ### Пример
 
 ```tsx
+import { component$, useSignal, useVisibleTask$ } from '@builder.io/qwik';
+
 export const Timer = component$(() => {
   const count = useSignal(0);
   useVisibleTask$(() => {

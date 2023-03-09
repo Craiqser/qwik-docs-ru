@@ -61,6 +61,8 @@ export const MyCmp = component$((props: MyCmpProps) => {
 В этом примере компонент `Item` объявляет необязательные параметры `name`, `quantity`, `description` и `price`.
 
 ```tsx
+import { component$ } from '@builder.io/qwik';
+
 interface ItemProps {
    name?: string;
    quantity?: number;
@@ -78,6 +80,8 @@ export const Item = component$((props: ItemProps) => {
 Компоненты Qwik могут использовать другие компоненты.
 
 ```tsx
+import { component$ } from '@builder.io/qwik';
+
 export const Counter = component$((props: {step?:number, initial?: number}) => {
   ...
 });
@@ -155,6 +159,8 @@ export const Parent = () => (
 В приведённом выше примере обращение к компоненту `Parent` подразумевает транзитивную ссылку на компонент `Child`. Когда упаковщик создаёт чанк, ссылка на `Parent` также требует упаковки `Child` (внутри `Parent` есть зависимость на `Child`). Эти транзитивные зависимости представляют из себя проблему, так как это означает, что наличие ссылки на корневой компонент приложения будет транзитивно тянуть остальную часть приложения, чего Qwik пытается избежать.
 
 ```tsx
+import { component$ } from '@builder.io/qwik';
+
 export const Child = component$(() => {
   return <span>child</span>;
 });
