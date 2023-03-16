@@ -116,3 +116,35 @@ export default defineConfig(() => {
   };
 });
 ```
+
+## Свойства Open Graph
+
+Вы можете использовать свойство `og` или `opengraph` для определения метаданных [протокола Open Graph](https://ogp.me/).
+
+```yaml
+title: My Title
+description: My Description
+og:
+  - title: My Custom Title
+    description: true
+  - image: https://example.com/rock.jpg
+    image:alt: A shiny red apple with a bite taken out
+  - image: https://example.com/rock2.jpg
+```
+
+Установка свойств `og:title` или `og:description` в `true` будет проверять и использовать внешние свойства `title` и `description`. Таким образом вы можете избежать двойного написания заголовка и описания.
+
+Для приведённого выше примера будет сгенерирован следующий HTML-код:
+
+```HTML
+<title>My Title</title>
+<meta name="description" content="My Description" />
+
+<meta property="og:title" content="My Custom Title" />
+<meta property="og:description" content="My Description" />
+
+<meta property="og:image" content="https://example.com/rock.jpg" />
+<meta property="og:image:alt" content="A shiny red apple with a bite taken out" />
+
+<meta property="og:image" content="https://example.com/rock2.jpg" />
+```
