@@ -64,7 +64,22 @@ npm run build
    - Api location: "./azure-functions"
    - Output location: "./dist"
 
-   При настройке статического веб-приложения Azure через портал Azure вы можете выбрать для развёртывания репозиторий GitHub.
-   Это создаст рабочий процесс GitHub для автоматического развёртывания вашего приложения. Для получения дополнительной информации ознакомьтесь с [Azure Static Web Apps quickstart](https://learn.microsoft.com/azure/static-web-apps/get-started-portal?pivots=github).
+   Это настроит в вашем GitHub-репозитории рабочий процесс, который будет разворачивать ваше приложение для основной ветки репозитория при каждом пул-реквесте.
+
+   Полученный файл рабочего процесса необходимо адаптировать, добавив в блок "Repository/Build Configurations" следующую команду:
+
+   ```
+   skip_api_build: true
+   ```
+
+   Для получения дополнительной информации ознакомьтесь с [Azure Static Web Apps quickstart](https://learn.microsoft.com/azure/static-web-apps/get-started-portal?pivots=github).
+
+3. Развёртывание из любой CI-системы
+
+   Вы можете развернуть Azure Static Web Apps с помощью любой CI-системы, установив переменную окружения `SWA_CLI_DEPLOYMENT_TOKEN` с маркером развёртывания Azure SWA и выполнив следующую команду из вашего конвейера сборки:
+
+   ```
+   swa deploy ./dist --api-location ./azure-functions --env production
+   ```
 
 Обратите внимание, что для выполнения этого шага вам понадобится [учётная запись Azure](https://signup.azure.com/)!
