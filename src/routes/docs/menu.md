@@ -1,52 +1,66 @@
-# Руководство
+# Руководство Qwik
 
 ## Введение
 
-- [Обзор](overview/index.mdx)
-- [Начало работы](getting-started/index.mdx)
+- [Обзор](./(qwik)/index.mdx)
+- [Начало работы](./(qwik)/getting-started/index.mdx)
+- [Qwik City](./(qwikcity)/qwikcity/index.mdx)
+- [Структура проекта](./(qwikcity)/project-structure/index.mdx)
+- [Шпаргалка по React](./(qwik)/cheat/qwik-react/index.mdx)
+- [FAQ](./(qwik)/faq/index.mdx)
 
-## API компонента
+## Компонент
 
-- [Обзор](components/overview/index.mdx)
-- [Состояние](components/state/index.mdx)
-- [События](components/events/index.mdx)
-- [Жизненный цикл](components/lifecycle/index.mdx)
-- [Контекст](components/context/index.mdx)
-- [Ресурсы](components/resource/index.mdx)
-- [Слоты](components/projection/index.mdx)
-- [Рендер](components/rendering/index.mdx)
-- [Стилизация](components/styles/index.mdx)
-- [Легковесные компоненты](components/lite-components/index.mdx)
+- [Обзор](./(qwik)/components/overview/index.mdx)
+- [Состояние](./(qwik)/components/state/index.mdx)
+- [События](./(qwik)/components/events/index.mdx)
+- [Жизненный цикл](./(qwik)/components/lifecycle/index.mdx)
+- [Контекст](./(qwik)/components/context/index.mdx)
+- [Ресурсы](./(qwik)/components/resource/index.mdx)
+- [Слоты](./(qwik)/components/projection/index.mdx)
+- [Рендер](./(qwik)/components/rendering/index.mdx)
+- [Стилизация](./(qwik)/components/styles/index.mdx)
+- [Легковесные компоненты](./(qwik)/components/lite-components/index.mdx)
+
+## Маршрутизация
+
+- [Маршрутизация](./(qwikcity)/routing/index.mdx)
+- [Загрузчики маршрута](./(qwikcity)/route-loader/index.mdx)
+- [Действия формы](./(qwikcity)/action/index.mdx)
+- [Макеты](./(qwikcity)/layout/index.mdx)
+- [Страницы](./(qwikcity)/pages/index.mdx)
+- [Конечные точки](./(qwikcity)/endpoints/index.mdx)
+- [Справочник API](./(qwikcity)/api/index.mdx)
 
 ## Руководства
 
-- [Философия Qwik](think-qwik/index.mdx)
-- [Маршрутизация (QwikCity)](../qwikcity/overview/index.mdx)
-- [FAQ](faq/index.mdx)
-
-## Шпаргалка
-
-- [Qwik vs React](cheat/qwik-react/index.mdx)
-- [Сериализация](cheat/serialization/index.mdx)
-- [Лучшие практики](cheat/best-practices/index.mdx)
+- [Markdown & MDX](./(qwikcity)/guides/mdx/index.mdx)
+- [SSG](./(qwikcity)/guides/static-site-generation/index.mdx)
+- [Лучшие практики](./(qwik)/cheat/best-practices/index.mdx)
 
 ## Концепции
 
-- [Возобновляемый](concepts/resumable/index.mdx)
-- [Прогрессивный](concepts/progressive/index.mdx)
-- [Реактивность](concepts/reactivity/index.mdx)
+- [Философия Qwik](./(qwik)/think-qwik/index.mdx)
+- [Возобновляемый](./(qwik)/concepts/resumable/index.mdx)
+- [Прогрессивный](./(qwik)/concepts/progressive/index.mdx)
+- [Реактивность](./(qwik)/concepts/reactivity/index.mdx)
+- [Сериализация](./(qwik)/cheat/serialization/index.mdx)
 
 ## Дополнительно
 
-- [Знак доллара `$`](advanced/dollar/index.mdx)
-- [Контейнеры](advanced/containers/index.mdx)
-- [QRL](advanced/qrl/index.mdx)
-- [Qwikloader](advanced/qwikloader/index.mdx)
-- [Оптимизатор](advanced/optimizer/index.mdx)
-- [Предзагрузка](advanced/prefetching/index.mdx)
-- [Каталог сборки](advanced/custom-build-dir/index.mdx)
-- [Интернационализация](advanced/i18n/index.mdx)
-- [Vite](advanced/vite/index.mdx)
+- [Знак доллара `$`](./(qwik)/advanced/dollar/index.mdx)
+- [Контейнеры](./(qwik)/advanced/containers/index.mdx)
+- [QRL](./(qwik)/advanced/qrl/index.mdx)
+- [Qwikloader](./(qwik)/advanced/qwikloader/index.mdx)
+- [Оптимизатор](./(qwik)/advanced/optimizer/index.mdx)
+- [Предзагрузка](./(qwik)/advanced/prefetching/index.mdx)
+- [Каталог сборки](./(qwik)/advanced/custom-build-dir/index.mdx)
+- [Интернационализация](./(qwik)/advanced/i18n/index.mdx)
+- [Vite](./(qwik)/advanced/vite/index.mdx)
+- [Расширенная маршрутизация](./(qwikcity)/advanced/routing/index.mdx)
+- [Спекулятивное получение модуля](./(qwikcity)/advanced/speculative-module-fetching/index.mdx)
+- [Меню](./(qwikcity)/advanced/menu/index.mdx)
+- [Статические ассеты](./(qwikcity)/advanced/static-assets/index.mdx)
 
 ## Сообщество
 

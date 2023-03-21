@@ -1,0 +1,122 @@
+---
+title: Ресурсы
+keywords: 'data fetching, loading, data, fetch'
+contributors:
+  - nnelgxorz
+  - irfanullahjan
+  - RATIU5
+  - manucorporat
+  - the-r3aper7
+  - cunzaizhuyi
+  - runarj
+  - zanettin
+  - TejasQ
+  - gederer
+  - forresst
+  - adamdbradley
+---
+
+# useResource$()
+
+Этот метод позволяет асинхронно создавать вычисляемые значения. Асинхронная функция, переданная в качестве первого параметра, будет вызываться при монтировании компонента и изменении отслеживаемых значений.
+
+Как и все `use`-методы использования, он должен вызываться в контексте [`component$()`](/docs/(qwik)/components/overview/index.mdx#component), с соблюдением всех [правил хука](/docs/(qwik)/components/lifecycle/index.mdx#правила-использования-метода-use).
+
+```tsx
+import { useResource$, useSignal } from '@builder.io/qwik';
+
+const bar = useSignal('foo');
+const resource = useResource$(async (ctx) => {
+  ctx.track(() => bar.value); // Ресурс будет генерировать значение при изменении bar.value.
+  ctx.track(() => props.url); // track() можно вызывать несколько раз, чтобы отслеживать несколько значений.
+  ctx.cleanup(() => {
+    // В случае, если ресурс необходимо очистить, будет вызвана эта функция.
+    // Позволяет очищать такие ресурсы, как таймеры, подписки, запросы на получение данных и т.д.
+  });
+
+  // cleanup() также может вызываться несколько раз.
+  ctx.cleanup(() => console.log('cleanup'));
+
+  // Ресурсы могут содержать асинхронные вычисления.
+  const value = await expensiveCompute(bar.value, props.url);
+  return value;
+});
+```
+
+Как мы видим в приведённом выше примере, `useResource$()` возвращает объект `ResourceReturn<T>`, который работает как полностью реактивный промис, содержащий данные и состояние ресурса.
+
+Состоянием `resource.state` может быть одна из следующих строк:
+
+- `pending` - данные еще не доступны;
+- `resolved` - данные доступны;
+- `rejected` - данные недоступны из-за ошибки или тайм-аута.
+
+Функция обратного вызова, переданная в [`useResource$()`](./index.mdx), запускается сразу после завершения обратного вызова [`useTask$()`](./../lifecycle/index.mdx#usetask). Дополнительные сведения смотри в разделе [Жизненный цикл](./../lifecycle/index.mdx).
+
+## `<Resource />`
+
+`<Resource />` - это компонент, который рендерит свои дочерние элементы, когда промис разрешён, и отображает элементы отката, когда ресурс ожидает разрешения или отклонён.
+
+```tsx
+<Resource
+  value={weatherResource}
+  onPending={() => <div>Загрузка...</div>}
+  onRejected={() => <div>Не удалось загрузить данные о погоде</div>}
+  onResolved={(weather) => {
+    return <div>Температура: {weather.temp}</div>;
+  }}
+/>
+```
+
+Стоит отметить, что `<Resource />` не требуется при использовании `useResource$()`. Это просто удобный способ отображения состояния ресурса.
+
+### Примеры:
+
+- #### [`useResource$()`](./index.mdx) с `<Resource />`
+
+Данный пример показывает использование `useResource$` для выполнения запроса к API agify.io. Он позволяет определить возраст человека на основе имени, введённого пользователем, и будет обновляться всякий раз, когда пользователь вводит новое имя.
+
+```tsx
+import { component$, useSignal, useResource$ } from '@builder.io/qwik';
+
+export default component$(() => {
+  const name = useSignal<string>();
+
+  const ageResource = useResource$<{
+    name: string;
+    age: number;
+    count: number;
+  }>(async ({ track, cleanup }) => {
+    track(() => name.value);
+    const abortController = new AbortController();
+    cleanup(() => abortController.abort('cleanup'));
+    const res = await fetch(`https://api.agify.io?name=${name.value}`, {
+      signal: abortController.signal,
+    });
+    return res.json();
+  });
+
+  return (
+    <div>
+      <h1>Введите своё имя, и я угадаю ваш возраст!</h1>
+      <input onInput$={(e: Event) => (name.value = (e.target as HTMLInputElement).value)} />
+      <Resource
+        value={ageResource}
+        onPending={() => <div>Загрузка...</div>}
+        onRejected={() => <div>Не удалось получить данные</div>}
+        onResolved={(ageGuess) => {
+          return (
+            <div>
+              {name.value && (
+                <>
+                  {ageGuess.name} {ageGuess.age} years
+                </>
+              )}
+            </div>
+          );
+        }}
+      />
+    </div>
+  );
+});
+```

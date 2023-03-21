@@ -1,0 +1,390 @@
+---
+title: Qwik React
+contributors:
+  - manucorporat
+  - swwind
+  - reemardelarosa
+---
+
+# Qwik React ⚛️
+
+QwikReact позволяет использовать компоненты React в Qwik, включая всю экосистему библиотек компонентов, таких как [Material UI](https://mui.com/), [Threejs](https://github.com/pmndrs/react-three-fiber) и [React Spring](https://react-spring.io/).
+
+## Установка
+
+Выполните в терминале вашего Qwik-приложения:
+
+```shell
+npm run qwik add react
+```
+
+Если у вас ещё нет приложения Qwik, то вам нужно [сначала создать его](/docs/(qwik)/getting-started/index.mdx), затем, следуя инструкциям выше, выполнить команду добавления React к вашему приложению.
+
+```shell
+npm create qwik
+cd to-my-app
+npm run qwik add react
+```
+
+## Использование
+
+Пакет `@builder.io/qwik-react` экспортирует функцию `qwikify$()`, которая позволяет преобразовывать компоненты React в компоненты Qwik, которые вы можете использовать в своём приложении.
+
+> **Примечание:** Вы НЕ МОЖЕТЕ использовать компоненты React в Qwik без их предварительного преобразования с помощью `qwikify$()`. Несмотря на то, что [компоненты React и Qwik выглядят похоже](/docs/(qwik)/cheat/qwik-react/index.mdx), они принципиально очень разные.
+
+Компоненты React и Qwik не могут находиться в одном файле. Если вы посмотрите на свой проект сразу после выполнения команды установки, вы увидите новую папку - `src/integrations/react/`, с этого момента все ваши компоненты React будут жить там.
+
+**src/integrations/react/mui.tsx:**
+
+```tsx
+/** @jsxImportSource react */
+
+import { qwikify$ } from '@builder.io/qwik-react';
+import { Alert, Button, Slider } from '@mui/material';
+import { DataGrid, GridColDef, GridValueGetterParams } from '@mui/x-data-grid';
+
+export const MUIButton = qwikify$(Button);
+export const MUIAlert = qwikify$(Alert);
+export const MUISlider = qwikify$(Slider, { eagerness: 'hover' });
+```
+
+> **Важно:** Вам необходимо импортировать `/** @jsxImportSource react */` в первой строке вашего файла, это указание компилятору использовать React в качестве фабрики JSX.
+
+В двух словах, правила таковы:
+
+1. Не смешивайте компоненты React и Qwik в одном файле;
+2. Поместите весь ваш React-код в каталог `src/integrations/react`;
+3. Добавьте `/** @jsxImportSource react */` в начало файлов, содержащих код React;
+4. Используйте `qwikify$()` для преобразования компонентов React в компоненты Qwik, которые вы хотите импортировать из модулей Qwik.
+
+Теперь ваш Qwik может импортировать `MUIButton` и использовать его как любой другой компонент Qwik:
+
+```tsx
+import { component$ } from '@builder.io/qwik';
+import { MUIAlert, MUIButton } from '~/integrations/react/mui';
+
+export default component$(() => {
+  return (
+    <>
+      <MUIButton client:hover>Привет, это кнопка</MUIButton>
+
+      <MUIAlert severity="warning">Это предупреждение от Qwik</MUIAlert>
+    </>
+  );
+});
+```
+
+## `qwikify$()`
+
+Функция `qwikify$(ReactCmp, опции?): QwikCmp` позволяет реализовать частичную гидратацию компонентов React. Она работает, оборачивая логику SSR и гидратации React в компонент Qwik, который может выполнять метод React `renderToString()` во время SSR и динамически вызывать `hydrateRoot()`, когда требуется.
+
+Обратите внимание, что по умолчанию никакой код React не будет выполняться в браузере, то есть компонент React по умолчанию НЕ будет интерактивным. В следующем примере мы _квикифицируем_ компонент [Слайдер](https://mui.com/material-ui/react-slider/) из библиотеки MUI, но он не будет интерактивным.
+
+```tsx
+/** @jsxImportSource react */
+import { qwikify$ } from '@builder.io/qwik-react';
+import { Slider } from '@mui/material';
+export const MUISlider = qwikify$(Button);
+```
+
+```tsx
+import { component$ } from '@builder.io/qwik';
+import { MUISlider } from '~/integrations/react/mui';
+
+export default component$(() => {
+  return (
+    <>
+      <MUISlider></MUISlider>
+    </>
+  );
+});
+```
+
+## Ограничения
+
+### Каждый квикифицированный react-компонент изолирован
+
+Каждый экземпляр квикифицированного react-компонента становится независимым приложением React. Полностью изолированным.
+
+```tsx
+export const MUISlider = qwikify$(Slider);
+
+<MUISlider></MUISlider>
+<MUISlider></MUISlider>
+```
+
+- Каждый `MUISlider` - это полностью изолированное React-приложение, со своим состоянием, жизненным циклом и т.д.;
+- Стили будут продублированы;
+- Состояние будет изолировано;
+- [Контекст](https://reactjs.org/docs/context.html) не наследуется;
+- Острова будут [гидратироваться](https://beta.reactjs.org/apis/react-dom/client/hydrateRoot) независимо.
+
+### По умолчанию интерактивность отключена
+
+По умолчанию квикифицированные компоненты не являются интерактивными, обратитесь к следующему разделу, чтобы узнать, как включить интерактивность.
+
+### Использование `qwikify$()` в качестве стратегии миграции
+
+Использование компонентов React в Qwik - это отличный способ перенести ваше приложение на Qwik, но это не серебряная пуля, вам придётся переписать ваши компоненты, чтобы воспользоваться возможностями Qwik.
+
+Это также отличный способ насладиться экосистемой React, например, [threejs](https://github.com/pmndrs/react-three-fiber) или [data-grid libs](https://mui.com/x/react-data-grid/).
+
+> Не злоупотребляйте `qwikify$()` при создании собственного приложения, иначе весь прирост производительности будет потерян.
+
+### Стройте широкие острова, а не листовые узлы
+
+Например, если вам нужно использовать несколько компонентов MUI для создания списка, не надо квикифицировать каждый компонент MUI по отдельности, вместо этого создайте один квикифицированный React-компонент.
+
+#### ХОРОШО: Широкий остров
+
+Единственный квикифицированный компонент, внутри которого находятся все компоненты MUI. Стили не будут дублироваться, а контекст и темы будут работать так, как ожидается.
+
+```tsx
+import * as React from 'react';
+import List from '@mui/material/List';
+import ListItem from '@mui/material/ListItem';
+import ListItemText from '@mui/material/ListItemText';
+import ListItemAvatar from '@mui/material/ListItemAvatar';
+import Avatar from '@mui/material/Avatar';
+import ImageIcon from '@mui/icons-material/Image';
+import WorkIcon from '@mui/icons-material/Work';
+import BeachAccessIcon from '@mui/icons-material/BeachAccess';
+
+// Квикифицируется весь список
+export const FolderList = qwikify$(() => {
+  return (
+    <List sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}>
+      <ListItem>
+        <ListItemAvatar>
+          <Avatar>
+            <ImageIcon />
+          </Avatar>
+        </ListItemAvatar>
+        <ListItemText primary="Photos" secondary="Jan 9, 2014" />
+      </ListItem>
+      <ListItem>
+        <ListItemAvatar>
+          <Avatar>
+            <WorkIcon />
+          </Avatar>
+        </ListItemAvatar>
+        <ListItemText primary="Work" secondary="Jan 7, 2014" />
+      </ListItem>
+      <ListItem>
+        <ListItemAvatar>
+          <Avatar>
+            <BeachAccessIcon />
+          </Avatar>
+        </ListItemAvatar>
+        <ListItemText primary="Vacation" secondary="July 20, 2014" />
+      </ListItem>
+    </List>
+  );
+});
+```
+
+#### ПЛОХО: Листовые узлы
+
+Листовые узлы работают независимо, эффективно создавая десятки вложенных приложений React, каждое из которых полностью изолировано от других, а стили дублируются.
+
+```tsx
+import * as React from 'react';
+import List from '@mui/material/List';
+import ListItem from '@mui/material/ListItem';
+import ListItemText from '@mui/material/ListItemText';
+import ListItemAvatar from '@mui/material/ListItemAvatar';
+import Avatar from '@mui/material/Avatar';
+import ImageIcon from '@mui/icons-material/Image';
+import WorkIcon from '@mui/icons-material/Work';
+import BeachAccessIcon from '@mui/icons-material/BeachAccess';
+
+export const MUIList = qwikify$(List);
+export const MUIListItem = qwikify$(ListItem);
+export const MUIListItemText = qwikify$(ListItemText);
+export const MUIListItemAvatar = qwikify$(ListItemAvatar);
+export const MUIAvatar = qwikify$(Avatar);
+export const MUIImageIcon = qwikify$(ImageIcon);
+export const MUIWorkIcon = qwikify$(WorkIcon);
+export const MUIBeachAccessIcon = qwikify$(BeachAccessIcon);
+```
+
+```tsx
+// Компонент Qwik, использующий десятки вложенных островков React
+// Каждый MUI-* - это независимое приложение React
+export const FolderList = component$(() => {
+  return (
+    <MUIList sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}>
+      <MUIListItem>
+        <MUIListItemAvatar>
+          <MUIAvatar>
+            <MUIImageIcon />
+          </MUIAvatar>
+        </MUIListItemAvatar>
+        <MUIListItemText primary="Photos" secondary="Jan 9, 2014" />
+      </MUIListItem>
+      <MUIListItem>
+        <MUIListItemAvatar>
+          <MUIAvatar>
+            <MUIWorkIcon />
+          </MUIAvatar>
+        </MUIListItemAvatar>
+        <MUIListItemText primary="Work" secondary="Jan 7, 2014" />
+      </MUIListItem>
+      <MUIListItem>
+        <MUIListItemAvatar>
+          <MUIAvatar>
+            <MUIBeachAccessIcon />
+          </MUIAvatar>
+        </MUIListItemAvatar>
+        <MUIListItemText primary="Vacation" secondary="July 20, 2014" />
+      </MUIListItem>
+    </MUIList>
+  );
+});
+```
+
+## Добавление интерактивности
+
+Чтобы добавить интерактивность, в терминологии React нам нужно выполнить [гидратацию](https://reactjs.org/docs/react-dom.html#hydrate). Обычно в приложениях React задача гидратации происходит безусловно во время загрузки, [добавляя огромные накладные расходы](https://www.builder.io/blog/hydration-is-pure-overhead) и делая сайты медленными.
+
+Qwik позволяет вам решать, когда гидратировать ваши компоненты, используя `client:`-свойства JSX. Эта техника обычно называется частичной гидратацией, популяризованной [Astro](https://astro.build/).
+
+```diff
+export default component$(() => {
+  return (
+    <>
+-      <MUISlider></MUISlider>
++      <MUISlider client:visible></MUISlider>
+    </>
+  );
+});
+```
+
+Qwik из коробки поставляется с различными стратегиями:
+
+### `client:load`
+
+Компонент сразу гидратируется при загрузке документа.
+
+```tsx
+<MUISlider client:load></MUISlider>
+```
+
+**Когда использовать:** Непосредственно видимые элементы пользовательского интерфейса, которые должны быть интерактивными как можно скорее.
+
+### `client:idle`
+
+Компонент гидратируется в момент, когда браузер впервые освобождается, т.е. когда всё важное уже запущено.
+
+```tsx
+<MUISlider client:idle></MUISlider>
+```
+
+**Когда использовать:** Менее приоритетные элементы пользовательского интерфейса, которые не нуждаются в немедленном взаимодействии.
+
+### `client:visible`
+
+Компонент гидратируется в момент, когда становится видимым в области просмотра.
+
+```tsx
+<MUISlider client:visible></MUISlider>
+```
+
+**Когда использовать:** Низкоприоритетные элементы пользовательского интерфейса, которые либо находятся далеко внизу страницы ("за краем"), либо настолько ресурсоемкие для загрузки, что вы предпочтёте не загружать их вообще, если пользователь никогда не увидит этот элемент.
+
+### `client:hover`
+
+Компонент гидратируется в момент наведения на него мыши.
+
+```tsx
+<MUISlider client:hover></MUISlider>
+```
+
+**Когда использовать:** Низкоприоритетные элементы пользовательского интерфейса, интерактивность которых не имеет решающего значения, и которые работают только на рабочем столе.
+
+### `client:signal`
+
+Это расширенный API, который позволяет гидратировать компонент каждый раз, когда переданный сигнал становится `true`.
+
+```tsx
+export default component$(() => {
+  const hydrateReact = useSignal(false);
+  return (
+    <>
+      <button onClick$={() => (hydrateReact.value = true)}>При клике выполнить гидратацию слайдера</button>
+
+      <MUISlider client:signal={hydrateReact}></MUISlider>
+    </>
+  );
+});
+```
+
+Это позволяет эффективно реализовать индивидуальные стратегии гидратации.
+
+### `client:event`
+
+Компонент гидратируется в момент отправки указанных событий DOM.
+
+```tsx
+<MUISlider client:event="click"></MUISlider>
+```
+
+### `client:only`
+
+Если `true`, компонент не будет запускаться в SSR, только в браузере.
+
+```tsx
+<MUISlider client:only></MUISlider>
+```
+
+## Прослушивание событий React
+
+События в React обрабатываются путём передачи компоненту функции в качестве параметра, например:
+
+```tsx
+// Код React (не будет работать в Qwik).
+
+import { Slider } from '@mui/material';
+
+<Slider onChange={() => console.log('значение изменено')}></Slider>
+```
+
+Функция `qwikify()` преобразует его в компонент Qwik, который также будет определять события React как Qwik [QRLs](/docs/(qwik)/advanced/qrl/):
+
+```tsx
+import { Slider } from '@mui/material';
+import { qwikify$ } from '@builder.io/qwik-react';
+const MUISlider = qwikify$(Slider);
+
+<MUISlider client:visible onChange$={() => console.log('значение изменено')} />;
+```
+
+> Обратите внимание, что мы используем свойство `client:visible` для безотлагательной гидратации компонента, иначе компонент не был бы интерактивным и события никогда бы не диспетчеризировались.
+
+## Хост-элемент
+
+При обёртывании компонента React с помощью `qwikify$()` под капотом создается новый элемент DOM:
+
+```html
+<qwik-react>
+  <button class="MUI-button"></button>
+</qwik-react>
+```
+
+> Обратите внимание, что имя тега элемента обёртки настраивается через `tagName`: `qwikify$(ReactCmp, { tagName: 'my-react' })`.
+
+### Прослушивание событий DOM без гидратации
+
+Хост-элемент не является частью React, и это означает, что для прослушивания событий гидратация не потребуется. Чтобы добавить пользовательские атрибуты и события к элементу-обёртке, вы можете использовать префикс `host:` в свойствах JSX, например:
+
+```tsx
+<MUIButton
+  host:onClick$={() => {
+    console.log('Клик по компоненту React без гидратации!');
+  }}
+/>
+```
+
+Это позволит вам эффективно реагировать на нажатие кнопки [MUI button](https://mui.com/material-ui/react-button/), не загружая ни одного байта React-кода.
+
+Счастливого кодинга!

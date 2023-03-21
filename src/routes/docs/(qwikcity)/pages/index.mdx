@@ -1,0 +1,190 @@
+---
+title: Qwik City - Страница
+contributors:
+  - adamdbradley
+  - manucorporat
+  - Oyemade
+  - the-r3aper7
+  - mhevery
+  - nnelgxorz
+---
+
+# Страницы
+
+И страницы, и конечные точки в Qwik City создаются путем добавления нового файла `index.tsx` в каталог `src/routes`.
+
+Единственное различие заключается в том, что страница экспортирует с помощью `default` компонент Qwik, который будет отображаться как содержимое страницы, а конечная точка экспортирует такие функции как `onRequest`, `onGet`, `onPost`, `onPut`, `onDelete`, `onPatch`, `onHead`, которые используются для обработки входящего запроса.
+
+## Компоненты
+
+Содержимое страницы можно создать с помощью компонентов Qwik. Компонент, представляющий содержимое, должен быть экспортирован по умолчанию с помощью `export default`.
+
+Предположим, что ваши маршруты построены следующим образом:
+
+```
+src/
+└── routes/
+    └── some/
+        └── path/
+            └── index.tsx              # https://example.com/some/path
+```
+
+```tsx
+// Файл: src/routes/some/path/index.tsx
+import { component$ } from '@builder.io/qwik';
+
+// Обратите внимание на экспорт по умолчанию.
+export default component$(() => {
+  return <h1>Hello World!</h1>;
+});
+```
+
+### Импорт других компонентов
+
+Вы можете создавать сложные представления, компонуя несколько компонентов друг с другом. Для этого импортируйте другие компоненты в файл `index.tsx`.
+
+```
+src/
+├── components/
+│   └── heading.tsx
+└── routes/
+    └── some/
+        └── path/
+            ├── index.tsx              # https://example.com/some/path
+            └── sub_component.tsx
+```
+
+Внутри `index.tsx` вы можете создать компонент, который экспортируется как `default`. Контент создаётся с помощью синтаксиса шаблона [JSX](https://reactjs.org/docs/introducing-jsx.html). Каждая функция компонента возвращает шаблон, который должен быть отрендерен на экране. Если вы хотите узнать больше об анатомии компонентов, обратитесь к документации [компонентов](/docs/(qwik)/components/overview/index.mdx).
+Следующий компонент будет отрендерен по адресу `https://example.com/some/path` в соответствии со структурой каталога, которую мы создали выше.
+
+```tsx
+// Файл: src/routes/some/path/index.tsx
+import { component$ } from '@builder.io/qwik';
+import Heading from '../../../components/heading';
+import SubComponent from './sub_component';
+
+export default component$(() => {
+  return (
+    <>
+      <Heading />
+      <h2>Hello World!</h2>
+      <SubComponent />
+    </>
+  );
+});
+```
+
+```tsx
+// Файл: src/components/heading.tsx
+import { component$ } from '@builder.io/qwik';
+
+export default component$(() => {
+  return <h1>Site Heading</h1>;
+});
+```
+
+```tsx
+// Файл: src/routes/some/path/sub_component.tsx
+import { component$ } from '@builder.io/qwik';
+
+export default component$(() => {
+  return <div>Other component content.</div>;
+});
+```
+
+# Экспорт `<head>`
+
+HTML содержит тег `<head>` как первый элемент в `<html>` (в самом верху содержимого HTML-страницы). Секция `<head>` не отображается напрямую компонентом маршрута, однако вам всё-равно необходимо контролировать её содержимое. Этого можно достичь, экспортируя свойство `head` (или функцию) из компонента страницы.
+
+```tsx
+// src/routes/index.tsx
+
+import { component$ } from '@builder.io/qwik';
+
+export default component$(() => {
+  return <h1>Hello World</h1>;
+});
+
+export const head = {
+  title: 'Моя страница',
+  meta: [
+    {
+      name: 'description',
+      content: 'Описание страницы',
+    },
+  ],
+};
+```
+
+> Каждая конечная точка (index) и макет могут экспортировать свойство `head` (или функцию), которая возвращает объект `DocumentHead`. Объект `DocumentHead` используется для определения заголовка страницы, а также метаданных, ссылок и стилей.
+
+## Динамический заголовок документа
+
+В приведенном выше примере `head` является статическим. Однако вы также можете экспортировать функцию, которая возвращает объект `DocumentHead`. Это позволяет динамически устанавливать заголовок страницы на основе данных, которые извлекаются из загрузчиков (`loaders`) или обработчиков запросов, выполняющихся перед рендером компонента страницы.
+
+```tsx
+// src/routes/product/[productId]/index.tsx
+import { component$ } from '@builder.io/qwik';
+import { routeLoader$ } from '@builder.io/qwik-city';
+import type { DocumentHead } from '@builder.io/qwik-city';
+
+export const useGetProductData = routeLoader$(({ params }) => {
+  const product = db.getProduct({ id: params.productId });
+  return product;
+});
+
+export default component$(() => {
+  const product = useGetProductData();
+
+  return (
+    <div>
+      <h1>{product.value.title}</h1>
+      <h1>{product.value.description}</h1>
+    </div>
+  );
+});
+
+export const head: DocumentHead = ({ params, resolveValue }) => {
+  const product = resolveValue(useGetProductData);
+  return {
+    title: `Товар "${product.title}"`,
+    meta: [
+      {
+        name: 'description',
+        content: product.description,
+      },
+      {
+        name: 'id',
+        content: params.productId,
+      },
+    ],
+  };
+};
+```
+
+### Вложенные макеты и заголовок
+
+Более сложный случай - если вам нужно в [макете](../layout/index.mdx) изменить заголовок документа в уже сформированной шапке. В приведенном ниже примере компонент страницы возвращает заголовок `Foo`. А макет, содержащий компонент, читает значение заголовка страницы и изменяет его. Макет добавляет к заголовку `MyCompany - `, поэтому при рендере итоговый заголовок будет выглядеть как `MyCompany - Foo`. Каждый макет в стеке (если используются вложенные макеты) имеет возможность доступа к заголовку.
+
+```
+──src/
+  └─routes/
+    ├─index.tsx
+    └─layout.tsx
+```
+
+```tsx
+// Файл: src/routes/index.tsx
+export const head: DocumentHead = {
+  title: `Foo`,
+};
+```
+
+```tsx
+// Файл: src/routes/layout.tsx
+export const head: DocumentHead<EndpointData> = ({ head }) => {
+  return {
+    title: `Компания - ${head.title}`,
+  };
+};
+```
