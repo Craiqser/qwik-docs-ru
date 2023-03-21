@@ -66,7 +66,7 @@ export default component$(() => {
               {store.next ? (
                 <p class="next-link">
                   <a href={`/tutorial/${store.next.id}/`} class="next">
-                    Далее: {store.next.title}
+                    Next: {store.next.title}
                   </a>
                 </p>
               ) : null}
@@ -76,7 +76,7 @@ export default component$(() => {
                 target="_blank"
               >
                 <EditIcon width={16} height={16} />
-                <span>Редактировать учебник</span>
+                <span>Edit Tutorial</span>
               </a>
             </div>
           </div>
@@ -139,7 +139,7 @@ export const Root = () => {
   return (
     <html>
       <head>
-        <title>Учебник</title>
+        <title>Tutorial</title>
       </head>
       <body>
         <App />
