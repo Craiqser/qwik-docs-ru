@@ -12,6 +12,7 @@ contributors:
 Промежуточное ПО Qwik City Node позволяет подключить Qwik City к серверу NodeJs, который использует функциональность общего промежуточного ПО. Некоторые серверы NodeJs включают:
 
 - [Express](https://expressjs.com/)
+- [Fastify](https://fastify.io/)
 - [Connect](https://www.npmjs.com/package/connect)
 - [Polka](https://www.npmjs.com/package/polka)
 
@@ -19,8 +20,16 @@ contributors:
 
 Чтобы интегрировать адаптер `node`, используйте команду `add`:
 
+- Для [Express](https://expressjs.com/):
+
 ```shell
 npm run qwik add express
+```
+
+- Для [Fastify](https://fastify.io/)
+
+```shell
+npm run qwik add fastify
 ```
 
 ## Сборка для производственной среды
@@ -48,4 +57,4 @@ npm run deploy
 - Будет создана папка `dist` со всеми статическими файлами;
 - Будет создана папка `server`, включающая все файлы сервера.
 
-Чтобы развернуть сервер, вам нужно запустить файл `server/entry.express.js` на сервере по вашему выбору.
+Чтобы развернуть сервер, вам нужно запустить файл `server/entry.[server].js` на сервере по вашему выбору, где `[server]` может быть [express](https://expressjs.com/) или [fastify](https://fastify.io/).
