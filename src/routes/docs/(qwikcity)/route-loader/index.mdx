@@ -62,7 +62,7 @@ export default component$(() => {
 
 В приложении разрешено использовать несколько загрузчиков маршрута, и их можно использовать в любом компоненте Qwik. **Вы даже можете объявить несколько загрузчиков маршрута в одном файле**.
 
-**File: `src/routes/layout.tsx`**
+**Файл: `src/routes/layout.tsx`**
 
 ```tsx
 import { component$ } from '@builder.io/qwik';
@@ -79,14 +79,14 @@ export default component$(() => {
   const signal = useGetServerTime();
   return (
     <main>
-      <Slot>
+      <Slot />
       <Footer />
     </main>
   );
 });
 ```
 
-**File: `src/components/footer.tsx`**
+**Файл: `src/components/footer.tsx`**
 
 ```tsx
 import { component$ } from '@builder.io/qwik';
@@ -101,7 +101,7 @@ export const Footer = component$(() => {
 });
 ```
 
-**File: `src/routes/admin/index.tsx`**
+**Файл: `src/routes/admin/index.tsx`**
 
 ```tsx
 import { component$ } from '@builder.io/qwik';

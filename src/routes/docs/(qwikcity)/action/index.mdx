@@ -1,5 +1,5 @@
 ---
-title: Qwik City - action$()
+title: Qwik City - routeAction$()
 contributors:
   - manucorporat
   - cunzaizhuyi
@@ -7,17 +7,42 @@ contributors:
   - keuller
 ---
 
-# `action$()`
+# `routeAction$()`
 
-Действия объявляются с помощью функции `action$()` в любом месте. Действия похожи на [загрузчики](/qwikcity/loader/), но они не выполняются во время рендеринга. Вместо этого они выполняются при явном вызове, то есть запускаются после некоторого взаимодействия с пользователем, например, при нажатии кнопки мыши или при отправке формы.
+Действия похожи на [загрузчики](/qwikcity/loader/), но они не выполняются во время рендера. Вместо этого они выполняются при явном вызове, то есть запускаются после некоторого взаимодействия с пользователем, например, при нажатии кнопки мыши или при отправке формы.
+
+## Объявление действия
+
+Действия могут быть объявлены с помощью `routeAction$()` или `globalAction$()`. По сути, они делают одно и то же и имеют одинаковый API, единственное различие между ними заключается в том, что `routeAction$()` привязано к маршруту, а `globalAction$()` доступно глобально для всего приложения.
+
+- `routeAction$()` могут быть объявлены только внутри папки `src/routes`, в файле `layout.tsx` или `index.tsx`, и они ДОЛЖНЫ быть экспортированы, как и `routeLoader$()`. Поскольку `routeAction$()` доступны только в пределах объявленного маршрута, их рекомендуется использовать, когда действие должно получить доступ к каким-либо пользовательским данным, или это защищённый маршрут. Думайте об этом, как о "приватном" действии.
+
+```tsx
+export const useChangePassword = routeAction$((data) => {
+  // ...
+});
+```
+
+- Однако `globalAction$()` может быть объявлен в любом месте папки `src`. Поскольку `globalAction$()` являются глобально доступными, они рекомендуются, когда действие должно быть общим для нескольких маршрутов, или когда действие не должно обращаться к пользовательским данным. Например, действие `useLogin`, которое регистрирует пользователя.  Думайте об этом, как о "публичном" действии.
+
+```tsx
+export const useChangePassword = globalAction$((data) => {
+  // ...
+});
+```
+
+> Мы рекомендуем начинать с `routeAction$()` и использовать `globalAction$()` только тогда, когда вам нужно разделить действие между несколькими маршрутами, или если вы хотите использовать действие в компоненте, который не является маршрутом.
+
+## Использование действия
 
 Внутри компонента Qwik на действия ссылаются с помощью метода `.use()`. Метод `use()` возвращает объект `ActionStore` с методами для запуска действия и получения его состояния.
 
 ```tsx
 // src/routes/layout.tsx
 import { component$ } from '@builder.io/qwik';
-import { action$ } from '@builder.io/qwik-city';
-export const useAddUser = action$((user) => {
+import { routeAction$ } from '@builder.io/qwik-city';
+
+export const useAddUser = routeAction$((user) => {
   const userID = db.users.add(user);
   return {
     success: true,
@@ -47,10 +72,10 @@ export default component$(() => {
 ```tsx
 // src/routes/index.tsx
 
-import { action$, Form } from '@builder.io/qwik-city';
+import { routeAction$, Form } from '@builder.io/qwik-city';
 import { component$ } from '@builder.io/qwik';
 
-export const useAddUser = action$((user) => {
+export const useAddUser = routeAction$((user) => {
   const userID = db.users.add(user);
   return {
     success: true,
@@ -79,10 +104,10 @@ export default component$(() => {
 ```tsx
 // src/routes/index.tsx
 
-import { action$ } from '@builder.io/qwik-city';
+import { routeAction$ } from '@builder.io/qwik-city';
 import { component$ } from '@builder.io/qwik';
 
-export const useAddUser = action$((user) => {
+export const useAddUser = routeAction$((user) => {
   const userID = db.users.add(user);
   return {
     success: true,
@@ -117,9 +142,9 @@ export default component$(() => {
 ```tsx
 // src/routes/index.tsx
 
-import { action$ } from '@builder.io/qwik-city';
+import { routeAction$ } from '@builder.io/qwik-city';
 
-export const addUser = action$((user) => {
+export const useAddUser = routeAction$((user) => {
   // `user` типизирован как Record<string, any>
   const userID = db.users.add(user);
   return {
@@ -134,9 +159,9 @@ export const addUser = action$((user) => {
 ```tsx
 // src/routes/index.tsx
 
-import { action$, zod$, z } from '@builder.io/qwik-city';
+import { routeAction$, zod$, z } from '@builder.io/qwik-city';
 
-export const addUser = action$(
+export const useAddUser = routeAction$(
   (user) => {
     // `user` типизирован как { name: string }
     const userID = db.users.add(user);
@@ -155,9 +180,9 @@ export const addUser = action$(
 
 ```tsx
 import { component$ } from '@builder.io/qwik';
-import { action$, Form, zod$, z } from '@builder.io/qwik-city';
+import { routeAction$, Form, zod$, z } from '@builder.io/qwik-city';
 
-export const addUser = action$(
+export const useAddUser = routeAction$(
   (user) => {
     // `user` типизирован как { name: string }
     const userID = db.users.add(user);
@@ -191,9 +216,9 @@ export default component$(() => {
 Для возврата ошибок действия используется метод `fail()`.
 
 ```tsx
-import { action$, zod$, z } from '@builder.io/qwik-city';
+import { routeAction$, zod$, z } from '@builder.io/qwik-city';
 
-export const addUser = action$(
+export const useAddUser = routeAction$(
   (user, { fail }) => {
     // `user` типизирован как { name: string }
     const userID = db.users.add(user);
@@ -239,9 +264,9 @@ export default component$(() => {
 
 ```tsx
 import { component$ } from '@builder.io/qwik';
-import { action$, Form, zod$, z } from '@builder.io/qwik-city';
+import { routeAction$, Form, zod$, z } from '@builder.io/qwik-city';
 
-export const useAddUser = action$(
+export const useAddUser = routeAction$(
   (user) => {
     // `user` типизирован как { name: string }
     const userID = db.users.add(user);

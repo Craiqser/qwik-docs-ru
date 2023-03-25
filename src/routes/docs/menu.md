@@ -6,7 +6,6 @@
 - [Начало работы](./(qwik)/getting-started/index.mdx)
 - [Qwik City](./(qwikcity)/qwikcity/index.mdx)
 - [Структура проекта](./(qwikcity)/project-structure/index.mdx)
-- [Шпаргалка по React](./(qwik)/cheat/qwik-react/index.mdx)
 - [FAQ](./(qwik)/faq/index.mdx)
 
 ## Компонент
@@ -37,6 +36,7 @@
 - [Markdown & MDX](./(qwikcity)/guides/mdx/index.mdx)
 - [SSG](./(qwikcity)/guides/static-site-generation/index.mdx)
 - [Лучшие практики](./(qwik)/cheat/best-practices/index.mdx)
+- [Шпаргалка по React](./(qwik)/cheat/qwik-react/index.mdx)
 
 ## Концепции
 
