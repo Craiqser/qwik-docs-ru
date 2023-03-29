@@ -18,7 +18,13 @@ contributors:
 // src/routes/layout.tsx
 import { routeLoader$ } from '@builder.io/qwik-city';
 
-export const getProductData = routeLoader$(() => {
+export const getProductData = routeLoader$(async () => {
+  // Добавьте сюда код получения данных (fetch, DB, Firebase и т.д.).
+  // const res = await fetch('https://.../product')
+  // const products = await res.json()
+  // return products;
+
+  // Мы в этом примере просто возвращаем данные.
   return {
     product: {
       name: 'Qwik City',
@@ -28,18 +34,18 @@ export const getProductData = routeLoader$(() => {
 });
 ```
 
-> Загрузчики маршрута не являются конечными точками, это внутренний канал связи между сервером и компонентами Qwik. Кроме того, загрузчики маршрута должны возвращать сериализуемое JSON-значение.
+> `routeLoader$`-ы не являются конечными точками, это внутренний канал связи между сервером и компонентами Qwik. Кроме того, загрузчики маршрута должны возвращать сериализуемое JSON-значение.
 
-## Использование загрузчика маршрута
+## Использование `routeLoader$`
 
-Загрузчики маршрута могут использоваться любым компонентом приложения, если загрузчик объявлен в файле `layout.tsx` или `index.tsx`, который является частью существующего маршрута.
+`routeLoader$`-ы могут использоваться любым компонентом приложения, если загрузчик объявлен в файле `layout.tsx` или `index.tsx`, который является частью существующего маршрута.
 
 ```tsx
 // src/routes/index.tsx
 import { routeLoader$ } from '@builder.io/qwik-city';
 import { component$ } from '@builder.io/qwik';
 
-export const useGetServerTime = routeLoader$(() => {
+export const useGetServerTime = routeLoader$(async () => {
   return {
     time: Date.now(),
   }
@@ -56,11 +62,11 @@ export default component$(() => {
 });
 ```
 
-> `useGetServerTime()` запрашивает данные загрузчика, но не выполняет загрузчик несколько раз. Загрузчики маршрута выполняются в начале запроса, чтобы обеспечить низкую задержку. По этой причине они разрешены только в папке `src/routes`, в файле `layout.tsx` или `index.tsx`, и они ДОЛЖНЫ быть экспортированы.
+> Может показаться, что `useGetServerTime()` инициирует получение данных сервера при рендере компонента. Но в действительности, `routeLoader$`, связанный с `useGetServerTime`, немедленно выполняется при HTTP-запросе. Таким образом, асинхронная работа по получению данных с сервера может быть начата как можно раньше (функция `routeLoader$` немедленно вызывается при HTTP запросе, независимо от того, вызвана ли `useGetServerTime()` в компоненте). По этой причине они разрешены только в папке `src/routes`, в файлах `layout.tsx` или `index.tsx`.
 
-## Множественные загрузчики маршрута
+## Несколько `routeLoader$`-ов
 
-В приложении разрешено использовать несколько загрузчиков маршрута, и их можно использовать в любом компоненте Qwik. **Вы даже можете объявить несколько загрузчиков маршрута в одном файле**.
+В приложении разрешено использовать несколько `routeLoader$`-ов, и их можно использовать в любом компоненте Qwik. **Вы даже можете объявить несколько загрузчиков маршрута в одном файле**.
 
 **Файл: `src/routes/layout.tsx`**
 
@@ -69,7 +75,7 @@ import { component$ } from '@builder.io/qwik';
 import { routeLoader$ } from '@builder.io/qwik-city';
 import { Footer } from '../components/footer.tsx';
 
-export const useGetServerTime = routeLoader$(() => {
+export const useGetServerTime = routeLoader$(async () => {
   return {
     time: Date.now(),
   }
@@ -101,32 +107,34 @@ export const Footer = component$(() => {
 });
 ```
 
+Приведённый выше пример показывает использование `useGetServerTime()` в двух разных компонентах и в разных файлах. Это намеренное поведение.
+
 **Файл: `src/routes/admin/index.tsx`**
 
 ```tsx
 import { component$ } from '@builder.io/qwik';
 import { routeLoader$ } from '@builder.io/qwik-city';
 
-export const useIsLogged = routeLoader$(({cookie}) => {
+export const useLoginStatus = routeLoader$(async ({cookie}) => {
   return {
-    logged: checkcookie(cookie),
+    isUserLoggedIn: checkCookie(cookie)
   }
 });
 
-export const useGetCurrentUser = routeLoader$(({cookie}) => {
+export const useCurrentUser = routeLoader$(async ({cookie}) => {
   return {
-    user: currentUserFromcookie(cookie),
+    user: currentUserFromCookie(cookie)
   }
 });
 
 export default component$(() => {
-  const logged = useIsLogged();
-  const user = useGetCurrentUser();
+  const loginStatus = useLoginStatus();
+  const currentUser = useCurrentUser();
   return (
     <section>
       <h1>Администратор</h1>
-      {logged.value.logged ? (
-        <p>Привет, {user.value.user.name}</p>
+      {loginStatus.value.isUserLoggedIn ? (
+        <p>Привет, {currentUser.value.user.name}</p>
       ) : (
         <p>Вы не авторизованы</p>
       )}
@@ -135,26 +143,30 @@ export default component$(() => {
 });
 ```
 
+Приведённый выше пример показывает использование двух `routeLoader$`-ов в одном файле. Общий загрузчик `useLoginStatus` используется для проверки того, вошёл ли пользователь в систему, а более специфический загрузчик `useCurrentUser` используется для получения данных пользователя.
+
 ## Контекст загрузчика маршрута
 
-Как и обработчики запросов, такие как `onRequest` и `onGet`, загрузчики маршрута имеют доступ к объекту `RequestEvent`, который содержит информацию о текущем запросе.
+Как и обработчики запросов, такие как `onRequest` и `onGet`, `routeLoader$`-ы имеют доступ к объекту `RequestEvent`, который содержит информацию о текущем запросе.
 
 Эта информация пригодится, когда загрузчику необходимо вернуть данные по условию на основе запроса или ему необходимо вручную переопределить статус ответа, заголовки или тело.
 
 ```tsx
 import { routeLoader$ } from '@builder.io/qwik-city';
 
-export const getServerTime = routeLoader$((ev) => {
-  console.log('Request headers:', ev.headers);
-  console.log('Request cookies:', ev.cookie);
-  console.log('Request url:', ev.url);
-  console.log('Request method:', ev.method);
-  console.log('Request params:', ev.params);
+export const useServerTime = routeLoader$(
+  async ({headers, cookie, url, method, params}) => {
+    console.log('Request headers:', headers);
+    console.log('Request cookies:', cookie);
+    console.log('Request url:', url);
+    console.log('Request method:', method);
+    console.log('Request params:', params);
 
-  return {
-    time: Date.now(),
+    return {
+      time: Date.now()
+    }
   }
-});
+);
 ```
 
 ## Когда использовать загрузчик маршрута?

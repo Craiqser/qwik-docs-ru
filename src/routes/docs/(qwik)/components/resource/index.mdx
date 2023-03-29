@@ -23,39 +23,64 @@ contributors:
 Как и все `use`-методы использования, он должен вызываться в контексте [`component$()`](/docs/(qwik)/components/overview/index.mdx#component), с соблюдением всех [правил хука](/docs/(qwik)/components/lifecycle/index.mdx#правила-использования-метода-use).
 
 ```tsx
-import { useResource$, useSignal } from '@builder.io/qwik';
+import {
+  component$,
+  useResource$,
+  Resource,
+  useSignal,
+} from '@builder.io/qwik';
 
-const bar = useSignal('foo');
-const resource = useResource$(async (ctx) => {
-  ctx.track(() => bar.value); // Ресурс будет генерировать значение при изменении bar.value.
-  ctx.track(() => props.url); // track() можно вызывать несколько раз, чтобы отслеживать несколько значений.
-  ctx.cleanup(() => {
-    // В случае, если ресурс необходимо очистить, будет вызвана эта функция.
-    // Позволяет очищать такие ресурсы, как таймеры, подписки, запросы на получение данных и т.д.
-  });
+export default component$(() => {
+  const query = useSignal('busy');
+  const jokes = useResource$<{ value: string }[]>(
+    async ({ track, cleanup }) => {
+      track(query);
+      // Использование `AbortController` является хорошей практикой для прерывания получения данных, если
+      // поступает новый запрос. Мы создаем новый `AbortController` и регистрируем функцию `cleanup`,
+      // которая вызывается при перезапуске запроса.
+      const controller = new AbortController();
+      cleanup(() => controller.abort());
 
-  // cleanup() также может вызываться несколько раз.
-  ctx.cleanup(() => console.log('cleanup'));
-
-  // Ресурсы могут содержать асинхронные вычисления.
-  const value = await expensiveCompute(bar.value, props.url);
-  return value;
+      if (query.value.length < 3) return [];
+      const url = new URL('https://api.chucknorris.io/jokes/search');
+      url.searchParams.set('query', query.value);
+      const resp = await fetch(url, { signal: controller.signal });
+      const json = (await resp.json()) as { result: { value: string }[] };
+      return json.result;
+    }
+  );
+  return (
+    <>
+      Запрос: <input bind:value={query} />
+      <button>поиск</button>
+      <Resource
+        value={jokes}
+        onPending={() => <>загрузка...</>}
+        onResolved={(jokes) => (
+          <ul>
+            {jokes.map((joke) => (
+              <li>{joke.value}</li>
+            ))}
+          </ul>
+        )}
+      />
+    </>
+  );
 });
 ```
 
 Как мы видим в приведённом выше примере, `useResource$()` возвращает объект `ResourceReturn<T>`, который работает как полностью реактивный промис, содержащий данные и состояние ресурса.
 
-Состоянием `resource.state` может быть одна из следующих строк:
+Состоянием `resource.loading` может быть одна из следующих строк:
 
-- `pending` - данные еще не доступны;
-- `resolved` - данные доступны;
-- `rejected` - данные недоступны из-за ошибки или тайм-аута.
+- `false` - данные ещё не доступны;
+- `true` - данные доступны (промис либо разрешён, либо отклонён).
 
 Функция обратного вызова, переданная в [`useResource$()`](./index.mdx), запускается сразу после завершения обратного вызова [`useTask$()`](./../lifecycle/index.mdx#usetask). Дополнительные сведения смотри в разделе [Жизненный цикл](./../lifecycle/index.mdx).
 
 ## `<Resource />`
 
-`<Resource />` - это компонент, который рендерит свои дочерние элементы, когда промис разрешён, и отображает элементы отката, когда ресурс ожидает разрешения или отклонён.
+`<Resource />` - это компонент, предназначенный для использования с функцией `useResource$()`, и который отображает различное содержимое в зависимости от статуса ресурса: pending (выполняется), resolved (разрешён), или rejected (отклонён).
 
 ```tsx
 <Resource
@@ -77,7 +102,12 @@ const resource = useResource$(async (ctx) => {
 Данный пример показывает использование `useResource$` для выполнения запроса к API agify.io. Он позволяет определить возраст человека на основе имени, введённого пользователем, и будет обновляться всякий раз, когда пользователь вводит новое имя.
 
 ```tsx
-import { component$, useSignal, useResource$ } from '@builder.io/qwik';
+import {
+  component$,
+  useSignal,
+  useResource$,
+  Resource,
+} from '@builder.io/qwik';
 
 export default component$(() => {
   const name = useSignal<string>();
@@ -99,7 +129,11 @@ export default component$(() => {
   return (
     <div>
       <h1>Введите своё имя, и я угадаю ваш возраст!</h1>
-      <input onInput$={(e: Event) => (name.value = (e.target as HTMLInputElement).value)} />
+      <input
+        onInput$={(e: Event) =>
+          (name.value = (e.target as HTMLInputElement).value)
+        }
+      />
       <Resource
         value={ageResource}
         onPending={() => <div>Загрузка...</div>}

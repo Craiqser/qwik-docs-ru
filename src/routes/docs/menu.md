@@ -29,6 +29,7 @@
 - [Макеты](./(qwikcity)/layout/index.mdx)
 - [Страницы](./(qwikcity)/pages/index.mdx)
 - [Конечные точки](./(qwikcity)/endpoints/index.mdx)
+- [server$](./(qwikcity)/server$/index.mdx)
 - [Справочник API](./(qwikcity)/api/index.mdx)
 
 ## Руководства
