@@ -4,8 +4,6 @@
 
 - [Обзор](./(qwik)/index.mdx)
 - [Начало работы](./(qwik)/getting-started/index.mdx)
-- [Qwik City](./(qwikcity)/qwikcity/index.mdx)
-- [Структура проекта](./(qwikcity)/project-structure/index.mdx)
 - [FAQ](./(qwik)/faq/index.mdx)
 
 ## Компонент
@@ -23,6 +21,8 @@
 
 ## Маршрутизация
 
+- [Qwik City](./(qwikcity)/qwikcity/index.mdx)
+- [Структура проекта](./(qwikcity)/project-structure/index.mdx)
 - [Маршрутизация](./(qwikcity)/routing/index.mdx)
 - [Загрузчики маршрута](./(qwikcity)/route-loader/index.mdx)
 - [Действия формы](./(qwikcity)/action/index.mdx)

@@ -3,7 +3,7 @@ import prismjs from 'prismjs';
 
 interface CodeBlockProps {
   path?: string;
-  language?: 'markup' | 'css' | 'javascript' | 'json';
+  language?: 'markup' | 'css' | 'javascript' | 'json' | 'jsx' | 'tsx';
   code: string;
 }
 

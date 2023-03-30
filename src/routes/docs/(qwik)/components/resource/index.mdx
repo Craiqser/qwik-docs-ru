@@ -18,9 +18,76 @@ contributors:
 
 # useResource$()
 
-Этот метод позволяет асинхронно создавать вычисляемые значения. Асинхронная функция, переданная в качестве первого параметра, будет вызываться при монтировании компонента и изменении отслеживаемых значений.
+Этот хук позволяет вам асинхронно генерировать вычисляемые значения, обычно используемые для получения внешних данных (ресурсов). Хук вызывается при монтировании компонента (и при изменении отслеживаемых значений). Хук `useResource$` предназначен для использования с компонентом `<Resource />`. Компонент `<Resource />` - это удобный способ для отображения состояний ресурса, таких как loaded (загружен), resolved (разрешён), или rejected (отклонён).
 
-Как и все `use`-методы использования, он должен вызываться в контексте [`component$()`](/docs/(qwik)/components/overview/index.mdx#component), с соблюдением всех [правил хука](/docs/(qwik)/components/lifecycle/index.mdx#правила-использования-метода-use).
+Важно понимать, что `useResource$` выполняется при первоначальном рендере компонента (как и `useTask$`). Иногда бывает желательно начать получать данные на сервере как часть процесса SSR до того, как компонент будет отрендерен. Получение данных как часть процесса SSR является более распространённым и предпочтительным способом загрузки данных вместо выполнения через API [`routeLoader$`](docs/route-loader/). `useResource$` - это более низкоуровневый API, который полезен, когда вы хотите получить данные на клиенте.
+
+> Как и все `use-`хуки, он должен вызываться в контексте [`component$()`](/docs/(qwik)/components/overview/index.mdx#component), при этом применяются все правила [использования use-методов](/docs/(qwik)/components/lifecycle/index.mdx#правила-использования-use-методов).
+>
+> Во многих отношениях `useResource$` похож на `useTask$`. Большое различие заключаются в следующем:
+>
+> - `useResource$` позволяет вам возвращать "значение";
+> - `useResource$` не блокирует рендер, пока ресурс находится в процессе получения.
+>
+> Смотри раздел [`routeLoader$`](docs/route-loader/) для получения данных как часть SSR-процесса.
+
+## Пример
+
+Давайте начнем с простого примера, который будет получать шутки при первоначальном рендере компонента.
+
+```tsx
+import { component$, useResource$, Resource } from '@builder.io/qwik';
+
+interface Joke {
+  value: string;
+}
+
+export default component$(() => {
+  const joke = useResource$(async () => {
+    const resp = await fetch('https://api.chucknorris.io/jokes/random');
+    return (await resp.json()) as Joke;
+  });
+  return (
+    <>
+      <Resource
+        value={joke}
+        onPending={() => <>загрузка...</>}
+        onResolved={(joke) => <div>{joke.value}</div>}
+      />
+    </>
+  );
+});
+```
+
+## `track()`
+
+Часто возникает необходимость повторной выборки ресурса при изменении некоторых входных данных.
+
+Вот очень простой пример использования `useResource$()` для получения случайной шутки:
+
+```tsx
+import { component$, useResource$, Resource } from '@builder.io/qwik';
+
+export default component$(() => {
+  const jokes = useResource$(async () => {
+    const resp = await fetch('https://api.chucknorris.io/jokes/random');
+    return resp.json();
+  });
+
+  return (
+    <Resource
+      value={jokes}
+      onPending={() => <div>загрузка...</div>}
+      onResolved={(joke) => (
+        <div>{joke.value}</div>
+      )}
+    />
+  );
+});
+```
+
+И более сложный пример, демонстрирующий больше возможностей. В этом примере будет получен список анекдотов на основе запроса, введённого пользователем,
+автоматическое реагирование на изменения в запросе, включая прерывание запроса, который выполняется в данный момент.
 
 ```tsx
 import {
@@ -32,23 +99,27 @@ import {
 
 export default component$(() => {
   const query = useSignal('busy');
-  const jokes = useResource$<{ value: string }[]>(
-    async ({ track, cleanup }) => {
-      track(query);
-      // Использование `AbortController` является хорошей практикой для прерывания получения данных, если
-      // поступает новый запрос. Мы создаем новый `AbortController` и регистрируем функцию `cleanup`,
-      // которая вызывается при перезапуске запроса.
-      const controller = new AbortController();
-      cleanup(() => controller.abort());
+  const jokes = useResource$(async ({ track, cleanup }) => {
+    track(query);
+    // Использование `AbortController` является хорошей практикой для прерывания получения данных, если
+    // поступает новый запрос. Мы создаем новый `AbortController` и регистрируем функцию `cleanup`,
+    // которая вызывается при перезапуске запроса.
+    const controller = new AbortController();
+    cleanup(() => controller.abort());
 
-      if (query.value.length < 3) return [];
-      const url = new URL('https://api.chucknorris.io/jokes/search');
-      url.searchParams.set('query', query.value);
-      const resp = await fetch(url, { signal: controller.signal });
-      const json = (await resp.json()) as { result: { value: string }[] };
-      return json.result;
+    if (query.value.length < 3) {
+      return [];
     }
-  );
+
+    const url = new URL('https://api.chucknorris.io/jokes/search');
+    url.searchParams.set('query', query.value);
+
+    const resp = await fetch(url, { signal: controller.signal });
+    const json = (await resp.json()) as { result: { value: string }[] };
+
+    return json.result;
+  });
+
   return (
     <>
       Запрос: <input bind:value={query} />
