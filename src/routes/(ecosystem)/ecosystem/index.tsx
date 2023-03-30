@@ -50,7 +50,7 @@ export default component$(() => {
                 <Link href="/integrations/">Интеграции</Link>
               </span>
               <span>
-                <Link href="/media/#videos" class="text-sm">
+                <Link href="/integrations/" class="text-sm">
                   Смотреть все
                 </Link>
               </span>
@@ -99,7 +99,7 @@ export default component$(() => {
                 <Link href="/media/#podcasts">Подкасты</Link>
               </span>
               <span>
-                <Link href="/media/#videos" class="text-sm">
+                <Link href="/media/#podcasts" class="text-sm">
                   Смотреть все
                 </Link>
               </span>
@@ -124,7 +124,7 @@ export default component$(() => {
                 <Link href="/showcase/">Галерея</Link>
               </span>
               <span>
-                <Link href="/media/#videos" class="text-sm">
+                <Link href="/showcase/" class="text-sm">
                   Смотреть все
                 </Link>
               </span>
@@ -149,7 +149,7 @@ export default component$(() => {
                 <Link href="/media/#presentations">Презентации</Link>
               </span>
               <span>
-                <Link href="/media/#videos" class="text-sm">
+                <Link href="/media/#presentations" class="text-sm">
                   Смотреть все
                 </Link>
               </span>
