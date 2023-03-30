@@ -1,5 +1,5 @@
 ---
-title: Управление состоянием
+title: Состояние
 keywords: 'useState, state management, reactivity, reactive'
 contributors:
   - nnelgxorz
@@ -21,50 +21,44 @@ contributors:
   - XiaoChengyin
   - gkatsanos
   - adamdbradley
+  - mhevery
 ---
+import CodeExample from '../../../../../components/code-example/index.tsx';
+import CounterSignal from 'source:./example/counter-signal/index!.tsx';
+import CounterStore from 'source:./example/counter-store/index!.tsx';
+import CounterStoreNoTrack from 'source:./example/counter-store-no-track/index!.tsx';
+import CounterStoreDeep from 'source:./example/counter-store-deep/index!.tsx';
+import StorePassingProps from 'source:./example/state-passing-props/index!.tsx';
+import StorePassingContext from 'source:./example/state-passing-context/index!.tsx';
 
 # Состояние
 
-Управление состоянием - важная часть любого приложения. В Qwik мы различаем два типа состояния - реактивное и статичное.
+Управление состоянием - важная часть любого приложения. В Qwik мы различаем два типа состояния - реактивное и статичное:
 
-Статичное состояние - это всё, что может быть сериализовано: строка, число, объект, массив... что угодно. Реактивное состояние, напротив, создаётся с помощью `useSignal()` или `useStore()`.
+1. Статичное состояние - это всё, что может быть сериализовано: строка, число, объект, массив... что угодно.
+2. Реактивное состояние, напротив, создаётся с помощью `useSignal()` или `useStore()`.
 
 Важно отметить, что состояние в Qwik - это не обязательно состояние компонента, а скорее состояние приложения, которое может быть инстанцировано любым компонентом.
 
 ## `useSignal()`
 
-`const signal = useSignal(initialState)` - это хук, который создает реактивный сигнал. Он принимает начальное значение и возвращает реактивный сигнал.
+Используйте `useSignal()` для создания реактивного сигнала (форма состояния). Функция `useSignal()` принимает начальное значение и возвращает реактивный сигнал.
 
-Реактивный сигнал, возвращаемый функцией `useSignal()`, состоит из объекта с единственным свойством `signal.value`. Если вы измените значение свойства `value` объекта, то любой компонент, который зависит от него, будет обновлён.
+Реактивный сигнал, возвращаемый функцией `useSignal()`, состоит из объекта с единственным свойством `.value`. Если вы измените свойство сигнала `value`, то любой компонент, который зависит от него, будет обновлён автоматически.
 
 ### Пример
 
 Этот пример показывает, как `useSignal()` может быть использован в компоненте счётчика для отслеживания счёта.
 
-```tsx
-import { component$, useSignal } from '@builder.io/qwik';
+<CodeExample src={CounterSignal} sandboxStyle={{height: '6em'}}/>
 
-export default component$(() => {
-  const count = useSignal(0);
-
-  return (
-    <>
-      <button onClick$={() => count.value++}>Увеличить</button>
-      Счёт: {count.value}
-    </>
-  );
-});
-```
-
-Простое обращение к свойству `count.value` приведёт к обновлению компонента, если значение сигнала изменится. Например, при изменении свойства в обработчике нажатия кнопки.
+Изменение свойства `count.value` приведёт к автоматическому обновлению компонента. Например, когда свойство изменяется в обработчике нажатия кнопки, как в примере выше.
 
 ## `useStore()`
 
-Работает аналогично `useSignal()`, но принимает объект в качестве начального значения. Можно рассматривать хранилище как сигнал с несколькими значениями, или объект, состоящий из нескольких сигналов.
+Работает аналогично `useSignal()`, но принимает объект в качестве начального значения. Можно рассматривать состояние как сигнал с несколькими значениями, или объект, состоящий из нескольких сигналов.
 
-`const store = useStore(initialStateObject)` - это хук, который создает реактивный объект. Он принимает в качестве параметра начальный объект и возвращает реактивный объект.
-
-Реактивный объект, возвращаемый [`useStore()`](./index.mdx#usestore), похож на любой другой объект, но он реактивен. Если вы измените свойство объекта, любой компонент, зависящий от него, будет обновлен.
+Используйте хук `useStore(initialStateObject)` для создания реактивного объекта. Он принимает исходный объект (или фабричную функцию) и возвращает реактивный объект.
 
 > **ПРИМЕЧАНИЕ**
 > Чтобы реактивность работала так, как ожидается, убедитесь, что сохранили ссылку на реактивный объект, а не только на его свойства. Например, написание `let { count } = useStore({ count: 0 })` и последующее изменение `count` не вызовет обновления компонентов, зависящих от этого свойства.
@@ -73,138 +67,40 @@ export default component$(() => {
 
 Этот пример показывает, как `useStore()` можно использовать в компоненте счётчика для отслеживания счета.
 
-```tsx
-import { component$, useStore } from '@builder.io/qwik';
-
-export default component$(() => {
-  const state = useStore({ count: 0 });
-
-  return (
-    <>
-      <button onClick$={() => state.count++}>Увеличить</button>
-      Счёт: {state.count}
-    </>
-  );
-});
-```
-
-Простое обращение к свойству `state.count` приведёт к обновлению компонента, если счётчик изменится. Например, при изменении свойства в обработчике нажатия кнопки.
+<CodeExample src={CounterStore} sandboxStyle={{height: '6em'}}/>
 
 ### Рекурсивные значения
 
-По умолчанию [`useStore()`](./index.mdx#usestore) отслеживает только поля верхнего уровня в вашем объекте состояния. Это означает, что для регистрации любых обновлений необходимо обновить значения полей верхнего уровня.
+По умолчанию [`useStore()`](./index.mdx#usestore) отслеживает свойства объекта состояния только на самом верхнем уровне. Это означает, что для регистрации обновления состояния необходимо обновить значения свойств верхнего уровня.
 
-ЭТОТ ПРИМЕР НЕ БУДЕТ РАБОТАТЬ:
-
-```tsx
-import { component$, useStore } from '@builder.io/qwik';
-
-export default component$(() => {
-  const store = useStore({
-    nested: { fields: { are: 'не отслеживается' }}
-  });
-
-  return (
-    <>
-      <p>{store.nested.fields.are}</p>
-      <button onClick$={() => (store.nested.fields.are = 'отслеживается')}>Нажми меня</button>
-    </>
-  );
-});
-```
+<CodeExample src={CounterStoreNoTrack} sandboxStyle={{height: '6em'}}/>
 
 Для того чтобы обновления были зарегистрированы стратегией отслеживания по умолчанию, мы должны обновить поле верхнего уровня `nested` следующим образом:
 
 ```ts
-store.nested = { fields: { are: { "отслеживается" } } }
+store.nested = { fields: { are: { 'отслеживается' } } }
 ```
 
-Для того чтобы первый пример работал, мы можем передать второй аргумент в `useStore()` и указать ему использовать рекурсивное отслеживание всех значений в нашем хранилище, независимо от глубины.
+Для того чтобы первый пример работал, мы можем передать в `useStore()` второй аргумент и указать ему использовать рекурсивное отслеживание всех свойств нашего состояния, независимо от глубины.
 
-```tsx
-import { component$, useStore } from '@builder.io/qwik';
-
-export default component$(() => {
-  const store = useStore(
-    {
-      nested: { fields: { are: 'не отслеживается' }}
-    },
-    { deep: true }
-  );
-
-  return (
-    <>
-      <p>{store.nested.fields.are}</p>
-      <button onClick$={() => (store.nested.fields.are = 'отслеживается')}>Нажми меня</button>
-    </>
-  );
-});
-```
+<CodeExample src={CounterStoreDeep} sandboxStyle={{height: '6em'}}/>
 
 Теперь компонент будет обновляться, как и ожидалось. Это также позволит отслеживать отдельные значения внутри массивов!
 
-```tsx
-import { component$, useStore } from '@builder.io/qwik';
-
-export default component$(() => {
-  const store = useStore(
-    {
-      letters: ['A', 'B', 'C']
-    },
-    { deep: true }
-  );
-
-  return (
-    <>
-      {store.letters.map((letter) => (
-        <p>{letter}</p>
-      ))}
-      <button
-        onClick$={() => {
-          store.letters[2] = 'Z';
-        }}
-      >
-        Нажми меня
-      </button>
-    </>
-  );
-});
-```
-
 ## Передача состояния другим компонентам
 
-Одной из приятных особенностей Qwik является то, что состояние может быть передано другим компонентам, и они могут читать и записывать его, позволяя данным течь по дереву компонентов в обоих направлениях.
+Одной из приятных особенностей Qwik является то, что состояние можно передавать другим компонентам. Изменение состояния будет вызывать ререндер только тех компонентов, которые считывают состояние.
 
-Существует два способа передачи состояния другим компонентам: через параметры или через контекст.
+Существует два способа передачи состояния другим компонентам:
+
+1. передача состояния дочернему компоненту явным образом через параметр;
+2. передача состояния неявно, через контекст.
 
 ### Использование параметров
 
-Самый простой способ передачи состояния другим компонентам - это передача его в виде параметров. Так вы обычно делаете в React, и это также работает в Qwik.
+Самый простой способ передачи состояния другим компонентам - это передача через параметры.
 
-```tsx
-import { component$, useStore } from '@builder.io/qwik';
-
-export const Parent = component$(() => {
-  const userData = useStore({
-    count: 0,
-  });
-
-  return (
-    <>
-      <Child userData={userData} />
-    </>
-  );
-});
-
-export const Child = component$(({ userData }) => {
-  return (
-    <>
-      <button onClick$={() => userData.count++}>Increment</button>
-      Count: {userData.count}
-    </>
-  );
-});
-```
+<CodeExample src={StorePassingProps} sandboxStyle={{height: '6em'}}/>
 
 ### Использование контекста
 
@@ -212,33 +108,7 @@ API контекста - это способ передачи состояния
 
 Подробнее об этом можно прочитать в разделе [Контекст](./../context/index.mdx).
 
-```tsx
-export const CTX = createContextId('stuff');
-
-export const Stores = component$(() => {
-  const userData = useStore({
-    count: 0,
-  });
-
-  useContextProvider(CTX, userData);
-
-  return (
-    <>
-      <Child />
-    </>
-  );
-});
-
-export const Child = component$(() => {
-  const userData = useContext(CTX);
-  return (
-    <>
-      <button onClick$={() => userData.count++}>Increment</button>
-      Count: {userData.count}
-    </>
-  );
-});
-```
+<CodeExample src={StorePassingContext} sandboxStyle={{height: '6em'}}/>
 
 ## Вычисляемые свойства
 

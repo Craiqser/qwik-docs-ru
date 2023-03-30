@@ -26,7 +26,7 @@ export const useChangePassword = routeAction$((data) => {
 - Однако `globalAction$()` может быть объявлен в любом месте папки `src`. Поскольку `globalAction$()` являются глобально доступными, они рекомендуются, когда действие должно быть общим для нескольких маршрутов, или когда действие не должно обращаться к пользовательским данным. Например, действие `useLogin`, которое регистрирует пользователя.  Думайте об этом, как о "публичном" действии.
 
 ```tsx
-export const useChangePassword = globalAction$((data) => {
+export const useLogin = globalAction$((data) => {
   // ...
 });
 ```

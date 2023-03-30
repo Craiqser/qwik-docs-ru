@@ -4,6 +4,7 @@
 
 - [Обзор](./(qwik)/index.mdx)
 - [Начало работы](./(qwik)/getting-started/index.mdx)
+- [Структура проекта](./(qwikcity)/project-structure/index.mdx)
 - [FAQ](./(qwik)/faq/index.mdx)
 
 ## Компонент
@@ -19,10 +20,9 @@
 - [Стилизация](./(qwik)/components/styles/index.mdx)
 - [Легковесные компоненты](./(qwik)/components/lite-components/index.mdx)
 
-## Маршрутизация
+## Маршрутизация (Qwik City)
 
 - [Qwik City](./(qwikcity)/qwikcity/index.mdx)
-- [Структура проекта](./(qwikcity)/project-structure/index.mdx)
 - [Маршрутизация](./(qwikcity)/routing/index.mdx)
 - [Загрузчики маршрута](./(qwikcity)/route-loader/index.mdx)
 - [Действия формы](./(qwikcity)/action/index.mdx)
@@ -34,10 +34,11 @@
 
 ## Руководства
 
+- [Qwik в двух словах](./(qwikcity)/guides/qwik-nutshell/index.mdx)
 - [Markdown & MDX](./(qwikcity)/guides/mdx/index.mdx)
 - [SSG](./(qwikcity)/guides/static-site-generation/index.mdx)
-- [Лучшие практики](./(qwik)/cheat/best-practices/index.mdx)
-- [Шпаргалка по React](./(qwik)/cheat/qwik-react/index.mdx)
+- [Шпаргалка по React](./(qwikcity)/guides/qwik-react/index.mdx)
+- [Лучшие практики](./(qwikcity)/guides/best-practices/index.mdx)
 
 ## Концепции
 
@@ -45,7 +46,6 @@
 - [Возобновляемый](./(qwik)/concepts/resumable/index.mdx)
 - [Прогрессивный](./(qwik)/concepts/progressive/index.mdx)
 - [Реактивность](./(qwik)/concepts/reactivity/index.mdx)
-- [Сериализация](./(qwik)/cheat/serialization/index.mdx)
 
 ## Дополнительно
 
