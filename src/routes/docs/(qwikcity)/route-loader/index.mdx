@@ -18,19 +18,10 @@ contributors:
 // src/routes/layout.tsx
 import { routeLoader$ } from '@builder.io/qwik-city';
 
-export const getProductData = routeLoader$(async () => {
-  // Добавьте сюда код получения данных (fetch, DB, Firebase и т.д.).
-  // const res = await fetch('https://.../product')
-  // const products = await res.json()
-  // return products;
-
-  // Мы в этом примере просто возвращаем данные.
-  return {
-    product: {
-      name: 'Qwik City',
-      price: 100,
-    },
-  };
+export const useProductData = routeLoader$(async () => {
+  const res = await fetch('https://.../products')
+  const product = await res.json()
+  return product;
 });
 ```
 
@@ -45,18 +36,18 @@ export const getProductData = routeLoader$(async () => {
 import { routeLoader$ } from '@builder.io/qwik-city';
 import { component$ } from '@builder.io/qwik';
 
-export const useGetServerTime = routeLoader$(async () => {
-  return {
-    time: Date.now(),
-  }
+export const useProductData = routeLoader$(async () => {
+  const res = await fetch('https://.../product')
+  const product = await res.json() as Product
+  return product;
 });
 
 export default component$(() => {
   // Получение реактивного сигнала данных загрузчика
-  const signal = useGetServerTime(); // Signal<{time: number}>
+  const signal = useProductData(); // Signal<Product>
   return (
     <div>
-      Время на сервере: {signal.value.time}
+      Наименование товара: {signal.value.product.name}
     </div>
   );
 });
@@ -75,14 +66,14 @@ import { component$ } from '@builder.io/qwik';
 import { routeLoader$ } from '@builder.io/qwik-city';
 import { Footer } from '../components/footer.tsx';
 
-export const useGetServerTime = routeLoader$(async () => {
-  return {
-    time: Date.now(),
-  }
+export const useProductData = routeLoader$(async () => {
+  const res = await fetch('https://.../product')
+  const product = await res.json() as Product
+  return product;
 });
 
 export default component$(() => {
-  const signal = useGetServerTime();
+  const signal = useProductData();
   return (
     <main>
       <Slot />
@@ -98,16 +89,16 @@ export default component$(() => {
 import { component$ } from '@builder.io/qwik';
 
 // Импорт загрузчика из макета
-import { useGetServerTime } from '../routes/layout.tsx';
+import { useProductData } from '../routes/layout.tsx';
 
 export const Footer = component$(() => {
   // Использование данных загрузчика
-  const signal = useGetServerTime();
-  return <footer>Время на сервере: {signal.value.time}</footer>;
+  const signal = useProductData();
+  return <footer>Наименование товара: {signal.value.product.name}</footer>;
 });
 ```
 
-Приведённый выше пример показывает использование `useGetServerTime()` в двух разных компонентах и в разных файлах. Это намеренное поведение.
+Приведённый выше пример показывает использование `useProductData()` в двух разных компонентах и в разных файлах. Это намеренное поведение.
 
 **Файл: `src/routes/admin/index.tsx`**
 
@@ -154,7 +145,7 @@ export default component$(() => {
 ```tsx
 import { routeLoader$ } from '@builder.io/qwik-city';
 
-export const useServerTime = routeLoader$(
+export const useProductRecommendations = routeLoader$(
   async ({headers, cookie, url, method, params}) => {
     console.log('Request headers:', headers);
     console.log('Request cookies:', cookie);
@@ -162,9 +153,11 @@ export const useServerTime = routeLoader$(
     console.log('Request method:', method);
     console.log('Request params:', params);
 
-    return {
-      time: Date.now()
-    }
+    // Используйте детали запроса для получения персонализированных данных
+    const res = fetch(`https://.../recommendations?user=${params.user}`)
+    const products = await res.json() as Product[]
+
+    return products
   }
 );
 ```

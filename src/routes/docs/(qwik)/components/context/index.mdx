@@ -22,7 +22,23 @@ API контекста Qwik состоит из 3 методов, импорти
 - [`useContextProvider(ctx: ContextId, value: VALUE): void`](#usecontextprovider)
 - [`useContext(ctx: ContextId): VALUE`](#usecontext)
 
-## Использование
+```tsx
+export const ThemeContext = createContextId('docs.theme-context');
+
+const Parent = component$(() => {
+  const themeStore = useSignal('dark');
+  useContextProvider(ThemeContext, themeStore)
+
+  return <Child />
+});
+
+const Child = component$(() => {
+  const theme = useContext(ThemeContext);
+  return <div>Тема: {theme.value}</div>;
+});
+```
+
+## Пример
 
 Давайте создадим глобальный контекст, который будет хранить состояние темы, используемой пользователем, и к которому любой компонент в дереве компонентов может получить доступ. Файл `root.tsx` будет выступать в качестве компонента `Parent`, а другие файлы/страницы будут `Child`-компонентами.
 
@@ -44,35 +60,20 @@ export type Theme = 'dark' | 'light';
 // Создаём новый дескриптор контекста.
 export const ThemeContext = createContextId<Theme>('io.builder.qwik.docs.theme-context');
 
-export default component$(() => {
+const Parent = component$(() => {
   // Создаём реактивное состояние.
   const themeStore = useSignal<Theme>('dark');
 
   // Присваиваем значение (state) состоянию (ThemeContext).
   useContextProvider(ThemeContext, themeStore)
 
-  return (
-    // конфигурация по умолчанию
-    ...
-  );
+  return <Child />
 });
 
-// Файл: src/components/header/header.tsx
-export default component$(() => {
-
+const Child = component$(() => {
   // Получение ссылки на состояние с помощью ThemeContext.
   const theme = useContext(ThemeContext);
-
-  useStylesScoped$(`
-    .dark {
-      color: white;
-      background: black;
-    };
-    .white {
-      color: black;
-      background: white;
-    }
-  `);
+  useStylesScoped$(`.dark { color-scheme: dark; }`);
 
   return (
     <>
@@ -81,7 +82,11 @@ export default component$(() => {
       </h1>
       <button
         onClick$={() => {
-          theme.value == 'light' ? (theme.value = 'dark') : (theme.value = 'light');
+          if (theme.value == 'light') {
+            themeStore.value = 'dark';
+          } else {
+            themeStore.value = 'light';
+          }
         }}
       >
         Изменить тему

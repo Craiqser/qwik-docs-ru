@@ -73,7 +73,7 @@
       },
       {
         "id": "lite",
-        "title": "Облегчённые компоненты",
+        "title": "Встроенные компоненты",
         "enableHtmlOutput": true,
         "enableClientOutput": true,
         "enableSsrOutput": true

@@ -18,7 +18,7 @@
 - [Слоты](./(qwik)/components/projection/index.mdx)
 - [Рендер](./(qwik)/components/rendering/index.mdx)
 - [Стилизация](./(qwik)/components/styles/index.mdx)
-- [Легковесные компоненты](./(qwik)/components/lite-components/index.mdx)
+- [Встроенные компоненты](./(qwik)/components/inline-components/index.mdx)
 
 ## Маршрутизация (Qwik City)
 
