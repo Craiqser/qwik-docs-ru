@@ -15,20 +15,32 @@ contributors:
   - the-r3aper7
   - ahmadalfy
   - renomureza
+  - mhevery
 ---
+import CodeExample from '../../../../components/code-example/index.tsx';
+import Step_01 from 'source:/src/routes/demo/getting-started/01-route/index.tsx';
+import Step_02 from 'source:/src/routes/demo/getting-started/02-loading-data/index.tsx';
+import Step_03 from 'source:/src/routes/demo/getting-started/03-posting-data/index.tsx';
+import Step_04 from 'source:/src/routes/demo/getting-started/04-state/index.tsx';
+import Step_05 from 'source:/src/routes/demo/getting-started/05-tasks/index.tsx';
+import Step_06 from 'source:/src/routes/demo/getting-started/06-styling/index.tsx';
 
 # Начало работы с Qwik
 
-Qwik - это новый вид фреймворка, который является [возобновляемым](../concepts/resumable/index.mdx) (без JS и гидратации), современным и [знакомым для разработчиков на React](/docs/(qwikcity)/guides/qwik-react/index.mdx).
+Qwik - это новый вид фреймворка, который является [возобновляемым](../concepts/resumable/index.mdx) (без JS и гидратации), современным и [знакомым для разработчиков на React](/docs/guides/qwik-react/).
+
+Если вы хотите попробовать его прямо сейчас, попробуйте наши песочницы в браузере:
 
 - [Stackblitz Qwik + Vite](https://qwik.new)
-- [Песочница с примерами](/examples/reactivity/counter/)
+- [Песочница с примерами](/examples/reactivity/counter/) (только Qwik (без маршрутизации))
 
 ## Подготовка
 
+Если вы хотите начать работу с Qwik на своём компьютере, вам понадобится следующее:
+
 - [Node.js v16.8](https://nodejs.org/en/download/) или выше
-- Ваша любимая IDE (рекомендуется [VSCode](https://code.visualstudio.com/))
-- Начните [думать как Qwik](./../think-qwik/index.mdx)
+- Ваша любимая IDE (рекомендуется [vscode](https://code.visualstudio.com/))
+- По желанию вы можете прочитать [думай как Qwik](../think-qwik/index.mdx)
 
 ## Создание приложения с помощью CLI
 
@@ -60,7 +72,7 @@ yarn start
 
 Мы будем использовать https://icanhazdadjoke.com в качестве нашего API для получения случайной шутки. Мы создадим простое приложение, которое будет отображать случайную шутку и кнопку для получения новой шутки.
 
-## Создание маршрута
+## 01 Создание маршрута
 
 Всё начинается с обслуживания страницы по определённому маршруту. Итак, давайте создадим простое приложение, показывающее случайную шутку по маршруту `/joke/`. Qwikcity (мета-фреймворк Qwik) использует маршрутизацию [на основе директорий](/docs/routing/). Чтобы начать:
 
@@ -78,12 +90,13 @@ export default component$(() => {
 
 3. Перейдите по адресу `http://127.0.0.1:5173/joke/`, чтобы проверить, что ваша новая страница работает.
 
-ПРИМЕЧАНИЕ:
+> ПРИМЕЧАНИЕ:
+> - Ваш компонент по умолчанию `шуточного` маршрута вложен в существующий макет. Подробнее о том, что такое макеты и как с ними работать, смотрите раздел [Layout](/docs/layout/).
+> - Подробнее о том, как создавать компоненты, смотрите в разделе [Component API](/docs/(qwik)/components/overview/).
 
-- Ваш компонент по умолчанию `шуточного` маршрута вложен в существующий макет. Подробнее о том, что такое макеты и как с ними работать, смотрите раздел [Layout](/docs/layout/).
-- Подробнее о том, как создавать компоненты, смотрите в разделе [Component API](/docs/(qwik)/components/overview/).
+<CodeExample src={Step_01} sandboxStyle={{height: '6em'}}/>
 
-## Загрузка данных
+## 02 Загрузка данных
 
 Обычно страница загружает отображаемые пользователю данные. Это выполняется с помощью [загрузчиков маршрута](/docs/route-loader/).
 
@@ -124,40 +137,13 @@ export default component$(() => {
 - Функция, переданная в `routeLoader$`, немедленно вызывается на сервере перед рендером любого компонента и отвечает за загрузку данных;
 - `routeLoader$` возвращает use-хук (`useDadJoke`), который может быть использован в компоненте для получения данных сервера.
 
-ПРИМЕЧАНИЕ:
+> **ПРИМЕЧАНИЕ**:
+> - Функция `routeLoader$` немедленно вызывается на сервере перед рендером любого компонента, даже если ее use-хук не вызывается ни в одном компоненте;
+> - Тип возврата `routeLoader$` вычисляется в компоненте без необходимости получения дополнительной информации о типе.
 
-- Функция `routeLoader$` немедленно вызывается на сервере перед рендером любого компонента, даже если ее use-хук не вызывается ни в одном компоненте;
-- Тип возврата `routeLoader$` вычисляется в компоненте без необходимости получения дополнительной информации о типе.
+<CodeExample src={Step_02} sandboxStyle={{height: '6em'}}/>
 
-<details>
-  <summary>Файл: `src/routes/joke/index.tsx`:</summary>
-```tsx
-import { component$ } from "@builder.io/qwik";
-import { routeLoader$ } from "@builder.io/qwik-city";
-
-const useDadJoke = routeLoader$(async () => {
-  const response = await fetch("https://icanhazdadjoke.com/", {
-    headers: { Accept: "application/json" },
-  });
-  return (await response.json()) as {
-    id: string;
-    status: number;
-    joke: string;
-  };
-});
-
-export default component$(() => {
-  const dadJokeSignal = useDadJoke();
-  return (
-    <div class="section bright">
-      <div>{dadJokeSignal.value.joke}</div>
-    </div>
-  );
-});
-```
-</details>
-
-## Отправка данных на сервер
+## 03 Отправка данных на сервер
 
 Ранее мы использовали `routeLoader$` для отправки данных с сервера на клиент. Мы используем [`routeAction$`](/docs/action/) для передачи (отправки) данных с клиента обратно на сервер.
 
@@ -209,60 +195,14 @@ export default component$(() => {
 - `Form` - это удобный компонент, который оборачивает нативный элемент `<form>` браузера.
 
 Обратите внимание:
+
   - Для проверки смотрите [zod validation](/docs/action/#zod-validation).
   - Функция `routeAction$` работает, даже если JavaScript отключен.
   - Если JavaScript включён, компонент `Form` не позволит браузеру отправить форму, а вместо этого отправит данные с помощью JavaScript и будет эмулировать поведение нативной формы браузера без полного обновления.
 
-<details>
-  <summary>Файл: `src/routes/joke/index.tsx`:</summary>
-```tsx
-import { component$ } from "@builder.io/qwik";
-import {
-  routeLoader$,
-  Form,
-  routeAction$,
-  server$,
-} from "@builder.io/qwik-city";
+<CodeExample src={Step_03} sandboxStyle={{height: '8em'}}/>
 
-const useDadJoke = routeLoader$(async () => {
-  const response = await fetch("https://icanhazdadjoke.com/", {
-    headers: { Accept: "application/json" },
-  });
-  return (await response.json()) as {
-    id: string;
-    status: number;
-    joke: string;
-  };
-});
-
-const useJokeVoteAction = routeAction$((props) => {
-  console.log("VOTE", props);
-});
-
-export default component$(() => {
-  const dadJokeSignal = useDadJoke();
-  const favoriteJokeAction = useJokeVoteAction();
-  return (
-    <div class="section bright">
-      <div>
-        {dadJokeSignal.value.joke}
-      </div>
-      <Form action={favoriteJokeAction}>
-        <input type="hidden" name="jokeID" value={dadJokeSignal.value.id} />
-        <button name="vote" value="up">
-          👍
-        </button>
-        <button name="vote" value="down">
-          👎
-        </button>
-      </Form>
-    </div>
-  );
-});
-```
-</details>
-
-## Изменение состояния
+## 04 Изменение состояния
 
 Отслеживание состояния и обновление пользовательского интерфейса является основной частью работы приложений. Qwik предоставляет хук `useSignal` для отслеживания состояния приложения. Для получения дополнительной информации смотрите [управление состоянием](/docs/components/state/).
 
@@ -285,60 +225,9 @@ const isFavoriteSignal = useSignal(false);
 ПРИМЕЧАНИЕ:
 - Нажатие на кнопку приведет к обновлению состояния, и пользовательский интерфейс будет обновлен.
 
-<details>
-  <summary>Файл: `src/routes/joke/index.tsx`:</summary>
-```tsx
-import { component$, useSignal } from "@builder.io/qwik";
-import {
-  routeLoader$,
-  Form,
-  routeAction$,
-  server$,
-} from "@builder.io/qwik-city";
+<CodeExample src={Step_04} sandboxStyle={{height: '10em'}}/>
 
-const useDadJoke = routeLoader$(async () => {
-  const response = await fetch("https://icanhazdadjoke.com/", {
-    headers: { Accept: "application/json" },
-  });
-  return (await response.json()) as {
-    id: string;
-    status: number;
-    joke: string;
-  };
-});
-
-const useJokeVoteAction = routeAction$((props) => {
-  console.log("VOTE", props);
-});
-
-export default component$(() => {
-  const isFavoriteSignal = useSignal(false);
-  const dadJokeSignal = useDadJoke();
-  const favoriteJokeAction = useJokeVoteAction();
-  return (
-    <div class="section bright">
-      <div>{dadJokeSignal.value.joke}</div>
-      <Form action={favoriteJokeAction}>
-        <input type="hidden" name="jokeID" value={dadJokeSignal.value.id} />
-        <button name="vote" value="up">
-          👍
-        </button>
-        <button name="vote" value="down">
-          👎
-        </button>
-      </Form>
-      <button
-        onClick$={() => (isFavoriteSignal.value = !isFavoriteSignal.value)}
-      >
-        {isFavoriteSignal.value ? "❤️" : "🤍"}
-      </button>
-    </div>
-  );
-});
-```
-</details>
-
-## Задачи и вызов серверного кода
+## 05 Задачи и вызов серверного кода
 
 В Qwik [задача](/docs/components/lifecycle/#use-usetask-when-you-need-to) - это работа, которая должна произойти при изменении состояния (аналогично хуку "effect" в других фреймворках). В этом примере мы будем использовать задачу для вызова кода на сервере.
 
@@ -384,67 +273,9 @@ useTask$(({ track }) => {
 - Во время SSR сервер выведет в лог `FAVORITE (isomorphic) false` и `FAVORITE (server) false`;
 - Когда пользователь взаимодействует с избранным, клиент выведет `FAVORITE (isomorphic) true`, и сервер выведет `FAVORITE (server) true`.
 
-<details>
-  <summary>Файл: `src/routes/joke/index.tsx`:</summary>
-```tsx
-import { component$, useSignal, useTask$ } from "@builder.io/qwik";
-import {
-  routeLoader$,
-  Form,
-  routeAction$,
-  server$,
-} from "@builder.io/qwik-city";
+<CodeExample src={Step_05} sandboxStyle={{height: '10em'}}/>
 
-const useDadJoke = routeLoader$(async () => {
-  const response = await fetch("https://icanhazdadjoke.com/", {
-    headers: { Accept: "application/json" },
-  });
-  return (await response.json()) as {
-    id: string;
-    status: number;
-    joke: string;
-  };
-});
-
-const useJokeVoteAction = routeAction$((props) => {
-  console.log("VOTE", props);
-});
-
-export default component$(() => {
-  const isFavoriteSignal = useSignal(false);
-  const dadJokeSignal = useDadJoke();
-  const favoriteJokeAction = useJokeVoteAction();
-  useTask$(({ track }) => {
-    track(isFavoriteSignal);
-    console.log("FAVORITE (isomorphic)", isFavoriteSignal.value);
-    server$(() => {
-      console.log("FAVORITE (server)", isFavoriteSignal.value);
-    })();
-  });
-  return (
-    <div class="section bright">
-      <div>{dadJokeSignal.value.joke}</div>
-      <Form action={favoriteJokeAction}>
-        <input type="hidden" name="jokeID" value={dadJokeSignal.value.id} />
-        <button name="vote" value="up">
-          👍
-        </button>
-        <button name="vote" value="down">
-          👎
-        </button>
-      </Form>
-      <button
-        onClick$={() => (isFavoriteSignal.value = !isFavoriteSignal.value)}
-      >
-        {isFavoriteSignal.value ? "❤️" : "🤍"}
-      </button>
-    </div>
-  );
-});
-```
-</details>
-
-## Стилизация
+## 06 Стилизация
 
 Стилизация - важная часть любого приложения. Qwik предоставляет способ ассоциировать и ограничить стили вашим компонентом.
 
@@ -480,87 +311,9 @@ useStylesScoped$(STYLES);
 - Вызов `useStylesScoped$` указывает Qwik ассоциировать стили только с этим компонентом;
 - Стили загружаются только в том случае, если они ещё не вставлены SSR, и только для первого компонента.
 
-<details>
-  <summary>Файл: `src/routes/joke/index.css`:</summary>
-```css
-div {
-  font-weight: bold;
-}
+<CodeExample src={Step_06} sandboxStyle={{height: '10em'}}/>
 
-form {
-  float: right;
-}
-```
-</details>
-
-<details>
-  <summary>Файл: `src/routes/joke/index.tsx`:</summary>
-```tsx
-import {
-  component$,
-  useSignal,
-  useStylesScoped$,
-  useTask$,
-} from "@builder.io/qwik";
-import {
-  routeLoader$,
-  Form,
-  routeAction$,
-  server$,
-} from "@builder.io/qwik-city";
-import STYLES from "./index.css?inline";
-
-const useDadJoke = routeLoader$(async () => {
-  const response = await fetch("https://icanhazdadjoke.com/", {
-    headers: { Accept: "application/json" },
-  });
-  return (await response.json()) as {
-    id: string;
-    status: number;
-    joke: string;
-  };
-});
-
-const useJokeVoteAction = routeAction$((props) => {
-  console.log("VOTE", props);
-});
-
-export default component$(() => {
-  useStylesScoped$(STYLES);
-  const isFavoriteSignal = useSignal(false);
-  const dadJokeSignal = useDadJoke();
-  const favoriteJokeAction = useJokeVoteAction();
-  useTask$(({ track }) => {
-    track(isFavoriteSignal);
-    console.log("FAVORITE (isomorphic)", isFavoriteSignal.value);
-    server$(() => {
-      console.log("FAVORITE (server)", isFavoriteSignal.value);
-    })();
-  });
-  return (
-    <div class="section bright">
-      <div>{dadJokeSignal.value.joke}</div>
-      <Form action={favoriteJokeAction}>
-        <input type="hidden" name="jokeID" value={dadJokeSignal.value.id} />
-        <button name="vote" value="up">
-          👍
-        </button>
-        <button name="vote" value="down">
-          👎
-        </button>
-      </Form>
-      <button
-        onClick$={() => (isFavoriteSignal.value = !isFavoriteSignal.value)}
-      >
-        {isFavoriteSignal.value ? "❤️" : "🤍"}
-      </button>
-    </div>
-  );
-});
-```
-</details>
-
-## Предварительный просмотр
+## 07 Предварительный просмотр
 
 Мы создали очень простое приложение, которое дало вам обзор ключевых концепций Qwik и API. Приложение работает в режиме dev, который использует горячую модульную перезагрузку (HMR) для непрерывного обновления приложения при изменении кода.
 

@@ -12,6 +12,7 @@
 - [Обзор](./(qwik)/components/overview/index.mdx)
 - [Состояние](./(qwik)/components/state/index.mdx)
 - [События](./(qwik)/components/events/index.mdx)
+- [Задачи](./(qwik)/components/tasks/index.mdx)
 - [Жизненный цикл](./(qwik)/components/lifecycle/index.mdx)
 - [Контекст](./(qwik)/components/context/index.mdx)
 - [Ресурсы](./(qwik)/components/resource/index.mdx)
