@@ -1,5 +1,21 @@
 [
   {
+    "title": "Wope: The New Era Of Rank Tracking",
+    "imgSrc": "/showcases/wope_com_.webp",
+    "perf": {
+      "score": 0.81,
+      "fcpDisplay": "1.4 s",
+      "fcpScore": 0.97,
+      "lcpDisplay": "2.3 s",
+      "lcpScore": 0.93,
+      "ttiDisplay": "8.7 s",
+      "ttiScore": 0.36,
+      "ttiTime": 8739.518749384173
+    },
+    "href": "https://wope.com/",
+    "tags": "sass"
+  },
+  {
     "title": "Builder.io - Drag and drop Visual CMS",
     "imgSrc": "/showcases/www_builder_io_.webp",
     "perf": {
@@ -289,6 +305,22 @@
       "ttiTime": 1264.509
     },
     "tags": "portfolio"
+  },
+  {
+    "title": "Blackflag Labs",
+    "imgSrc": "/showcases/www_blackflag_dev_.webp",
+    "perf": {
+      "score": 1,
+      "fcpDisplay": "0.8 s",
+      "fcpScore": 1,
+      "lcpDisplay": "0.8 s",
+      "lcpScore": 1,
+      "ttiDisplay": "0.8 s",
+      "ttiScore": 1,
+      "ttiTime": 841.993
+    },
+    "href": "https://www.blackflag.dev/",
+    "tags": "site"
   },
   {
     "title": "Framework reimagined for the edge! - Qwik",
