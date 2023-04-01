@@ -1,4 +1,5 @@
 import { component$, useSignal, useTask$ } from '@builder.io/qwik';
+import { isServer } from '@builder.io/qwik/build';
 
 export default component$(() => {
   const isUppercase = useSignal(false);
@@ -9,14 +10,17 @@ export default component$(() => {
     const value = track(() =>
       isUppercase.value ? text.value.toUpperCase() : text.value.toLowerCase()
     );
-    delay(500).then(() => (delayText.value = value));
+    const update = () => (delayText.value = value);
+    isServer
+      ? update() // Во время рендера на сервере задержку не делаем.
+      : delay(500).then(update); // Задержка в браузере.
   });
 
   return (
     <div>
-      Enter text: <input bind:value={text} />
-      Is uppercase? <input type="checkbox" bind:checked={isUppercase} />
-      <div>Delay text: {delayText}</div>
+      Введите текст: <input bind:value={text} />
+      Является прописным? <input type="checkbox" bind:checked={isUppercase} />
+      <div>Текст с задержкой: {delayText}</div>
     </div>
   );
 });

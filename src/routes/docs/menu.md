@@ -12,14 +12,12 @@
 - [Обзор](./(qwik)/components/overview/index.mdx)
 - [Состояние](./(qwik)/components/state/index.mdx)
 - [События](./(qwik)/components/events/index.mdx)
-- [Задачи](./(qwik)/components/tasks/index.mdx)
-- [Жизненный цикл](./(qwik)/components/lifecycle/index.mdx)
+- [Задачи/Жизненный цикл](./(qwik)/components/tasks/index.mdx)
 - [Контекст](./(qwik)/components/context/index.mdx)
 - [Ресурсы](./(qwik)/components/resource/index.mdx)
 - [Слоты](./(qwik)/components/projection/index.mdx)
 - [Рендер](./(qwik)/components/rendering/index.mdx)
 - [Стилизация](./(qwik)/components/styles/index.mdx)
-- [Встроенные компоненты](./(qwik)/components/inline-components/index.mdx)
 
 ## Маршрутизация (Qwik City)
 

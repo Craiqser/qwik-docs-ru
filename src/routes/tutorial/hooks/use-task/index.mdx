@@ -5,14 +5,14 @@ contributors:
   - adamdbradley
 ---
 
-Используйте [`useTask$()`](/docs/(qwik)/components/lifecycle/index.mdx#usetask) для выполнения функции перед начальным рендером и при каждом изменении отслеживаемых значений. Функция выполняется перед рендером, но она не может задержать рендер, поэтому если [`useTask$()`](/docs/(qwik)/components/lifecycle/index.mdx#usetask) является асинхронной, рендер произойдет до того, как [`useTask$()`](/docs/(qwik)/components/lifecycle/index.mdx#usetask) будет полностью выполнена.
+Используйте [`useTask$()`](/docs/(qwik)/components/tasks/index.mdx#usetask) для выполнения функции перед начальным рендером и при каждом изменении отслеживаемых значений. Функция выполняется перед рендером, но она не может задержать рендер, поэтому если [`useTask$()`](/docs/(qwik)/components/tasks/index.mdx#usetask) является асинхронной, рендер произойдет до того, как [`useTask$()`](/docs/(qwik)/components/tasks/index.mdx#usetask) будет полностью выполнена.
 
 ## Отслеживание изменений в хранилище
 
-Хук [`useTask$()`](/docs/(qwik)/components/lifecycle/index.mdx#usetask) получает функцию `track()`, используемую для настройки подписок, которые будут автоматически повторять хук [`useTask$()`](/docs/(qwik)/components/lifecycle/index.mdx#usetask). Набор свойств `track()` сбрасывается при каждом выполнении [`useTask$()`](/docs/(qwik)/components/lifecycle/index.mdx#usetask), поэтому важно всегда использовать `track()` для настройки подписок заново. Из-за этого [`useTask$()`](/docs/(qwik)/components/lifecycle/index.mdx#usetask) может подписываться на разные свойства с течением времени.
+Хук [`useTask$()`](/docs/(qwik)/components/tasks/index.mdx#usetask) получает функцию `track()`, используемую для настройки подписок, которые будут автоматически повторять хук [`useTask$()`](/docs/(qwik)/components/tasks/index.mdx#usetask). Набор свойств `track()` сбрасывается при каждом выполнении [`useTask$()`](/docs/(qwik)/components/tasks/index.mdx#usetask), поэтому важно всегда использовать `track()` для настройки подписок заново. Из-за этого [`useTask$()`](/docs/(qwik)/components/tasks/index.mdx#usetask) может подписываться на разные свойства с течением времени.
 
 ## Очистка
 
-Хук [`useTask$()`](/docs/(qwik)/components/lifecycle/index.mdx#usetask) может вернуть функцию обратного вызова для очистки. Это полезно для очистки любых ресурсов перед новым выполнением.
+Хук [`useTask$()`](/docs/(qwik)/components/tasks/index.mdx#usetask) может вернуть функцию обратного вызова для очистки. Это полезно для очистки любых ресурсов перед новым выполнением.
 
 ### Пример

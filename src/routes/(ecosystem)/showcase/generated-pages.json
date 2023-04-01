@@ -498,5 +498,21 @@
     },
     "href": "https://travelcalc.pages.dev",
     "tags": "app"
+  },
+  {
+    "title": "upester",
+    "imgSrc": "/showcases/upester_com.webp",
+    "perf": {
+      "score": 0.85,
+      "fcpDisplay": "2.8 s",
+      "fcpScore": 0.58,
+      "lcpDisplay": "2.9 s",
+      "lcpScore": 0.8,
+      "ttiDisplay": "5.7 s",
+      "ttiScore": 0.67,
+      "ttiTime": 5747.51933502256
+    },
+    "href": "https://upester.com",
+    "tags": "app"
   }
 ]
