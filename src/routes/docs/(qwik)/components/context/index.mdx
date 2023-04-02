@@ -27,9 +27,9 @@ export const ThemeContext = createContextId('docs.theme-context');
 
 const Parent = component$(() => {
   const themeStore = useSignal('dark');
-  useContextProvider(ThemeContext, themeStore)
+  useContextProvider(ThemeContext, themeStore);
 
-  return <Child />
+  return <Child />;
 });
 
 const Child = component$(() => {
@@ -65,9 +65,9 @@ const Parent = component$(() => {
   const themeStore = useSignal<Theme>('dark');
 
   // Присваиваем значение (state) состоянию (ThemeContext).
-  useContextProvider(ThemeContext, themeStore)
+  useContextProvider(ThemeContext, themeStore);
 
-  return <Child />
+  return <Child />;
 });
 
 const Child = component$(() => {

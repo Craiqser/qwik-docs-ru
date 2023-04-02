@@ -17,7 +17,8 @@ contributors:
   - renomureza
   - mhevery
 ---
-import CodeExample from '../../../../components/code-example/index.tsx';
+
+import CodeSandbox from '../../../../components/code-sandbox/index.tsx';
 import Step_01 from 'source:/src/routes/demo/getting-started/01-route/index.tsx';
 import Step_02 from 'source:/src/routes/demo/getting-started/02-loading-data/index.tsx';
 import Step_03 from 'source:/src/routes/demo/getting-started/03-posting-data/index.tsx';
@@ -91,10 +92,19 @@ export default component$(() => {
 3. Перейдите по адресу `http://127.0.0.1:5173/joke/`, чтобы проверить, что ваша новая страница работает.
 
 > ПРИМЕЧАНИЕ:
+>
 > - Ваш компонент по умолчанию `шуточного` маршрута вложен в существующий макет. Подробнее о том, что такое макеты и как с ними работать, смотрите раздел [Layout](/docs/layout/).
 > - Подробнее о том, как создавать компоненты, смотрите в разделе [Component API](/docs/(qwik)/components/overview/).
 
-<CodeExample src={Step_01} sandboxStyle={{height: '6em'}}/>
+```tsx
+import { component$ } from '@builder.io/qwik';
+
+export default component$(() => {
+  return <div class="section bright">Шутка!</div>;
+});
+```
+
+<CodeSandbox src={Step_01} sandboxStyle={{ height: '6em' }} />
 
 ## 2 Загрузка данных
 
@@ -103,9 +113,9 @@ export default component$(() => {
 1. Откройте файл `src/routes/joke/index.tsx` и добавьте этот код:
 
 ```tsx
-import { routeLoader$ } from "@builder.io/qwik-city";
+import { routeLoader$ } from '@builder.io/qwik-city';
 
-const useDadJoke = routeLoader$(async () => {
+export const useDadJoke = routeLoader$(async () => {
   const response = await fetch("https://icanhazdadjoke.com/", {
     headers: { Accept: "application/json" },
   });
@@ -138,10 +148,36 @@ export default component$(() => {
 - `routeLoader$` возвращает use-хук (`useDadJoke`), который может быть использован в компоненте для получения данных сервера.
 
 > **ПРИМЕЧАНИЕ**:
+>
 > - Функция `routeLoader$` немедленно вызывается на сервере перед рендером любого компонента, даже если ее use-хук не вызывается ни в одном компоненте;
 > - Тип возврата `routeLoader$` вычисляется в компоненте без необходимости получения дополнительной информации о типе.
 
-<CodeExample src={Step_02} sandboxStyle={{height: '6em'}}/>
+```tsx
+import { component$ } from '@builder.io/qwik';
+import { routeLoader$ } from '@builder.io/qwik-city';
+
+const useDadJoke = routeLoader$(async () => {
+  const response = await fetch('https://icanhazdadjoke.com/', {
+    headers: { Accept: 'application/json' },
+  });
+  return (await response.json()) as {
+    id: string;
+    status: number;
+    joke: string;
+  };
+});
+
+export default component$(() => {
+  const dadJokeSignal = useDadJoke();
+  return (
+    <div class="section bright">
+      <div>{dadJokeSignal.value.joke}</div>
+    </div>
+  );
+});
+```
+
+<CodeSandbox src={Step_02} sandboxStyle={{ height: '6em' }} />
 
 ## 3 Отправка данных на сервер
 
@@ -156,7 +192,7 @@ export default component$(() => {
 ```tsx
 import {routeAction$, Form} from "@builder.io/qwik-city";
 
-const useJokeVoteAction = routeAction$((props) => {
+export const useJokeVoteAction = routeAction$((props) => {
   // Предоставляем читателю реализовать это самостоятельно в качестве упражнения.
   console.log("VOTE", props);
 });
@@ -200,7 +236,47 @@ export default component$(() => {
   - Функция `routeAction$` работает, даже если JavaScript отключен.
   - Если JavaScript включён, компонент `Form` не позволит браузеру отправить форму, а вместо этого отправит данные с помощью JavaScript и будет эмулировать поведение нативной формы браузера без полного обновления.
 
-<CodeExample src={Step_03} sandboxStyle={{height: '8em'}}/>
+```tsx
+/* eslint-disable no-console */
+import { component$ } from '@builder.io/qwik';
+import { routeLoader$, Form, routeAction$, server$ } from '@builder.io/qwik-city';
+
+const useDadJoke = routeLoader$(async () => {
+  const response = await fetch('https://icanhazdadjoke.com/', {
+    headers: { Accept: 'application/json' },
+  });
+  return (await response.json()) as {
+    id: string;
+    status: number;
+    joke: string;
+  };
+});
+
+const useJokeVoteAction = routeAction$((props) => {
+  console.log('VOTE', props);
+});
+
+export default component$(() => {
+  const dadJokeSignal = useDadJoke();
+  const favoriteJokeAction = useJokeVoteAction();
+  return (
+    <div class="section bright">
+      <div>{dadJokeSignal.value.joke}</div>
+      <Form action={favoriteJokeAction}>
+        <input type="hidden" name="jokeID" value={dadJokeSignal.value.id} />
+        <button name="vote" value="up">
+          👍
+        </button>
+        <button name="vote" value="down">
+          👎
+        </button>
+      </Form>
+    </div>
+  );
+});
+```
+
+<CodeSandbox src={Step_03} sandboxStyle={{ height: '8em' }} />
 
 ## 4 Изменение состояния
 
@@ -223,9 +299,61 @@ const isFavoriteSignal = useSignal(false);
 ```
 
 ПРИМЕЧАНИЕ:
+
 - Нажатие на кнопку приведет к обновлению состояния, и пользовательский интерфейс будет обновлен.
 
-<CodeExample src={Step_04} sandboxStyle={{height: '10em'}}/>
+```tsx
+/* eslint-disable no-console */
+import { component$, useSignal, useTask$ } from '@builder.io/qwik';
+import { routeLoader$, Form, routeAction$, server$ } from '@builder.io/qwik-city';
+
+const useDadJoke = routeLoader$(async () => {
+  const response = await fetch('https://icanhazdadjoke.com/', {
+    headers: { Accept: 'application/json' },
+  });
+  return (await response.json()) as {
+    id: string;
+    status: number;
+    joke: string;
+  };
+});
+
+const useJokeVoteAction = routeAction$((props) => {
+  console.log('VOTE', props);
+});
+
+export default component$(() => {
+  const isFavoriteSignal = useSignal(false);
+  const dadJokeSignal = useDadJoke();
+  const favoriteJokeAction = useJokeVoteAction();
+  useTask$(({ track }) => {
+    track(isFavoriteSignal);
+    console.log('FAVORITE (isomorphic)', isFavoriteSignal.value);
+    server$(() => {
+      console.log('FAVORITE (server)', isFavoriteSignal.value);
+    })();
+  });
+  return (
+    <div class="section bright">
+      <div>{dadJokeSignal.value.joke}</div>
+      <Form action={favoriteJokeAction}>
+        <input type="hidden" name="jokeID" value={dadJokeSignal.value.id} />
+        <button name="vote" value="up">
+          👍
+        </button>
+        <button name="vote" value="down">
+          👎
+        </button>
+      </Form>
+      <button onClick$={() => (isFavoriteSignal.value = !isFavoriteSignal.value)}>
+        {isFavoriteSignal.value ? '❤️' : '🤍'}
+      </button>
+    </div>
+  );
+});
+```
+
+<CodeSandbox src={Step_04} sandboxStyle={{ height: '10em' }} />
 
 ## 5 Задачи и вызов серверного кода
 
@@ -234,8 +362,7 @@ const isFavoriteSignal = useSignal(false);
 1. Создайте новую задачу, которая отслеживает состояние `isFavoriteSignal`:
 
 ```tsx
-useTask$(({ track }) => {
-});
+useTask$(({ track }) => {});
 ```
 
 2. Добавьте вызов `track` для повторного выполнения задачи при изменении состояния `isFavoriteSignal`:
@@ -273,7 +400,58 @@ useTask$(({ track }) => {
 - Во время SSR сервер выведет в лог `FAVORITE (isomorphic) false` и `FAVORITE (server) false`;
 - Когда пользователь взаимодействует с избранным, клиент выведет `FAVORITE (isomorphic) true`, и сервер выведет `FAVORITE (server) true`.
 
-<CodeExample src={Step_05} sandboxStyle={{height: '10em'}}/>
+```tsx
+/* eslint-disable no-console */
+import { component$, useSignal, useTask$ } from '@builder.io/qwik';
+import { routeLoader$, Form, routeAction$, server$ } from '@builder.io/qwik-city';
+
+const useDadJoke = routeLoader$(async () => {
+  const response = await fetch('https://icanhazdadjoke.com/', {
+    headers: { Accept: 'application/json' },
+  });
+  return (await response.json()) as {
+    id: string;
+    status: number;
+    joke: string;
+  };
+});
+
+const useJokeVoteAction = routeAction$((props) => {
+  console.log('VOTE', props);
+});
+
+export default component$(() => {
+  const isFavoriteSignal = useSignal(false);
+  const dadJokeSignal = useDadJoke();
+  const favoriteJokeAction = useJokeVoteAction();
+  useTask$(({ track }) => {
+    track(isFavoriteSignal);
+    console.log('FAVORITE (isomorphic)', isFavoriteSignal.value);
+    server$(() => {
+      console.log('FAVORITE (server)', isFavoriteSignal.value);
+    })();
+  });
+  return (
+    <div class="section bright">
+      <div>{dadJokeSignal.value.joke}</div>
+      <Form action={favoriteJokeAction}>
+        <input type="hidden" name="jokeID" value={dadJokeSignal.value.id} />
+        <button name="vote" value="up">
+          👍
+        </button>
+        <button name="vote" value="down">
+          👎
+        </button>
+      </Form>
+      <button onClick$={() => (isFavoriteSignal.value = !isFavoriteSignal.value)}>
+        {isFavoriteSignal.value ? '❤️' : '🤍'}
+      </button>
+    </div>
+  );
+});
+```
+
+<CodeSandbox src={Step_05} sandboxStyle={{ height: '10em' }} />
 
 ## 6 Стилизация
 
@@ -311,13 +489,67 @@ useStylesScoped$(STYLES);
 - Вызов `useStylesScoped$` указывает Qwik ассоциировать стили только с этим компонентом;
 - Стили загружаются только в том случае, если они ещё не вставлены SSR, и только для первого компонента.
 
-<CodeExample src={Step_06} sandboxStyle={{height: '10em'}}/>
+```tsx
+/* eslint-disable no-console */
+import { component$, useSignal, useStylesScoped$, useTask$ } from '@builder.io/qwik';
+import { routeLoader$, Form, routeAction$, server$ } from '@builder.io/qwik-city';
+import STYLES from './index.css?inline';
+
+const useDadJoke = routeLoader$(async () => {
+  const response = await fetch('https://icanhazdadjoke.com/', {
+    headers: { Accept: 'application/json' },
+  });
+  return (await response.json()) as {
+    id: string;
+    status: number;
+    joke: string;
+  };
+});
+
+const useJokeVoteAction = routeAction$((props) => {
+  console.log('VOTE', props);
+});
+
+export default component$(() => {
+  useStylesScoped$(STYLES);
+  const isFavoriteSignal = useSignal(false);
+  const dadJokeSignal = useDadJoke();
+  const favoriteJokeAction = useJokeVoteAction();
+  useTask$(({ track }) => {
+    track(isFavoriteSignal);
+    console.log('FAVORITE (isomorphic)', isFavoriteSignal.value);
+    server$(() => {
+      console.log('FAVORITE (server)', isFavoriteSignal.value);
+    })();
+  });
+  return (
+    <div class="section bright">
+      <div>{dadJokeSignal.value.joke}</div>
+      <Form action={favoriteJokeAction}>
+        <input type="hidden" name="jokeID" value={dadJokeSignal.value.id} />
+        <button name="vote" value="up">
+          👍
+        </button>
+        <button name="vote" value="down">
+          👎
+        </button>
+      </Form>
+      <button onClick$={() => (isFavoriteSignal.value = !isFavoriteSignal.value)}>
+        {isFavoriteSignal.value ? '❤️' : '🤍'}
+      </button>
+    </div>
+  );
+});
+```
+
+<CodeSandbox src={Step_06} sandboxStyle={{ height: '10em' }} />
 
 ## 7 Предварительный просмотр
 
 Мы создали очень простое приложение, которое дало вам обзор ключевых концепций Qwik и API. Приложение работает в режиме dev, который использует горячую модульную перезагрузку (HMR) для непрерывного обновления приложения при изменении кода.
 
 В режиме разработки:
+
 - Каждый файл загружается отдельно, что может вызвать водопад на вкладке сети.
 - Спекулятивная загрузка бандлов отсутствует, поэтому при первом взаимодействии может возникнуть задержка.
 
@@ -336,11 +568,11 @@ useStylesScoped$(STYLES);
 
 Поздравляем! Вы справились. Этот обзор намеренно краток, чтобы ознакомить вас с различными частями Qwik. Мы рекомендуем вам глубоко погрузиться в вышеупомянутые концепции, чтобы узнать больше. Вот несколько ключевых выводов:
 
-- [Структура проекта](/docs/project-structure/)
-- [Маршрутизация на основе каталогов](/docs/routing/)
-- [Компонент](/docs/(qwik)/components/overview/)
-- [Загрузчики маршрута](/docs/route-loader/)
-- [Действия формы](/docs/action/) (и [валидация с помощью zod](/docs/action/#zod-validation))
-- [Управление состоянием](/docs/components/state/)
-- [Задачи](/docs/components/tasks/#usetask)
-- [Кеш сервис-воркера](/docs/advanced/speculative-module-fetching/)
+- [Структура проекта](/docs/(qwikcity)/project-structure/index.mdx)
+- [Маршрутизация на основе каталогов](/docs/(qwikcity)/routing/index.mdx)
+- [Компонент](/docs/(qwik)/components/overview/index.mdx)
+- [Загрузчики маршрута](/docs/(qwikcity)/route-loader/index.mdx)
+- [Действия формы](/docs/(qwikcity)/action/index.mdx) (и [валидация с помощью zod](/docs/(qwikcity)/action/index.mdx#zod-validation))
+- [Управление состоянием](/docs/(qwik)/components/state/index.mdx)
+- [Задачи](/docs/(qwik)/components/tasks/index.mdx#use-usetask-when-you-need-to)
+- [Кеш сервис-воркера](/docs/(qwik)/advanced/index.mdxspeculative-module-fetching/)

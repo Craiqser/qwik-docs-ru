@@ -23,7 +23,8 @@ contributors:
   - adamdbradley
   - mhevery
 ---
-import CodeExample from '../../../../../components/code-example/index.tsx';
+
+import CodeSandbox from '../../../../../components/code-sandbox/index.tsx';
 import CounterSignal from 'source:/src/routes/demo/state/counter-signal/index.tsx';
 import CounterStore from 'source:/src/routes/demo/state/counter-store/index.tsx';
 import CounterStoreNoTrack from 'source:/src/routes/demo/state/counter-store-no-track/index.tsx';
@@ -53,7 +54,22 @@ import NoSerialize from 'source:/src/routes/demo/state/no-serialize/index.tsx';
 
 Этот пример показывает, как `useSignal()` может быть использован в компоненте счётчика для отслеживания счёта.
 
-<CodeExample src={CounterSignal} sandboxStyle={{height: '6em'}}/>
+```tsx
+import { component$, useSignal } from '@builder.io/qwik';
+
+export default component$(() => {
+  const count = useSignal(0);
+
+  return (
+    <>
+      <button onClick$={() => count.value++}>Increment</button>
+      <div>Count: {count.value}</div>
+    </>
+  );
+});
+```
+
+<CodeSandbox src={CounterSignal} sandboxStyle={{ height: '6em' }} />
 
 Изменение свойства `count.value` приведёт к автоматическому обновлению компонента. Например, когда свойство изменяется в обработчике нажатия кнопки, как в примере выше.
 
@@ -70,13 +86,51 @@ import NoSerialize from 'source:/src/routes/demo/state/no-serialize/index.tsx';
 
 Этот пример показывает, как `useStore()` можно использовать в компоненте счётчика для отслеживания счета.
 
-<CodeExample src={CounterStore} sandboxStyle={{height: '6em'}}/>
+```tsx
+import { component$, useStore } from '@builder.io/qwik';
+
+export default component$(() => {
+  const state = useStore({ count: 0 });
+
+  return (
+    <>
+      <button onClick$={() => state.count++}>Прибавить</button>
+      <div>Счёт: {state.count}</div>
+    </>
+  );
+});
+```
+
+<CodeSandbox src={CounterStore} sandboxStyle={{ height: '6em' }} />
 
 ### Рекурсивные значения
 
 По умолчанию [`useStore()`](./index.mdx#usestore) отслеживает свойства объекта состояния только на самом верхнем уровне. Это означает, что для регистрации обновления состояния необходимо обновить значения свойств верхнего уровня.
 
-<CodeExample src={CounterStoreNoTrack} sandboxStyle={{height: '10em'}}/>
+```tsx
+import { component$, useStore } from '@builder.io/qwik';
+
+export default component$(() => {
+  const store = useStore({
+    nested: { fields: { are: 'not tracked' } },
+  });
+
+  return (
+    <>
+      <p>{store.nested.fields.are}</p>
+      <button onClick$={() => (store.nested.fields.are = 'tracked')}>
+        Клик по мне не работает
+      </button>
+      <br />
+      <button onClick$={() => (store.nested = { fields: { are: 'tracked' } })}>
+        Клик по мне работает
+      </button>
+    </>
+  );
+});
+```
+
+<CodeSandbox src={CounterStoreNoTrack} sandboxStyle={{ height: '10em' }} />
 
 Для того чтобы обновления были зарегистрированы стратегией отслеживания по умолчанию, мы должны обновить поле верхнего уровня `nested` следующим образом:
 
@@ -86,7 +140,33 @@ store.nested = { fields: { are: { 'отслеживается' } } }
 
 Для того чтобы первый пример работал, мы можем передать в `useStore()` второй аргумент и указать ему использовать рекурсивное отслеживание всех свойств нашего состояния, независимо от глубины.
 
-<CodeExample src={CounterStoreDeep} sandboxStyle={{height: '10em'}}/>
+```tsx
+import { component$, useStore } from '@builder.io/qwik';
+
+export default component$(() => {
+  const store = useStore(
+    {
+      nested: { fields: { are: 'не отслеживается' } },
+    },
+    { deep: true }
+  );
+
+  return (
+    <>
+      <p>{store.nested.fields.are}</p>
+      <button onClick$={() => (store.nested.fields.are = 'отслеживается')}>
+        Клик работает, так как изменение состояния отслеживается рекурсивно
+      </button>
+      <br />
+      <button onClick$={() => (store.nested = { fields: { are: 'отслеживается' } })}>
+        Клик всё ещё работает
+      </button>
+    </>
+  );
+});
+```
+
+<CodeSandbox src={CounterStoreDeep} sandboxStyle={{ height: '10em' }} />
 
 Теперь компонент будет обновляться, как и ожидалось. Это также позволит отслеживать отдельные значения внутри массивов!
 
@@ -103,7 +183,26 @@ store.nested = { fields: { are: { 'отслеживается' } } }
 
 Самый простой способ передачи состояния другим компонентам - это передача через параметры.
 
-<CodeExample src={PassingProps} sandboxStyle={{height: '6em'}}/>
+```tsx
+import { component$, useStore } from '@builder.io/qwik';
+
+export default component$(() => {
+  const userData = useStore({ count: 0 });
+
+  return <Child userData={userData} />;
+});
+
+export const Child = component$<{ userData: { count: number } }>(({ userData }) => {
+  return (
+    <>
+      <button onClick$={() => userData.count++}>Прибавить</button>
+      <div>Счёт: {userData.count}</div>
+    </>
+  );
+});
+```
+
+<CodeSandbox src={PassingProps} sandboxStyle={{ height: '6em' }} />
 
 ### Использование контекста
 
@@ -111,7 +210,39 @@ API контекста - это способ передачи состояния
 
 Подробнее об этом можно прочитать в разделе [Контекст](./../context/index.mdx).
 
-<CodeExample src={PassingContext} sandboxStyle={{height: '6em'}}/>
+```tsx
+import {
+  component$,
+  createContextId,
+  useContext,
+  useContextProvider,
+  useStore,
+} from '@builder.io/qwik';
+
+// Объявление идентификатора контекста.
+export const CTX = createContextId<{ count: number }>('stuff');
+
+export default component$(() => {
+  const userData = useStore({ count: 0 });
+
+  // Предоставляем состояние контексту под идентификатором контекста
+  useContextProvider(CTX, userData);
+
+  return <Child />;
+});
+
+export const Child = component$(() => {
+  const userData = useContext(CTX);
+  return (
+    <>
+      <button onClick$={() => userData.count++}>Прибавить</button>
+      <div>Счёт: {userData.count}</div>
+    </>
+  );
+});
+```
+
+<CodeSandbox src={PassingContext} sandboxStyle={{ height: '6em' }} />
 
 ## Вычисляемые свойства
 
@@ -124,13 +255,30 @@ API контекста - это способ передачи состояния
 
 Вышеописанное можно представить так: они наблюдают за существующим состоянием, и когда состояние меняется, вычисленное значение пересчитывается. Результатом является новое вычисленное значение, которое является сигналом, возвращаемым из `useComputed$()` или `useResource$()`.
 
-Помимо двух описанных выше способов создания вычисляемых свойств, существует также более низкоуровневый ([`useTask$()`](/docs/(qwik)/components/tasks/index.mdx#usetask) и [`useVisibleTask$()`](/docs/components/tasks/index.mdx#usevisibletask)) способ модификации/создания состояния в результате изменения входа. Этот способ не производит новый сигнал, а скорее изменяет существующее состояние или производит побочный эффект.
+Помимо двух описанных выше способов создания вычисляемых свойств, существует также более низкоуровневый ([`useTask$()`](/docs/(qwik)/components/tasks/index.mdx#usetask) и [`useVisibleTask$()`](/docs/components/tasks/#usevisibletask)) способ модификации/создания состояния в результате изменения входа. Этот способ не производит новый сигнал, а скорее изменяет существующее состояние или производит побочный эффект.
 
 ### `useComputed$()`
 
 Используйте `useComputed$` для создания вычисляемого значения, которое может быть получено синхронно из существующего состояния приложения.
 
-<CodeExample src={Computed} sandboxStyle={{height: '8em'}}/>
+```tsx
+import { component$, useComputed$, useSignal } from '@builder.io/qwik';
+
+export default component$(() => {
+  const name = useSignal('Qwik');
+  const capitalizedName = useComputed$(() => name.value.toUpperCase());
+
+  return (
+    <>
+      <input type="text" bind:value={name} />
+      <div>Название: {name.value}</div>
+      <div>Название строчными: {capitalizedName.value}</div>
+    </>
+  );
+});
+```
+
+<CodeSandbox src={Computed} sandboxStyle={{ height: '8em' }} />
 
 > **ПРИМЕЧАНИЕ** Поскольку `useComputed$()` является синхронным, нет необходимости в явном отслеживании входных сигналов.
 
@@ -138,7 +286,38 @@ API контекста - это способ передачи состояния
 
 Используйте `useResource$()` для создания вычисляемого значения, которое выводится асинхронно или требует внешнего состояния (например, обращения к конечной точке REST).
 
-<CodeExample src={Resource} sandboxStyle={{height: '8em'}}/>
+```tsx
+import { component$, Resource, useResource$, useSignal } from '@builder.io/qwik';
+
+export default component$(() => {
+  const prNumber = useSignal('3576');
+
+  const prTitle = useResource$(async ({ track }) => {
+    track(prNumber); // Требуется явное отслеживание
+    const response = await fetch(
+      `https://api.github.com/repos/BuilderIO/qwik/pulls/${prNumber.value}`
+    );
+    const data = await response.json();
+    return (data.title || data.message || 'Error') as string;
+  });
+
+  return (
+    <>
+      <input type="number" bind:value={prNumber} />
+      <h1>
+        PR#{prNumber}:
+        <Resource
+          value={prTitle}
+          onPending={() => <>Загрузка...</>}
+          onResolved={(title) => <>{title}</>}
+        />
+      </h1>
+    </>
+  );
+});
+```
+
+<CodeSandbox src={Resource} sandboxStyle={{ height: '8em' }} />
 
 Можно использовать `useResource$()` без компонента `<Resource>`, но это не так удобно. Компонент `<Resource>` автоматически показывает предоставленное резервное содержимое во время вычисления ресурса.
 
@@ -153,8 +332,27 @@ API контекста - это способ передачи состояния
 
 ## `noSerialize()`
 
-Qwik гарантирует, что всё состояние приложения всегда сериализуемо. Это сделано для того, чтобы приложения Qwik имели свойство [возобновляемости](/docs/concepts/resumable/). Иногда необходимо хранить данные, которые нельзя сериализовать. Например, ссылку на стороннюю библиотеку, такую ​​как [редактор Monaco](https://microsoft.github.io/monaco-editor/). В такой ситуации используйте `noSerialize()`, чтобы пометить значение как несериализуемое.
+Qwik гарантирует, что всё состояние приложения всегда сериализуемо. Это важно для того, чтобы приложения Qwik имели свойство [возобновляемости](/docs/(qwik)/concepts/resumable/index.mdx). Иногда необходимо хранить данные, которые нельзя сериализовать. Например, ссылку на стороннюю библиотеку, такую ​​как [редактор Monaco](https://microsoft.github.io/monaco-editor/). В такой ситуации используйте `noSerialize()`, чтобы пометить значение как несериализуемое.
 
 Если значение помечено как несериализуемое, то это значение не подвергается событиям сериализации, таким как возобновление работы приложения на клиенте с сервера SSR. В такой ситуации значение будет установлено в `undefined`, и разработчик должен повторно инициализировать значение на клиенте.
 
-<CodeExample src={NoSerialize} sandboxStyle={{height: '8em'}}/>
+```tsx
+import { component$, useStore, noSerialize, useVisibleTask$ } from '@builder.io/qwik';
+import Monaco from './monaco';
+
+export default component$(() => {
+  const state = useStore<{ monacoInstance: Monaco | undefined }>({
+    // Не инициализировать на сервере.
+    monacoInstance: undefined,
+  });
+
+  useVisibleTask$(() => {
+    // Monaco не является сериализуемым, поэтому мы не можем сериализовать его как часть SSR.
+    // Однако мы можем инстанцировать его на клиенте после того, как компонент станет видимым.
+    setTimeout(() => (state.monacoInstance = noSerialize(new Monaco())), 1000);
+  });
+  return <div>{state.monacoInstance ? <>'Monaco загружен'</> : <>'загрузка...'</>}</div>;
+});
+```
+
+<CodeSandbox src={NoSerialize} sandboxStyle={{ height: '8em' }} />

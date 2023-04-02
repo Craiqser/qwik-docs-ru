@@ -19,8 +19,8 @@ contributors:
 import { routeLoader$ } from '@builder.io/qwik-city';
 
 export const useProductData = routeLoader$(async () => {
-  const res = await fetch('https://.../products')
-  const product = await res.json()
+  const res = await fetch('https://.../products');
+  const product = await res.json();
   return product;
 });
 ```
@@ -37,19 +37,15 @@ import { routeLoader$ } from '@builder.io/qwik-city';
 import { component$ } from '@builder.io/qwik';
 
 export const useProductData = routeLoader$(async () => {
-  const res = await fetch('https://.../product')
-  const product = await res.json() as Product
+  const res = await fetch('https://.../product');
+  const product = await res.json() as Product;
   return product;
 });
 
 export default component$(() => {
   // Получение реактивного сигнала данных загрузчика
   const signal = useProductData(); // Signal<Product>
-  return (
-    <div>
-      Наименование товара: {signal.value.product.name}
-    </div>
-  );
+  return <div>Наименование товара: {signal.value.product.name}</div>;
 });
 ```
 
@@ -67,8 +63,8 @@ import { routeLoader$ } from '@builder.io/qwik-city';
 import { Footer } from '../components/footer.tsx';
 
 export const useProductData = routeLoader$(async () => {
-  const res = await fetch('https://.../product')
-  const product = await res.json() as Product
+  const res = await fetch('https://.../product');
+  const product = await res.json() as Product;
   return product;
 });
 
@@ -146,7 +142,7 @@ export default component$(() => {
 import { routeLoader$ } from '@builder.io/qwik-city';
 
 export const useProductRecommendations = routeLoader$(
-  async ({headers, cookie, url, method, params}) => {
+  async ({ headers, cookie, url, method, params }) => {
     console.log('Request headers:', headers);
     console.log('Request cookies:', cookie);
     console.log('Request url:', url);
@@ -154,10 +150,10 @@ export const useProductRecommendations = routeLoader$(
     console.log('Request params:', params);
 
     // Используйте детали запроса для получения персонализированных данных
-    const res = fetch(`https://.../recommendations?user=${params.user}`)
-    const products = await res.json() as Product[]
+    const res = fetch(`https://.../recommendations?user=${params.user}`);
+    const products = await res.json() as Product[];
 
-    return products
+    return products;
   }
 );
 ```

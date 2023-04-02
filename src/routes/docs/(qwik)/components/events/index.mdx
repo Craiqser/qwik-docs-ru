@@ -12,7 +12,8 @@ contributors:
   - cunzaizhuyi
   - Pika-Pool
 ---
-import CodeExample from '../../../../../components/code-example/index.tsx';
+
+import CodeSandbox from '../../../../../components/code-sandbox/index.tsx';
 import CounterSignal from 'source:/src/routes/demo/state/counter-signal/index.tsx';
 import ExtractedHandler from 'source:/src/routes/demo/events/extracted-handler/index.tsx';
 import PreventDefault from 'source:/src/routes/demo/events/preventdefault/index.tsx';
@@ -25,45 +26,147 @@ import UseOn from 'source:/src/routes/demo/events/use-on/index.tsx';
 
 # События
 
-## Встроенный обработчик
+Для того чтобы веб-приложение было интерактивным, оно нуждается в реагировании на пользовательские события. Это делается путем регистрации функций обратного вызова в шаблоне JSX. Обработчики событий регистрируются с помощью атрибута `on{EventName}$`. Например, атрибут `onClick$` используется для прослушивания событий `click`.
 
-Для того чтобы веб-приложение было интерактивным, оно нуждается в реагировании на пользовательские события. Это делается путем регистрации функций обратного вызова в шаблоне JSX.
+```tsx
+<button onClick$={() => alert('CLICKED!')}>click me!</button>
+```
+
+## Встроенный обработчик
 
 В приведённом ниже примере атрибут `onClick$` элемента `<button>` используется, чтобы сообщить Qwik, что функция обратного вызова `() => store.count++` должна выполняться каждый раз, когда на элементе `<button>` происходит событие `click`.
 
-Обратите внимание, что `onClick$` оканчивается на [`$`](/docs/advanced/dollar/). Это подсказка как [оптимизатору](/docs/(qwik)/advanced/optimizer) так и разработчику о том, что в этом месте происходит специальное преобразование. Наличие суффикса `$` подразумевает здесь границу ленивой загрузки. Код, связанный с обработкой события `click`, не будет загружаться до тех пор, пока пользователь не запустит это событие.
+```tsx
+import { component$, useSignal } from '@builder.io/qwik';
 
-Код, связанный с обработчиком события `click`, не будет загружен в JavaScript VM до тех пор, пока пользователь не вызовет событие `click`, однако он будет сразу [загружен в кэш браузера](docs/advanced/speculative-module-fetching/), чтобы не вызывать задержек при первом взаимодействии.
+export default component$(() => {
+  const count = useSignal(0);
 
-<CodeExample src={CounterSignal} sandboxStyle={{height: '6em'}}/>
+  return (
+    <>
+      <button onClick$={() => count.value++}>Прибавить</button>
+      <div>Счёт: {count.value}</div>
+    </>
+  );
+});
+```
 
-В реальных приложениях слушатель может обращаться к сложному коду. Создавая границу ленивой загрузки (с помощью `$`), Qwik может древовидно встряхнуть весь код, расположенный в обработчике, и отложить его загрузку до тех пор, пока пользователь не нажмёт на кнопку.
+<CodeSandbox src={CounterSignal} sandboxStyle={{ height: '6em' }} />
 
-## Извлечение обработчика
+Обратите внимание, что `onClick$` оканчивается на [`$`](/docs/advanced/dollar/). Это подсказка как [оптимизатору](/docs/(qwik)/advanced/optimizer) так и разработчику о том, что в этом месте происходит специальное преобразование. Наличие суффикса `$` подразумевает здесь границу ленивой загрузки. Код, связанный с обработкой события `click`, не будет загружаться до тех пор, пока пользователь не запустит это событие. Код, связанный с обработчиком события `click`, не будет загружен в JavaScript VM до тех пор, пока пользователь не вызовет событие `click`, однако он будет сразу [загружен в кэш браузера](docs/advanced/speculative-module-fetching/), чтобы не вызывать задержек при первом взаимодействии.
 
-Другим вариантом является передача [QRL-выражения](/docs/(qwik)/advanced/qrl/) в качестве значения для слушателя событий. Например, приведённый выше пример можно записать следующим образом:
+> В реальных приложениях слушатель может обращаться к сложному коду. Создавая границу ленивой загрузки (с помощью `$`), Qwik может тришейкнуть весь код, расположенный в обработчике, и отложить его загрузку до тех пор, пока пользователь не нажмёт на кнопку.
 
-<CodeExample src={ExtractedHandler} sandboxStyle={{height: '6em'}}/>
+## Повторное использование обработчиков событий
 
-> **Примечание:** Если вы извлекаете обработчик события, то вы должны вручную обернуть обработчик события в `$()`, чтобы его можно было подключить лениво.
+Если мы хотим повторно использовать один и тот же обработчик события для нескольких элементов или событий, мы должны извлечь обработчик события в [`QRLs`](/docs/(qwik)/advanced/qrl/) и передать его слушателю события. Для этого нам нужно импортировать `$` из `@builder.io/qwik` и обернуть в него обработчик событий.
+
+Например, приведённый выше пример можно записать следующим образом:
+
+```tsx
+import { component$, useSignal, $ } from '@builder.io/qwik';
+
+export default component$(() => {
+  const count = useSignal(0);
+  const increment = $(() => count.value++);
+  return (
+    <>
+      <button onClick$={increment}>Прибавить</button>
+      <div>Счёт: {count.value}</div>
+    </>
+  );
+});
+```
+
+<CodeSandbox src={ExtractedHandler} sandboxStyle={{ height: '6em' }} />
+
+> **Примечание:** Если вы извлекаете обработчик события, то вы должны вручную обернуть обработчик события в `$(...handler...)`, чтобы его можно было лениво присоединить.
 
 ## Объект события
 
-Первым аргументом обработчика события является объект `Event`. Этот объект содержит информацию о событии, которое вызвало обработчик. Например, объект `Event` для события `click` содержит информацию о положении мыши и элементе, на котором был клик мыши.
+Первым аргументом обработчика события является объект `Event`. Этот объект содержит информацию о событии, которое вызвало обработчик. Например, объект `Event` для события `click` содержит информацию о положении мыши и элементе, на котором был клик мыши. Вы можете ознакомиться с [документами MDN, чтобы узнать больше подробностей о каждом событии DOM](https://developer.mozilla.org/en-US/docs/Web/API/Event).
 
-<CodeExample src={MousePosition} sandboxStyle={{height: '6em'}}/>
+```tsx
+import { component$, useSignal, $ } from '@builder.io/qwik';
 
-### Prevent default
+export default component$(() => {
+  const position = useSignal<{ x: number; y: number }>();
+  return (
+    <div onClick$={(event) => (position.value = { x: event.x, y: event.y })}>
+      <div>1</div>
+      <div>2</div>
+      <div>
+        Клик на: ({position.value?.x}, {position.value?.y})
+      </div>
+    </div>
+  );
+});
+```
+
+<CodeSandbox src={MousePosition} sandboxStyle={{ height: '6em' }} />
+
+## Асинхронные события
+
+Из-за асинхронной природы Qwik выполнение обработчика события может быть отложено, поскольку реализация еще не загружена в виртуальную машину JavaScript. Из-за асинхронной природы обработки событий в Qwik следующие API для объекта `Event` не будут работать:
+
+- `event.preventDefault()`.
+- `event.currentTarget`
+
+### `Prevent default`
 
 Поскольку обработка событий является асинхронной, вы не можете использовать `event.preventDefault()`. Для решения этой проблемы Qwik вводит декларативный способ предотвращения с помощью атрибута `preventdefault:{eventName}`.
 
-<CodeExample src={PreventDefault} sandboxStyle={{height: '6em'}}/>
+```tsx
+import { component$ } from '@builder.io/qwik';
 
-### Target
+export default component$(() => {
+  return (
+    <a
+      href="/about"
+      preventdefault:click // Это предотвратит поведение события "клика" по умолчанию.
+      onClick$={() => {
+        // event.PreventDefault() не будет здесь работать, потому что обработчик отправляется асинхронно.
+        alert('Сделайте что-нибудь для имитации навигации...');
+      }}
+    >
+      Перейти на страницу с информацией
+    </a>
+  );
+});
+```
+
+<CodeSandbox src={PreventDefault} sandboxStyle={{ height: '6em' }} />
+
+### `Event target`
 
 Поскольку обработка событий является асинхронной, вы не можете использовать `event.currentTarget`. Для решения этой проблемы обработчики Qwik предоставляют `currentTarget` в качестве второго аргумента.
 
-<CodeExample src={Target} sandboxStyle={{height: '10em'}}/>
+```tsx
+import { component$, useSignal } from '@builder.io/qwik';
+
+export default component$(() => {
+  const currentTarget = useSignal<HTMLElement|null>(null);
+  const target = useSignal<HTMLElement|null>(null);
+
+  return (
+    <div onClick$={(event, _currentTarget) => {
+      currentTarget.value = _currentTarget;
+      target.value = event.target as HTMLElement;
+    }}>
+      Click on any text <code>target</code> and <code>currentTarget</code> of the event.
+      <hr/>
+      <span>Hello <b>World</b>!</span>
+      <hr/>
+      <ul>
+        <li>currentTarget: {currentTarget.value?.tagName}</li>
+        <li>target: {target.value?.tagName}</li>
+      </ul>
+    </div>
+  );
+});
+```
+
+<CodeSandbox src={Target} sandboxStyle={{ height: '10em' }} />
 
 > **Примечание:** `currentTarget` в DOM указывает на элемент, к которому был прикреплён слушатель события. В приведённом примере это всегда будет элемент `<DIV>`.
 
@@ -73,7 +176,39 @@ import UseOn from 'source:/src/routes/demo/events/use-on/index.tsx';
 
 Для этого мы можем использовать `useVisibleTask`, чтобы программно добавить слушателя событий, используя DOM API напрямую.
 
-<CodeExample src={Synchronous} sandboxStyle={{height: '10em'}}/>
+```tsx
+import { component$, useSignal, useVisibleTask$ } from '@builder.io/qwik';
+
+export default component$(() => {
+  const draggableRef = useSignal<HTMLElement>();
+  const dragStatus = useSignal('');
+  useVisibleTask$(({ cleanup }) => {
+    if (draggableRef.value) {
+      // Используйте DOM API для добавления слушателя событий.
+      const dragstart = () => (dragStatus.value = 'dragstart');
+      const dragend = () => (dragStatus.value = 'dragend');
+
+      draggableRef.value!.addEventListener('dragstart', dragstart);
+      draggableRef.value!.addEventListener('dragend', dragend);
+      cleanup(() => {
+        draggableRef.value!.removeEventListener('dragstart', dragstart);
+        draggableRef.value!.removeEventListener('dragend', dragend);
+      });
+    }
+  });
+
+  return (
+    <div>
+      <div draggable ref={draggableRef}>
+        Тяни меня!
+      </div>
+      <div>{dragStatus.value}</div>
+    </div>
+  );
+});
+```
+
+<CodeSandbox src={Synchronous} sandboxStyle={{ height: '10em' }} />
 
 > **ПРИМЕЧАНИЕ** Использование `VisibleTask` для прослушивания событий является анти-паттерном в Qwik, поскольку это приводит к немедленному выполнению кода в браузере, что нарушает принцип [возобновляемости](/docs/concepts/resumable/). Используйте его только тогда, когда у вас нет другого выбора. В большинстве случаев для прослушивания событий следует использовать JSX: `<div onClick$={...}>` или `useOn(...)` методы событий, если вам нужно слушать события программно.
 
@@ -87,7 +222,26 @@ import UseOn from 'source:/src/routes/demo/events/use-on/index.tsx';
 
 Вышеописанное невозможно, поскольку `onClick` - это функция, которая не является сериализуемой. Нам нужно указать оптимизатору на преобразование нашей функции в QRL. Это делается путём именования свойства с суффиксом `$`, как в данном примере.
 
-<CodeExample src={PropFunction} sandboxStyle={{height: '10em'}}/>
+```tsx
+import { type PropFunction, component$, Slot } from '@builder.io/qwik';
+
+export default component$(() => {
+  return <CmpButton onClick$={() => alert('CLICKED!')}>click me!</CmpButton>;
+});
+
+export const CmpButton = component$<{
+  // Important to tell TypeScript that this is async
+  onClick$?: PropFunction<() => void>;
+}>(({ onClick$ }) => {
+  return (
+    <button onClick$={onClick$}>
+      <Slot />
+    </button>
+  );
+});
+```
+
+<CodeSandbox src={PropFunction} sandboxStyle={{ height: '10em' }} />
 
 ## События объектов window и document
 
@@ -106,4 +260,32 @@ import UseOn from 'source:/src/routes/demo/events/use-on/index.tsx';
 
 Хук `useOn[window|document]()` программно добавит слушателя событий на основе DOM на уровне компонента. Это бывает полезно при создании своих собственных хуков или если вы не знаете имя события на момент компиляции.
 
-<CodeExample src={UseOn} sandboxStyle={{height: '10em'}}/>
+```tsx
+import { $, component$, useOnDocument, useStore } from '@builder.io/qwik';
+
+// Предполагает многоразовое использование метода, не имеющего доступа к JSX,
+// но необходимо зарегистрировать обработчики событий.
+function useMousePosition() {
+  const position = useStore({ x: 0, y: 0 });
+  useOnDocument(
+    'mousemove',
+    $((event) => {
+      const { x, y } = event as MouseEvent;
+      position.x = x;
+      position.y = y;
+    })
+  );
+  return position;
+}
+
+export default component$(() => {
+  const pos = useMousePosition();
+  return (
+    <div>
+      MousePosition: ({pos.x}, {pos.y})
+    </div>
+  );
+});
+```
+
+<CodeSandbox src={UseOn} sandboxStyle={{ height: '10em' }} />

@@ -78,9 +78,7 @@ export default component$(() => {
     <Resource
       value={jokes}
       onPending={() => <div>загрузка...</div>}
-      onResolved={(joke) => (
-        <div>{joke.value}</div>
-      )}
+      onResolved={(joke) => <div>{joke.value}</div>}
     />
   );
 });
@@ -90,12 +88,7 @@ export default component$(() => {
 автоматическое реагирование на изменения в запросе, включая прерывание запроса, который выполняется в данный момент.
 
 ```tsx
-import {
-  component$,
-  useResource$,
-  Resource,
-  useSignal,
-} from '@builder.io/qwik';
+import { component$, useResource$, Resource, useSignal } from '@builder.io/qwik';
 
 export default component$(() => {
   const query = useSignal('busy');
@@ -173,12 +166,7 @@ export default component$(() => {
 Данный пример показывает использование `useResource$` для выполнения запроса к API agify.io. Он позволяет определить возраст человека на основе имени, введённого пользователем, и будет обновляться всякий раз, когда пользователь вводит новое имя.
 
 ```tsx
-import {
-  component$,
-  useSignal,
-  useResource$,
-  Resource,
-} from '@builder.io/qwik';
+import { component$, useSignal, useResource$, Resource } from '@builder.io/qwik';
 
 export default component$(() => {
   const name = useSignal<string>();
@@ -200,11 +188,7 @@ export default component$(() => {
   return (
     <div>
       <h1>Введите своё имя, и я угадаю ваш возраст!</h1>
-      <input
-        onInput$={(e: Event) =>
-          (name.value = (e.target as HTMLInputElement).value)
-        }
-      />
+      <input onInput$={(e: Event) => (name.value = (e.target as HTMLInputElement).value)} />
       <Resource
         value={ageResource}
         onPending={() => <div>Загрузка...</div>}
