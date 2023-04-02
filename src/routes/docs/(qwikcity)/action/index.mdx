@@ -37,7 +37,7 @@ export const useLogin = globalAction$((data) => {
 
 Внутри компонента Qwik на действия ссылаются с помощью метода `.use()`. Метод `use()` возвращает объект `ActionStore` с методами для запуска действия и получения его состояния.
 
-```tsx
+```tsx title="src/routes/layout.tsx"
 // src/routes/layout.tsx
 import { component$ } from '@builder.io/qwik';
 import { routeAction$ } from '@builder.io/qwik-city';
@@ -69,9 +69,7 @@ export default component$(() => {
 
 Лучший способ вызвать действие - использовать компонент `<Form/>`, экспортированный из `@builder.io/qwik-city`.
 
-```tsx
-// src/routes/index.tsx
-
+```tsx title="src/routes/index.tsx"
 import { routeAction$, Form } from '@builder.io/qwik-city';
 import { component$ } from '@builder.io/qwik';
 
@@ -101,9 +99,7 @@ export default component$(() => {
 
 Действия могут быть запущены из кода с помощью метода `action.run()`, т.е. компонент `<Form />` не обязателен. Вы можете запустить действие по нажатию кнопки или при наступлении любого другого события, точно так же, как вы бы делали это с помощью функции.
 
-```tsx
-// src/routes/index.tsx
-
+```tsx title="src/routes/index.tsx"
 import { routeAction$ } from '@builder.io/qwik-city';
 import { component$ } from '@builder.io/qwik';
 
@@ -139,9 +135,7 @@ export default component$(() => {
 
 Данные, передаваемые в действие, по умолчанию не проверяются.
 
-```tsx
-// src/routes/index.tsx
-
+```tsx title="src/routes/index.tsx"
 import { routeAction$ } from '@builder.io/qwik-city';
 
 export const useAddUser = routeAction$((user) => {
@@ -156,9 +150,7 @@ export const useAddUser = routeAction$((user) => {
 
 К счастью, действия имеют первоклассную поддержку библиотеки [Zod](https://zod.dev/) для проверки данных на основе TypeScript. Чтобы использовать Zod, просто передайте схему Zod в качестве второго аргумента функции `action$()`.
 
-```tsx
-// src/routes/index.tsx
-
+```tsx title="src/routes/index.tsx"
 import { routeAction$, zod$, z } from '@builder.io/qwik-city';
 
 export const useAddUser = routeAction$(

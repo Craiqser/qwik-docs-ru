@@ -44,8 +44,7 @@ const Child = component$(() => {
 
 В то же время `Child`-компонент отображает кнопку и тег `h1`, создавая реактивную подписку, которая будет вызывать ререндер, когда дочерний компонент изменит значение в обработчике клика: `<button onClick$={() => { themeStore.theme = 'dark' }}>`.
 
-```tsx
-// Файл: src/root.tsx
+```tsx title="src/root.tsx"
 import {
   component$,
   useSignal,

@@ -100,8 +100,7 @@ export interface RouteLocation {
 - Пользователь переходит к: `https://example.com/sku/1234`;
 - Затем `skuId` можно получить через `useLocation().params.skuId`.
 
-```tsx
-// src/routes/sku/[skuId]/index.tsx
+```tsx title="src/routes/sku/[skuId]/index.tsx"
 import { component$ } from '@builder.io/qwik';
 import { useLocation } from '@builder.io/qwik-city';
 

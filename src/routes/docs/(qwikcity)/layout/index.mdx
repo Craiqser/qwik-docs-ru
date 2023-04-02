@@ -57,8 +57,7 @@ src/
 
 Макет будет использоваться для всех маршрутов в каталоге `src/routes`. Он будет рендерить компоненты `Header`, `Menu` и `Footer`, а также отобразит вложенные маршруты под компонентом `Slot`.
 
-```tsx
-// Файл: src/routes/layout.tsx
+```tsx title="src/routes/layout.tsx"
 import { component$ } from '@builder.io/qwik';
 
 export default component$(() => {
@@ -77,8 +76,7 @@ export default component$(() => {
 
 Это основной маршрут для сайта. Он будет рендериться в слоте файла `src/routes/layout.tsx`, поэтому, даже если у него нет компонентов `Header`, `Menu` или `Footer`, он всё равно будет рендериться вместе с ними.
 
-```tsx
-// Файл: src/routes/index.tsx
+```tsx title="src/routes/index.tsx"
 import { component$ } from '@builder.io/qwik';
 
 export default component$(() => {
@@ -90,8 +88,7 @@ export default component$(() => {
 
 Как и в случае с файлом `src/routes/index.tsx`, для маршрута `about` он будет отображаться в слоте файла `src/routes/layout.tsx`, поэтому, даже если у него нет компонентов `Header`, `Menu` или `Footer`, он всё равно будет рендериться с ними.
 
-```tsx
-// Файл: src/routes/about/index.tsx
+```tsx title="src/routes/about/index.tsx"
 import { component$ } from '@builder.io/qwik';
 
 export default component$(() => {

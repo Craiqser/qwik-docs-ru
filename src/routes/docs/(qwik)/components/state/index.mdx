@@ -54,7 +54,7 @@ import NoSerialize from 'source:/src/routes/demo/state/no-serialize/index.tsx';
 
 Этот пример показывает, как `useSignal()` может быть использован в компоненте счётчика для отслеживания счёта.
 
-```tsx
+```tsx {4} /count/
 import { component$, useSignal } from '@builder.io/qwik';
 
 export default component$(() => {
@@ -86,7 +86,7 @@ export default component$(() => {
 
 Этот пример показывает, как `useStore()` можно использовать в компоненте счётчика для отслеживания счета.
 
-```tsx
+```tsx {4} /state/
 import { component$, useStore } from '@builder.io/qwik';
 
 export default component$(() => {
@@ -183,16 +183,18 @@ export default component$(() => {
 
 Самый простой способ передачи состояния другим компонентам - это передача через параметры.
 
-```tsx
+```tsx {9} /userData=/
 import { component$, useStore } from '@builder.io/qwik';
 
 export default component$(() => {
   const userData = useStore({ count: 0 });
-
   return <Child userData={userData} />;
 });
 
-export const Child = component$<{ userData: { count: number } }>(({ userData }) => {
+interface ChildProps {
+  userData: { count: number };
+}
+export const Child = component$<ChildProps>(({ userData }) => {
   return (
     <>
       <button onClick$={() => userData.count++}>Прибавить</button>
@@ -210,14 +212,8 @@ API контекста - это способ передачи состояния
 
 Подробнее об этом можно прочитать в разделе [Контекст](./../context/index.mdx).
 
-```tsx
-import {
-  component$,
-  createContextId,
-  useContext,
-  useContextProvider,
-  useStore,
-} from '@builder.io/qwik';
+```tsx {4,10,16} /userData/
+import { component$, createContextId, useContext, useContextProvider, useStore } from '@builder.io/qwik';
 
 // Объявление идентификатора контекста.
 export const CTX = createContextId<{ count: number }>('stuff');
@@ -261,7 +257,7 @@ export const Child = component$(() => {
 
 Используйте `useComputed$` для создания вычисляемого значения, которое может быть получено синхронно из существующего состояния приложения.
 
-```tsx
+```tsx {5} /useComputed$/
 import { component$, useComputed$, useSignal } from '@builder.io/qwik';
 
 export default component$(() => {
@@ -286,7 +282,7 @@ export default component$(() => {
 
 Используйте `useResource$()` для создания вычисляемого значения, которое выводится асинхронно или требует внешнего состояния (например, обращения к конечной точке REST).
 
-```tsx
+```tsx {6} /useResource$/
 import { component$, Resource, useResource$, useSignal } from '@builder.io/qwik';
 
 export default component$(() => {
@@ -336,7 +332,7 @@ Qwik гарантирует, что всё состояние приложени
 
 Если значение помечено как несериализуемое, то это значение не подвергается событиям сериализации, таким как возобновление работы приложения на клиенте с сервера SSR. В такой ситуации значение будет установлено в `undefined`, и разработчик должен повторно инициализировать значение на клиенте.
 
-```tsx
+```tsx /noSerialize/
 import { component$, useStore, noSerialize, useVisibleTask$ } from '@builder.io/qwik';
 import Monaco from './monaco';
 
@@ -349,7 +345,9 @@ export default component$(() => {
   useVisibleTask$(() => {
     // Monaco не является сериализуемым, поэтому мы не можем сериализовать его как часть SSR.
     // Однако мы можем инстанцировать его на клиенте после того, как компонент станет видимым.
-    setTimeout(() => (state.monacoInstance = noSerialize(new Monaco())), 1000);
+    setTimeout(() => {
+      state.monacoInstance = noSerialize(new Monaco())
+    }, 1000);
   });
   return <div>{state.monacoInstance ? <>'Monaco загружен'</> : <>'загрузка...'</>}</div>;
 });

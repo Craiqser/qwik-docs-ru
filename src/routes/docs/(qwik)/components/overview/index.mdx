@@ -43,7 +43,7 @@ import InlineChild from 'source:/src/routes/demo/component/inline-child/index.ts
 
 В Qwik они объявляются с помощью метода `component$`:
 
-```tsx
+```tsx /component$/
 import { component$ } from '@builder.io/qwik';
 
 export default component$(() => {
@@ -59,7 +59,7 @@ export default component$(() => {
 
 Компоненты можно компоновать друг с другом для создания более сложных компонентов.
 
-```tsx
+```tsx {7}
 import { component$ } from '@builder.io/qwik';
 
 export default component$(() => {
@@ -105,17 +105,8 @@ export default component$(() => {
 
 В этом примере компонент `Item` объявляет необязательные параметры `name`, `quantity`, `description` и `price`.
 
-```tsx
+```tsx {3-8, 25} /ItemProps/
 import { component$ } from '@builder.io/qwik';
-
-export default component$(() => {
-  return (
-    <>
-      <h1>Props</h1>
-      <Item name="hammer" price={9.99} />
-    </>
-  );
-});
 
 interface ItemProps {
   name?: string;
@@ -132,6 +123,15 @@ export const Item = component$<ItemProps>(({ name, quantity, description, price 
       <li>описание: {description}</li>
       <li>цена: {price}</li>
     </ul>
+  );
+});
+
+export default component$(() => {
+  return (
+    <>
+      <h1>Props</h1>
+      <Item name="hammer" price={9.99} />
+    </>
   );
 });
 ```
@@ -153,13 +153,14 @@ export const Item = component$<ItemProps>(({ name, quantity, description, price 
 
 Используйте `ref` для получения элемента DOM. Сначала создайте сигнал для хранения элемента DOM и затем передайте его в свойство JSX `ref`.
 
-```tsx
+```tsx {6,19}
 import { component$, useVisibleTask$, useSignal } from '@builder.io/qwik';
 
 export default component$(() => {
   const width = useSignal(0);
   const height = useSignal(0);
   const outputRef = useSignal<Element>();
+
   useVisibleTask$(() => {
     if (outputRef.value) {
       const rect = outputRef.value.getBoundingClientRect();
@@ -170,7 +171,10 @@ export default component$(() => {
 
   return (
     <div>
-      <div ref={outputRef} style={{ border: '1px solid red', width: '100px' }}>
+      <div
+        ref={outputRef}
+        style={{ border: '1px solid red', width: '100px' }}
+      >
         Измените текст, чтобы растянуть поле.
       </div>
       <div>

@@ -29,8 +29,7 @@ src/
             └── index.tsx              # https://example.com/some/path
 ```
 
-```tsx
-// Файл: src/routes/some/path/index.tsx
+```tsx title="src/routes/some/path/index.tsx"
 import { component$ } from '@builder.io/qwik';
 
 // Обратите внимание на экспорт по умолчанию.
@@ -57,8 +56,7 @@ src/
 Внутри `index.tsx` вы можете создать компонент, который экспортируется как `default`. Контент создаётся с помощью синтаксиса шаблона [JSX](https://reactjs.org/docs/introducing-jsx.html). Каждая функция компонента возвращает шаблон, который должен быть отрендерен на экране. Если вы хотите узнать больше об анатомии компонентов, обратитесь к документации [компонентов](/docs/(qwik)/components/overview/index.mdx).
 Следующий компонент будет отрендерен по адресу `https://example.com/some/path` в соответствии со структурой каталога, которую мы создали выше.
 
-```tsx
-// Файл: src/routes/some/path/index.tsx
+```tsx title="src/routes/some/path/index.tsx"
 import { component$ } from '@builder.io/qwik';
 import Heading from '../../../components/heading';
 import SubComponent from './sub_component';
@@ -74,8 +72,7 @@ export default component$(() => {
 });
 ```
 
-```tsx
-// Файл: src/components/heading.tsx
+```tsx title="src/components/heading.tsx"
 import { component$ } from '@builder.io/qwik';
 
 export default component$(() => {
@@ -83,8 +80,7 @@ export default component$(() => {
 });
 ```
 
-```tsx
-// Файл: src/routes/some/path/sub_component.tsx
+```tsx title="src/routes/some/path/sub_component.tsx"
 import { component$ } from '@builder.io/qwik';
 
 export default component$(() => {
@@ -96,9 +92,7 @@ export default component$(() => {
 
 HTML содержит тег `<head>` как первый элемент в `<html>` (в самом верху содержимого HTML-страницы). Секция `<head>` не отображается напрямую компонентом маршрута, однако вам всё-равно необходимо контролировать её содержимое. Этого можно достичь, экспортируя свойство `head` (или функцию) из компонента страницы.
 
-```tsx
-// src/routes/index.tsx
-
+```tsx title="src/routes/index.tsx"
 import { component$ } from '@builder.io/qwik';
 
 export default component$(() => {
@@ -122,8 +116,7 @@ export const head = {
 
 В приведенном выше примере `head` является статическим. Однако вы также можете экспортировать функцию, которая возвращает объект `DocumentHead`. Это позволяет динамически устанавливать заголовок страницы на основе данных, которые извлекаются из загрузчиков (`loaders`) или обработчиков запросов, выполняющихся перед рендером компонента страницы.
 
-```tsx
-// src/routes/product/[productId]/index.tsx
+```tsx title="src/routes/product/[productId]/index.tsx"
 import { component$ } from '@builder.io/qwik';
 import { routeLoader$ } from '@builder.io/qwik-city';
 import type { DocumentHead } from '@builder.io/qwik-city';
@@ -173,15 +166,13 @@ export const head: DocumentHead = ({ params, resolveValue }) => {
     └─layout.tsx
 ```
 
-```tsx
-// Файл: src/routes/index.tsx
+```tsx title="src/routes/index.tsx"
 export const head: DocumentHead = {
   title: `Foo`,
 };
 ```
 
-```tsx
-// Файл: src/routes/layout.tsx
+```tsx title="src/routes/layout.tsx"
 export const head: DocumentHead<EndpointData> = ({ head }) => {
   return {
     title: `Компания - ${head.title}`,
