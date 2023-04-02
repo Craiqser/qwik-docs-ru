@@ -26,7 +26,7 @@ export default component$<{
         </ul>
         <div class="url bg-slate-300 rounded-md inline-grid whitespace-nowrap text-xs px-2 py-1 content-center w-full">
           <a href={examplePath(src)} target="_blank" class="url-link text-ellipsis overflow-hidden">
-            {new URL(examplePath(src), 'https://qwik.builder.io').toString()}
+            {new URL(examplePath(src), 'https://qwik-docs-ru.pages.dev').toString()}
           </a>
         </div>
         <ul>
