@@ -307,7 +307,7 @@ export default component$(() => {
 
 const delay = (time: number) => new Promise((resolve) => setTimeout(resolve, time));
 ```
-> <CodeExample src={TrackServerGuard} sandboxStyle={{height: '6em'}}/>
+> <CodeSandbox src={TrackServerGuard} sandboxStyle={{height: '6em'}}/>
 > В приведённом выше примере `useTask$()` защищена флагом `isServer`. `track()` находится перед защитой, которая позволяет серверу установить подписку, но не выполняет никакого кода на сервере. Затем браузер выполняет `useTask$()`, как только сигнал `text` изменится.
 
 В этом примере показано, как использовать `useVisibleTask$()` для инициализации часов в браузере только тогда, когда компонент часов становится видимым.
