@@ -16,6 +16,31 @@ contributors:
 
 # Стили
 
+## CSS-модули
+
+Благодаря [Vite](https://vitejs.dev/guide/features.html#css-modules), Qwik из коробки поддерживает [CSS-модули](https://github.com/css-modules/css-modules).
+
+Чтобы использовать модули CSS, просто создайте файл `.module.css`. Например, `MyComponent.module.css` и импортируйте его в свой компонент.
+
+```css /container/#a title="src/components/MyComponent/MyComponent.module.css"
+.container {
+  background-color: red;
+}
+```
+
+Затем импортируйте модуль CSS в свой компонент:
+
+```tsx {2} /styles/ /container/#a title="src/components/MyComponent/MyComponent.tsx"
+import { component$ } from '@builder.io/qwik';
+import styles from './MyComponent.module.css';
+
+export default component$(() => {
+  return <div class={styles.container}>Привет, мир</div>;
+});
+```
+
+Помните, что Qwik использует `class` вместо `className` для CSS-классов.
+
 ## Глобальные стили
 
 Многие приложения используют глобальные стили для выполнения сброса стилей браузера и/или определения глобальных стилей. Это нормальная практика, но её не рекомендуется использовать для стилизации компонентов. Qwik оптимизирован для того, чтобы браузер загружал только те стили, которые необходимы для текущего представления. Если вы используете глобальные стили, то они будут загружены при первой загрузке, даже если они не нужны на текущей странице.

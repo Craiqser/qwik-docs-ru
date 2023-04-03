@@ -4,9 +4,8 @@ export default component$(() => {
   const count = useSignal(0);
 
   return (
-    <>
-      <button onClick$={() => count.value++}>Прибавить</button>
-      <div>Счётчик: {count.value}</div>
-    </>
+    <button onClick$={() => count.value++}>
+      Прибавить {count.value}
+    </button>
   );
 });

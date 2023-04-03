@@ -1,16 +1,21 @@
-import { component$, useStore, noSerialize, useVisibleTask$ } from '@builder.io/qwik';
+import {
+  component$,
+  useStore,
+  noSerialize,
+  useVisibleTask$,
+} from '@builder.io/qwik';
 import Monaco from './monaco';
 
 export default component$(() => {
   const state = useStore<{ monacoInstance: Monaco | undefined }>({
-    // Don't initialize on server
+    // Не инициализировать на сервере
     monacoInstance: undefined,
   });
 
   useVisibleTask$(() => {
-    // Monaco is not serializable, so we can't serialize it as part of SSR
-    // We can however instantiate it on the client after the component is visible
+    // Monaco является несериализуемым объектом, поэтому мы не можем сериализовать его во время SSR.
+    // Однако мы можем инстанцировать его на клиенте после того, как компонент станет видимым.
     setTimeout(() => (state.monacoInstance = noSerialize(new Monaco())), 1000);
   });
-  return <div>{state.monacoInstance ? <>'Monaco is loaded'</> : <>'loading...'</>}</div>;
+  return <div>{state.monacoInstance ? 'Monaco загружен' : 'загрузка...'}</div>;
 });

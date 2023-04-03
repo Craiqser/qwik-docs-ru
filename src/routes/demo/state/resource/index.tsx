@@ -1,4 +1,9 @@
-import { component$, Resource, useResource$, useSignal } from '@builder.io/qwik';
+import {
+  component$,
+  Resource,
+  useResource$,
+  useSignal,
+} from '@builder.io/qwik';
 
 export default component$(() => {
   const prNumber = useSignal(3576);
@@ -19,7 +24,7 @@ export default component$(() => {
         PR#{prNumber}:
         <Resource
           value={prTitle}
-          onPending={() => <>Loading...</>}
+          onPending={() => <>Загрузка...</>}
           onResolved={(title) => <>{title}</>}
         />
       </h1>

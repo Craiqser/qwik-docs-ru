@@ -4,6 +4,7 @@ export default component$(() => {
   const width = useSignal(0);
   const height = useSignal(0);
   const outputRef = useSignal<Element>();
+
   useVisibleTask$(() => {
     if (outputRef.value) {
       const rect = outputRef.value.getBoundingClientRect();
@@ -18,7 +19,8 @@ export default component$(() => {
         Измените здесь значение текста, чтобы растянуть поле.
       </div>
       <div>
-        Красный блок выше имеет высоту {height.value} пикселей и ширину {width.value} пикселей.
+        Красный блок выше имеет высоту {height.value} пикселей и ширину {width.value}{' '}
+        пикселей.
       </div>
     </div>
   );

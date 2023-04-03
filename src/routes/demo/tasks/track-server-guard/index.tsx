@@ -17,9 +17,11 @@ export default component$(() => {
   return (
     <div>
       Введите текст: <input bind:value={text} />
-      <div style={{ fontWeight: isBold.value ? 'bold' : 'normal' }}>Текст: {text}</div>
+      <div style={{ fontWeight: isBold.value ? 'bold' : 'normal' }}>
+        Текст: {text}
+      </div>
     </div>
   );
 });
 
-const delay = (time: number) => new Promise((resolve) => setTimeout(resolve, time));
+const delay = (time: number) => new Promise((res) => setTimeout(res, time));

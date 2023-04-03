@@ -1,4 +1,9 @@
-import { component$, useSignal, useVisibleTask$, type Signal } from '@builder.io/qwik';
+import {
+  component$,
+  useSignal,
+  useVisibleTask$,
+  type Signal,
+} from '@builder.io/qwik';
 
 export default component$(() => {
   const isClockRunning = useSignal(false);
@@ -6,7 +11,8 @@ export default component$(() => {
   return (
     <>
       <div style="position: sticky; top:0">
-      Прокрутите страницу, пока не увидите часы (текущий статус часов: {isClockRunning.value ? '' : 'не'} запущены.)
+        Прокрутите страницу, пока не увидите часы (текущий статус часов:
+        {isClockRunning.value ? 'запущены' : 'не запущены'}.)
       </div>
       <div style="height: 200vh" />
       <Clock isRunning={isClockRunning} />

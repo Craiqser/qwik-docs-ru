@@ -21,13 +21,6 @@ contributors:
 ---
 
 import CodeSandbox from '../../../../../components/code-sandbox/index.tsx';
-import SimpleComponent from 'source:/src/routes/demo/component/simple/index.tsx';
-import TwoComponents from 'source:/src/routes/demo/component/child/index.tsx';
-import Counter from 'source:/src/routes/demo/state/counter/index.tsx';
-import Props from 'source:/src/routes/demo/component/props/index.tsx';
-import Ref from 'source:/src/routes/demo/component/ref/index.tsx';
-import Lazy from 'source:/src/routes/demo/component/lazy/index.tsx';
-import InlineChild from 'source:/src/routes/demo/component/inline-child/index.tsx';
 
 # Компоненты
 
@@ -43,15 +36,15 @@ import InlineChild from 'source:/src/routes/demo/component/inline-child/index.ts
 
 В Qwik они объявляются с помощью метода `component$`:
 
+<CodeSandbox src="/src/routes/demo/component/simple/index.tsx" sandboxStyle={{ height: '3em' }}>
 ```tsx /component$/
 import { component$ } from '@builder.io/qwik';
 
 export default component$(() => {
-  return <span>Hello World!</span>;
+  return <span>Привет, мир!</span>;
 });
 ```
-
-<CodeSandbox src={SimpleComponent} sandboxStyle={{ height: '3em' }} />
+</CodeSandbox>
 
 > Причина написания `component$` в том, что последующий `$` позволяет [оптимизатору](/docs/advanced/dollar/) разбивать компоненты в дереве приложения на отдельные чанки, так что каждый чанк может быть загружен (или не загружен, если он не нужен) независимо. Без знака `$` компонент будет загружаться всегда, если необходимо загрузить родительский компонент.
 
@@ -59,6 +52,7 @@ export default component$(() => {
 
 Компоненты можно компоновать друг с другом для создания более сложных компонентов.
 
+<CodeSandbox src="/src/routes/demo/component/child/index.tsx" sandboxStyle={{ height: '6em' }}>
 ```tsx {7}
 import { component$ } from '@builder.io/qwik';
 
@@ -75,13 +69,13 @@ const Child = component$(() => {
   return <div>Дочерний текст</div>;
 });
 ```
-
-<CodeSandbox src={TwoComponents} sandboxStyle={{ height: '6em' }} />
+</CodeSandbox>
 
 ### Пример счётчика
 
 Несколько более сложный пример счётчика.
 
+<CodeSandbox src="/src/routes/demo/state/counter/index.tsx" sandboxStyle={{ height: '6em' }}>
 ```tsx
 import { component$, useSignal } from '@builder.io/qwik';
 
@@ -90,22 +84,22 @@ export default component$(() => {
 
   return (
     <>
-      <div>Count: {count.value}</div>
-      <button onClick$={(e) => count.value++}>Increment</button>
+      <div>Счёт: {count.value}</div>
+      <button onClick$={(e) => count.value++}>Прибавить</button>
     </>
   );
 });
 ```
-
-<CodeSandbox src={Counter} sandboxStyle={{ height: '6em' }} />
+</CodeSandbox>
 
 ## Параметры
 
-Параметры используются для передачи данных в компонент. Параметры объявляются как именованные аргументы компонента.
+Параметры используются для передачи данных в компонент от родителя. Доступ к параметрам осуществляется через аргумент `props` функции component$.
 
 В этом примере компонент `Item` объявляет необязательные параметры `name`, `quantity`, `description` и `price`.
 
-```tsx {3-8, 25} /ItemProps/
+<CodeSandbox src="/src/routes/demo/component/props/index.tsx" sandboxStyle={{ height: '10em' }}>
+```tsx {3-8, 27} /ItemProps/
 import { component$ } from '@builder.io/qwik';
 
 interface ItemProps {
@@ -115,13 +109,13 @@ interface ItemProps {
   price?: number;
 }
 
-export const Item = component$<ItemProps>(({ name, quantity, description, price }) => {
+export const Item = component$<ItemProps>((props) => {
   return (
     <ul>
-      <li>название: {name}</li>
-      <li>количество: {quantity}</li>
-      <li>описание: {description}</li>
-      <li>цена: {price}</li>
+      <li>название: {props.name}</li>
+      <li>количество: {props.quantity}</li>
+      <li>описание: {props.description}</li>
+      <li>цена: {props.price}</li>
     </ul>
   );
 });
@@ -135,8 +129,9 @@ export default component$(() => {
   );
 });
 ```
+</CodeSandbox>
 
-<CodeSandbox src={Props} sandboxStyle={{ height: '10em' }} />
+> В приведённом выше примере мы используем `component$<ItemProps>` для предоставления параметру явного типа. Это необязательно, но позволяет компилятору TypeScript проверить правильность использования параметров.
 
 ## Реактивный рендер
 
@@ -153,7 +148,8 @@ export default component$(() => {
 
 Используйте `ref` для получения элемента DOM. Сначала создайте сигнал для хранения элемента DOM и затем передайте его в свойство JSX `ref`.
 
-```tsx {6,19}
+<CodeSandbox src="/src/routes/demo/component/ref/index.tsx" sandboxStyle={{ height: '10em' }}>
+```tsx /const outputRef = useSignal<Element>();/ /ref={outputRef}/
 import { component$, useVisibleTask$, useSignal } from '@builder.io/qwik';
 
 export default component$(() => {
@@ -171,21 +167,18 @@ export default component$(() => {
 
   return (
     <div>
-      <div
-        ref={outputRef}
-        style={{ border: '1px solid red', width: '100px' }}
-      >
-        Измените текст, чтобы растянуть поле.
+      <div ref={outputRef} style={{ border: '1px solid red', width: '100px' }}>
+        Измените здесь значение текста, чтобы растянуть поле.
       </div>
       <div>
-        Приведённое выше красное поле имеет высоту {height.value} пикселей и ширину {width.value} пикселей.
+        Красный блок выше имеет высоту {height.value} пикселей и ширину {width.value}{' '}
+        пикселей.
       </div>
     </div>
   );
 });
 ```
-
-<CodeSandbox src={Ref} sandboxStyle={{ height: '10em' }} />
+</CodeSandbox>
 
 ## Ленивая загрузка
 
@@ -205,11 +198,12 @@ const Parent = () => (
 
 Чтобы избежать описанной выше проблемы, мы не ссылаемся на компоненты напрямую, вместо этого мы ссылаемся на ленивую обёртку. Она создаётся автоматически функцией `component$()`.
 
+<CodeSandbox src="/src/routes/demo/component/lazy/index.tsx" sandboxStyle={{ height: '10em' }} sandbox={false}>
 ```tsx
 import { component$ } from '@builder.io/qwik';
 
 export const Child = component$(() => {
-  return <span>child</span>;
+  return <span>дочерний</span>;
 });
 
 export const Parent = component$(() => {
@@ -220,8 +214,7 @@ export const Parent = component$(() => {
   );
 });
 ```
-
-<CodeSandbox src={Lazy} sandboxStyle={{ height: '10em' }} sandbox={false} />
+</CodeSandbox>
 
 Для приведённого выше примера оптимизатор выполнит следующее преобразование кода:
 
@@ -257,7 +250,26 @@ const Parent_onRender = () => (
 
 В дополнение к стандартному `component$()`, со всеми его свойствами ленивой загрузки, Qwik также поддерживает облегчённые (встроенные) компоненты, которые больше похожи на традиционные фреймворки. Встроенные компоненты также называют инлайновыми компонентами.
 
-<CodeSandbox src={InlineChild} sandboxStyle={{height: '4em'}}/>
+<CodeSandbox src="/src/routes/demo/component/inline-child/index.tsx" sandboxStyle={{height: '4em'}}>
+```tsx
+import { component$ } from '@builder.io/qwik';
+
+// Встроенный компонент: объявляется с помощью стандартной функции.
+export const MyButton = (props: { text: string }) => {
+  return <button>{props.text}</button>;
+};
+
+// Компонент: объявляется с помощью `component$()`.
+export default component$(() => {
+  return (
+    <div>
+      Некоторый текст:
+      <MyButton text="Нажми меня" />
+    </div>
+  );
+});
+```
+</CodeSandbox>
 
 В приведённом выше примере `MyButton` является встроенным компонентом. В отличие от стандартного `component$()`, встроенные компоненты не могут быть лениво загружены индивидуально, они объединяются со своим родительским компонентом. В данном случае:
 
