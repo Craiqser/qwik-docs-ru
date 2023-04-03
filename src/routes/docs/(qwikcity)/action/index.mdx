@@ -17,7 +17,7 @@ contributors:
 
 - `routeAction$()` могут быть объявлены только внутри папки `src/routes`, в файле `layout.tsx` или `index.tsx`, и они ДОЛЖНЫ быть экспортированы, как и `routeLoader$()`. Поскольку `routeAction$()` доступны только в пределах объявленного маршрута, их рекомендуется использовать, когда действие должно получить доступ к каким-либо пользовательским данным, или это защищённый маршрут. Думайте об этом, как о "приватном" действии.
 
-```tsx
+```tsx title="src/routes/form/index.tsx"
 export const useChangePassword = routeAction$((data) => {
   // ...
 });
@@ -25,7 +25,7 @@ export const useChangePassword = routeAction$((data) => {
 
 - Однако `globalAction$()` может быть объявлен в любом месте папки `src`. Поскольку `globalAction$()` являются глобально доступными, они рекомендуются, когда действие должно быть общим для нескольких маршрутов, или когда действие не должно обращаться к пользовательским данным. Например, действие `useLogin`, которое регистрирует пользователя. Думайте об этом, как о "публичном" действии.
 
-```tsx
+```tsx title="src/components/login/login.tsx"
 export const useLogin = globalAction$((data) => {
   // ...
 });
@@ -37,8 +37,7 @@ export const useLogin = globalAction$((data) => {
 
 Внутри компонента Qwik на действия ссылаются с помощью метода `.use()`. Метод `use()` возвращает объект `ActionStore` с методами для запуска действия и получения его состояния.
 
-```tsx
-// src/routes/layout.tsx
+```tsx title="src/routes/layout.tsx"
 import { component$ } from '@builder.io/qwik';
 import { routeAction$ } from '@builder.io/qwik-city';
 
@@ -69,9 +68,7 @@ export default component$(() => {
 
 Лучший способ вызвать действие - использовать компонент `<Form/>`, экспортированный из `@builder.io/qwik-city`.
 
-```tsx
-// src/routes/index.tsx
-
+```tsx title="src/routes/index.tsx"
 import { routeAction$, Form } from '@builder.io/qwik-city';
 import { component$ } from '@builder.io/qwik';
 
@@ -101,9 +98,7 @@ export default component$(() => {
 
 Действия могут быть запущены из кода с помощью метода `action.run()`, т.е. компонент `<Form />` не обязателен. Вы можете запустить действие по нажатию кнопки или при наступлении любого другого события, точно так же, как вы бы делали это с помощью функции.
 
-```tsx
-// src/routes/index.tsx
-
+```tsx title="src/routes/index.tsx"
 import { routeAction$ } from '@builder.io/qwik-city';
 import { component$ } from '@builder.io/qwik';
 
@@ -139,9 +134,7 @@ export default component$(() => {
 
 Данные, передаваемые в действие, по умолчанию не проверяются.
 
-```tsx
-// src/routes/index.tsx
-
+```tsx title="src/routes/index.tsx"
 import { routeAction$ } from '@builder.io/qwik-city';
 
 export const useAddUser = routeAction$((user) => {
@@ -156,9 +149,7 @@ export const useAddUser = routeAction$((user) => {
 
 К счастью, действия имеют первоклассную поддержку библиотеки [Zod](https://zod.dev/) для проверки данных на основе TypeScript. Чтобы использовать Zod, просто передайте схему Zod в качестве второго аргумента функции `action$()`.
 
-```tsx
-// src/routes/index.tsx
-
+```tsx title="src/routes/index.tsx"
 import { routeAction$, zod$, z } from '@builder.io/qwik-city';
 
 export const useAddUser = routeAction$(

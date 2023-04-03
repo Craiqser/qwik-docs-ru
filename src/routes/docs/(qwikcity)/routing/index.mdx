@@ -70,8 +70,7 @@ src/
 
 > Папка `[username]` может быть любым из тысячи пользователей, которые есть в вашей базе данных. Было бы нецелесообразно создавать маршрут для каждого пользователя. Вместо этого нам нужно определить параметр маршрута (часть URL-адреса), который будет использоваться для извлечения `[username]`.
 
-```tsx
-// src/routes/user/[username]/index.tsx
+```tsx title="src/routes/user/[username]/index.tsx"
 import { component$ } from '@builder.io/qwik';
 import { useLocation } from '@builder.io/qwik-city';
 
@@ -91,8 +90,7 @@ export default component$(() => {
 
 Когда `index.tsx` или `index.ts` экспортирует компонент Qwik в качестве экспорта по умолчанию, Qwik City рендерит компонент и возвращает HTML-ответ в виде веб-страницы.
 
-```tsx
-// src/routes/index.tsx
+```tsx title="src/routes/index.tsx"
 import { component$ } from '@builder.io/qwik';
 
 export default component$(() => {
@@ -104,8 +102,7 @@ export default component$(() => {
 
 `index.ts` может напрямую обращаться к HTTP-запросу и возвращать необработанный HTTP-ответ без участия какого-либо компонента Qwik. Это делается путём экспорта метода `onRequest` или `onGet`, `onPost`, `onPut`, `onDelete` в зависимости от того, хотите ли вы обработать только конкретный запрос с учётом его HTTP-метода.
 
-```tsx
-// src/routes/index.ts
+```tsx title="src/routes/index.ts"
 import { component$ } from '@builder.io/qwik';
 
 export const onGet = ({ json }) => {
@@ -119,8 +116,7 @@ export const onGet = ({ json }) => {
 
 Как видите, в Qwik City нет чёткого разделения между страницами и конечными точками, в обоих случаях это файл `index.tsx`, который экспортирует компонент Qwik или метод `onRequest`. Однако можно комбинировать оба подхода. Например, вы можете экспортировать метод `onRequest`, который будет обрабатывать запрос, а затем рендерить компонент Qwik.
 
-```tsx
-// src/routes/index.ts
+```tsx title="src/routes/index.ts"
 import { component$ } from '@builder.io/qwik';
 
 export const onRequest = ({ headers, query, json }) => {

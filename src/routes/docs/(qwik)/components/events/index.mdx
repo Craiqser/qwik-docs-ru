@@ -28,7 +28,7 @@ import UseOn from 'source:/src/routes/demo/events/use-on/index.tsx';
 
 Для того чтобы веб-приложение было интерактивным, оно нуждается в реагировании на пользовательские события. Это делается путем регистрации функций обратного вызова в шаблоне JSX. Обработчики событий регистрируются с помощью атрибута `on{EventName}$`. Например, атрибут `onClick$` используется для прослушивания событий `click`.
 
-```tsx
+```tsx /onClick$/
 <button onClick$={() => alert('CLICKED!')}>click me!</button>
 ```
 
@@ -36,7 +36,7 @@ import UseOn from 'source:/src/routes/demo/events/use-on/index.tsx';
 
 В приведённом ниже примере атрибут `onClick$` элемента `<button>` используется, чтобы сообщить Qwik, что функция обратного вызова `() => store.count++` должна выполняться каждый раз, когда на элементе `<button>` происходит событие `click`.
 
-```tsx
+```tsx {9} /onClick$/
 import { component$, useSignal } from '@builder.io/qwik';
 
 export default component$(() => {
@@ -44,8 +44,11 @@ export default component$(() => {
 
   return (
     <>
-      <button onClick$={() => count.value++}>Прибавить</button>
-      <div>Счёт: {count.value}</div>
+      <button
+        onClick$={() => count.value++}
+      >
+        Прибавить {count.value}
+      </button>
     </>
   );
 });
@@ -63,7 +66,7 @@ export default component$(() => {
 
 Например, приведённый выше пример можно записать следующим образом:
 
-```tsx
+```tsx {5} /increment/#a
 import { component$, useSignal, $ } from '@builder.io/qwik';
 
 export default component$(() => {
@@ -86,15 +89,15 @@ export default component$(() => {
 
 Первым аргументом обработчика события является объект `Event`. Этот объект содержит информацию о событии, которое вызвало обработчик. Например, объект `Event` для события `click` содержит информацию о положении мыши и элементе, на котором был клик мыши. Вы можете ознакомиться с [документами MDN, чтобы узнать больше подробностей о каждом событии DOM](https://developer.mozilla.org/en-US/docs/Web/API/Event).
 
-```tsx
+```tsx /event/
 import { component$, useSignal, $ } from '@builder.io/qwik';
 
 export default component$(() => {
   const position = useSignal<{ x: number; y: number }>();
   return (
-    <div onClick$={(event) => (position.value = { x: event.x, y: event.y })}>
-      <div>1</div>
-      <div>2</div>
+    <div onClick$={(event) => {
+      position.value = { x: event.x, y: event.y };
+    }}>
       <div>
         Клик на: ({position.value?.x}, {position.value?.y})
       </div>
@@ -116,7 +119,7 @@ export default component$(() => {
 
 Поскольку обработка событий является асинхронной, вы не можете использовать `event.preventDefault()`. Для решения этой проблемы Qwik вводит декларативный способ предотвращения с помощью атрибута `preventdefault:{eventName}`.
 
-```tsx
+```tsx {7}
 import { component$ } from '@builder.io/qwik';
 
 export default component$(() => {
@@ -141,25 +144,25 @@ export default component$(() => {
 
 Поскольку обработка событий является асинхронной, вы не можете использовать `event.currentTarget`. Для решения этой проблемы обработчики Qwik предоставляют `currentTarget` в качестве второго аргумента.
 
-```tsx
+```tsx /currentTarget/
 import { component$, useSignal } from '@builder.io/qwik';
 
 export default component$(() => {
-  const currentTarget = useSignal<HTMLElement|null>(null);
-  const target = useSignal<HTMLElement|null>(null);
+  const currentElm = useSignal<HTMLElement|null>(null);
+  const targetElm = useSignal<HTMLElement|null>(null);
 
   return (
-    <div onClick$={(event, _currentTarget) => {
-      currentTarget.value = _currentTarget;
-      target.value = event.target as HTMLElement;
+    <div onClick$={(event, currentTarget) => {
+      currentElm.value = currentTarget;
+      targetElm.value = event.target as HTMLElement;
     }}>
-      Click on any text <code>target</code> and <code>currentTarget</code> of the event.
+      Click on any text <code>target</code> and <code>currentElm</code> of the event.
       <hr/>
       <span>Hello <b>World</b>!</span>
       <hr/>
       <ul>
-        <li>currentTarget: {currentTarget.value?.tagName}</li>
-        <li>target: {target.value?.tagName}</li>
+        <li>currentElm: {currentElm.value?.tagName}</li>
+        <li>target: {targetElm.value?.tagName}</li>
       </ul>
     </div>
   );
@@ -176,12 +179,13 @@ export default component$(() => {
 
 Для этого мы можем использовать `useVisibleTask`, чтобы программно добавить слушателя событий, используя DOM API напрямую.
 
-```tsx
+```tsx {7-20}
 import { component$, useSignal, useVisibleTask$ } from '@builder.io/qwik';
 
 export default component$(() => {
   const draggableRef = useSignal<HTMLElement>();
   const dragStatus = useSignal('');
+
   useVisibleTask$(({ cleanup }) => {
     if (draggableRef.value) {
       // Используйте DOM API для добавления слушателя событий.

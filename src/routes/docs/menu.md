@@ -15,7 +15,7 @@
 - [Задачи/Жизненный цикл](./(qwik)/components/tasks/index.mdx)
 - [Контекст](./(qwik)/components/context/index.mdx)
 - [Ресурсы](./(qwik)/components/resource/index.mdx)
-- [Слоты](./(qwik)/components/projection/index.mdx)
+- [Слоты](./(qwik)/components/slots/index.mdx)
 - [Рендер](./(qwik)/components/rendering/index.mdx)
 - [Стилизация](./(qwik)/components/styles/index.mdx)
 

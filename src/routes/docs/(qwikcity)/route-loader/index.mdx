@@ -14,8 +14,7 @@ contributors:
 
 Загрузчики маршрута могут быть объявлены только внутри папки `src/routes`, в файле `layout.tsx` или `index.tsx`, и они ДОЛЖНЫ быть экспортированы.
 
-```tsx
-// src/routes/layout.tsx
+```tsx title="src/routes/layout.tsx"
 import { routeLoader$ } from '@builder.io/qwik-city';
 
 export const useProductData = routeLoader$(async () => {
@@ -31,8 +30,7 @@ export const useProductData = routeLoader$(async () => {
 
 `routeLoader$`-ы могут использоваться любым компонентом приложения, если загрузчик объявлен в файле `layout.tsx` или `index.tsx`, который является частью существующего маршрута.
 
-```tsx
-// src/routes/index.tsx
+```tsx title="src/routes/index.tsx"
 import { routeLoader$ } from '@builder.io/qwik-city';
 import { component$ } from '@builder.io/qwik';
 
@@ -55,9 +53,7 @@ export default component$(() => {
 
 В приложении разрешено использовать несколько `routeLoader$`-ов, и их можно использовать в любом компоненте Qwik. **Вы даже можете объявить несколько загрузчиков маршрута в одном файле**.
 
-**Файл: `src/routes/layout.tsx`**
-
-```tsx
+```tsx title="src/routes/layout.tsx"
 import { component$ } from '@builder.io/qwik';
 import { routeLoader$ } from '@builder.io/qwik-city';
 import { Footer } from '../components/footer.tsx';
@@ -79,9 +75,7 @@ export default component$(() => {
 });
 ```
 
-**Файл: `src/components/footer.tsx`**
-
-```tsx
+```tsx title="src/components/footer.tsx"
 import { component$ } from '@builder.io/qwik';
 
 // Импорт загрузчика из макета
@@ -96,9 +90,7 @@ export const Footer = component$(() => {
 
 Приведённый выше пример показывает использование `useProductData()` в двух разных компонентах и в разных файлах. Это намеренное поведение.
 
-**Файл: `src/routes/admin/index.tsx`**
-
-```tsx
+```tsx title="src/routes/admin/index.tsx"
 import { component$ } from '@builder.io/qwik';
 import { routeLoader$ } from '@builder.io/qwik-city';
 
