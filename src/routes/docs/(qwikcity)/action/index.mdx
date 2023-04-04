@@ -5,6 +5,7 @@ contributors:
   - cunzaizhuyi
   - forresst
   - keuller
+  - hamatoyogi
 ---
 
 # `routeAction$()`
@@ -41,8 +42,8 @@ export const useLogin = globalAction$((data) => {
 import { component$ } from '@builder.io/qwik';
 import { routeAction$ } from '@builder.io/qwik-city';
 
-export const useAddUser = routeAction$((user) => {
-  const userID = db.users.add(user);
+export const useAddUser = routeAction$(async (user) => {
+  const userID = await db.users.add(user);
   return {
     success: true,
     userID,
@@ -72,8 +73,8 @@ export default component$(() => {
 import { routeAction$, Form } from '@builder.io/qwik-city';
 import { component$ } from '@builder.io/qwik';
 
-export const useAddUser = routeAction$((user) => {
-  const userID = db.users.add(user);
+export const useAddUser = routeAction$(async (user) => {
+  const userID = await db.users.add(user);
   return {
     success: true,
     userID,
@@ -102,8 +103,8 @@ export default component$(() => {
 import { routeAction$ } from '@builder.io/qwik-city';
 import { component$ } from '@builder.io/qwik';
 
-export const useAddUser = routeAction$((user) => {
-  const userID = db.users.add(user);
+export const useAddUser = routeAction$(async (user) => {
+  const userID = await db.users.add(user);
   return {
     success: true,
     userID,
@@ -137,9 +138,9 @@ export default component$(() => {
 ```tsx title="src/routes/index.tsx"
 import { routeAction$ } from '@builder.io/qwik-city';
 
-export const useAddUser = routeAction$((user) => {
+export const useAddUser = routeAction$(async (user) => {
   // `user` типизирован как Record<string, any>
-  const userID = db.users.add(user);
+  const userID = await db.users.add(user);
   return {
     success: true,
     userID,
@@ -147,15 +148,15 @@ export const useAddUser = routeAction$((user) => {
 });
 ```
 
-К счастью, действия имеют первоклассную поддержку библиотеки [Zod](https://zod.dev/) для проверки данных на основе TypeScript. Чтобы использовать Zod, просто передайте схему Zod в качестве второго аргумента функции `action$()`.
+К счастью, действия имеют первоклассную поддержку библиотеки [Zod](https://zod.dev/) для проверки данных на основе TypeScript. Чтобы использовать Zod, просто передайте схему Zod в качестве второго аргумента функции `routeAction$()`.
 
 ```tsx title="src/routes/index.tsx"
 import { routeAction$, zod$, z } from '@builder.io/qwik-city';
 
 export const useAddUser = routeAction$(
-  (user) => {
+  async (user) => {
     // `user` типизирован как { name: string }
-    const userID = db.users.add(user);
+    const userID = await db.users.add(user);
     return {
       success: true,
       userID,
@@ -167,16 +168,16 @@ export const useAddUser = routeAction$(
 );
 ```
 
-При передаче данных в действие они проверяются на соответствие схеме Zod. Если данные недействительны, действие поместит ошибку валидации в свойство `action.fail`.
+При передаче данных в `routeAction()` они проверяются на соответствие схеме Zod. Если данные недействительны, действие поместит ошибку валидации в свойство `routeAction.fail`.
 
 ```tsx
 import { component$ } from '@builder.io/qwik';
 import { routeAction$, Form, zod$, z } from '@builder.io/qwik-city';
 
 export const useAddUser = routeAction$(
-  (user) => {
+  async (user) => {
     // `user` типизирован как { name: string }
-    const userID = db.users.add(user);
+    const userID = await db.users.add(user);
     return {
       success: true,
       userID,
@@ -192,7 +193,7 @@ export default component$(() => {
   return (
     <Form action={action}>
       <input name="name" />
-      {action.fail?.fieldErrors.name && <div>{action.fail.message}</div>}
+      {action.value?.failed && <div>{action.value.fieldErrors?.name}</div>}
       {action.value?.success && <div>Пользователь успешно добавлен</div>}
       <button type="submit">Добавить пользователя</button>
     </Form>
@@ -210,9 +211,9 @@ export default component$(() => {
 import { routeAction$, zod$, z } from '@builder.io/qwik-city';
 
 export const useAddUser = routeAction$(
-  (user, { fail }) => {
+  async (user, { fail }) => {
     // `user` типизирован как { name: string }
-    const userID = db.users.add(user);
+    const userID = await db.users.add(user);
     if (!userID) {
       return fail(500, {
         message: 'Пользователь не может быть добавлен',
@@ -228,7 +229,7 @@ export const useAddUser = routeAction$(
 );
 ```
 
-Ошибки сохраняются в свойстве `action.value`, как и значение успешного завершения действия. Если действие не удалось, то свойство `action.value.failed` устанавливается в `true`.
+Ошибки сохраняются в свойстве `action.value`, как и значение успешного завершения действия. Если действие не удалось, то свойство `action.value.failed` устанавливается в `true`. Кроме того, сообщения о сбоях могут быть найдены в объекте `fieldErrors` в соответствии со свойствами, определёнными в вашей Zod-схеме.
 
 ```tsx
 import { component$ } from '@builder.io/qwik';
@@ -240,7 +241,7 @@ export default component$(() => {
     <Form action={action}>
       <input name="name" />
       <button type="submit">Добавить пользователя</button>
-      {action.value?.failed && <div>{action.value.message}</div>}
+      {action.value?.failed && <div>{action.value.fieldErrors.name}</div>}
       {action.value?.userID && <div>Пользователь успешно добавлен</div>}
     </Form>
   );
@@ -258,9 +259,9 @@ import { component$ } from '@builder.io/qwik';
 import { routeAction$, Form, zod$, z } from '@builder.io/qwik-city';
 
 export const useAddUser = routeAction$(
-  (user) => {
+  async (user) => {
     // `user` типизирован как { name: string }
-    const userID = db.users.add(user);
+    const userID = await db.users.add(user);
     return {
       userID,
     };
