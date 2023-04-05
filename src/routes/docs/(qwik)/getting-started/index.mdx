@@ -323,7 +323,7 @@ export default component$(() => {
   const dadJokeSignal = useDadJoke();
   const favoriteJokeAction = useJokeVoteAction();
   useTask$(({ track }) => {
-    track(isFavoriteSignal);
+    track(()=> isFavoriteSignal.value);
     console.log('FAVORITE (isomorphic)', isFavoriteSignal.value);
     server$(() => {
       console.log('FAVORITE (server)', isFavoriteSignal.value);
@@ -366,7 +366,7 @@ useTask$(({ track }) => {});
 
 ```tsx
 useTask$(({ track }) => {
-  track(isFavoriteSignal);
+  track(()=> isFavoriteSignal.value);
 });
 ```
 
@@ -374,7 +374,7 @@ useTask$(({ track }) => {
 
 ```tsx
 useTask$(({ track }) => {
-  track(isFavoriteSignal);
+  track(()=> isFavoriteSignal.value);
   console.log("FAVORITE (isomorphic)", isFavoriteSignal.value);
 });
 ```
@@ -383,7 +383,7 @@ useTask$(({ track }) => {
 
 ```tsx
 useTask$(({ track }) => {
-  track(isFavoriteSignal);
+  track(()=> isFavoriteSignal.value);
   console.log("FAVORITE (isomorphic)", isFavoriteSignal.value);
   server$(() => {
     console.log("FAVORITE (server)", isFavoriteSignal.value);
@@ -428,7 +428,7 @@ export default component$(() => {
   const dadJokeSignal = useDadJoke();
   const favoriteJokeAction = useJokeVoteAction();
   useTask$(({ track }) => {
-    track(isFavoriteSignal);
+    track(()=> isFavoriteSignal.value);
     console.log('FAVORITE (isomorphic)', isFavoriteSignal.value);
     server$(() => {
       console.log('FAVORITE (server)', isFavoriteSignal.value);
@@ -531,7 +531,7 @@ export default component$(() => {
   const dadJokeSignal = useDadJoke();
   const favoriteJokeAction = useJokeVoteAction();
   useTask$(({ track }) => {
-    track(isFavoriteSignal);
+    track(()=> isFavoriteSignal.value);
     console.log('FAVORITE (isomorphic)', isFavoriteSignal.value);
     server$(() => {
       console.log('FAVORITE (server)', isFavoriteSignal.value);

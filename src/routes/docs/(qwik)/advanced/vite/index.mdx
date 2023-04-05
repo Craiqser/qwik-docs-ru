@@ -4,6 +4,7 @@ contributors:
   - zanettin
   - manucorporat
   - cunzaizhuyi
+  - cayter
 ---
 
 # Vite
@@ -231,6 +232,15 @@ mdxPlugins?: MdxPlugins;
 * Опции MDX https://mdxjs.com/
 */
 mdx?: any;
+```
+
+#### `platform`
+
+```js
+/**
+* Объект платформы, который можно использовать для имитации привязки Cloudflare.
+*/
+platform?: Record<string, unknown>;
 ```
 
 ## Устранение неполадок
