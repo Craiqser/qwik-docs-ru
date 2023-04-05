@@ -23,7 +23,7 @@ contributors:
 
 Например, если у вас есть файл по пути `src/routes/some/path/index.tsx`, он будет сопоставлен с URL-адресом `https://example.com/some/path`.
 
-```
+```bash
 src/
 └── routes/
     ├── contact/
@@ -55,7 +55,7 @@ src/routes/user/[username]/index.tsx → /user/:username (/user/foo)
 src/routes/post/[...all]/index.tsx → /post/* (/post/2020/id/title)
 ```
 
-```
+```bash
 src/
 └── routes/
     ├── blog/
@@ -98,7 +98,7 @@ export default component$(() => {
 });
 ```
 
-### Конечная точка `index.tsx`
+### Конечная точка `index.ts`
 
 `index.ts` может напрямую обращаться к HTTP-запросу и возвращать необработанный HTTP-ответ без участия какого-либо компонента Qwik. Это делается путём экспорта метода `onRequest` или `onGet`, `onPost`, `onPut`, `onDelete` в зависимости от того, хотите ли вы обработать только конкретный запрос с учётом его HTTP-метода.
 
@@ -146,7 +146,7 @@ export default component$(async () => {
 
 Возьмите этот каталог `src/routes` в качестве примера:
 
-```
+```bash
 src/
 └── routes/
     ├── admin/
