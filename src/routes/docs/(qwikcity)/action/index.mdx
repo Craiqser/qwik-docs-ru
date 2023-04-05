@@ -57,7 +57,7 @@ export default component$(() => {
   // action.status?: number;
   // action.formData: FormData | undefined;
   // action.value: {success: boolean, userID: string} | undefined;
-  // action.run: (data: any) => Promise<{success: boolean, userID: string}>;
+  // action.submit: (data: any) => Promise<{success: boolean, userID: string}>;
 
   return <>{...}</>
 });
@@ -97,7 +97,7 @@ export default component$(() => {
 
 ## Программное использование действий
 
-Действия могут быть запущены из кода с помощью метода `action.run()`, т.е. компонент `<Form />` не обязателен. Вы можете запустить действие по нажатию кнопки или при наступлении любого другого события, точно так же, как вы бы делали это с помощью функции.
+Действия могут быть запущены из кода с помощью метода `action.submit()`, т.е. компонент `<Form />` не обязателен. Вы можете запустить действие по нажатию кнопки или при наступлении любого другого события, точно так же, как вы бы делали это с помощью функции.
 
 ```tsx title="src/routes/index.tsx"
 import { routeAction$ } from '@builder.io/qwik-city';
@@ -117,7 +117,7 @@ export default component$(() => {
     <div>
       <button
         onClick={async () => {
-          const { value } = await action.run({ name: 'John' });
+          const { value } = await action.submit({ name: 'John' });
           console.log(value);
         }}
       >
@@ -129,7 +129,7 @@ export default component$(() => {
 });
 ```
 
-В приведённом выше примере действие `addUser` срабатывает, когда пользователь нажимает на кнопку. Метод `action.run()` возвращает `Promise`, который разрешается, когда действие выполнено.
+В приведённом выше примере действие `addUser` срабатывает, когда пользователь нажимает на кнопку. Метод `action.submit()` возвращает `Promise`, который разрешается, когда действие выполнено.
 
 ### Zod-валидация
 
