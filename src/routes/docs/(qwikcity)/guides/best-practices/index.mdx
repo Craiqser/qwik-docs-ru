@@ -21,7 +21,7 @@ contributors:
 
 **Лучшая практика**:
 
-```ts
+```tsx
 useVisibleTask$(() => {
   const listener = (event) => {
     const mouseEvent = event as MouseEvent;
@@ -47,7 +47,7 @@ useVisibleTask$(() => {
 
 **Вместо этого делайте так**:
 
-```ts
+```tsx
 useOnDocument(
   'mousemove',
   $((event) => {
@@ -73,7 +73,7 @@ useOnDocument(
 
 **Лучшая практика**:
 
-```ts
+```tsx
 useVisibleTask$(()=> {
     if (window.location.href).includes('foo') {
         //...делаем что-либо
@@ -103,7 +103,7 @@ if (typeof window !== "undefined") {
 
 **Вместо этого делайте так**:
 
-```ts
+```tsx
 const location = useLocation();
 
 if (location.url.href.includes('foo')) {

@@ -2,7 +2,7 @@
 
 ## Current status
 
-- Last update - 5.04.2023;
+- Last update - 6.04.2023;
 - Translated: Qwik, QwikCity, Examples, Tutorials.
 
 Для просмотра документации на локальном компьютере выполните следующие команды:

@@ -155,8 +155,7 @@ Qwik из коробки поддерживает CSS-модули, глобал
 
 Чтобы использовать CSS-модули, просто создайте файл `.module.css`. Например, `src/components/MyComponent/MyComponent.module.css`.
 
-```css
-/* Файл: src/components/MyComponent/MyComponent.module.css */
+```css title="src/components/MyComponent/MyComponent.module.css"
 .container {
   background-color: red;
 }
@@ -164,9 +163,7 @@ Qwik из коробки поддерживает CSS-модули, глобал
 
 Затем импортируйте CSS-модуль в свой компонент.
 
-```tsx
-// Файл: src/components/MyComponent/MyComponent.tsx
-
+```tsx title="src/components/MyComponent/MyComponent.tsx"
 import { component$ } from '@builder.io/qwik';
 import styles from './MyComponent.module.css';
 
@@ -183,9 +180,7 @@ export default component$(() => {
 
 Чтобы использовать глобальные стили, импортируйте CSS-файл из любого typescript-файла. Например, `src/components/MyComponent/MyComponent.tsx`.
 
-```tsx
-// Файл: src/components/MyComponent/MyComponent.tsx
-
+```tsx title="src/components/MyComponent/MyComponent.tsx"
 import { component$ } from '@builder.io/qwik';
 import './MyComponent.css';
 
@@ -200,9 +195,7 @@ export default component$(() => {
 
 Чтобы использовать локальный CSS, вы можете воспользоваться хуком `useStyleScoped$()`, экспортированным из `@builder.io/qwik`.
 
-```tsx
-// Файл: src/components/MyComponent/MyComponent.tsx
-
+```tsx title="src/components/MyComponent/MyComponent.tsx"
 import { component$, useStyleScoped$ } from '@builder.io/qwik';
 
 export default component$(() => {
@@ -219,15 +212,13 @@ export default component$(() => {
 
 Также можно импортировать внешний CSS-файл. Для этого необходимо добавить параметр запроса `?inline` к импорту CSS-файла и передать экспорт CSS-файла по умолчанию в хук `useStyleScoped$()`.
 
-```css
-/* Файл: src/components/MyComponent/MyComponent.css */
+```css title="src/components/MyComponent/MyComponent.css"
 .container {
   background-color: red;
 }
 ```
 
-```tsx
-// Файл: src/components/MyComponent/MyComponent.tsx
+```tsx title="src/components/MyComponent/MyComponent.tsx"
 import { component$, useStyleScoped$ } from '@builder.io/qwik';
 import styles from './MyComponent.css?inline';
 
@@ -481,9 +472,7 @@ export const Clock = component$(() => {
 
 Qwik поставляется с маршрутизатором на основе файлов, который похож на Next.js, но имеет несколько отличий. Маршрутизатор основан на файловой системе, точнее, на `src/routes/`. Создание нового файла `index.tsx` в `src/routes/` приведет к созданию нового маршрута. Например, `src/routes/home/index.tsx` создаст маршрут по адресу `/home/`.
 
-```tsx
-// Файл: src/routes/home/index.tsx
-
+```tsx title="src/routes/home/index.tsx"
 import { component$ } from '@builder.io/qwik';
 
 export default component$(() => {
@@ -497,9 +486,7 @@ export default component$(() => {
 
 Вы можете создавать динамические маршруты, добавляя в путь маршрута папку вида `[param]`. Например, `src/routes/user/[id]/index.tsx` создаст маршрут по адресу `/user/:id/`. Для доступа к параметру маршрута можно использовать хук `useLocation`, экспортированный из `@builder.io/qwik-city`.
 
-```tsx
-// Файл: src/routes/user/[userID]/index.tsx
-
+```tsx title="src/routes/user/[userID]/index.tsx"
 import { component$ } from '@builder.io/qwik';
 import { useLocation } from '@builder.io/qwik-city';
 
@@ -532,9 +519,7 @@ export interface RouteLocation {
 
 Для связи с другими маршрутами можно использовать компонент `Link`, экспортированный из `@builder.io/qwik-city`. Компонент `Link` принимает все свойства элемента `<a>` HTMLAnchorElement. Единственное отличие заключается в том, что он будет использовать маршрутизатор Qwik для SPA-навигации к маршруту вместо перехода на страницу.
 
-```tsx
-// Файл: src/routes/index.tsx
-
+```tsx title="src/routes/index.tsx"
 import { component$ } from '@builder.io/qwik';
 import { Link } from '@builder.io/qwik-city';
 
@@ -553,9 +538,7 @@ export default component$(() => {
 
 Рекомендуемый способ загрузки данных с сервера - использовать функцию `routeLoader$()`, экспортированную из `@builder.io/qwik-city`. Функция `routeLoader$()` используется для создания загрузчика данных, который будет выполняться на сервере перед рендером маршрута. Возврат `routeLoader$()` должен экспортироваться как экспорт имени из файла маршрута, то есть он может быть использован только в `index.tsx`, внутри `src/routes/`.
 
-```tsx
-// Файл: src/routes/user/[userID]/index.tsx
-
+```tsx title="src/routes/user/[userID]/index.tsx"
 import { component$ } from '@builder.io/qwik';
 import { routeLoader$ } from '@builder.io/qwik-city';
 
@@ -587,9 +570,7 @@ export default component$(() => {
 
 Qwik предоставляет API `routeAction$()`, экспортированный из `@builder.io/qwik-city`, для обработки запросов формы на сервере. `routeAction$()` очень похож на `routeLoader$()`, оба используются для создания пользовательского хука, который можно использовать для доступа к данным, возвращаемым с сервера. Основное отличие состоит в том, что `routeAction$()` выполняется только при отправке формы, а `routeLoader$()` выполняется на сервере до отображения маршрута.
 
-```tsx
-// Файл: src/routes/user/[userID]/index.tsx
-
+```tsx title="src/routes/user/[userID]/index.tsx"
 import { component$ } from '@builder.io/qwik';
 import { routeAction$, Form } from '@builder.io/qwik-city';
 

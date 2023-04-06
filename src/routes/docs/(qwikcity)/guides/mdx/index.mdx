@@ -15,7 +15,7 @@ contributors:
 
 Предположим, что ваши маршруты построены следующим образом:
 
-```
+```bash
 src/
 └── routes/
     └── some/
@@ -38,7 +38,7 @@ This is a simple hello world component.
 
 [MDX](https://mdxjs.com/) - это творческая возможность быстро придумывать новый контент и, если вам нужно больше интерактива на странице, вы можете легко интегрировать ваши компоненты Qwik, например, так:
 
-```
+```bash
 src/
 ├── components/
 │   └──  counter.tsx
@@ -87,7 +87,7 @@ Qwik City по умолчанию включает 3 плагина:
 
 Эти плагины можно отключить независимо друг от друга следующим образом:
 
-```tsx
+```tsx title="vite.config.js"
 import { defineConfig } from 'vite';
 import { qwikCity } from '@builder.io/qwik-city/vite';
 // Смотри ниже
@@ -133,7 +133,7 @@ og:
 
 Для приведённого выше примера будет сгенерирован следующий HTML-код:
 
-```HTML
+```html
 <title>My Title</title>
 <meta name="description" content="My Description" />
 

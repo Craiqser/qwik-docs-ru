@@ -41,8 +41,8 @@ import CodeSandbox from '../../../../../components/code-sandbox/index.tsx';
 - `Render` - запускается после `Task` и перед `VisibleTask`;
 - `VisibleTask` - запускается после `Render` и когда компонент становится видимым.
 
-```
-  useTask$ ------> RENDER -----> useVisibleTask$
+```bash /useTask$/#d /RENDER/#b /useVisibleTask$/#c
+      useTask$ -------> RENDER ---> useVisibleTask$
                             |
 | --- SERVER or BROWSER --- | ----- BROWSER ----- |
                             |
@@ -55,10 +55,10 @@ import CodeSandbox from '../../../../../components/code-sandbox/index.tsx';
 
 **БРАУЗЕР**: Иногда компонент первоначально монтируется/рендерится в браузере, например, когда пользователь SPA переходит на новую страницу или когда "модальный" компонент первоначально появляется на странице. В этом случае жизненный цикл будет выглядеть следующим образом:
 
-```
+```bash /useTask$/#d /RENDER/#b /useVisibleTask$/#c
   useTask$ --> RENDER --> useVisibleTask$
 
-| ---------------- BROWSER --------------- |
+| -------------- BROWSER --------------- |
 ```
 
 > **Заметьте**, что жизненный цикл точно такой же, но на этот раз все хуки выполняются в браузере, а не на сервере.
@@ -75,12 +75,15 @@ import CodeSandbox from '../../../../../components/code-sandbox/index.tsx';
 
 **Обратите внимание, что любое последующее выполнение всегда будет происходить в браузере**, потому что реактивность - это только для клиента.
 
-```
-  useTask$(track state) -> RENDER -> CLICK (state changes) -> RE-RUN useTask$(track state)
-  ▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔            |                          ▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔
-| --------- SERVER --------- | --------------- BROWSER --------------- |
-                             |
-                        pause|resume
+```bash /useTask$(track)/#d /RENDER/#b /CLICK/#a
+                      (state change) -> (re-execute)
+                                  ^            |
+                                  |            v
+ useTask$(track) -> RENDER ->  CLICK  -> useTask$(track)
+                        |
+  | ----- SERVER ------ | ----------- BROWSER ----------- |
+                        |
+                   pause|resume
 ```
 
 > Если `useTask$()` не отслеживает состояние, она будет запущена **только один раз**, на сервере **или** в браузере (**но не там и там**), в зависимости от того, где первоначально отображается компонент. Эффективно использование в хуке "on mount".
