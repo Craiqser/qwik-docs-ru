@@ -15,8 +15,7 @@ contributors:
 
 Обычно в Vite.js мы делаем это следующим образом:
 
-```js
-// vite.config.js
+```ts title="vite.config.ts"
 import { defineConfig } from 'vite';
 import { qwikVite } from '@builder.io/qwik/optimizer';
 import { qwikCity } from '@builder.io/qwik-city/vite';
@@ -51,7 +50,7 @@ export default defineConfig(() => {
 
 Поэтому вместо того, чтобы изменять настройки в Vite.js напрямую, нам просто нужно изменить настройки в QwikVite() следующим образом:
 
-```ts
+```ts title="vite.config.ts"
 import { defineConfig } from 'vite';
 import { qwikVite } from '@builder.io/qwik/optimizer';
 import { qwikCity } from '@builder.io/qwik-city/vite';

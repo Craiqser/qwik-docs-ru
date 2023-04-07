@@ -20,7 +20,7 @@ npm run qwik add azure-swa
 
 Адаптер добавит новый файл `vite.config.ts` в каталог `adapters/`, и создаст файл точки входа, как показано ниже:
 
-```
+```shell
 └── adapters/
     └── azure-swa/
         └── vite.config.ts
@@ -42,7 +42,7 @@ npm run build
 
 После установки интеграции с помощью `npm run qwik add azure-swa` проект готов к развёртыванию в Azure Static Web Apps.
 
-Существует два способа развёртывания:
+Существует три способа развёртывания:
 
 1. Развёртывание с помощью [Static Web Apps CLI](https://azure.github.io/static-web-apps-cli/)
 
@@ -68,7 +68,7 @@ npm run build
 
    Полученный файл рабочего процесса необходимо адаптировать, добавив в блок "Repository/Build Configurations" следующую команду:
 
-   ```
+   ```text /skip_api_build/#b /true/#c
    skip_api_build: true
    ```
 
@@ -78,7 +78,7 @@ npm run build
 
    Вы можете развернуть Azure Static Web Apps с помощью любой CI-системы, установив переменную окружения `SWA_CLI_DEPLOYMENT_TOKEN` с маркером развёртывания Azure SWA и выполнив следующую команду из вашего конвейера сборки:
 
-   ```
+   ```shell
    swa deploy ./dist --api-location ./azure-functions --env production
    ```
 

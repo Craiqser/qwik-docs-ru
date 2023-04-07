@@ -22,7 +22,7 @@ npm run qwik add netlify-edge
 
 Адаптер добавит новый файл `vite.config.ts` в каталог `adapters/`, и создаст файл точки входа, как показано ниже:
 
-```
+```shell
 └── adapters/
     └── netlify-edge/
         └── vite.config.ts
@@ -64,8 +64,7 @@ npm run deploy
 
 При добавлении адаптера `netlify-edge` будет создан новый файл точки входа - `src/entry.netlify-edge.tsx`. Ниже приведен пример использования встроенного промежуточного программного обеспечения в файле точки входа.
 
-```tsx
-// src/entry.netlify-edge.tsx
+```tsx title="src/entry.netlify-edge.tsx"
 import { createQwikCity } from '@builder.io/qwik-city/middleware/netlify-edge';
 import qwikCityPlan from '@qwik-city-plan';
 import render from './entry.ssr';
@@ -85,7 +84,7 @@ export default createQwikCity({ render, qwikCityPlan });
 
 Чтобы переопределить сгенерированный манифест, вы можете [добавить объявление](https://docs.netlify.com/edge-functions/declarations/#add-a-declaration) в `netlify.toml` с помощью секции конфигурации `[[edge_functions]]`. Например:
 
-```toml
+```toml title="netlify.toml"
 [[edge_functions]]
   path = "/admin"
   function = "auth"
@@ -95,7 +94,7 @@ export default createQwikCity({ render, qwikCityPlan });
 
 [Netlify context](https://docs.netlify.com/edge-functions/api/#netlify-specific-context-object) доступен в параметре `platform` метода конечной точки:
 
-```javascript
+```ts
 export const onRequest = async ({ platform }) => {
   platform.log('requested ip:', platform.ip);
 };
@@ -113,7 +112,7 @@ export const onGet: RequestHandlerNetlify = ({ platform }) => {
 
 ### Переменные окружения
 
-```javascript
+```ts
 export const onRequest = async ({ platform }) => {
   platform.log('Vite env read from .dev file', import.meta.env.VITE_DEV);
   platform.log('netlify serverless env read from Netlify UI or CLI', Deno.env.toObject());
@@ -130,7 +129,7 @@ export const onRequest = async ({ platform }) => {
 
 Обновлённый адаптер, используя команду `npm run qwik add netlify-edge`, будет генерировать конфигурацию `.netlify/edge-functions/manifest.json` во время сборки. Если вы хотите использовать новый адаптер, вы можете удалить плагин `@netlify/vite-plugin-netlify-edge` из корневого файла `vite.config.ts` и корневого файла `netlify.toml`.
 
-```diff
+```diff title="vite.config.ts"
 import { defineConfig } from "vite";
 import { qwikVite } from "@builder.io/qwik/optimizer";
 import { qwikCity } from "@builder.io/qwik-city/vite";
@@ -157,7 +156,7 @@ export default defineConfig(() => {
 
 Удалите универсальную конфигурацию `edge_functions` из `netlify.toml`.
 
-```diff
+```diff title="netlify.toml"
 -[[edge_functions]]
 -path = "/*"
 -function = "entry.netlify-edge"

@@ -25,7 +25,7 @@ npm run qwik add postcss
 - [Autoprefixer](https://github.com/postcss/autoprefixer)
 - [PostCSS Preset Env](https://preset-env.cssdb.org/)
 
-```javascript
+```ts title="postcss.config.js"
 module.exports = {
   plugins: {
     autoprefixer: {},
@@ -45,7 +45,7 @@ module.exports = {
 npm install cssnano --save-dev
 ```
 
-```javascript
+```ts title="postcss.config.js"
 module.exports = {
   plugins: {
     /* предыдущая конфигурация плагина */

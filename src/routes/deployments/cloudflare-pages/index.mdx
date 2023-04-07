@@ -22,7 +22,7 @@ npm run qwik add cloudflare-pages
 
 Адаптер добавит новый файл `vite.config.ts` в каталог `adapters/`, и создаст файл точки входа, как показано ниже:
 
-```
+```shell
 └── adapters/
     └── cloudflare-pages/
         └── vite.config.ts
@@ -56,8 +56,7 @@ npm run build
 
 При добавлении адаптера `cloudflare-pages` будет создан новый файл точки входа - `src/entry.cloudflare-pages.tsx`. Ниже приведен пример использования встроенного промежуточного программного обеспечения в файле точки входа.
 
-```tsx
-// src/entry.cloudflare-pages.tsx
+```tsx title="src/entry.cloudflare-pages.tsx"
 import { createQwikCity } from '@builder.io/qwik-city/middleware/cloudflare-pages';
 import qwikCityPlan from '@qwik-city-plan';
 import render from './entry.ssr';
@@ -69,7 +68,7 @@ export { onRequest };
 
 Скомпилированный модуль будет собран в каталоге `server/` и затем может быть использован в любом месте каталога `/functions` на Cloudflare pages.
 
-```tsx
+```tsx title="/functions/[[path]].ts"
 // Экспортируйте скомпилированный модуль туда, где его смогут найти страницы Cloudflare.
 // Например, используйте /functions/[[path]].ts или /functions/_middleware.ts
 // чтобы Qwik City обрабатывал все запросы.
@@ -113,7 +112,7 @@ export { onRequest } from '../server/entry.cloudflare-pages';
 
 Вы можете получить доступ к переменным окружения Cloudflare Pages в параметре `platform` методов конечной точки:
 
-```javascript
+```ts
 export const onRequest = async ({ platform }) => {
   const secret = platform['SUPER_SECRET_TOKEN'];
 };
