@@ -29,7 +29,7 @@ export default component$(() => {
 
           <section id="deployments">
             <h2>
-              <Link href="/deployments/">Развёртывание</Link>
+              <Link href="/docs/deployments/">Развёртывание</Link>
             </h2>
             <ul class="grid gap-8 grid-cols-2 md:grid-cols-3">
               {data.deployments.map((item, i) => (
@@ -47,10 +47,10 @@ export default component$(() => {
           <section id="integrations">
             <h2>
               <span>
-                <Link href="/integrations/">Интеграции</Link>
+                <Link href="/docs/integrations/">Интеграции</Link>
               </span>
               <span>
-                <Link href="/integrations/" class="text-sm">
+                <Link href="/docs/integrations/" class="text-sm">
                   Смотреть все
                 </Link>
               </span>
