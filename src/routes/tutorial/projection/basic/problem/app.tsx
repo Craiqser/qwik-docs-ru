@@ -15,8 +15,9 @@ export const Panel = component$(() => {
   console.log('Рендер: <Panel>');
   return (
     <div style={{ border: '2px solid red;', padding: '1em' }}>
-      Сейчас содержимым здесь управляет <tt>&lt;Panel&gt;</tt>. Замените этот текст
-      элементом <tt>&lt;Slot&gt;</tt>, чтобы увидеть содержимое элемента <tt>&lt;App&gt;</tt>.
+      Сейчас содержимым здесь управляет <code>&lt;Panel&gt;</code>. Замените этот текст
+      элементом <code>&lt;Slot&gt;</code>, чтобы увидеть содержимое элемента{' '}
+      <code>&lt;App&gt;</code>.
     </div>
   );
 });

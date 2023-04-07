@@ -4,6 +4,7 @@ interface AppStore {
   time: null | string;
   cleanup: NoSerialize<() => void>;
 }
+
 export default component$(() => {
   const store = useStore<AppStore>({
     time: null,
@@ -11,7 +12,7 @@ export default component$(() => {
   });
   return (
     <>
-      <div>Текущее время: {store.time}</div>
+      <p>Текущее время: {store.time}</p>
       <button
         onClick$={() => {
           // @ts-ignore

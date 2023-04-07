@@ -12,7 +12,7 @@ export default component$(() => {
   });
   return (
     <>
-      <div>Текущее время: {store.time}</div>
+      <p>Текущее время: {store.time}</p>
       <button
         onClick$={() => {
           const id = setInterval(() => (store.time = new Date().toString()), 1000);

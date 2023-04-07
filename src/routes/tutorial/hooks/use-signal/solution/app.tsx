@@ -15,13 +15,13 @@ export default component$(() => {
   });
 
   return (
-    <div>
-      <div style={{ border: '1px solid red', width: '100px' }} ref={outputRef}>
+    <main>
+      <aside style={{ border: '1px solid red', width: '100px' }} ref={outputRef}>
         Измените здесь текст, чтобы растянуть поле.
-      </div>
-      <div>
+      </aside>
+      <p>
         Приведенное выше красное поле имеет высоту {store.height} пикселей и ширину {store.width} пикселей.
-      </div>
-    </div>
+      </p>
+    </main>
   );
 });

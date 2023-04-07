@@ -23,15 +23,15 @@ export default component$(() => {
 
   console.log('Рендер');
   return (
-    <div>
-      <span>
+    <main>
+      <p>
         Имя пользователя GitHub:
         <input
           value={github.org}
           onInput$={(ev) => (github.org = (ev.target as HTMLInputElement).value)}
         />
-      </span>
-      <div>
+      </p>
+      <section>
         <Resource
           value={reposResource}
           onPending={() => <>Загрузка...</>}
@@ -46,8 +46,8 @@ export default component$(() => {
             </ul>
           )}
         />
-      </div>
-    </div>
+      </section>
+    </main>
   );
 });
 

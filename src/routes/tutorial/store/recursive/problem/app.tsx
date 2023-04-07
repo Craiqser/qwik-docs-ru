@@ -15,5 +15,5 @@ interface DisplayProps {
   counter: { count: number };
 }
 export const Display = component$((props: DisplayProps) => {
-  return <>Счётчик: {props.counter.count}</>;
+  return <p>Счётчик: {props.counter.count}</p>;
 });

@@ -3,9 +3,9 @@ import { component$, $, type PropFunction } from '@builder.io/qwik';
 export default component$(() => {
   const goodbye$ = $(() => alert('Пока!'));
   return (
-    <div>
+    <main>
       <MyComponent goodbye$={goodbye$} hello$={async (name) => alert('Привет, ' + name)} />
-    </div>
+    </main>
   );
 });
 
@@ -15,9 +15,9 @@ interface MyComponentProps {
 }
 export const MyComponent = component$((props: MyComponentProps) => {
   return (
-    <div>
+    <p>
       <button onClick$={props.goodbye$}>пока</button>
       <button onClick$={async () => await props.hello$('World')}>привет</button>
-    </div>
+    </p>
   );
 });

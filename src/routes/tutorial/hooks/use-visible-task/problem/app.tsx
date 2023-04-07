@@ -41,7 +41,7 @@ export function updateClock(store: ClockStore) {
 
 export default component$(() => {
   return (
-    <div>
+    <main>
       <p>Это пример ленивого выполнения кода компонента, когда он становится видимым.</p>
 
       <p style={{ height: '800px' }}>
@@ -49,6 +49,6 @@ export default component$(() => {
       </p>
 
       <Clock />
-    </div>
+    </main>
   );
 });

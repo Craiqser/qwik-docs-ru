@@ -18,5 +18,5 @@ interface DisplayProps {
   store: CountStore;
 }
 export const Display = component$((props: DisplayProps) => {
-  return <div>Счётчик: {props.store.count}</div>;
+  return <p>Счётчик: {props.store.count}</p>;
 });

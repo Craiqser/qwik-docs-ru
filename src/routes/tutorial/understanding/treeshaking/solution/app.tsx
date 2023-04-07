@@ -9,7 +9,7 @@ export default component$(() => {
   console.log('Render: <App/>');
   return (
     <>
-      <tt>&lt;App&gt;</tt>
+      <code>&lt;App&gt;</code>
       Этот компонент является статическим! После первоначального рендера в рамках SSR, он никогда не будет повторно рендериться на клиенте. Это означает, что он также никогда не будет загружаться на клиента. Компонент тришейкается на клиенте.
       <br />
       Нажми <button onClick$={() => store.count++}>+1</button> чтобы наблюдать, какой код
@@ -23,8 +23,8 @@ export const Child = component$((props: { store: CountStore }) => {
   console.log('Render: <Child/>');
   return (
     <>
-      <tt>&lt;Child&gt;</tt>
-      Этот компонент является динамическим, поскольку он привязан к <tt>props.store.count</tt>.
+      <code>&lt;Child&gt;</code>
+      Этот компонент является динамическим, поскольку он привязан к <code>props.store.count</code>.
       {/** Закомментируйте привязку, чтобы отследить влияние на код, загружаемый клиенту! **/}
       {/** props.store.count **/}
       <GrandChild store={props.store} />
@@ -36,8 +36,8 @@ export const GrandChild = component$((props: { store: CountStore }) => {
   console.log('Render: <GroundChild/>');
   return (
     <>
-      <tt>&lt;GrandChild&lt;</tt>
-      Этот компонент также является динамическим, поскольку он привязан к <tt>props.store.count</tt>.
+      <code>&lt;GrandChild&lt;</code>
+      Этот компонент также является динамическим, поскольку он привязан к <code>props.store.count</code>.
       {props.store.count}
     </>
   );

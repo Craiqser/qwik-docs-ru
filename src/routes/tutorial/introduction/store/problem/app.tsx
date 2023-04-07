@@ -9,12 +9,12 @@ export default component$(() => {
   };
 
   return (
-    <div>
-      <span>
+    <main>
+      <p>
         Имя пользователя GitHub:
         <input value={github.org} />
-      </span>
-      <div>
+      </p>
+      <section>
         {github.repos ? (
           <ul>
             {github.repos.map((repo) => (
@@ -28,7 +28,7 @@ export default component$(() => {
         ) : (
           'загрузка...'
         )}
-      </div>
-    </div>
+      </section>
+    </main>
   );
 });

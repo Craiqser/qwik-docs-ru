@@ -26,15 +26,15 @@ export default component$(() => {
 
   console.log('Рендер');
   return (
-    <div>
-      <span>
+    <main>
+      <p>
         Имя пользователя GitHub:
         <input
           value={github.org}
           onInput$={(ev) => (github.org = (ev.target as HTMLInputElement).value)}
         />
-      </span>
-      <div>
+      </p>
+      <section>
         {/* Используйте <Resource> для отображения данных из функции useResource$(). */}
         {/* Чтобы помочь, вот функция обратного вызова для отображения данных при разрешении ресурса. */}
         {/* (repos) => (
@@ -46,8 +46,8 @@ export default component$(() => {
               ))}
             </ul>
           ) */}
-      </div>
-    </div>
+      </section>
+    </main>
   );
 });
 
