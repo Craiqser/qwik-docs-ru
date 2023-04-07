@@ -20,6 +20,9 @@ import type { RequestHandler } from '@builder.io/qwik-city';
 // Вызывается при каждом HTTP-запросе (независимо от метода)
 export const onRequest: RequestHandler = async (ev) => { ... }
 
+// Вызывается, когда методом HTTP является GET
+export const onGet: RequestHandler = async (ev) => { ... }
+
 // Вызывается, когда методом HTTP является POST
 export const onPost: RequestHandler = async (ev) => { ... }
 
