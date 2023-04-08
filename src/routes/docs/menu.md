@@ -57,7 +57,7 @@
 - [Qwik в двух словах](/docs/(qwikcity)/guides/qwik-nutshell/index.mdx)
 - [Markdown & MDX](/docs/(qwikcity)/guides/mdx/index.mdx)
 - [SSG](/docs/(qwikcity)/guides/static-site-generation/index.mdx)
-- [Шпаргалка по React](/docs/(qwikcity)/guides/qwik-react/index.mdx)
+- [Шпаргалка по React](/docs/(qwikcity)/guides/react-cheat-sheet/index.mdx)
 - [Лучшие практики](/docs/(qwikcity)/guides/best-practices/index.mdx)
 
 ## Концепции

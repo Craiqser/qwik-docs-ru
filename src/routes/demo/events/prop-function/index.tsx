@@ -7,9 +7,9 @@ export default component$(() => {
 export const CmpButton = component$<{
   // Важно сообщить TypeScript, что это async
   onClick$?: PropFunction<() => void>;
-}>(({ onClick$ }) => {
+}>((props) => {
   return (
-    <button onClick$={onClick$}>
+    <button onClick$={props.onClick$}>
       <Slot />
     </button>
   );

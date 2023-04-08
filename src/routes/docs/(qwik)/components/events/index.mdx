@@ -27,7 +27,7 @@ import CodeSandbox from '../../../../../components/code-sandbox/index.tsx';
 
 В приведённом ниже примере атрибут `onClick$` элемента `<button>` используется, чтобы сообщить Qwik, что функция обратного вызова `() => store.count++` должна выполняться каждый раз, когда на элементе `<button>` происходит событие `click`.
 
-<CodeSandbox src="/src/routes/demo/state/counter-signal/index.tsx" sandboxStyle={{ height: '6em' }}>
+<CodeSandbox src="/src/routes/demo/state/counter-signal/index.tsx" style={{ height: '6em' }}>
 ```tsx {7} /onClick$/
 import { component$, useSignal } from '@builder.io/qwik';
 
@@ -53,7 +53,7 @@ export default component$(() => {
 
 Например, приведённый выше пример можно записать следующим образом:
 
-<CodeSandbox src="/src/routes/demo/events/extracted-handler/index.tsx" sandboxStyle={{ height: '6em' }}>
+<CodeSandbox src="/src/routes/demo/events/extracted-handler/index.tsx" style={{ height: '6em' }}>
 ```tsx {5} /increment/#a
 import { component$, useSignal, $ } from '@builder.io/qwik';
 
@@ -76,7 +76,7 @@ export default component$(() => {
 
 Первым аргументом обработчика события является объект `Event`. Этот объект содержит информацию о событии, которое вызвало обработчик. Например, объект `Event` для события `click` содержит информацию о положении мыши и элементе, на котором был клик мыши. Вы можете ознакомиться с [документами MDN, чтобы узнать больше подробностей о каждом событии DOM](https://developer.mozilla.org/en-US/docs/Web/API/Event).
 
-<CodeSandbox src="/src/routes/demo/events/mouse-position/index.tsx" sandboxStyle={{ height: '6em' }}>
+<CodeSandbox src="/src/routes/demo/events/mouse-position/index.tsx" style={{ height: '6em' }}>
 ```tsx /event/
 import { component$, useSignal } from '@builder.io/qwik';
 
@@ -107,7 +107,7 @@ export default component$(() => {
 
 Поскольку обработка событий является асинхронной, вы не можете использовать `event.preventDefault()`. Для решения этой проблемы Qwik вводит декларативный способ предотвращения с помощью атрибута `preventdefault:{eventName}`.
 
-<CodeSandbox src="/src/routes/demo/events/preventdefault/index.tsx" sandboxStyle={{ height: '6em' }}>
+<CodeSandbox src="/src/routes/demo/events/preventdefault/index.tsx" style={{ height: '6em' }}>
 ```tsx {7}
 import { component$ } from '@builder.io/qwik';
 
@@ -132,7 +132,7 @@ export default component$(() => {
 
 Поскольку обработка событий является асинхронной, вы не можете использовать `event.currentTarget`. Для решения этой проблемы обработчики Qwik предоставляют `currentTarget` в качестве второго аргумента.
 
-<CodeSandbox src="/src/routes/demo/events/target/index.tsx" sandboxStyle={{ height: '10em' }}>
+<CodeSandbox src="/src/routes/demo/events/target/index.tsx" style={{ height: '10em' }}>
 ```tsx /currentTarget/
 import { component$, useSignal } from '@builder.io/qwik';
 
@@ -167,7 +167,7 @@ export default component$(() => {
 
 Для этого мы можем использовать `useVisibleTask`, чтобы программно добавить слушателя событий, используя DOM API напрямую.
 
-<CodeSandbox src="/src/routes/demo/events/synchronous/index.tsx" sandboxStyle={{ height: '10em' }}>
+<CodeSandbox src="/src/routes/demo/events/synchronous/index.tsx" style={{ height: '10em' }}>
 ```tsx {7-20}
 import { component$, useSignal, useVisibleTask$ } from '@builder.io/qwik';
 
@@ -214,7 +214,7 @@ export default component$(() => {
 
 Вышеописанное невозможно, поскольку `onClick` - это функция, которая не является сериализуемой. Нам нужно указать оптимизатору на преобразование нашей функции в QRL. Это делается путём именования свойства с суффиксом `$`, как в данном примере.
 
-<CodeSandbox src="/src/routes/demo/events/prop-function/index.tsx" sandboxStyle={{ height: '10em' }}>
+<CodeSandbox src="/src/routes/demo/events/prop-function/index.tsx" style={{ height: '10em' }}>
 ```tsx
 import { type PropFunction, component$, Slot } from '@builder.io/qwik';
 
@@ -225,9 +225,9 @@ export default component$(() => {
 export const CmpButton = component$<{
   // Важно сообщить TypeScript, что это async
   onClick$?: PropFunction<() => void>;
-}>(({ onClick$ }) => {
+}>((props) => {
   return (
-    <button onClick$={onClick$}>
+    <button onClick$={props.onClick$}>
       <Slot />
     </button>
   );
@@ -252,13 +252,13 @@ export const CmpButton = component$<{
 
 Хук `useOn[window|document]()` программно добавит слушателя событий на основе DOM на уровне компонента. Это бывает полезно при создании своих собственных хуков или если вы не знаете имя события на момент компиляции.
 
-<CodeSandbox src="/src/routes/demo/events/use-on/index.tsx" sandboxStyle={{ height: '10em' }}>
+<CodeSandbox src="/src/routes/demo/events/use-on/index.tsx" style={{ height: '10em' }}>
 ```tsx
 import { $, component$, useOnDocument, useStore } from '@builder.io/qwik';
 
 // Предполагаем многоразовое использование, не имеющее доступа к JSX,
 // но нам нужно зарегистрировать обработчики событий.
-const useMousePosition = () => {
+function useMousePosition() {
   const position = useStore({ x: 0, y: 0 });
   useOnDocument(
     'mousemove',

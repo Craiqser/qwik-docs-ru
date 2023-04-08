@@ -4,35 +4,504 @@ contributors:
   - manucorporat
   - swwind
   - reemardelarosa
+  - mhevery
 ---
+import CodeSandbox, {CodeFile} from '../../../../components/code-sandbox/index.tsx';
 
 # Qwik React ⚛️
 
-QwikReact позволяет использовать компоненты React в Qwik, включая всю экосистему библиотек компонентов, таких как [Material UI](https://mui.com/), [Threejs](https://github.com/pmndrs/react-three-fiber) и [React Spring](https://react-spring.io/).
+Qwik React позволяет использовать компоненты [React](https://reactjs.org/) в [Qwik](https://qwik.dev/). Преимущество использования Qwik React заключается в том, что вы можете использовать существующие компоненты и библиотеки React в Qwik. Это позволит вам воспользоваться преимуществами большой экосистемы компонентов и библиотек React, таких как [Material UI](https://mui.com/), [Threejs](https://github.com/pmndrs/react-three-fiber) и [React Spring](https://react-spring.io/). Это также хороший способ получить преимущества Qwik без необходимости переписывать ваше React-приложение.
 
-## Установка
+## Основы использования
 
-Выполните в терминале вашего Qwik-приложения:
+Основны использования Qwik React в том, чтобы взять существующие компоненты React и обернуть их в функцию `qwikify$`. Эта функция создаст компонент Qwik, который можно использовать внутри Qwik, и который превратит компонент React в остров, позволяя вам точно настроить, когда компонент React должен гидратироваться.
 
-```shell
+Основы использования
+
+```tsx
+// Эта прагма необходима для того, чтобы вместо Qwik JSX использовался React JSX
+/** @jsxImportSource react */
+import { qwikify$ } from '@builder.io/qwik-react';
+
+// Существующий компонент React
+function Greetings() {
+  return <div>Hello from React</div>;
+}
+
+// Компонент Qwik, обёртывающий компонент React
+export const QGreetings = qwikify$(Greetings);
+```
+
+## 0. Установка
+
+Прежде чем использовать Qwik React, необходимо настроить проект Qwik на использование Qwik React. Самый простой способ - выполнить следующую команду:
+
+> Если у вас ещё нет приложения Qwik, то вам нужно [сначала создать его](/docs/(qwik)/getting-started/index.mdx), затем, следуя инструкциям, выполнить команду добавления React к вашему приложению.
+
+```bash
 npm run qwik add react
 ```
 
-Если у вас ещё нет приложения Qwik, то вам нужно [сначала создать его](/docs/(qwik)/getting-started/index.mdx), затем, следуя инструкциям выше, выполнить команду добавления React к вашему приложению.
+Приведенная выше команда выполнит следующее:
 
-```shell
-npm create qwik
-cd to-my-app
-npm run qwik add react
+1. Установит необходимые зависимости в `package.json`:
+   ```json
+   {
+    ...,
+     "dependencies": {
+      ...,
+       "@builder.io/qwik-react": "0.5.0",
+       "@types/react": "18.0.28",
+       "@types/react-dom": "18.0.11",
+       "react": "18.2.0",
+       "react-dom": "18.2.0",
+     }
+   }
+   ```
+   > **Примечание**: Это не эмуляция React. Мы используем настоящую библиотеку React.
+
+2. Настроит Vite на использование плагина `@builder.io/qwik-react`:
+   ```ts
+   // vite.config.ts
+   import { qwikReact } from '@builder.io/qwik-react/vite';
+
+   export default defineConfig(() => {
+      return {
+        ...,
+        plugins: [
+          ..., 
+          // Важная часть
+          qwikReact()
+        ],
+      };
+   });
+   ```
+
+> **Примечание**: Команда `npm run qwik add react` также настроит демо-маршрут, демонстрирующий интеграцию Qwik React. К ним относятся:
+> - `package.json` `dependencies`:
+>   - `@emotion/react 11.10.6`
+>   - `@emotion/styled 11.10.6`
+>   - `@mui/material 5.11.9`
+>   - `@mui/x-data-grid 5.17.24`
+> - `src/route`:
+>   - `/src/routes/react`: Новый публичный маршрут, демонстрирующий интеграцию React
+>   - `/src/integrations/react`: React-компонент живёт здесь
+>
+> В данном руководстве мы не будем обращать на них внимания и вместо этого проведём вас через весь процесс с самого начала.
+
+## 1. Здравствуй, мир
+
+Давайте начнём с простого примера. Мы создадим простой компонент React, а затем обернём его в компонент Qwik. Затем мы будем использовать компонент Qwik в маршруте Qwik.
+
+<CodeSandbox url="/src/routes/demo/react/hello-world/" tabs={["react.tsx","index.tsx"]} style={{ height: '6em' }}>
+<div  q:slot="0">
+<CodeFile src="/src/routes/demo/react/hello-world/react.tsx">
+```tsx /qwikify$/ /QGreetings/
+/** @jsxImportSource react */
+import { qwikify$ } from '@builder.io/qwik-react';
+
+// Создаем компонент React стандартным способом
+function Greetings() {
+  return <div>Hello from React</div>;
+}
+
+// Преобразование компонента React в компонент Qwik
+export const QGreetings = qwikify$(Greetings);
 ```
+</CodeFile>
+</div>
+<div q:slot="1">
+<CodeFile src="/src/routes/demo/react/hello-world/index.tsx">
+```tsx /QGreetings/
+import { component$ } from '@builder.io/qwik';
+import { QGreetings } from './react';
 
-## Использование
+export default component$(() => {
+  return (
+    <div>
+      <div>Привет из Qwik</div>
+      <QGreetings />
+    </div>
+  );
+});
+```
+</CodeFile>
+</div>
+</CodeSandbox>
 
 Пакет `@builder.io/qwik-react` экспортирует функцию `qwikify$()`, которая позволяет преобразовывать компоненты React в компоненты Qwik, которые вы можете использовать в своём приложении.
 
-> **Примечание:** Вы НЕ МОЖЕТЕ использовать компоненты React в Qwik без их предварительного преобразования с помощью `qwikify$()`. Несмотря на то, что [компоненты React и Qwik выглядят похоже](/docs/(qwikcity)/guides/qwik-react/index.mdx), они принципиально очень разные.
+> **Примечание:** Вы НЕ МОЖЕТЕ использовать компоненты React в Qwik без их предварительного преобразования с помощью `qwikify$()`. Несмотря на то, что [компоненты React и Qwik выглядят похоже](/docs/(qwikcity)/guides/react-cheat-sheet/index.mdx), они принципиально очень разные.
 
-Компоненты React и Qwik не могут находиться в одном файле. Если вы посмотрите на свой проект сразу после выполнения команды установки, вы увидите новую папку - `src/integrations/react/`, с этого момента все ваши компоненты React будут жить там.
+Компоненты React и Qwik не могут быть смешаны в одном файле, если вы проверите свой проект сразу после выполнения команды установки, вы увидите новую папку `src/integrations/react/`, мы рекомендуем вам поместить ваши компоненты React туда.
+
+## 2. Гидрация React-островов
+
+Приведённый выше пример показывает, как SSR статический React-контент на сервере. Преимуществом является то, что этот компонент никогда не будет повторно отображаться в браузере и, следовательно, его код никогда не загружается на клиент. Но что, если компонент должен быть интерактивным, и нам нужно загрузить его поведение в браузер? Давайте начнём с создания простого примера счётчика в React.
+
+<CodeSandbox url="/src/routes/demo/react/counter-simple/" tabs={["react.tsx","index.tsx"]} style={{ height: '6em' }}>
+<div  q:slot="0">
+<CodeFile src="/src/routes/demo/react/counter-simple/react.tsx">
+```tsx /qwikify$/ /QGreetings/
+/** @jsxImportSource react */
+import { qwikify$ } from '@builder.io/qwik-react';
+import { useState } from 'react';
+
+// Создаем компонент React стандартным способом
+function Counter() {
+  const [count, setCount] = useState(0);
+  return (
+    <button className="react" onClick={() => setCount(count + 1)}>
+      Счёт: {count}
+    </button>
+  );
+}
+
+// Преобразование компонента React в компонент Qwik
+export const QCounter = qwikify$(Counter);
+```
+</CodeFile>
+</div>
+<div q:slot="1">
+<CodeFile src="/src/routes/demo/react/counter-simple/index.tsx">
+```tsx
+import { component$ } from '@builder.io/qwik';
+import { QCounter } from './react';
+
+export default component$(() => {
+  return (
+    <div>
+      <QCounter />
+    </div>
+  );
+});
+```
+</CodeFile>
+</div>
+</CodeSandbox>
+
+Обратите внимание, что нажатие на кнопку `Count` ничего не даёт. Это происходит потому, что React не был загружен, и поэтому компонент не был гидратирован. Нам нужно указать Qwik загрузить компонент React и гидратировать его, но нам нужно указать условие, при котором мы хотим это сделать. Если делать это сразу, то все преимущества превращения приложения React в острова будут потеряны. В данном случае мы хотим загружать компонент, когда пользователь наводит курсор на кнопку, для этого мы добавляем `{: eagerness: 'hover' }` to `qwikify$()`.
+
+<CodeSandbox url="/src/routes/demo/react/counter-simple-hover/" console={true}
+             tabs={["react.tsx","index.tsx"]} style={{ height: '20em' }}>
+<div  q:slot="0">
+<CodeFile src="/src/routes/demo/react/counter-simple-hover/react.tsx">
+```tsx /qwikify$/ /{: eagerness: 'hover' }/
+/** @jsxImportSource react */
+import { qwikify$ } from '@builder.io/qwik-react';
+import { useState } from 'react';
+
+// Создаем компонент React стандартным способом
+function Counter() {
+  // Печать в консоль при рендере компонента.
+  console.log('React <Counter/> Render');
+  const [count, setCount] = useState(0);
+  return (
+    <button className="react" onClick={() => setCount(count + 1)}>
+      Счёт: {count}
+    </button>
+  );
+}
+
+// Укажите готовность к гидратации компонента при событии hover.
+export const QCounter = qwikify$(Counter, { eagerness: 'hover' });
+```
+</CodeFile>
+</div>
+<div q:slot="1">
+<CodeFile src="/src/routes/demo/react/counter-simple-hover/index.tsx">
+```tsx
+import { component$ } from '@builder.io/qwik';
+import { QCounter } from './react';
+
+export default component$(() => {
+  console.log('Qwik Render');
+  return (
+    <div>
+      <QCounter />
+    </div>
+  );
+});
+```
+</CodeFile>
+</div>
+</CodeSandbox>
+
+В этом примере мы выводим в консоль, чтобы показать, что происходит за сценой. Когда вы наведёте курсор на кнопку, вы увидите, что компонент React рендерится. Это происходит потому, что мы попросили Qwik гидратировать компонент на событии `hover`. Теперь, когда компонент гидратирован, вы можете взаимодействовать с ним, и он корректно обновит счётчик.
+
+Предоставляя свойство `eagerness` для `qwikify$()`, мы позволяем вам точно настроить условия, при которых компонент будет гидратироваться, что влияет на производительность запуска вашего приложения.
+
+## 3. Межостровная коммуникация
+
+В предыдущем примере у нас был один остров, который мы гидрировали с задержкой. Но как только у вас появится несколько островов, возникнет необходимость в общении между ними. В этом примере показано, как осуществлять межостровную связь с помощью Qwik.
+
+<CodeSandbox url="/src/routes/demo/react/counter-two-islands/" console={true}
+             tabs={["react.tsx","index.tsx"]} style={{ height: '20em' }}>
+<div  q:slot="0">
+<CodeFile src="/src/routes/demo/react/counter-two-islands/react.tsx">
+```tsx /qwikify$/ /{: eagerness: 'hover' }/
+/** @jsxImportSource react */
+import { qwikify$ } from '@builder.io/qwik-react';
+
+function Button({ onClick }: { onClick: () => void }) {
+  console.log('React <Button/> Render');
+  return <button onClick={onClick}>+1</button>;
+}
+
+function Display({ count }: { count: number }) {
+  console.log('React <Display count=' + count + '/> Render');
+  return <div className="react">Count: {count}</div>;
+}
+
+export const QButton = qwikify$(Button, { eagerness: 'hover' });
+export const QDisplay = qwikify$(Display);
+```
+</CodeFile>
+</div>
+<div q:slot="1">
+<CodeFile src="/src/routes/demo/react/counter-two-islands/index.tsx">
+```tsx
+import { component$, useSignal } from '@builder.io/qwik';
+import { QButton, QDisplay } from './react';
+
+export default component$(() => {
+  console.log('Qwik Render');
+  const count = useSignal(0);
+  return (
+    <div>
+      <QButton
+        onClick$={() => {
+          console.log('click', count.value);
+          count.value++;
+        }}
+      />
+      <QDisplay count={count.value}></QDisplay>
+    </div>
+  );
+});
+```
+</CodeFile>
+</div>
+</CodeSandbox>
+
+В приведённом выше примере у нас есть два острова, один для кнопки (`QButton`) и один для дисплея (`QDisplay`). Остров кнопки гидратируется при событии `hover`, а остров дисплея не гидратируется ни при каких событиях.
+
+Файл `react.tsx` имеет:
+
+- `QButton` - кнопка, при нажатии на которую увеличивается счетчик. Этот остров гидратируется при `hover`.
+- `QDisplay` - дисплей, отображающий текущий счетчик. Этот остров не гидратируется ни при каких событиях, но будет гидратирован Qwik, когда изменятся его параметры.
+- Оба React-компонента имеют `console.log`, чтобы показать, когда компонент гидратирован или перерендерен.
+
+Файл `index.tsx` имеет:
+
+- `count` - сигнал, который используется для отслеживания текущего счёта.
+- Создает остров `QButton`. Обработчик `onClick$` увеличивает сигнал `count`. Обратите внимание, что Qwik автоматически преобразует `onClick` в `onClick$`, позволяя лениво загружать обработчики событий.
+- Инстанцирует острова `QDisplay`. Сигнал `count` передаётся острову в качестве параметра.
+
+При наведении курсора на кнопку вы увидите, что остров `QButton` гидратирован. Когда вы нажмёте на кнопку, вы увидите, что остров `QDisplay` гидратируется и счётчик обновляется (двойное выполнение `QDisplay` связано с тем, что сначала происходит первоначальная гидратация, а затем обновление счета).
+
+Обратите внимание, что в Qwik React нужно сразу гидратировать компоненты, обладающие интерактивностью. Компоненты, которые являются динамическими, но не обладают интерактивностью (такие как `QDisplay` в этом примере), не нуждаются в предварительной гидратации, вместо этого они автоматически гидратируются при изменении их параметров.
+
+Также обратите внимание, что `console.log('Qwik Render');` никогда не выполняется в браузере.
+
+## 4. `host:`-слушатели
+
+В предыдущем примере у нас было два острова. Кнопка `QButton` должна быть сразу гидратирована, чтобы React мог установить обработчик события `onClick`. Это немного расточительно, потому что остров `QButton` никогда не будет нуждаться в повторном рендере, так как его вывод статичен. Клик по `QButton` не приведёт к повторному рендеру острова `QButton`. В таком случае мы можем попросить Qwik зарегистрировать слушателя `click` вместо того, чтобы гидрировать весь компонент в React только для того, чтобы прикрепить слушателя. Это делается с помощью префикса `host:` в имени события.
+
+<CodeSandbox url="/src/routes/demo/react/counter-two-islands-host/" console={true}
+             tabs={["index.tsx","react.tsx"]} style={{ height: '20em' }}>
+<div  q:slot="0">
+<CodeFile src="/src/routes/demo/react/counter-two-islands-host/index.tsx">
+```tsx /host:onClick$/
+import { component$, useSignal } from '@builder.io/qwik';
+import { QButton, QDisplay } from './react';
+
+export default component$(() => {
+  console.log('Qwik Render');
+  const count = useSignal(0);
+  return (
+    <div>
+      <QButton
+        host:onClick$={() => {
+          console.log('click', count.value);
+          count.value++;
+        }}
+      >
+        +1
+      </QButton>
+      <QDisplay count={count.value}></QDisplay>
+    </div>
+  );
+});
+```
+</CodeFile>
+</div>
+<div q:slot="1">
+<CodeFile src="/src/routes/demo/react/counter-two-islands-host/react.tsx">
+```tsx
+/** @jsxImportSource react */
+import { qwikify$ } from '@builder.io/qwik-react';
+import { type ReactNode } from 'react';
+
+function Button({ children }: { children?: ReactNode[] }) {
+  console.log('React <Button/> Render');
+  return <button>{children}</button>;
+}
+
+function Display({ count }: { count: number }) {
+  console.log('React <Display count=' + count + '/> Render');
+  return <div className="react">Count: {count}</div>;
+}
+
+export const QButton = qwikify$(Button);
+export const QDisplay = qwikify$(Display);
+```
+</CodeFile>
+</div>
+</CodeSandbox>
+
+Теперь наведение курсора на кнопку ничего не делает (нет гидратации React). Нажатие на кнопку заставит Qwik обработать событие и обновить сигнал, что в свою очередь вызовет увлажнение острова `QDisplay`. Обратите внимание, что остров `QButton` никогда не гидратируется. Поэтому это изменение позволило нам получить остров, который отображается только на стороне сервера и никогда не нуждается в гидратации в браузере, что экономит время пользователя.
+
+## 5. Проецирование `children`
+
+Частым случаем использования является передача содержимого дочерним компонентам. Это работает и с Qwik React. В компоненте React просто объявите `children` в своих параметрах и используйте их как ожидается (см. `react.tsx`).
+
+<CodeSandbox url="/src/routes/demo/react/children/" console={true}
+             tabs={["index.tsx","react.tsx"]} style={{ height: '20em' }}>
+<div  q:slot="0">
+<CodeFile src="/src/routes/demo/react/children/index.tsx">
+```tsx /host:onClick$/
+import { component$, useSignal } from '@builder.io/qwik';
+import { QFrame } from './react';
+
+export default component$(() => {
+  console.log('Qwik Render');
+  const count = useSignal(0);
+  return (
+    <QFrame>
+      <button
+        onClick$={() => {
+          console.log('click', count.value);
+          count.value++;
+        }}
+      >
+        +1
+      </button>
+      Счёт: {count}
+    </QFrame>
+  );
+});
+```
+</CodeFile>
+</div>
+<div q:slot="1">
+<CodeFile src="/src/routes/demo/react/children/react.tsx">
+```tsx
+/** @jsxImportSource react */
+import { type ReactNode } from 'react';
+import { qwikify$ } from '@builder.io/qwik-react';
+
+function Frame({ children }: { children?: ReactNode[] }) {
+  console.log('React <Zippy/> Render');
+  return (
+    <div
+      style={{
+        display: 'inline-block',
+        border: '1px solid black',
+        borderRadius: '10px',
+        padding: '5px',
+      }}
+    >
+      {children}
+    </div>
+  );
+}
+
+export const QFrame = qwikify$(Frame);
+```
+</CodeFile>
+</div>
+</CodeSandbox>
+
+Заметьте, что остров `QFrame` никогда не гидратируется, потому что у него нет свойства `eagerness` или каких-либо других параметров, которые могли бы вызвать гидратацию. Но обратите внимание, что дочерние компоненты действительно ререндерятся при изменении сигнала и правильно проецируются в React-остров `QFrame` без гидратации острова. Это позволяет ещё большей части страницы быть отрендеренной на стороне сервера и никогда не рендериться на клиенте.
+
+## 6. Использование React-библиотек
+
+Наконец, в приложении Qwik можно использовать библиотеки React. В этом примере [Material UI](https://mui.com/) и [Emotion](https://emotion.sh/docs/introduction) используются для рендера этого примера React.
+
+<CodeSandbox url="/src/routes/demo/react/mui/"
+             tabs={["react.tsx", "index.tsx"]} style={{ height: '8em' }}>
+<div  q:slot="0">
+<CodeFile src="/src/routes/demo/react/mui/react.tsx">
+```tsx /host:onClick$/
+/** @jsxImportSource react */
+import { qwikify$ } from '@builder.io/qwik-react';
+import Tabs from '@mui/material/Tabs';
+import Tab from '@mui/material/Tab';
+import Box from '@mui/material/Box';
+import { type ReactNode } from 'react';
+
+export const Example = qwikify$(
+  function Example({
+    selected,
+    onSelected,
+    children,
+  }: {
+    selected: number;
+    onSelected: (v: number) => any;
+    children?: ReactNode[];
+  }) {
+    console.log('React <Example/> Render');
+    return (
+      <>
+        <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
+          <Tabs
+            value={selected}
+            onChange={(e, v) => onSelected(v)}
+            aria-label="basic tabs example"
+          >
+            <Tab label="Item One" />
+            <Tab label="Item Two" />
+            <Tab label="Item Three" />
+          </Tabs>
+          {children}
+        </Box>
+      </>
+    );
+  },
+  { eagerness: 'hover' }
+);
+```
+</CodeFile>
+</div>
+<div q:slot="1">
+<CodeFile src="/src/routes/demo/react/mui/index.tsx">
+```tsx
+import { component$, useSignal } from '@builder.io/qwik';
+import { Example } from './react';
+
+export default component$(() => {
+  console.log('Qwik Render');
+  const selected = useSignal(0);
+  return (
+    <Example
+      selected={selected.value}
+      onSelected$={(v) => (selected.value = v)}
+    >
+      Выбранная вкладка: {selected.value}
+    </Example>
+  );
+});
+```
+</CodeFile>
+</div>
+</CodeSandbox>
+
+Пример React гидратируется при наведении и работает, как и следовало ожидать.
+
+# Правила
+
+Давайте рассмотрим этот пример, чтобы лучше понять правила работы с Qwik React.
 
 ```tsx title="src/integrations/react/mui.tsx"
 /** @jsxImportSource react */
@@ -46,16 +515,16 @@ export const MUIAlert = qwikify$(Alert);
 export const MUISlider = qwikify$(Slider, { eagerness: 'hover' });
 ```
 
-> **Важно:** Вам необходимо импортировать `/** @jsxImportSource react */` в первой строке вашего файла, это указание компилятору использовать React в качестве фабрики JSX.
+> **Важно:** Вам необходимо импортировать `/** @jsxImportSource react */` в заголовке вашего файла, это указание компилятору использовать React в качестве фабрики JSX.
 
 В двух словах, правила таковы:
 
-1. Не смешивайте компоненты React и Qwik в одном файле;
-2. Поместите весь ваш React-код в каталог `src/integrations/react`;
-3. Добавьте `/** @jsxImportSource react */` в начало файлов, содержащих код React;
-4. Используйте `qwikify$()` для преобразования компонентов React в компоненты Qwik, которые вы хотите импортировать из модулей Qwik.
+1. Не смешивайте компоненты React и Qwik в одном файле.
+2. Мы рекомендуем размещать весь код react в папке `src/integrations/react`.
+3. Добавьте `/** @jsxImportSource react */` в начало файлов, содержащих код React.
+4. Используйте `qwikify$()` для преобразования компонентов React в компоненты Qwik, которые затем можно импортировать из модулей Qwik.
 
-Теперь ваш Qwik может импортировать `MUIButton` и использовать его как любой другой компонент Qwik:
+Теперь Qwik может импортировать `MUIButton` и использовать его как любой другой компонент Qwik:
 
 ```tsx
 import { component$ } from '@builder.io/qwik';
@@ -76,27 +545,51 @@ export default component$(() => {
 
 Функция `qwikify$(ReactCmp, опции?): QwikCmp` позволяет реализовать частичную гидратацию компонентов React. Она работает, оборачивая логику SSR и гидратации React в компонент Qwik, который может выполнять метод React `renderToString()` во время SSR и динамически вызывать `hydrateRoot()`, когда требуется.
 
-Обратите внимание, что по умолчанию никакой код React не будет выполняться в браузере, то есть компонент React по умолчанию НЕ будет интерактивным. В следующем примере мы _квикифицируем_ компонент [Слайдер](https://mui.com/material-ui/react-slider/) из библиотеки MUI, но он не будет интерактивным.
+Обратите внимание, что по умолчанию никакой код React не будет выполняться в браузере, то есть компонент React по умолчанию НЕ будет интерактивным. В следующем примере мы _квикифицируем_ компонент [Слайдер](https://mui.com/material-ui/react-slider/) из библиотеки MUI, но он не будет интерактивным (в нем отсутствует свойство `eagerness`, чтобы сообщить Qwik, когда React-компонент должен быть гидратирован в браузере).
 
-```tsx
+<CodeSandbox url="/src/routes/demo/react/slider/" console={true}
+             tabs={["react.tsx","index.tsx"]} style={{ height: '20em' }}>
+<div  q:slot="0">
+<CodeFile src="/src/routes/demo/react/slider/react.tsx">
+```tsx /host:onClick$/
 /** @jsxImportSource react */
 import { qwikify$ } from '@builder.io/qwik-react';
 import { Slider } from '@mui/material';
-export const MUISlider = qwikify$(Button);
+export const MUISlider = qwikify$<typeof Slider>(
+  Slider
+  // Раскомментируйте следующую строку, чтобы сделать компонент интерактивным в браузере
+  // { eagerness: 'hover' }
+);
 ```
-
+</CodeFile>
+</div>
+<div q:slot="1">
+<CodeFile src="/src/routes/demo/react/children/index.tsx">
 ```tsx
-import { component$ } from '@builder.io/qwik';
-import { MUISlider } from '~/integrations/react/mui';
+import { component$, useSignal } from '@builder.io/qwik';
+import { QFrame } from './react';
 
 export default component$(() => {
+  console.log('Qwik Render');
+  const count = useSignal(0);
   return (
-    <>
-      <MUISlider></MUISlider>
-    </>
+    <QFrame>
+      <button
+        onClick$={() => {
+          console.log('click', count.value);
+          count.value++;
+        }}
+      >
+        +1
+      </button>
+      Count: {count}
+    </QFrame>
   );
 });
 ```
+</CodeFile>
+</div>
+</CodeSandbox>
 
 ## Ограничения
 
@@ -127,7 +620,7 @@ export const MUISlider = qwikify$(Slider);
 
 Это также отличный способ насладиться экосистемой React, например, [threejs](https://github.com/pmndrs/react-three-fiber) или [data-grid libs](https://mui.com/x/react-data-grid/).
 
-> Не злоупотребляйте `qwikify$()` при создании собственного приложения, иначе весь прирост производительности будет потерян.
+> Не злоупотребляйте `qwikify$()` для построения приложения, так как чрезмерное использование приведет к потере производительности.
 
 ### Стройте широкие острова, а не листовые узлы
 

@@ -41,7 +41,7 @@ import CodeSandbox from '../../../../../components/code-sandbox/index.tsx';
 
 Реактивный сигнал, возвращаемый функцией `useSignal()`, состоит из объекта с единственным свойством `.value`. Если вы измените свойство сигнала `value`, то любой компонент, который зависит от него, будет обновлён автоматически.
 
-<CodeSandbox src="/src/routes/demo/state/counter-signal/index.tsx" sandboxStyle={{ height: '6em' }}>
+<CodeSandbox src="/src/routes/demo/state/counter-signal/index.tsx" style={{ height: '6em' }}>
 ```tsx {4} /count/
 import { component$, useSignal } from '@builder.io/qwik';
 
@@ -68,7 +68,7 @@ export default component$(() => {
 > **ПРИМЕЧАНИЕ**
 > Чтобы реактивность работала так, как ожидается, убедитесь, что сохранили ссылку на реактивный объект, а не только на его свойства. Например, написание `let { count } = useStore({ count: 0 })` и последующее изменение `count` не вызовет обновления компонентов, зависящих от этого свойства.
 
-<CodeSandbox src="/src/routes/demo/state/counter-store/index.tsx" sandboxStyle={{ height: '6em' }} >
+<CodeSandbox src="/src/routes/demo/state/counter-store/index.tsx" style={{ height: '6em' }} >
 ```tsx {4} /state/ /count/#a
 import { component$, useStore } from '@builder.io/qwik';
 
@@ -91,7 +91,7 @@ export default component$(() => {
 
 По умолчанию [`useStore()`](./index.mdx#usestore) отслеживает свойства объекта состояния только на самом верхнем уровне. Это означает, что для регистрации обновления состояния необходимо обновить значения свойств верхнего уровня.
 
-<CodeSandbox src="/src/routes/demo/state/counter-store-no-track/index.tsx" sandboxStyle={{ height: '10em' }}>
+<CodeSandbox src="/src/routes/demo/state/counter-store-no-track/index.tsx" style={{ height: '10em' }}>
 ```tsx
 import { component$, useStore } from '@builder.io/qwik';
 
@@ -124,7 +124,7 @@ store.nested = { fields: { are: { 'отслеживается' } } }
 
 Для того чтобы первый пример работал, мы можем передать в `useStore()` второй аргумент и указать ему использовать рекурсивное отслеживание всех свойств нашего состояния, независимо от глубины.
 
-<CodeSandbox src="/src/routes/demo/state/counter-store-deep/index.tsx" sandboxStyle={{ height: '10em' }}>
+<CodeSandbox src="/src/routes/demo/state/counter-store-deep/index.tsx" style={{ height: '10em' }}>
 ```tsx
 import { component$, useStore } from '@builder.io/qwik';
 
@@ -171,7 +171,7 @@ export default component$(() => {
 
 Используйте `useComputed$` для создания вычисляемого значения, которое может быть получено синхронно из существующего состояния приложения.
 
-<CodeSandbox src="/src/routes/demo/state/computed/index.tsx" sandboxStyle={{ height: '8em' }}>
+<CodeSandbox src="/src/routes/demo/state/computed/index.tsx" style={{ height: '8em' }}>
 ```tsx {5} /useComputed$/
 import { component$, useComputed$, useSignal } from '@builder.io/qwik';
 
@@ -196,7 +196,7 @@ export default component$(() => {
 
 Используйте `useResource$()` для создания вычисляемого значения, которое выводится асинхронно или требует внешнего состояния (например, обращения к конечной точке REST).
 
-<CodeSandbox src="/src/routes/demo/state/resource/index.tsx" sandboxStyle={{ height: '8em' }}>
+<CodeSandbox src="/src/routes/demo/state/resource/index.tsx" style={{ height: '8em' }}>
 ```tsx {11} /useResource$/
 import {
   component$,
@@ -206,10 +206,10 @@ import {
 } from '@builder.io/qwik';
 
 export default component$(() => {
-  const prNumber = useSignal(3576);
+  const prNumber = useSignal('3576');
 
   const prTitle = useResource$(async ({ track }) => {
-    track(()=> prNumber); // Requires explicit tracking of inputs
+    track(() => prNumber); // Requires explicit tracking of inputs
     const response = await fetch(
       `https://api.github.com/repos/BuilderIO/qwik/pulls/${prNumber.value}`
     );
@@ -251,7 +251,7 @@ export default component$(() => {
 
 Самый простой способ передачи состояния другим компонентам - это передача через параметры.
 
-<CodeSandbox src="/src/routes/demo/state/passing-props/index.tsx" sandboxStyle={{ height: '6em' }}>
+<CodeSandbox src="/src/routes/demo/state/passing-props/index.tsx" style={{ height: '6em' }}>
 ```tsx {9} /userData=/
 import { component$, useStore } from '@builder.io/qwik';
 
@@ -280,7 +280,7 @@ API контекста - это способ передачи состояния
 
 Подробнее об этом можно прочитать в разделе [Контекст](./../context/index.mdx).
 
-<CodeSandbox src="/src/routes/demo/state/passing-context/index.tsx" sandboxStyle={{ height: '6em' }}>
+<CodeSandbox src="/src/routes/demo/state/passing-context/index.tsx" style={{ height: '6em' }}>
 ```tsx /userData/ /export const CTX = createContextId<{ count: number }>('stuff');/ /useContextProvider(CTX, userData);/ /const userData = useContext(CTX);/
 import {
   component$,
@@ -320,7 +320,7 @@ Qwik гарантирует, что всё состояние приложени
 
 Если значение помечено как несериализуемое, то это значение не подвергается событиям сериализации, таким как возобновление работы приложения на клиенте с сервера SSR. В такой ситуации значение будет установлено в `undefined`, и разработчик должен повторно инициализировать значение на клиенте.
 
-<CodeSandbox src="/src/routes/demo/state/no-serialize/index.tsx" sandboxStyle={{ height: '8em' }}>
+<CodeSandbox src="/src/routes/demo/state/no-serialize/index.tsx" style={{ height: '8em' }}>
 ```tsx /noSerialize/
 import {
   component$,
@@ -331,7 +331,7 @@ import {
 import Monaco from './monaco';
 
 export default component$(() => {
-  const state = useStore<{ monacoInstance: Monaco | undefined }>({
+  const store = useStore<{ monacoInstance: Monaco | undefined }>({
     // Не инициализировать на сервере
     monacoInstance: undefined,
   });
@@ -339,9 +339,9 @@ export default component$(() => {
   useVisibleTask$(() => {
     // Monaco является несериализуемым объектом, поэтому мы не можем сериализовать его во время SSR.
     // Однако мы можем инстанцировать его на клиенте после того, как компонент станет видимым.
-    setTimeout(() => (state.monacoInstance = noSerialize(new Monaco())), 1000);
+    setTimeout(() => (store.monacoInstance = noSerialize(new Monaco())), 1000);
   });
-  return <div>{state.monacoInstance ? 'Monaco загружен' : 'загрузка...'}</div>;
+  return <div>{store.monacoInstance ? 'Monaco загружен' : 'загрузка...'}</div>;
 });
 ```
 </CodeSandbox>

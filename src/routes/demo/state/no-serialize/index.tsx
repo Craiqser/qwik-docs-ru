@@ -7,7 +7,7 @@ import {
 import Monaco from './monaco';
 
 export default component$(() => {
-  const state = useStore<{ monacoInstance: Monaco | undefined }>({
+  const store = useStore<{ monacoInstance: Monaco | undefined }>({
     // Не инициализировать на сервере
     monacoInstance: undefined,
   });
@@ -15,7 +15,7 @@ export default component$(() => {
   useVisibleTask$(() => {
     // Monaco является несериализуемым объектом, поэтому мы не можем сериализовать его во время SSR.
     // Однако мы можем инстанцировать его на клиенте после того, как компонент станет видимым.
-    setTimeout(() => (state.monacoInstance = noSerialize(new Monaco())), 1000);
+    setTimeout(() => (store.monacoInstance = noSerialize(new Monaco())), 1000);
   });
-  return <div>{state.monacoInstance ? 'Monaco загружен' : 'загрузка...'}</div>;
+  return <div>{store.monacoInstance ? 'Monaco загружен' : 'загрузка...'}</div>;
 });

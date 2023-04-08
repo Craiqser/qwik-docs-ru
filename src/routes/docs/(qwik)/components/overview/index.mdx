@@ -36,7 +36,7 @@ import CodeSandbox from '../../../../../components/code-sandbox/index.tsx';
 
 В Qwik они объявляются с помощью метода `component$`:
 
-<CodeSandbox src="/src/routes/demo/component/simple/index.tsx" sandboxStyle={{ height: '3em' }}>
+<CodeSandbox src="/src/routes/demo/component/simple/index.tsx" style={{ height: '3em' }}>
 ```tsx /component$/
 import { component$ } from '@builder.io/qwik';
 
@@ -52,7 +52,7 @@ export default component$(() => {
 
 Компоненты можно компоновать друг с другом для создания более сложных компонентов.
 
-<CodeSandbox src="/src/routes/demo/component/child/index.tsx" sandboxStyle={{ height: '6em' }}>
+<CodeSandbox src="/src/routes/demo/component/child/index.tsx" style={{ height: '6em' }}>
 ```tsx {7}
 import { component$ } from '@builder.io/qwik';
 
@@ -75,7 +75,7 @@ const Child = component$(() => {
 
 Несколько более сложный пример счётчика.
 
-<CodeSandbox src="/src/routes/demo/state/counter/index.tsx" sandboxStyle={{ height: '6em' }}>
+<CodeSandbox src="/src/routes/demo/state/counter/index.tsx" style={{ height: '6em' }}>
 ```tsx
 import { component$, useSignal } from '@builder.io/qwik';
 
@@ -85,7 +85,7 @@ export default component$(() => {
   return (
     <>
       <div>Счёт: {count.value}</div>
-      <button onClick$={(e) => count.value++}>Прибавить</button>
+      <button onClick$={() => count.value++}>Прибавить</button>
     </>
   );
 });
@@ -98,7 +98,7 @@ export default component$(() => {
 
 В этом примере компонент `Item` объявляет необязательные параметры `name`, `quantity`, `description` и `price`.
 
-<CodeSandbox src="/src/routes/demo/component/props/index.tsx" sandboxStyle={{ height: '10em' }}>
+<CodeSandbox src="/src/routes/demo/component/props/index.tsx" style={{ height: '10em' }}>
 ```tsx {3-8, 27} /ItemProps/
 import { component$ } from '@builder.io/qwik';
 
@@ -148,7 +148,7 @@ export default component$(() => {
 
 Используйте `ref` для получения элемента DOM. Сначала создайте сигнал для хранения элемента DOM и затем передайте его в свойство JSX `ref`.
 
-<CodeSandbox src="/src/routes/demo/component/ref/index.tsx" sandboxStyle={{ height: '10em' }}>
+<CodeSandbox src="/src/routes/demo/component/ref/index.tsx" style={{ height: '10em' }}>
 ```tsx /const outputRef = useSignal<Element>();/ /ref={outputRef}/
 import { component$, useVisibleTask$, useSignal } from '@builder.io/qwik';
 
@@ -198,7 +198,7 @@ const Parent = () => (
 
 Чтобы избежать описанной выше проблемы, мы не ссылаемся на компоненты напрямую, вместо этого мы ссылаемся на ленивую обёртку. Она создаётся автоматически функцией `component$()`.
 
-<CodeSandbox src="/src/routes/demo/component/lazy/index.tsx" sandboxStyle={{ height: '10em' }} sandbox={false}>
+<CodeSandbox src="/src/routes/demo/component/lazy/index.tsx" style={{ height: '10em' }} sandbox={false}>
 ```tsx
 import { component$ } from '@builder.io/qwik';
 
@@ -250,7 +250,7 @@ const Parent_onRender = () => (
 
 В дополнение к стандартному `component$()`, со всеми его свойствами ленивой загрузки, Qwik также поддерживает облегчённые (встроенные) компоненты, которые больше похожи на традиционные фреймворки. Встроенные компоненты также называют инлайновыми компонентами.
 
-<CodeSandbox src="/src/routes/demo/component/inline-child/index.tsx" sandboxStyle={{height: '4em'}}>
+<CodeSandbox src="/src/routes/demo/component/inline-child/index.tsx" style={{height: '4em'}}>
 ```tsx
 import { component$ } from '@builder.io/qwik';
 

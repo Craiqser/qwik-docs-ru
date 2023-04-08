@@ -90,7 +90,7 @@ export default component$(() => {
 > - Ваш компонент по умолчанию `шуточного` маршрута вложен в существующий макет. Подробнее о том, что такое макеты и как с ними работать, смотрите раздел [Layout](/docs/layout/).
 > - Подробнее о том, как создавать компоненты, смотрите в разделе [Component API](/docs/(qwik)/components/overview/).
 
-<CodeSandbox src="/src/routes/demo/getting-started/01-route/index.tsx" sandboxStyle={{ height: '6em' }}>
+<CodeSandbox src="/src/routes/demo/getting-started/01-route/index.tsx" style={{ height: '6em' }}>
 ```tsx
 import { component$ } from '@builder.io/qwik';
 
@@ -142,7 +142,7 @@ export default component$(() => {
 > - Функция `routeLoader$` немедленно вызывается на сервере перед рендером любого компонента, даже если ее use-хук не вызывается ни в одном компоненте;
 > - Тип возврата `routeLoader$` вычисляется в компоненте без необходимости получения дополнительной информации о типе.
 
-<CodeSandbox src="/src/routes/demo/getting-started/02-loading-data/index.tsx" sandboxStyle={{ height: '6em' }}>
+<CodeSandbox src="/src/routes/demo/getting-started/02-loading-data/index.tsx" style={{ height: '6em' }}>
 ```tsx
 import { component$ } from '@builder.io/qwik';
 import { routeLoader$ } from '@builder.io/qwik-city';
@@ -226,7 +226,7 @@ export default component$(() => {
   - Функция `routeAction$` работает, даже если JavaScript отключен.
   - Если JavaScript включён, компонент `Form` не позволит браузеру отправить форму, а вместо этого отправит данные с помощью JavaScript и будет эмулировать поведение нативной формы браузера без полного обновления.
 
-<CodeSandbox src="/src/routes/demo/getting-started/03-posting-data/index.tsx" sandboxStyle={{ height: '8em' }}>
+<CodeSandbox src="/src/routes/demo/getting-started/03-posting-data/index.tsx" style={{ height: '8em' }}>
 ```tsx
 /* eslint-disable no-console */
 import { component$ } from '@builder.io/qwik';
@@ -292,16 +292,11 @@ const isFavoriteSignal = useSignal(false);
 
 - Нажатие на кнопку приведет к обновлению состояния, и пользовательский интерфейс будет обновлен.
 
-<CodeSandbox src="/src/routes/demo/getting-started/04-state/index.tsx" sandboxStyle={{ height: '10em' }}>
+<CodeSandbox src="/src/routes/demo/getting-started/04-state/index.tsx" style={{ height: '10em' }}>
 ```tsx
 /* eslint-disable no-console */
-import { component$, useSignal, useTask$ } from '@builder.io/qwik';
-import {
-  routeLoader$,
-  Form,
-  routeAction$,
-  server$,
-} from '@builder.io/qwik-city';
+import { component$, useSignal } from '@builder.io/qwik';
+import { routeLoader$, Form, routeAction$ } from '@builder.io/qwik-city';
 
 export const useDadJoke = routeLoader$(async () => {
   const response = await fetch('https://icanhazdadjoke.com/', {
@@ -322,13 +317,7 @@ export default component$(() => {
   const isFavoriteSignal = useSignal(false);
   const dadJokeSignal = useDadJoke();
   const favoriteJokeAction = useJokeVoteAction();
-  useTask$(({ track }) => {
-    track(()=> isFavoriteSignal.value);
-    console.log('FAVORITE (isomorphic)', isFavoriteSignal.value);
-    server$(() => {
-      console.log('FAVORITE (server)', isFavoriteSignal.value);
-    })();
-  });
+
   return (
     <div class="section bright">
       <div>{dadJokeSignal.value.joke}</div>
@@ -397,7 +386,7 @@ useTask$(({ track }) => {
 - Во время SSR сервер выведет в лог `FAVORITE (isomorphic) false` и `FAVORITE (server) false`;
 - Когда пользователь взаимодействует с избранным, клиент выведет `FAVORITE (isomorphic) true`, и сервер выведет `FAVORITE (server) true`.
 
-<CodeSandbox src="/src/routes/demo/getting-started/05-tasks/index.tsx" sandboxStyle={{ height: '10em' }}>
+<CodeSandbox src="/src/routes/demo/getting-started/05-tasks/index.tsx" style={{ height: '10em' }}>
 ```tsx
 /* eslint-disable no-console */
 import { component$, useSignal, useTask$ } from '@builder.io/qwik';
@@ -428,7 +417,7 @@ export default component$(() => {
   const dadJokeSignal = useDadJoke();
   const favoriteJokeAction = useJokeVoteAction();
   useTask$(({ track }) => {
-    track(()=> isFavoriteSignal.value);
+    track(() => isFavoriteSignal.value);
     console.log('FAVORITE (isomorphic)', isFavoriteSignal.value);
     server$(() => {
       console.log('FAVORITE (server)', isFavoriteSignal.value);
@@ -493,7 +482,7 @@ useStylesScoped$(STYLES);
 - Вызов `useStylesScoped$` указывает Qwik ассоциировать стили только с этим компонентом;
 - Стили загружаются только в том случае, если они ещё не вставлены SSR, и только для первого компонента.
 
-<CodeSandbox src="/src/routes/demo/getting-started/06-styling/index.tsx" sandboxStyle={{ height: '10em' }}>
+<CodeSandbox src="/src/routes/demo/getting-started/06-styling/index.tsx" style={{ height: '10em' }}>
 ```tsx
 /* eslint-disable no-console */
 import {
@@ -531,7 +520,7 @@ export default component$(() => {
   const dadJokeSignal = useDadJoke();
   const favoriteJokeAction = useJokeVoteAction();
   useTask$(({ track }) => {
-    track(()=> isFavoriteSignal.value);
+    track(() => isFavoriteSignal.value);
     console.log('FAVORITE (isomorphic)', isFavoriteSignal.value);
     server$(() => {
       console.log('FAVORITE (server)', isFavoriteSignal.value);
