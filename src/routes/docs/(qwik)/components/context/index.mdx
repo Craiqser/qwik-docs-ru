@@ -11,6 +11,7 @@ contributors:
   - kerbelp
   - shairez
 ---
+import CodeSandbox from '../../../../../components/code-sandbox/index.tsx';
 
 # Контекст
 
@@ -22,16 +23,34 @@ API контекста Qwik состоит из 3 методов, импорти
 - [`useContextProvider(ctx: ContextId, value: VALUE): void`](#usecontextprovider)
 - [`useContext(ctx: ContextId): VALUE`](#usecontext)
 
-```tsx {2, 4, 8, 13} /createContextId/#a /useContext/#b /useContextProvider/#c
-import { component$, useSignal } from '@builder.io/qwik';
-import { useContext, useContextProvider, createContextId } from '@builder.io/qwik';
+<CodeSandbox src="/src/routes/demo/context/minimal/index.tsx" style={{ height: '6em' }}>
+```tsx /createContextId/#a /useContext/#b /useContextProvider/#c
+import { type Signal, component$, useSignal } from '@builder.io/qwik';
+import {
+  useContext,
+  useContextProvider,
+  createContextId,
+} from '@builder.io/qwik';
 
-export const ThemeContext = createContextId('docs.theme-context');
+export const ThemeContext = createContextId<Signal<string>>(
+  'docs.theme-context'
+);
 
-const Parent = component$(() => {
-  const themeStore = useSignal('dark');
-  useContextProvider(ThemeContext, themeStore);
-  return <Child />;
+export default component$(() => {
+  const theme = useSignal('dark');
+  useContextProvider(ThemeContext, theme);
+  return (
+    <>
+      <button
+        onClick$={() =>
+          (theme.value = theme.value == 'dark' ? 'light' : 'dark')
+        }
+      >
+        Flip
+      </button>
+      <Child />
+    </>
+  );
 });
 
 const Child = component$(() => {
@@ -39,8 +58,9 @@ const Child = component$(() => {
   return <div>Тема: {theme.value}</div>;
 });
 ```
+</CodeSandbox>
 
-В приведённом выше примере мы создаем `ContextId` с именем `docs.theme-context` и затем используем его для предоставления `useSignal` компоненту `Parent`. Компонент `Child` затем использует метод `useContext` для получения `useSignal` и рендера значения.
+В приведённом выше примере мы создаем `ContextId` с именем `docs.theme-context` и затем используем его для предоставления `useSignal` компоненту `default`. Компонент `Child` затем использует метод `useContext` для получения `useSignal` и рендера его значения.
 
 ## `createContextId()`
 
@@ -60,9 +80,9 @@ export const QwikCityContext = createContextId<GenericType>(name: string): Conte
 
 ### Возвращает
 
-Обратите внимание, что значение, возвращаемое `createContextId()`, не содержит никакого состояния, это неизменяемый объект наподобие `{ id: 'io.builder.qwik.city' }`. Оно используется только для описания имени и типа контекста, как адрес или идентификатор.
+Обратите внимание, что значение, возвращаемое `createContextId()`, не содержит никакого состояния, это неизменяемый ID объекта наподобие `{ id: 'io.builder.qwik.city' }`. Оно используется только для описания имени и типа контекста, как адрес или идентификатор.
 
-Поскольку оно не хранит никакого состояния, его можно вызвать и сделать синглтоном, экспортированным в какой-нибудь общий модуль.
+Поскольку оно не хранит никакого состояния, его можно вызвать и сделать синглтоном, и экспортирует его в какой-нибудь общий модуль.
 
 ## `useContextProvider()`
 

@@ -194,7 +194,18 @@ export default component$(() => {
 
 ### `useResource$()`
 
-Используйте `useResource$()` для создания вычисляемого значения, которое выводится асинхронно или требует внешнего состояния (например, обращения к конечной точке REST).
+Используйте `useResource$()` для создания вычисляемого значения, которое выводится асинхронно или требует внешнего состояния (например, обращения к конечной точке REST). Хук вызывается при установке компонента (и при изменении отслеживаемых значений). Хук `useResource$` предназначен для использования с `<Resource />`. Компонент `<Resource />` - это удобный способ отображения состояния ресурса, таких как: загрузка, промис разрешён, промис отклонён.
+
+> **Примечание:** Важно понимать, что `useResource$` выполняется при начальном рендере компонента (так же, как `useTask$`). Часто бывает желательно начать выборку данных на сервере в рамках первоначального HTTP-запроса до того, как компонент будет отображён. Получение данных как часть SSR является более распространенным и предпочтительным способом загрузки данных и выполняется через API [`routeLoader$`](/docs/(qwikcity)/route-loader/index.mdx). `useResource$` - это скорее низкоуровневый API, который полезен, когда вы хотите получить данные в браузере.
+>
+> Как и все хуки `use-`, он должен быть вызван в контексте [`component$()`](/docs/(qwik)/components/overview/index.mdx#component), при этом применяются все [правила хуков](/docs/(qwik)/components/tasks/index.mdx).
+>
+> Во многих отношениях `useResource$` похож на `useTask$`. Большие различия заключаются в следующем:
+>
+> - `useResource$` позволяет вам возвращать "значение";
+> - `useResource$` не блокирует рендер, пока ресурс находится в процессе разрешения.
+>
+> См. [`routeLoader$`](/docs/(qwikcity)/route-loader/index.mdx) для ранней выборки данных в рамках начального HTTP-запроса.
 
 <CodeSandbox src="/src/routes/demo/state/resource/index.tsx" style={{ height: '8em' }}>
 ```tsx {11} /useResource$/
@@ -237,6 +248,150 @@ export default component$(() => {
 Можно использовать `useResource$()` без компонента `<Resource>`, но это не так удобно. Компонент `<Resource>` автоматически показывает предоставленное резервное содержимое во время вычисления ресурса.
 
 > **ПРИМЕЧАНИЕ**: во время SSR компонент `<Resource>` приостанавливает рендер до тех пор, пока ресурс не будет разрешён. Таким образом, SSR не будет отображать индикатор загрузки.
+
+
+**Расширенный пример**
+
+Более полный пример получения данных с помощью `AbortController`, `track` и `cleanup`. В этом примере будет получен список анекдотов на основе запроса, введённого пользователем, автоматически реагируя на изменения в запросе, включая прерывание запросов, которые в настоящее время находятся на рассмотрении.
+
+<CodeSandbox src="/src/routes/demo/state/resource-joke/index.tsx" style={{ height: '40em' }}>
+```tsx {11} /useResource$/
+import {
+  component$,
+  useResource$,
+  Resource,
+  useSignal,
+} from '@builder.io/qwik';
+
+export default component$(() => {
+  const query = useSignal('busy');
+  const jokes = useResource$<{ value: string }[]>(
+    async ({ track, cleanup }) => {
+      track(() => query.value);
+      // Хорошей практикой является использование `AbortController` для прерывания получения данных, если
+      // поступает новый запрос. Мы создаем новый `AbortController` и регистрируем `cleanup`-
+      // функцию, которая вызывается при повторном запуске этой функции.
+      const controller = new AbortController();
+      cleanup(() => controller.abort());
+
+      if (query.value.length < 3) {
+        return [];
+      }
+
+      const url = new URL('https://api.chucknorris.io/jokes/search');
+      url.searchParams.set('query', query.value);
+
+      const resp = await fetch(url, { signal: controller.signal });
+      const json = (await resp.json()) as { result: { value: string }[] };
+
+      return json.result;
+    }
+  );
+
+  return (
+    <>
+      Запрос: <input bind:value={query} />
+      <button>Поиск</button>
+      <Resource
+        value={jokes}
+        onPending={() => <>Загрузка...</>}
+        onResolved={(jokes) => (
+          <ul>
+            {jokes.map((joke) => (
+              <li>{joke.value}</li>
+            ))}
+          </ul>
+        )}
+      />
+    </>
+  );
+});
+```
+</CodeSandbox>
+
+Как мы видим в приведённом выше примере, `useResource$()` возвращает объект `ResourceReturn<T>`, который работает как реактивный промис, содержащее данные и состояние ресурса.
+
+Состояние `resource.loading` может быть одним из следующих:
+
+- `false` - данные пока отсутствуют;
+- `true` - данные доступны (промис либо разрешён, либо отклонён).
+
+Обратный вызов, переданный в [`useResource$()`](/docs/(qwik)/components/resource/index.mdx), запускается сразу после завершения обратного вызова [`useTask$()`](/docs/(qwik)/components/tasks/index.mdx#usetask). Более подробную информацию см. в разделе [Lifecycle](../tasks/index.mdx#lifecycle).
+
+### `<Resource />`
+
+`<Resource />` - это компонент, предназначенный для использования с `useResource$()`, который отображает различное содержимое в зависимости от статуса ресурса: ожидание, разрешён или отклонён.
+
+```tsx
+<Resource
+  value={weatherResource}
+  onPending={() => <div>Загрузка...</div>}
+  onRejected={() => <div>Не удалось загрузить погоду</div>}
+  onResolved={(weather) => {
+    return <div>Температура: {weather.temp}</div>;
+  }}
+/>
+```
+
+Стоит отметить, что `<Resource />` не требуется при использовании `useResource$()`. Это просто удобный способ отображения состояния ресурса.
+
+Этот пример показывает, как `useResource$` используется для выполнения вызова к API [agify.io](https://agify.io/). Он будет угадывать возраст человека по имени, введённому пользователем, и будет обновляться каждый раз, когда пользователь вводит имя.
+
+<CodeSandbox src="/src/routes/demo/state/resource-agify/index.tsx" style={{ height: '8em' }}>
+```tsx {11} /useResource$/
+import {
+  component$,
+  useSignal,
+  useResource$,
+  Resource,
+} from '@builder.io/qwik';
+
+export default component$(() => {
+  const name = useSignal<string>();
+
+  const ageResource = useResource$<{
+    name: string;
+    age: number;
+    count: number;
+  }>(async ({ track, cleanup }) => {
+    track(() => name.value);
+    const abortController = new AbortController();
+    cleanup(() => abortController.abort('cleanup'));
+    const res = await fetch(`https://api.agify.io?name=${name.value}`, {
+      signal: abortController.signal,
+    });
+    return res.json();
+  });
+
+  return (
+    <div>
+      <div>Введите свое имя, и я угадаю ваш возраст!</div>
+      <input
+        onInput$={(e: Event) =>
+          (name.value = (e.target as HTMLInputElement).value)
+        }
+      />
+      <Resource
+        value={ageResource}
+        onPending={() => <div>Загрузка...</div>}
+        onRejected={() => <div>Не удалось получить данные</div>}
+        onResolved={(ageGuess) => {
+          return (
+            <div>
+              {name.value && (
+                <>
+                  {ageGuess.name} {ageGuess.age} лет
+                </>
+              )}
+            </div>
+          );
+        }}
+      />
+    </div>
+  );
+});
+```
+</CodeSandbox>
 
 ## Передача состояния
 
