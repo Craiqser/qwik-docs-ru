@@ -14,7 +14,6 @@
 - [События](/docs/(qwik)/components/events/index.mdx)
 - [Задачи/Жизненный цикл](/docs/(qwik)/components/tasks/index.mdx)
 - [Контекст](/docs/(qwik)/components/context/index.mdx)
-- [Ресурсы](/docs/(qwik)/components/resource/index.mdx)
 - [Слоты](/docs/(qwik)/components/slots/index.mdx)
 - [Рендер](/docs/(qwik)/components/rendering/index.mdx)
 - [Стилизация](/docs/(qwik)/components/styles/index.mdx)

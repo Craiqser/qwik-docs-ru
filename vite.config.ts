@@ -22,6 +22,7 @@ export default defineConfig(() => {
         'algoliasearch/dist/algoliasearch-lite.esm.browser',
       ],
     },
+
     plugins: [
       qwikCity({
         mdxPlugins: {
@@ -92,11 +93,9 @@ export default defineConfig(() => {
       playgroundData(routesDir),
       tutorialData(routesDir),
       sourceResolver(resolve('.')),
+      qwikReact(),
     ],
     clearScreen: false,
-    optimizeDeps: {
-      force: true,
-    },
     server: {
       port: 3000,
     },

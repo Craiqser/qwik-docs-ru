@@ -16,6 +16,8 @@ contributors:
 
 # Стили
 
+Qwik не навязывает подход к стилизации, вы можете стилизовать своё приложение Qwik, используя любой метод, который вы предпочитаете, например, CSS, CSS-in-JS, модули CSS...
+
 ## CSS-модули
 
 Благодаря [Vite](https://vitejs.dev/guide/features.html#css-modules), Qwik из коробки поддерживает [CSS-модули](https://github.com/css-modules/css-modules).
@@ -113,59 +115,41 @@ export const Cmp = component$(() => {
 });
 ```
 
-## Стили компопнента
+## Локальные стили
 
-Qwik предоставил встроенную поддержку стилей для каждого компонента, эта технология позволяет Qwik внедрять предоставленные стили только в том случае, если компонент используется на текущей странице, этого можно достичь с помощью хуков `useStyles$()` и `useStylesScoped$()`.
+Чтобы использовать локальные стили CSS, вы можете воспользоваться хуком `useStyleScoped$()`, экспортированным из `@builder.io/qwik`.
 
-### `useStyles$()`
+```tsx {4-8} title="src/components/MyComponent/MyComponent.tsx"
+import { component$, useStyleScoped$ } from '@builder.io/qwik';
 
-Это лениво-загружаемая ссылка на стили компонента.
-
-Стили компонентов позволяют Qwik лениво загружать информацию о стиле для компонента только тогда, когда это необходимо (и избегать двойной загрузки в случае гидратации SSR).
-
-```tsx
-import { useStyles$, component$ } from '@builder.io/qwik';
-import styles from './code-block.css?inline';
-
-export const CmpStyles = component$(() => {
-  useStyles$(styles);
-  return <span class="my-text">Какой-то текст</span>;
+export default component$(() => {
+  useStyleScoped$(`
+    .container {
+      background-color: red;
+    }
+  `);
+  return <div class="container">Привет, мир</div>;
 });
 ```
 
-```css
-// code-block.css
-.my-text {
-  color: red;
+Вы также можете импортировать внешний файл CSS. Для этого необходимо добавить параметр запроса `?inline` к импорту CSS-файла и передать экспорт CSS-файла по умолчанию в хук `useStyleScoped$()`.
+
+```css title="src/components/MyComponent/MyComponent.css"
+.container {
+  background-color: red;
 }
 ```
 
-> Обратите внимание, что для импорта CSS как строки в Vite, вам нужно добавить параметр запроса `?inline` к импорту, вот так: `import styles from './code-block.css?inline';`
+```tsx {3,6} title="src/components/MyComponent/MyComponent.tsx"
+import { component$, useStyleScoped$ } from '@builder.io/qwik';
 
-### `useStylesScoped$`
+import styles from './MyComponent.css?inline';
 
-В предыдущем разделе мы обсуждали, как можно лениво загружать стили по мере необходимости с помощью хука [`useStyles$()`](./../styles/index.mdx#usestyles).
-Стили браузера являются глобальными и применяются ко всем элементам DOM, по этой причине Qwik также предоставляет способ загрузки стилей, специфичных для определённого компонента.
-Это достигается путем создания уникального класса для каждого компонента и последующей вставки этого уникального идентификатора класса в таблицу стилей.
-
-```tsx
-import { useStylesScoped$, component$ } from '@builder.io/qwik';
-import styles from './code-block.css?inline';
-
-export const CmpStyles = component$(() => {
-  useStylesScoped$(styles);
-  return <span class="my-text">Какой-то текст</span>;
+export default component$(() => {
+  useStyleScoped$(styles);
+  return <div class="container">Hello world</div>;
 });
 ```
-
-```css
-// code-block.css
-.my-text {
-  color: blue;
-}
-```
-
-> Обратите внимание, что вам нужно добавить `?inline` в код импорта стилей.
 
 ### Селектор `:global()`
 
@@ -196,6 +180,31 @@ export const List = component$(() => {
 Это приведёт к рендеру css-селектора `.list.⭐️8vzca0-0 > *:nth-child(3)`, который позволит вам стилизовать дочерние компоненты. Это можно считать эквивалентом использования `::ng-deep` в Angular.
 
 > Помните, что это может привести к непредвиденным последствиям, которые будут распространяться вниз по дереву компонентов.
+
+## `useStyles$()`
+
+Это лениво-загружаемая ссылка на стили компонента.
+
+Стили компонентов позволяют Qwik лениво загружать информацию о стиле для компонента только тогда, когда это необходимо (и избегать двойной загрузки в случае гидратации SSR).
+
+```tsx
+import { useStyles$, component$ } from '@builder.io/qwik';
+import styles from './code-block.css?inline';
+
+export const CmpStyles = component$(() => {
+  useStyles$(styles);
+  return <span class="my-text">Какой-то текст</span>;
+});
+```
+
+```css
+// code-block.css
+.my-text {
+  color: red;
+}
+```
+
+> Обратите внимание, что для импорта CSS как строки в Vite, вам нужно добавить параметр запроса `?inline` к импорту, вот так: `import styles from './code-block.css?inline';`
 
 ## Препроцессоры
 

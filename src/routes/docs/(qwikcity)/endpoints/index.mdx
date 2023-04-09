@@ -1,5 +1,5 @@
 ---
-title: Qwik City - Страница
+title: Qwik City - Конечные точки
 contributors:
   - adamdbradley
   - manucorporat
@@ -12,151 +12,220 @@ contributors:
 
 Конечные точки - это файлы `index.ts` в директории `src/routes`, которые не экспортируют компонент `default`. Вместо этого экспортируются функции `onRequest`, `onGet`, `onPost`, `onPut`, `onDelete`, `onPatch`, `onHead`, которые будут использоваться для обработки входящего запроса.
 
-Основным вариантом использования конечных точек является создание RESTful API для вашего приложения или какого-либо HTTP-обработчика, который рендерится Qwik.
+```tsx
+import type { RequestEvent } from '@builder.io/qwik-city';
 
-```ts
-import type { RequestHandler } from '@builder.io/qwik-city';
-
-// Вызывается при каждом HTTP-запросе (независимо от метода)
-export const onRequest: RequestHandler = async (ev) => { ... }
-
-// Вызывается, когда методом HTTP является GET
-export const onGet: RequestHandler = async (ev) => { ... }
-
-// Вызывается, когда методом HTTP является POST
-export const onPost: RequestHandler = async (ev) => { ... }
-
-// Вызывается, когда методом HTTP является PUT
-export const onPut: RequestHandler = async (ev) => { ... }
-
-// Вызывается, когда метод HTTP является PATCH
-export const onPatch: RequestHandler = async (ev) => { ... }
-
-// Вызывается, когда методом HTTP является DELETE
-export const onDelete: RequestHandler = async (ev) => { ... }
+// Вызывается, когда метод HTTP - GET
+export const onGet = async (requestEvent: RequestEvent) => {
+  // Отвечает объектом JSON
+  requestEvent.json(200, { hello: 'world' });
+}
 ```
 
-Эти функции выполняются в соответствии с [HTTP-методом](https://developer.mozilla.org/en-US/docs/Web/HTTP/Methods), используемым для данного маршрута.
+Конечные точки полезны, когда вам нужно представить какой-либо внешний API, например, RESTful API или GraphQL API, внешнему субъекту, такому как мобильное приложение или сторонний сервис.
+
+```ts
+import type { RequestEvent } from '@builder.io/qwik-city';
+
+// Вызывается при каждом HTTP-запросе (независимо от метода)
+export const onRequest = async (requestEvent: RequestEvent) => { ... }
+
+// Вызывается, когда метод HTTP - GET
+export const onGet = async (requestEvent: RequestEvent) => { ... }
+
+// Вызывается, когда метод HTTP - POST
+export const onPost = async (requestEvent: RequestEvent) => { ... }
+
+// Вызывается, когда метод HTTP - PUT
+export const onPut = async (requestEvent: RequestEvent) => { ... }
+
+// Вызывается, когда метод HTTP - PATCH
+export const onPatch: = async (requestEvent: RequestEvent) => { ... }
+
+// Вызывается, когда метод HTTP - DELETE
+export const onDelete = async (requestEvent: RequestEvent) => { ... }
+```
+
+## Конечные точки и server$
+
+Конечные точки - это низкоуровневый API, который даёт разработчикам полный контроль над HTTP-ответом. Они рекомендуются только в том случае, если вам нужно создать API, который будет потребляться внешним объектом, например, мобильным приложением или сторонним сервисом.
+
+Функция `server$` обычно являются наилучшим вариантом, когда вам нужно выполнить некоторый код на сервере и вернуть ответ обратно в приложение. `server$` сильно типизирован и предоставляет более удобный API для возврата данных.
 
 ## Контроль над ответом
 
-Конечные точки - это маршруты, которые не рендерят страницы Qwik, вместо этого они позволяют вам полностью контролировать HTTP-ответ. От изменения кода состояния до добавления заголовков и даже отправки сформированного тела ответа.
+Конечные точки дают разработчикам полный контроль над HTTP-ответом. Это позволяет конечным точкам реализовать RESTful API, JSON, XML, GraphQL API, обратные прокси или любой другой тип API.
 
-### Изменение кода состояния
+Всем функциям конечных точек передается объект `RequestEvent`, который содержит информацию о HTTP-запросе и ответе.
 
-```tsx
-import type { RequestHandler } from '@builder.io/qwik-city';
+```ts
+export interface RequestEvent {
+  /**
+   * HTTP response headers.
+   *
+   * https://developer.mozilla.org/en-US/docs/Glossary/Response_header
+   */
+  readonly headers: Headers;
 
-export const onGet: RequestHandler = async ({ status }) => {
-  throw status(404);
-};
+  /**
+   * HTTP request and response cookie. Use the `get()` method to retrieve a request cookie value.
+   * Use the `set()` method to set a response cookie value.
+   *
+   * https://developer.mozilla.org/en-US/docs/Web/HTTP/Cookies
+   */
+  readonly cookie: Cookie;
+
+  /**
+   * HTTP request method.
+   *
+   * https://developer.mozilla.org/en-US/docs/Web/HTTP/Methods
+   */
+  readonly method: string;
+
+  /**
+   * URL pathname. Does not include the protocol, domain, query string (search params) or hash.
+   *
+   * https://developer.mozilla.org/en-US/docs/Web/API/URL/pathname
+   */
+  readonly pathname: string;
+
+  /**
+   * URL path params which have been parsed from the current url pathname segments.
+   * Use `query` to instead retrieve the query string search params.
+   */
+  readonly params: Readonly<Record<string, string>>;
+
+  /**
+   * URL Query Strings (URL Search Params).
+   * Use `params` to instead retrieve the route params found in the url pathname.
+   *
+   * https://developer.mozilla.org/en-US/docs/Web/API/URLSearchParams
+   */
+  readonly query: URLSearchParams;
+
+  /**
+   * HTTP request URL.
+   */
+  readonly url: URL;
+
+  /**
+   * The base pathname of the request, which can be configured at build time.
+   * Defaults to `/`.
+   */
+  readonly basePathname: string;
+
+  /**
+   * HTTP request information.
+   */
+  readonly request: Request;
+
+  /**
+   * Platform specific data and functions
+   */
+  readonly platform: PLATFORM;
+
+  /**
+   * Platform provided environment variables.
+   */
+  readonly env: EnvGetter;
+
+  /**
+   * Shared Map across all the request handlers. Every HTTP request will get a new instance of
+   * the shared map. The shared map is useful for sharing data between request handlers.
+   */
+  readonly sharedMap: Map<string, any>;
+
+  /**
+   * This method will check the request headers for a `Content-Type` header and parse the body accordingly.
+   * It supports `application/json`, `application/x-www-form-urlencoded`, and `multipart/form-data` content types.
+   *
+   * If the `Content-Type` header is not set, it will return `null`.
+   */
+  readonly parseBody: () => Promise<unknown>;
+
+  /**
+   * Convenience method to set the Cache-Control header.
+   *
+   * https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Cache-Control
+   */
+  readonly cacheControl: (cacheControl: CacheControl) => void;
+
+  /**
+   * HTTP response status code. Sets the status code when called with an
+   * argument. Always returns the status code, so calling `status()` without
+   * an argument will can be used to return the current status code.
+   *
+   * https://developer.mozilla.org/en-US/docs/Web/HTTP/Status
+   */
+  readonly status: (statusCode?: number) => number;
+
+  /**
+   * Which locale the content is in.
+   *
+   * The locale value can be retrieved from selected methods using `getLocale()`:
+   */
+  readonly locale: (local?: string) => string;
+
+  /**
+   * URL to redirect to. When called, the response will immediately
+   * end with the correct redirect status and headers.
+   *
+   * https://developer.mozilla.org/en-US/docs/Web/HTTP/Redirections
+   */
+  readonly redirect: (statusCode: RedirectCode, url: string) => RedirectMessage;
+
+  /**
+   * When called, the response will immediately end with the given
+   * status code. This could be useful to end a response with `404`,
+   * and use the 404 handler in the routes directory.
+   * See https://developer.mozilla.org/en-US/docs/Web/HTTP/Status
+   * for which status code should be used.
+   */
+  readonly error: (statusCode: number, message: string) => ErrorResponse;
+
+  /**
+   * Convenience method to send an text body response. The response will be automatically
+   * set the `Content-Type` header to`text/plain; charset=utf-8`.
+   *  An `text()` response can only be called once.
+   */
+  readonly text: (statusCode: number, text: string) => AbortMessage;
+
+  /**
+   * Convenience method to send an HTML body response. The response will be automatically
+   * set the `Content-Type` header to`text/html; charset=utf-8`.
+   *  An `html()` response can only be called once.
+   */
+  readonly html: (statusCode: number, html: string) => AbortMessage;
+
+  /**
+   * Convenience method to JSON stringify the data and send it in the response.
+   * The response will be automatically set the `Content-Type` header to
+   * `application/json; charset=utf-8`. A `json()` response can only be called once.
+   */
+  readonly json: (statusCode: number, data: any) => AbortMessage;
+
+  /**
+   * Send a body response. The `Content-Type` response header is not automatically set
+   * when using `send()` and must be set manually. A `send()` response can only be called once.
+   */
+  readonly send: SendMethod;
+
+  /**
+   * Low-level access to write to the HTTP response stream. Once `getWritableStream()` is called,
+   * the status and headers can no longer be modified and will be sent over the network.
+   */
+  readonly getWritableStream: () => WritableStream<Uint8Array>;
+
+  readonly next: () => Promise<void>;
+}
 ```
 
-### Добавление заголовков ответа
+### JSON GET Endpoint
+
+Создать конечную точку JSON так же просто, как вызвать метод `json(status, object)`. Метод `json()` автоматически установит заголовок `Content-Type` на `application/json; charset=utf-8` и преобразует данные в JSON.
 
 ```tsx
-import type { RequestHandler } from '@builder.io/qwik-city';
-
-export const onPost: RequestHandler = async ({ headers }) => {
-  headers.set('X-My-Custom-Header', 'Hello World');
-};
-```
-
-### Установка кук
-
-```tsx
-import type { RequestHandler } from '@builder.io/qwik-city';
-
-export const onGet: RequestHandler = async ({ cookie }) => {
-  cookie.set('my-cookie', 'Hello World');
-};
-```
-
-### Изменение заголовка cache-control
-
-```tsx
-import type { RequestHandler } from '@builder.io/qwik-city';
-
-export const onGet: RequestHandler = async ({ cacheControl }) => {
-  cacheControl({
-    maxAge: 31536e3,
-    public: true,
-    immutable: true,
-    staleWhileRevalidate: 31536e3,
-  });
-};
-```
-
-### Отправка содержимого в формате JSON
-
-```tsx
-import type { RequestHandler } from '@builder.io/qwik-city';
-
-export const onGet: RequestHandler = async ({ json }) => {
-  json(200, { hello: 'world' });
-};
-```
-
-### Отправка содержимого в текстовом формате
-
-```tsx
-import type { RequestHandler } from '@builder.io/qwik-city';
-
-export const onGet: RequestHandler = async ({ text }) => {
-  text(200, 'Hello World');
-};
-```
-
-### Отправка ответа
-
-```tsx
-import type { RequestHandler } from '@builder.io/qwik-city';
-
-export const onGet: RequestHandler = async ({ send }) => {
-  const response = new Response('Hello World', {
-    status: 200,
-    headers: {
-      'Content-Type': 'text/plain',
-    },
-  });
-  send(response);
-};
-```
-
-### Создание обратного прокси-сервера, используя fetch
-
-```tsx
-import type { RequestHandler } from '@builder.io/qwik-city';
-
-export const onGet: RequestHandler = async ({ send }) => {
-  const response = await fetch('https://example.com');
-  send(response);
-};
-```
-
-### Ручное создание потока ответа
-
-```tsx
-import type { RequestHandler } from '@builder.io/qwik-city';
-
-export const onGet: RequestHandler = async ({ getWritableStream }) => {
-  const writableStream = getWritableStream();
-  const writer = writableStream.getWriter();
-  writer.write('Привет, мир');
-  await wait(100);
-  writer.write('Прошло 100мс');
-  await wait(100);
-  writer.write('Прошло 200мс');
-  await wait(100);
-  writer.write('Конец');
-  writer.close();
-};
-```
-
-### Конечная точка получения JSON
-
-```ts title="src/routes/product/[skuId]/index.ts"
-import type { RequestHandler } from '@builder.io/qwik-city';
+import type { RequestEvent } from '@builder.io/qwik-city';
 
 interface ProductData {
   skuId: string;
@@ -164,12 +233,115 @@ interface ProductData {
   description: string;
 }
 
-export const onGet: RequestHandler = async ({ json, params }) => {
-  // Здесь должен быть код доступа к вашей БД (сокращено для упрощения).
-  json(200, {
-    skuId: params.skuId,
-    price: 123.45,
-    description: `Описание для ${params.skuId}`,
+export const onGet = async (requestEvent: RequestEvent) => {
+  // Получить товар из базы данных
+  const product: ProductData = await database.get(requestEvent.params.skuId);
+
+  // Отправляем товар в формате JSON
+  requestEvent.json(200, product);
+};
+```
+
+### Изменение кода состояния
+
+Конечные точки могут изменять код статуса HTTP в ответе, используя метод `status()`.
+
+```tsx
+import type { RequestEvent } from '@builder.io/qwik-city';
+
+export const onGet = async (requestEvent: RequestEvent) => {
+  requestEvent.status(404);
+};
+```
+
+### Добавление заголовков ответа
+
+Конечные точки могут добавлять заголовки в ответ, используя свойство `headers`.
+
+```tsx
+import type { RequestEvent } from '@builder.io/qwik-city';
+
+export const onPost: RequestHandler = async (requestEvent: RequestEvent) => {
+  requestEvent.headers.set('X-My-Custom-Header', 'Hello World');
+};
+```
+
+### Установка кук
+
+Конечные точки могут читать и устанавливать куки, используя свойство `cookie`. Это может быть полезно для установки сессионных кук, таких как JWT-токен, или кук для отслеживания пользователя.
+
+```tsx
+import type { RequestEvent } from '@builder.io/qwik-city';
+
+export const onGet = async (requestEvent: RequestEvent) => {
+  // Считывание кук
+  requestEvent.cookie.get('my-cookie');
+
+  // Установка кук
+  requestEvent.cookie.set('my-cookie', 'Hello World');
+};
+```
+
+### Отправка содержимого в текстовом формате
+
+Создание текстовой конечной точки - это просто вызов метода `text(status, string)`. Метод `text()` автоматически устанавливает заголовок `Content-Type` в `text/plain; charset=utf-8`.
+
+```tsx
+import type { RequestEvent } from '@builder.io/qwik-city';
+
+export const onGet = async (requestEvent: RequestEvent) => {
+  requestEvent.text(200, 'Hello World');
+};
+```
+
+### Отправка необработанного ответа
+
+Создать необработанную конечную точку так же просто, как вызвать метод `send(Response)`. Метод `send()` принимает стандартный объект `Response`, который может быть создан с помощью конструктора `Response`.
+
+```tsx
+import type { RequestHandler } from '@builder.io/qwik-city';
+
+export const onGet: RequestHandler = async (requestEvent: RequestEvent) => {
+  const response = new Response('Hello World', {
+    status: 200,
+    headers: {
+      'Content-Type': 'text/plain',
+    },
   });
+  requestEvent.send(response);
+};
+```
+
+### Создание обратного прокси-сервера, используя fetch
+
+Обратный прокси может быть создан с помощью метода `fetch()` для выполнения запроса к другому серверу, а затем с помощью метода `end()` для отправки ответа обратно клиенту.
+
+```tsx
+import type { RequestEvent } from '@builder.io/qwik-city';
+
+export const onGet = async (requestEvent: RequestEvent) => {
+  const response = await fetch('https://example.com');
+  requestEvent.send(response);
+};
+```
+
+### Ручное создание потока ответа
+
+Конечные точки могут записывать в поток ответа HTTP, используя метод `getWritableStream()`. Это может быть полезно для создания потоковой конечной точки, например, конечной точки событий, отправляемых сервером.
+
+```tsx
+import type { RequestEvent } from '@builder.io/qwik-city';
+
+export const onGet: RequestHandler = async (requestEvent: RequestEvent) => {
+  const writableStream = requestEvent.getWritableStream();
+  const writer = writableStream.getWriter();
+  writer.write('Hello World');
+  await wait(100);
+  writer.write('After 100ms');
+  await wait(100);
+  writer.write('After 200ms');
+  await wait(100);
+  writer.write('END');
+  writer.close();
 };
 ```

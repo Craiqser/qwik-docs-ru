@@ -149,7 +149,7 @@ export default component$(() => {
 
 ## Стилизация
 
-Qwik из коробки поддерживает CSS-модули, глобальный импорт CSS и ленивую загрузку локальных стилей компонента с помощью `useStyleScoped$()`.
+Qwik из коробки поддерживает CSS-модули, или даже tailwind, глобальный импорт CSS и ленивую загрузку локальных стилей с помощью `useStyleScoped$()`. Модули CSS - это рекомендуемый способ стилизации компонентов Qwik.
 
 ### CSS-модули
 
@@ -175,60 +175,6 @@ export default component$(() => {
 ```
 
 Помните, что Qwik использует `class` вместо `className` для классов CSS.
-
-### Глобальный CSS
-
-Чтобы использовать глобальные стили, импортируйте CSS-файл из любого typescript-файла. Например, `src/components/MyComponent/MyComponent.tsx`.
-
-```tsx title="src/components/MyComponent/MyComponent.tsx"
-import { component$ } from '@builder.io/qwik';
-import './MyComponent.css';
-
-export default component$(() => {
-  return (
-    <div class="container">Привет, мир</div>
-  );
-});
-```
-
-### Локальный CSS
-
-Чтобы использовать локальный CSS, вы можете воспользоваться хуком `useStyleScoped$()`, экспортированным из `@builder.io/qwik`.
-
-```tsx title="src/components/MyComponent/MyComponent.tsx"
-import { component$, useStyleScoped$ } from '@builder.io/qwik';
-
-export default component$(() => {
-  useStyleScoped$(`
-    .container {
-      background-color: red;
-    }
-  `);
-  return (
-    <div class="container">Привет, мир</div>
-  );
-});
-```
-
-Также можно импортировать внешний CSS-файл. Для этого необходимо добавить параметр запроса `?inline` к импорту CSS-файла и передать экспорт CSS-файла по умолчанию в хук `useStyleScoped$()`.
-
-```css title="src/components/MyComponent/MyComponent.css"
-.container {
-  background-color: red;
-}
-```
-
-```tsx title="src/components/MyComponent/MyComponent.tsx"
-import { component$, useStyleScoped$ } from '@builder.io/qwik';
-import styles from './MyComponent.css?inline';
-
-export default component$(() => {
-  useStyleScoped$(styles);
-  return (
-    <div class="container">Привет, мир</div>
-  );
-});
-```
 
 ## $(...) rules
 
@@ -568,11 +514,11 @@ export default component$(() => {
 
 ## Обработка отправленных форм
 
-Qwik предоставляет API `routeAction$()`, экспортированный из `@builder.io/qwik-city`, для обработки запросов формы на сервере. `routeAction$()` очень похож на `routeLoader$()`, оба используются для создания пользовательского хука, который можно использовать для доступа к данным, возвращаемым с сервера. Основное отличие состоит в том, что `routeAction$()` выполняется только при отправке формы, а `routeLoader$()` выполняется на сервере до отображения маршрута.
+Qwik предоставляет API `routeAction$()`, экспортированный из `@builder.io/qwik-city` для обработки запросов формы на сервере. `routeAction$()` выполняется на сервере только в момент отправки формы.
 
 ```tsx title="src/routes/user/[userID]/index.tsx"
 import { component$ } from '@builder.io/qwik';
-import { routeAction$, Form } from '@builder.io/qwik-city';
+import { routeAction$, Form, zod$, z } from '@builder.io/qwik-city';
 
 // Функция `routeAction$()` используется для создания загрузчика данных, который будет выполняться на сервере при отправке формы.
 // `routeAction$()` возвращает пользовательский хук, который можно использовать для доступа к данным, возвращаемым из `routeAction$()`.
@@ -584,7 +530,10 @@ export const useUserUpdate = routeAction$(async (data, requestContext) => {
   return {
     user,
   };
-});
+}, zod$({
+  name: z.string(),
+  email: z.string(),
+}));
 
 export default component$(() => {
   // Хук `useUserUpdate` вернёт `ActionStore<T>`, содержащий `value`, возвращённое из `routeAction$()`, и некоторые другие свойства, такие как `submit()`, которое используется для программной отправки формы, и свойство `isRunning`. Все эти свойства являются реактивными и будут перерисовывать компонент всякий раз, когда они изменяются.

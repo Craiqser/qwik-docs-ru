@@ -6,48 +6,31 @@ contributors:
 
 # `routeLoader$()`
 
-Загрузчики маршрута позволяют передавать данные с сервера компонентам Qwik. По этой причине загрузчики маршрута в Qwik всегда следует понимать в контексте **загрузки данных на сервере, которые впоследствии используются компонентом Qwik**. Если вы хотите создать конечную точку RESTful, то ознакомьтесь с руководством по [конечным точкам](/docs/(qwikcity)/endpoints/index.mdx).
-
-Они ведут себя как серверные функции RPC, которые могут вызываться компонентами Qwik во время рендера.
-
-## Объявление загрузчика маршрута
+Загрузчики маршрутов загружают данные на сервер, чтобы они стали доступны для использования в компонентах Qwik. Они ведут себя как функции RPC на стороне сервера, которые могут быть вызваны компонентами Qwik во время рендера.
 
 Загрузчики маршрута могут быть объявлены только внутри папки `src/routes`, в файле `layout.tsx` или `index.tsx`, и они ДОЛЖНЫ быть экспортированы.
 
-```tsx title="src/routes/layout.tsx"
-import { routeLoader$ } from '@builder.io/qwik-city';
-
-export const useProductData = routeLoader$(async () => {
-  const res = await fetch('https://.../products');
-  const product = await res.json();
-  return product;
-});
-```
-
-> `routeLoader$`-ы не являются конечными точками, это внутренний канал связи между сервером и компонентами Qwik. Кроме того, загрузчики маршрута должны возвращать сериализуемое JSON-значение.
-
-## Использование `routeLoader$`
-
-`routeLoader$`-ы могут использоваться любым компонентом приложения, если загрузчик объявлен в файле `layout.tsx` или `index.tsx`, который является частью существующего маршрута.
-
-```tsx title="src/routes/index.tsx"
-import { routeLoader$ } from '@builder.io/qwik-city';
+```tsx /routeLoader$/ /useProductData/#a title="src/routes/product/[productId]/index.tsx"
 import { component$ } from '@builder.io/qwik';
+import { routeLoader$ } from '@builder.io/qwik-city';
 
-export const useProductData = routeLoader$(async () => {
-  const res = await fetch('https://.../product');
-  const product = await res.json() as Product;
+export const useProductDetails = routeLoader$(async (requestEvent) => {
+  // Этот код выполняется только на сервере, после каждой навигации
+  const res = await fetch(`https://.../products/${requestEvent.params.productId}`);
+  const product = await res.json();
   return product;
 });
 
 export default component$(() => {
   // Получение реактивного сигнала данных загрузчика
-  const signal = useProductData(); // Signal<Product>
-  return <div>Наименование товара: {signal.value.product.name}</div>;
+  const signal = useProductDetails(); // ReadonlySignal<Product>
+  return <div>Product name: {signal.value.product.name}</div>;
 });
 ```
 
-> Может показаться, что `useProductData()` инициирует получение данных сервера при рендере компонента. Но в действительности, `routeLoader$`, связанный с `useProductData`, немедленно выполняется при HTTP-запросе. Таким образом, асинхронная работа по получению данных с сервера может быть начата как можно раньше (функция `routeLoader$` немедленно вызывается при HTTP запросе, независимо от того, вызвана ли `useProductData()` в компоненте). По этой причине они разрешены только в папке `src/routes`, в файлах `layout.tsx` или `index.tsx`.
+Загрузчики маршрутов идеально подходят для получения данных из базы данных или API. Например, вы можете использовать их для получения данных из CMS, API погоды или списка пользователей из вашей базы данных.
+
+> Вы не должны использовать `routeLoader$` для создания REST API, для этого лучше использовать [Endpoint](/docs/(qwikcity)/endpoints/index.mdx), который позволяет жёстко контролировать заголовки и тело ответа.
 
 ## Несколько `routeLoader$`-ов
 
@@ -124,34 +107,32 @@ export default component$(() => {
 
 Приведённый выше пример показывает использование двух `routeLoader$`-ов в одном файле. Общий загрузчик `useLoginStatus` используется для проверки того, вошёл ли пользователь в систему, а более специфический загрузчик `useCurrentUser` используется для получения данных пользователя.
 
-## Контекст загрузчика маршрута
+## RequestEvent
 
-Как и обработчики запросов, такие как `onRequest` и `onGet`, `routeLoader$`-ы имеют доступ к объекту `RequestEvent`, который содержит информацию о текущем запросе.
+Подобно обработчикам запросов, таким как `onRequest` и `onGet`, `routeLoader$` имеет доступ к объекту `RequestEvent`, который содержит информацию о текущем HTTP-запросе и ответе.
 
-Эта информация пригодится, когда загрузчику необходимо вернуть данные по условию на основе запроса или ему необходимо вручную переопределить статус ответа, заголовки или тело.
+Эта информация пригодится, когда загрузчику нужно вернуть данные по условию на основе запроса, или ему нужно переопределить статус ответа, заголовки или тело.
 
-```tsx
+```tsx /requestEvent/ title="src/routes/product/[user]/index.tsx"
 import { routeLoader$ } from '@builder.io/qwik-city';
 
-export const useProductRecommendations = routeLoader$(
-  async ({ headers, cookie, url, method, params }) => {
-    console.log('Request headers:', headers);
-    console.log('Request cookies:', cookie);
-    console.log('Request url:', url);
-    console.log('Request method:', method);
-    console.log('Request params:', params);
+export const useProductRecommendations = routeLoader$(async (requestEvent) => {
+  console.log('Request headers:', requestEvent.headers);
+  console.log('Request cookies:', requestEvent.cookie);
+  console.log('Request url:', requestEvent.url);
+  console.log('Request method:', requestEvent.method);
+  console.log('Request params:', requestEvent.params);
 
-    // Используйте детали запроса для получения персонализированных данных
-    const res = fetch(`https://.../recommendations?user=${params.user}`);
-    const products = await res.json() as Product[];
+  // Use request details to fetch personalized data
+  const res = fetch(`https://.../recommendations?user=${requestEvent.params.user}`);
+  const recommendedProducts = (await res.json()) as Product[];
 
-    return products;
-  }
-);
+  return recommendedProducts;
+});
 ```
 
-## Когда использовать загрузчик маршрута?
+## Соображения по производительности
 
-Загрузчик маршрута следует использовать, когда вам нужно предоставить серверные данные вашим Qwik-компонентам. Например, если вам нужно получить некоторые данные из базы данных или API, вы можете использовать для этого загрузчик маршрута.
+Загрузчики маршрутов выполняются на сервере после каждой навигации. Это означает, что они выполняются каждый раз, когда пользователь переходит на страницу в SPA или MPA, и выполняются, даже если пользователь переходит на ту же страницу.
 
-Вы не должны использовать загрузчик маршрута для создания REST API, для этого вам лучше использовать [конечную точку](../endpoints/index.mdx), которая позволяет вам иметь более полный контроль над заголовками и телом ответа.
+Загрузчики выполняются после обработчиков маршрутов Qwik (`onRequest`, `onGet`, `onPost` и т.д.), и перед рендером компонентов Qwik, что позволяет начать получение данных как можно быстрее, уменьшая задержку.
