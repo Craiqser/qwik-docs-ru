@@ -75,13 +75,15 @@ yarn start
 
 2. Файл `index.tsx` каждого маршрута должен содержать `export default component$(...)`, чтобы Qwikcity знал, какой контент обслуживать. Вставьте следующее содержимое в `src/routes/joke/index.tsx`:
 
-```tsx
+<CodeSandbox src="/src/routes/demo/getting-started/01-route/index.tsx" style={{ height: '6em' }}>
+```tsx {3-5}
 import { component$ } from "@builder.io/qwik";
 
 export default component$(() => {
   return <div class="section bright">Шутка!</div>;
 });
 ```
+</CodeSandbox>
 
 3. Перейдите по адресу `http://127.0.0.1:5173/joke/`, чтобы проверить, что ваша новая страница работает.
 
@@ -90,23 +92,13 @@ export default component$(() => {
 > - Ваш компонент по умолчанию `шуточного` маршрута вложен в существующий макет. Подробнее о том, что такое макеты и как с ними работать, смотрите раздел [Layout](/docs/layout/).
 > - Подробнее о том, как создавать компоненты, смотрите в разделе [Component API](/docs/(qwik)/components/overview/).
 
-<CodeSandbox src="/src/routes/demo/getting-started/01-route/index.tsx" style={{ height: '6em' }}>
-```tsx
-import { component$ } from '@builder.io/qwik';
-
-export default component$(() => {
-  return <div class="section bright">Шутка!</div>;
-});
-```
-</CodeSandbox>
-
 ## 2 Загрузка данных
 
 Обычно страница загружает отображаемые пользователю данные. Это выполняется с помощью [загрузчиков маршрута](/docs/route-loader/).
 
 1. Откройте файл `src/routes/joke/index.tsx` и добавьте этот код:
 
-```tsx
+```tsx {3-8} /routeLoader\$/
 import { routeLoader$ } from '@builder.io/qwik-city';
 
 export const useDadJoke = routeLoader$(async () => {
@@ -119,7 +111,7 @@ export const useDadJoke = routeLoader$(async () => {
 
 2. Затем добавьте хук `useDadJoke()` к `default`-компоненту и используйте результат в JSX:
 
-```tsx
+```tsx {2,5} /dadJokeSignal/
 export default component$(() => {
   const dadJokeSignal = useDadJoke();
   return (
@@ -143,7 +135,7 @@ export default component$(() => {
 > - Тип возврата `routeLoader$` вычисляется в компоненте без необходимости получения дополнительной информации о типе.
 
 <CodeSandbox src="/src/routes/demo/getting-started/02-loading-data/index.tsx" style={{ height: '6em' }}>
-```tsx
+```tsx /routeLoader$/ /useDadJoke/
 import { component$ } from '@builder.io/qwik';
 import { routeLoader$ } from '@builder.io/qwik-city';
 
@@ -179,7 +171,7 @@ export default component$(() => {
 
 1. Откройте `src/routes/joke/index.tsx` и добавьте этот код:
 
-```tsx
+```tsx /routeAction\$/
 import {routeAction$, Form} from "@builder.io/qwik-city";
 
 export const useJokeVoteAction = routeAction$((props) => {
@@ -190,7 +182,7 @@ export const useJokeVoteAction = routeAction$((props) => {
 
 2. Обновите `export default`-компонент для использования хука `useJokeVoteAction`. Это делается путём добавления `<Form>`.
 
-```tsx
+```tsx {3,7-11} /favoriteJokeAction/
 export default component$(() => {
   const dadJokeSignal = useDadJoke();
   const favoriteJokeAction = useJokeVoteAction();
@@ -199,12 +191,8 @@ export default component$(() => {
       <div>{dadJokeSignal.value.joke}</div>
       <Form action={favoriteJokeAction}>
         <input type="hidden" name="jokeID" value={dadJokeSignal.value.id} />
-        <button name="vote" value="up">
-          👍
-        </button>
-        <button name="vote" value="down">
-          👎
-        </button>
+        <button name="vote" value="up">👍</button>
+        <button name="vote" value="down">👎</button>
       </Form>
     </div>
   );
@@ -227,8 +215,7 @@ export default component$(() => {
   - Если JavaScript включён, компонент `Form` не позволит браузеру отправить форму, а вместо этого отправит данные с помощью JavaScript и будет эмулировать поведение нативной формы браузера без полного обновления.
 
 <CodeSandbox src="/src/routes/demo/getting-started/03-posting-data/index.tsx" style={{ height: '8em' }}>
-```tsx
-/* eslint-disable no-console */
+```tsx {21,25-29} /favoriteJokeAction/
 import { component$ } from '@builder.io/qwik';
 import { routeLoader$, Form, routeAction$ } from '@builder.io/qwik-city';
 
@@ -255,12 +242,8 @@ export default component$(() => {
       <div>{dadJokeSignal.value.joke}</div>
       <Form action={favoriteJokeAction}>
         <input type="hidden" name="jokeID" value={dadJokeSignal.value.id} />
-        <button name="vote" value="up">
-          👍
-        </button>
-        <button name="vote" value="down">
-          👎
-        </button>
+        <button name="vote" value="up">👍</button>
+        <button name="vote" value="down">👎</button>
       </Form>
     </div>
   );
@@ -275,26 +258,20 @@ export default component$(() => {
 Для объявления состояния:
 
 1. Объявите состояние компонента с помощью `useSignal()`.
-
-```tsx
-const isFavoriteSignal = useSignal(false);
-```
-
+   ```tsx /useSignal/
+   const isFavoriteSignal = useSignal(false);
+   ```
 2. Добавьте к компоненту кнопку, которая будет изменять состояние.
+   ```tsx /isFavoriteSignal/
+   <button onClick$={() => isFavoriteSignal.value = !isFavoriteSignal.value}>
+     {isFavoriteSignal.value ? "❤️" : "🤍"}
+   </button>
+   ```
 
-```tsx
-<button onClick$={() => isFavoriteSignal.value = !isFavoriteSignal.value}>
-  {isFavoriteSignal.value ? "❤️" : "🤍"}
-</button>
-```
+ПРИМЕЧАНИЕ: Нажатие на кнопку приведет к обновлению состояния, и пользовательский интерфейс будет обновлен.
 
-ПРИМЕЧАНИЕ:
-
-- Нажатие на кнопку приведет к обновлению состояния, и пользовательский интерфейс будет обновлен.
-
-<CodeSandbox src="/src/routes/demo/getting-started/04-state/index.tsx" style={{ height: '10em' }}>
-```tsx
-/* eslint-disable no-console */
+<CodeSandbox maxHeight={500} src="/src/routes/demo/getting-started/04-state/index.tsx" style={{ height: '10em' }}>
+```tsx /isFavoriteSignal/
 import { component$, useSignal } from '@builder.io/qwik';
 import { routeLoader$, Form, routeAction$ } from '@builder.io/qwik-city';
 
@@ -323,12 +300,8 @@ export default component$(() => {
       <div>{dadJokeSignal.value.joke}</div>
       <Form action={favoriteJokeAction}>
         <input type="hidden" name="jokeID" value={dadJokeSignal.value.id} />
-        <button name="vote" value="up">
-          👍
-        </button>
-        <button name="vote" value="down">
-          👎
-        </button>
+        <button name="vote" value="up">👍</button>
+        <button name="vote" value="down">👎</button>
       </Form>
       <button
         onClick$={() => (isFavoriteSignal.value = !isFavoriteSignal.value)}
@@ -346,39 +319,32 @@ export default component$(() => {
 В Qwik [задача](/docs/components/tasks/#usetask) - это работа, которая должна произойти при изменении состояния (аналогично хуку "effect" в других фреймворках). В этом примере мы будем использовать задачу для вызова кода на сервере.
 
 1. Создайте новую задачу, которая отслеживает состояние `isFavoriteSignal`:
-
-```tsx
-useTask$(({ track }) => {});
-```
-
+   ```tsx /useTask\$/
+   useTask$(({ track }) => {});
+   ```
 2. Добавьте вызов `track` для повторного выполнения задачи при изменении состояния `isFavoriteSignal`:
-
-```tsx
-useTask$(({ track }) => {
-  track(()=> isFavoriteSignal.value);
-});
-```
-
+   ```tsx /track/
+   useTask$(({ track }) => {
+     track(()=> isFavoriteSignal.value);
+   });
+   ```
 3. Добавьте код, который вы хотите выполнить при изменении состояния:
-
-```tsx
-useTask$(({ track }) => {
-  track(()=> isFavoriteSignal.value);
-  console.log("FAVORITE (isomorphic)", isFavoriteSignal.value);
-});
-```
-
+   ```tsx {3}
+   useTask$(({ track }) => {
+     track(()=> isFavoriteSignal.value);
+     console.log('FAVORITE (isomorphic)', isFavoriteSignal.value);
+   });
+   ```
 4. Если вы хотите, чтобы работа происходила только на сервере, оберните её в `server$()`.
-
-```tsx
-useTask$(({ track }) => {
-  track(()=> isFavoriteSignal.value);
-  console.log("FAVORITE (isomorphic)", isFavoriteSignal.value);
-  server$(() => {
-    console.log("FAVORITE (server)", isFavoriteSignal.value);
-  })();
-});
-```
+   ```tsx /server\$/ {4-6}
+   useTask$(({ track }) => {
+     track(()=> isFavoriteSignal.value);
+     console.log('FAVORITE (isomorphic)', isFavoriteSignal.value);
+     server$(() => {
+       console.log('FAVORITE (server)', isFavoriteSignal.value);
+     })();
+   });
+   ```
 
 ПРИМЕЧАНИЕ:
 
@@ -386,9 +352,8 @@ useTask$(({ track }) => {
 - Во время SSR сервер выведет в лог `FAVORITE (isomorphic) false` и `FAVORITE (server) false`;
 - Когда пользователь взаимодействует с избранным, клиент выведет `FAVORITE (isomorphic) true`, и сервер выведет `FAVORITE (server) true`.
 
-<CodeSandbox src="/src/routes/demo/getting-started/05-tasks/index.tsx" style={{ height: '10em' }}>
-```tsx
-/* eslint-disable no-console */
+<CodeSandbox maxHeight={500} src="/src/routes/demo/getting-started/05-tasks/index.tsx" style={{ height: '10em' }}>
+```tsx {28-34}
 import { component$, useSignal, useTask$ } from '@builder.io/qwik';
 import {
   routeLoader$,
@@ -428,12 +393,8 @@ export default component$(() => {
       <div>{dadJokeSignal.value.joke}</div>
       <Form action={favoriteJokeAction}>
         <input type="hidden" name="jokeID" value={dadJokeSignal.value.id} />
-        <button name="vote" value="up">
-          👍
-        </button>
-        <button name="vote" value="down">
-          👎
-        </button>
+        <button name="vote" value="up">👍</button>
+        <button name="vote" value="down">👎</button>
       </Form>
       <button
         onClick$={() => (isFavoriteSignal.value = !isFavoriteSignal.value)}
@@ -454,27 +415,26 @@ export default component$(() => {
 
 1. Создайте новый файл `src/routes/joke/index.css`:
 
-```css
-div {
-  font-weight: bold;
-}
+   ```css
+   div {
+     font-weight: bold;
+   }
 
-form {
-  float: right;
-}
-```
+   form {
+     float: right;
+   }
+   ```
 
 2. Импортируйте стили в `src/routes/joke/index.tsx`:
 
-```tsx
-import STYLES from "./index.css?inline";
-```
+   ```tsx
+   import STYLES from "./index.css?inline";
+   ```
 
 3. Сообщите компоненту о необходимости загрузить стили:
-
-```tsx
-useStylesScoped$(STYLES);
-```
+   ```tsx
+   useStylesScoped$(STYLES);
+   ```
 
 ПРИМЕЧАНИЕ:
 
@@ -482,9 +442,8 @@ useStylesScoped$(STYLES);
 - Вызов `useStylesScoped$` указывает Qwik ассоциировать стили только с этим компонентом;
 - Стили загружаются только в том случае, если они ещё не вставлены SSR, и только для первого компонента.
 
-<CodeSandbox src="/src/routes/demo/getting-started/06-styling/index.tsx" style={{ height: '10em' }}>
-```tsx
-/* eslint-disable no-console */
+<CodeSandbox maxHeight={500} src="/src/routes/demo/getting-started/06-styling/index.tsx" style={{ height: '10em' }}>
+```tsx /useStylesScoped\$/
 import {
   component$,
   useSignal,
@@ -531,12 +490,8 @@ export default component$(() => {
       <div>{dadJokeSignal.value.joke}</div>
       <Form action={favoriteJokeAction}>
         <input type="hidden" name="jokeID" value={dadJokeSignal.value.id} />
-        <button name="vote" value="up">
-          👍
-        </button>
-        <button name="vote" value="down">
-          👎
-        </button>
+        <button name="vote" value="up">👍</button>
+        <button name="vote" value="down">👎</button>
       </Form>
       <button
         onClick$={() => (isFavoriteSignal.value = !isFavoriteSignal.value)}
