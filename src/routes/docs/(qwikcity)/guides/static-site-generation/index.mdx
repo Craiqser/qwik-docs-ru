@@ -71,10 +71,12 @@ URL `origin` представляет собой комбинацию схемы
 
 ## Динамические маршруты SSG
 
+До сих пор мы обсуждали генерацию статических HTML-файлов только для одного маршрута. Однако в большинстве случаев вы захотите генерировать HTML-файлы для нескольких маршрутов с динамическими параметрами. Например, сайт может иметь отдельный путь маршрута для каждого продукта, такой как `/product/:id`. В этом случае вы захотите генерировать HTML-файлы для каждой страницы продукта, что потребует создания HTML-файлов для каждого идентификатора продукта.
+
 ```tsx
 import { component$ } from '@builder.io/qwik';
-import { useLocation } from '@builder.io/qwik-city';
-import type { StaticGenerateHandler } from '@builder.io/qwik-city';
+import { useLocation, type StaticGenerateHandler } from '@builder.io/qwik-city';
+import { loadProductIds } from './load-product-ids';
 
 export default component$(() => {
   const { params } = useLocation();
@@ -82,8 +84,10 @@ export default component$(() => {
   return <div>Пример: {params.id}</div>;
 });
 
-export const onStaticGenerate: StaticGenerateHandler = () => {
-  const ids = [...]; // Реализация загрузки данных по id.
+export const onStaticGenerate: StaticGenerateHandler = async () => {
+  // Пример загрузки параметров для данного варианта использования,
+  // каждая реализация будет разной.
+  const ids = await loadProductIds();
 
   return {
     params: ids.map((id) => {
@@ -92,3 +96,19 @@ export const onStaticGenerate: StaticGenerateHandler = () => {
   };
 };
 ```
+
+В приведённом выше примере функция `onStaticGenerate()` загружает идентификаторы товаров из функции `loadProductIds()`. Эта функция будет индивидуальной для каждой реализации, но общая идея заключается в том, что вам нужно будет загрузить данные для каждого ID продукта, а затем сгенерировать HTML файлы для каждого продукта.
+
+Функция `onStaticGenerate` должна экспортироваться с верхнего уровня модуля и возвращать объект со свойством `params`. Свойство `params` должно представлять собой массив объектов, где каждый объект является набором параметров для маршрута. Например, если путь маршрута - `/product/:id`, то массив `params` должен представлять собой массив объектов со свойством `id`.
+
+Структура каталогов для этого примера будет следующей:
+
+```bash
+src/
+└── routes/
+    └── product/
+        └── [id]/
+            └── index.tsx
+```
+
+Обратите внимание, что файл `index.tsx` находится в директории с именем `[id]`. Это специальное имя каталога, которое указывает Qwik City генерировать HTML-файлы для каждого параметра `id`. Файл `index.tsx` - это файл по умолчанию, который Qwik City будет использовать при генерации HTML-файлов для пути маршрута.
