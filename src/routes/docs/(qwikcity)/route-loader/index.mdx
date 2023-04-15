@@ -18,13 +18,13 @@ export const useProductDetails = routeLoader$(async (requestEvent) => {
   // Этот код выполняется только на сервере, после каждой навигации
   const res = await fetch(`https://.../products/${requestEvent.params.productId}`);
   const product = await res.json();
-  return product;
+  return product as Product;
 });
 
 export default component$(() => {
-  // Получение реактивного сигнала данных загрузчика
-  const signal = useProductDetails(); // ReadonlySignal<Product>
-  return <div>Product name: {signal.value.product.name}</div>;
+  // Чтобы получить доступ к данным `routeLoader$` в компоненте Qwik, необходимо вызвать хук.
+  const signal = useProductDetails(); // Readonly<Signal<Product>>
+  return <div>Наименование товара: {signal.value.product.name}</div>;
 });
 ```
 
@@ -123,11 +123,73 @@ export const useProductRecommendations = routeLoader$(async (requestEvent) => {
   console.log('Request method:', requestEvent.method);
   console.log('Request params:', requestEvent.params);
 
-  // Use request details to fetch personalized data
+  // Используйте параметры запроса для получения персонализированных данных
   const res = fetch(`https://.../recommendations?user=${requestEvent.params.user}`);
   const recommendedProducts = (await res.json()) as Product[];
 
   return recommendedProducts;
+});
+```
+
+## Доступ к данным `routeLoader$` из другого `routeLoader$`.
+
+Вы можете получить доступ к данным одного `routeLoader$` из другого `routeLoader$`, используя метод `requestEvent.resolveValue`.
+
+```tsx /requestEvent/ title="src/routes/product/[productId]/index.tsx"
+import { routeLoader$ } from '@builder.io/qwik-city';
+
+export const useProductDetails = routeLoader$(async (requestEvent) => {
+  const res = await fetch(`https://.../products/${requestEvent.params.productId}`);
+  const product = await res.json();
+  return product;
+});
+
+export const useProductRecommendations = routeLoader$(async (requestEvent) => {
+  // Получение информации о товаре из другого загрузчика.
+  const product = await requestEvent.resolveValue(useProductDetails);
+
+  // Используем полученные данные о товаре для получения персонализированных данных.
+  const res = fetch(`https://.../recommendations?product=${product.id}`);
+  const recommendedProducts = (await res.json()) as Product[];
+
+  return recommendedProducts;
+});
+```
+
+> Тот же API можно использовать для доступа к данным из `routeAction$` или `globalAction$`.
+
+## Неудачная загрузка данных с `routeLoader$`.
+
+`routeLoader$` может использовать метод `fail` для возврата значения failed, которое является специальным значением, указывающим на то, что загрузчику не удалось загрузить ожидаемые данные.
+
+Кроме того, функция `fail` позволяет `routeLoader$` переопределять код статуса HTTP, например, возвращать 404.
+
+Это полезно, когда загрузчику нужно вернуть значение "ошибки", которое не является `undefined`, но должно указывать на то, что данные не удалось загрузить.
+
+```tsx /requestEvent.fail/ /errorMessage/#a title="src/routes/product/[productId]/index.tsx"
+import { routeLoader$ } from '@builder.io/qwik-city';
+
+export const useProductDetails = routeLoader$(async (requestEvent) => {
+  const product = await db.from('products').filter('id', 'eq', requestEvent.params.productId);
+  if (!product) {
+    // Возвращает значение, указывающее на то, что товар не был найден.
+    return requestEvent.fail(404, {
+      errorMessage: 'Товар не найден'
+    });
+  }
+  return {
+    productName: product.name
+  };
+});
+
+export default component$(() => {
+  const product = useProductDetails();
+
+  if (product.value.errorMessage) {
+    // Отображение неудачной загрузки данных.
+    return <div>{product.value.errorMessage}</div>;
+  }
+  return <div>Наименование товара: {product.value.productName}</div>;
 });
 ```
 

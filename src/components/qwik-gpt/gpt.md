@@ -1,20 +1,17 @@
 ## Qwik Components
 
-Компоненты Qwik очень похожи на компоненты React, они представляют собой функции, возвращающие JSX.
+Компоненты [Qwik](https://qwik.builder.io/) очень похожи на компоненты React, они представляют собой функции, возвращающие JSX, но есть несколько важных отличий:
 
-Основными отличиями являются:
-
+- API React-а недоступны, вместо этого Qwik предоставляет набор хуков и компонентов, предназначенных для работы с Qwik;
 - Компоненты всегда объявляются с помощью функции `component$`;
 - Компоненты могут использовать хук `useSignal` для создания реактивного состояния;
 - Обработчики событий объявляются с суффиксом `$`;
 - Для `<input>` событие `onChange` в Qwik называется `onInput$`;
 - JSX предпочитает атрибуты HTML: `class` вместо `className`, `for` вместо `htmlFor`;
-- Условный рендер осуществляется с помощью тернарного оператора `?` и оператора `&&`, как и в React;
-- Списки отображаются с помощью функции `map`, однако каждый элемент должен иметь уникальное свойство `key`;
 - Проекция содержимого осуществляется компонентом `<Slot/>`. Слотам можно присваивать имена, и ссылаться на них с помощью атрибута `q:slot`.
 
 ```tsx
-import { component$, useSignal, Slot, useVisibleTask$ } from '@builder.io/qwik';
+import { component$, $, useSignal, useVisibleTask$ } from '@builder.io/qwik';
 import US_PRESIDENTS from './us-presidents.json';
 import { MyOtherComponent } from './my-other-component';
 
@@ -28,36 +25,46 @@ interface MyComponentProps {
 // Компоненты всегда объявляются с помощью функции `component$`.
 export const MyComponent = component$((props: MyComponentProps) => {
   // Компонент использует хук `useSignal` для создания реактивного состояния.
-  const count = useSignal(0); // { value: 0 }
+  const seconds = useSignal(0); // { value: 0 }
+  const count = useSignal(0);
 
   useVisibleTask$(async (taskCtx) => {
     // `useVisibleTask$` запускается только в браузере, и после того, как компонент впервые установлен в DOM.
     // Это нормально для просмотра DOM, или использования какого-либо браузерного API, инициализации библиотек, предназначенных только для браузера, запуска анимации или таймера...
     const timer = setInterval(() => {
-      count.value = count.value + 1;
+      seconds.value = seconds.value + 1;
     }, 1000);
+
     taskCtx.onCleanup(() => {
       clearInterval(timer);
     });
   });
+
+  // Обработчик события, который не является встроенным, должен быть обернут в `$`-функцию.
+  const toggleDarkMode = $(() => {
+    darkMode.value = !darkMode.value;
+    document.body.classList.toggle('dark-mode', darkMode.value);
+  });
+
   return (
-    <>
-      <button
-        class={styles.button}
-        onClick$={() => {
+      <header>
+        <button
+          class={{
+            [styles.button]: true,
+            [styles.darkMode]: darkMode.value, // Поддерживаются условные классы
+          }}
+          onClick$={toggleDarkMode}
+        >
+          Переключить тёмную тему
+        </button>
+      </header>
+      <main class={styles.main}>
+        <button onClick$={() => {
           // Обработчики событий имеют суффикс `$`.
           count.value = count.value + props.step;
-        }}
-      >
-        Прибавить {props.step}
-      </button>
-
-      <main
-        class={{
-          conditionalClass: count.value % 2 === 0,
-        }}
-      >
-        <h1>Счёт: {count.value}</h1>
+        }}>
+          Счёт: {count.value}
+        </button>
         <MyOtherComponent>
           {count.value > 10 && <p>Счётчик больше 10</p>}
         </MyOtherComponent>
@@ -69,6 +76,9 @@ export const MyComponent = component$((props: MyComponentProps) => {
           ))}
         </ul>
       </main>
+      <footer>
+        Секунд: {seconds.value}
+      </footer>
     </>
   );
 });
@@ -76,9 +86,7 @@ export const MyComponent = component$((props: MyComponentProps) => {
 
 ## Маршрутизация
 
-Qwik поставляется с маршрутизатором на основе файлов, который похож на Next.js. Маршрутизатор основан на файловой системе, создание нового файла `index.tsx` в `src/routes/` создаст новый маршрут. Например, `src/routes/home/index.tsx` создаст маршрут по адресу `/home/`.
-
-Вы можете создавать динамические маршруты, добавляя в путь маршрута папку вида `[param]`. Например, `src/routes/user/[id]/index.tsx` создаст маршрут по адресу `/user/:id/`. Для доступа к параметру маршрута можно использовать хук `useLocation`, экспортированный из `@builder.io/qwik-city`.
+Qwik поставляется с маршрутизатором на основе файлов, который похож на Next.js. Маршрутизатор основан на файловой системе, создание нового файла `index.tsx` в `src/routes/` создаст новый маршрут. Например, `src/routes/home/[id]/index.tsx` создаст маршрут по адресу `/home/:id/`.
 
 Для ссылки на другие маршруты можно использовать компонент `Link`, он похож на `<a>`, но позволяет осуществлять SPA навигацию.
 
@@ -95,7 +103,6 @@ export default component$(() => {
         <a href="/about/">Полностраничная навигация к /about/</a>
       </nav>
       <main>
-        {loc.isNavigating && <div>Загрузка...</div>}
         <h1>Пользователь: {loc.params.userID}</h1>
         <div>Текущий URL-адрес: {loc.url.href}</div>
       </main>
