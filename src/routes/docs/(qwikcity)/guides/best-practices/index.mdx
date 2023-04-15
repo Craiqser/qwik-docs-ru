@@ -14,13 +14,48 @@ contributors:
 
 # Лучшие практики
 
-## Избегайте регистрации событий с помощью `useVisibleTask$()`.
+## Встроенные операции в шаблонах
 
-> ⚠ Используйте `useVisibleTask$()` с осторожностью ⚠
+Оптимизатор Qwik может лучше оптимизировать реактивность приложения, если операции встроены в шаблон.
 
-**`Неоптимальная реализация`**:
+```tsx title="Плохая реализация"
+// Не делай так!
+export default component$(() => {
+  const signal = useSignal(0);
+  const isBiggerThanZero = signal > 0 ? 'Bigger than zero' : 'Smaller than zero';
+  return (
+    <div>
+      <button onClick={increment}>+</button>
+      <button onClick={decrement}>-</button>
+      <div>{isBiggerThanZero}</div>
+    </div>
+  );
+});
+```
 
-```tsx
+Приведённая выше реализация при изменении сигнала приведёт к повторному рендеру всего шаблона. Это происходит потому, что `isBiggerThanZero` не встроен в шаблон.
+
+```tsx title="Оптимальная реализация"
+export default component$(() => {
+  const signal = useSignal(0);
+  return (
+    <div>
+      <button onClick={increment}>+</button>
+      <button onClick={decrement}>-</button>
+      <div>{signal > 0 ? 'Bigger than zero' : 'Smaller than zero'}</div>
+    </div>
+  );
+});
+```
+
+## Избегайте регистрации событий DOM в `useVisibleTask$()`.
+
+Qwik позволяет регистрировать слушателей событий декларативным способом, используя `useOn()` или с помощью JSX.
+
+При использовании `useVisibleTask` для программной регистрации событий, мы загружаем и выполняем JavaScript сразу, даже если событие не сработает.
+
+```tsx title="Плохая реализация"
+// Не делай так!
 useVisibleTask$(() => {
   const listener = (event) => {
     const mouseEvent = event as MouseEvent;
@@ -34,19 +69,11 @@ useVisibleTask$(() => {
 });
 ```
 
-**`Проблема`**:
-
 Приведённая выше реализация заставляет сразу загружать больше JavaScript-кода, вместо того, чтобы точечно реагировать на события пользователя. Повышение предварительной загрузки JavaScript приводит к снижению производительности приложения.
 
-Кроме того, это требует от разработчиков более глубокого осознания отношений между сервером и клиентом, несмотря на первоначальное предпочтение `use > Visible < Task`.
+Вместо этого используйте хук `useOnDocument()` для регистрации событий на объекте `document`, таким образом Qwik не будет выполнять никаких JS, пока не сработает событие.
 
-В идеале фреймворк должен минимизировать необходимость для разработчиков фокусироваться на этом аспекте.
-
-Более того, данная реализация требует ручной очистки слушателя события, что создаёт дополнительные усилия для разработчиков.
-
-**`Оптимальная реализация`**:
-
-```tsx
+```tsx title="Оптимальная реализация"
 useOnDocument(
   'mousemove',
   $((event) => {
@@ -62,30 +89,18 @@ useOnDocument(
 - `useOnWindow()`: слушает события на объекте `window`;
 - `useOnDocument()`: слушает события на объекте `document`.
 
-> Подробнее:
--
-> - [Документация useOn / useOnDocument / useOnWindow](/docs/(qwik)/components/events/index.mdx#useon-hooks)
-> - [Пример](../../../../tutorial/hooks/use-on/#example)
-> - [Руководство](../../../../tutorial/events/programmatic/)
-
----
-
 ## Избегайте доступа к `location` из объекта `window`.
 
-⚠ Не обращайтесь напрямую к `window.location` ⚠
+Не обращайтесь напрямую к `window.location`, вместо этого используйте хук `useLocation()`.
 
-**`Неоптимальная реализация`**:
-
-```tsx
+```tsx title="Неправильная реализация"
+// Не делай так!
 useVisibleTask$(()=> {
     if (window.location.href).includes('foo') {
         //...делаем что-либо
     }
 })
-```
-
-```tsx
-// (в корне компонента)
+// или
 if (typeof window !== "undefined") {
     const queryParams = new URLSearchParams(window.location.search);
     const query: Record<string, string> = {};
@@ -96,8 +111,6 @@ if (typeof window !== "undefined") {
 }
 ```
 
-**`Проблема`**:
-
 Многие действия, связанные с информацией о местоположении, могут быть выполнены во время первоначального рендера на стороне сервера, в результате чего получается чистый HTML без каких-либо накладных расходов на JavaScript.
 
 Заставляя эту логику работать на стороне клиента, мы увеличиваем количество JavaScript-кода, требующего немедленной загрузки.
@@ -106,23 +119,18 @@ if (typeof window !== "undefined") {
 
 Хотя разработчики могут привыкнуть к тому, что код выполняется дважды, Qwik устраняет эту необходимость, предлагая более эффективный подход.
 
-**`Оптимальная реализация`**:
-
-```tsx
+```tsx title="Оптимальная реализация"
+// Делай так!
 const location = useLocation();
 
 if (location.url.href.includes('foo')) {
   //...делаем что-либо
 }
-```
-
-```tsx
-const location = useLocation();
 
 doTheThing(location.url.searchParams);
 ```
 
-## ИСКЛЮЧЕНИЕ
+### Исключение
 
 При использовании SSG для статических файлов неизбежно полагаться на сервер без текущей информации о местоположении во время сборки.
 

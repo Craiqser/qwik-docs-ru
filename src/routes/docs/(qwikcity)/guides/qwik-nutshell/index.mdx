@@ -566,9 +566,9 @@ export default component$(() => {
 
 ## Запуск кода только в браузере
 
-Qwik выполняет один и тот же код на сервере и в браузере.
+Qwik выполняет один и тот же код на сервере и в браузере, вы не можете использовать `window` или другие API браузера в вашем коде, потому что они не существуют, когда код выполняется на сервере.
 
-Иногда желательно выполнять код только в браузере, потому что вам нужен DOM или другие API браузера, такие как: `window`, `document`, `localStorage`, `essionStorage`, `indexedDB`, `navigator`, `fetch`, `requestAnimationFrame`, `setInterval`, `setTimeout`, `WebSockets`, `WebGL`.
+Если вы хотите получить доступ к API браузера, таким как `window`, `document`, `localStorage`, `sessionStorage`, `webgl` и т.д., вам необходимо проверить, запущен ли код в браузере, прежде чем обращаться к ним.
 
 ```tsx
 import { component$, useTask$, useVisibleTask$, useSignal } from '@builder.io/qwik';
@@ -577,13 +577,14 @@ import { isBrowser } from '@builder.io/qwik/build';
 export default component$(() => {
   const ref = useSignal<Element>();
 
-  // useVisibleTask$ будет выполняться только в браузере, поэтому вам не нужно проверять `isBrowser` перед доступом к DOM.
+  // useVisibleTask$ будет выполняться только в браузере.
   useVisibleTask$(() => {
+    // Нет необходимости проверять `isBrowser` перед доступом к DOM, потому что useVisibleTask$ будет выполняться только в браузере.
     ref.value?.focus();
     document.title = 'Привет, мир';
   });
 
-  // useTask может выполняться на сервере, поэтому необходимо проверить `isBrowser` перед доступом к DOM.
+  // useTask может выполняться на сервере, поэтому вам необходимо проверить `isBrowser` перед доступом к DOM.
   useTask$(() => {
     if (isBrowser) {
       // Этот код будет работать только в браузере и только при первом отображении компонента в браузере.
@@ -621,16 +622,25 @@ Qwik предоставляет логическое значение `isBrowser
 
 ## Запуск кода только на сервере
 
-Иногда вам нужно запустить код только на сервере, например, для получения данных или выполнения кода аналитики. Чтобы решить эту проблему, Qwik предоставляет несколько API для запуска кода только на сервере.
+Иногда вам нужно выполнять код только на сервере, например, получать данные или обращаться к базе данных. Для решения этой проблемы Qwik предоставляет несколько API для запуска кода только на сервере.
 
 ```tsx
 import { component$, useTask$ } from '@builder.io/qwik';
-import { server$ } from '@builder.io/qwik/qwik-city';
+import { server$, routeLoader$ } from '@builder.io/qwik/qwik-city';
 import { isServer } from '@builder.io/qwik/build';
 
-const sumInTheServer = server$((a: number, b: number) => {
+export const useGetProducts = routeLoader$((requestEvent) => {
   // Этот код будет работать только на сервере.
-  return a + b;
+  const db = await openDB(requestEvent.env.get('DB_PRIVATE_KEY'));
+  const product = await db.table('products').select();
+  return product;
+});
+
+const encryptInServer = server$(function(message: string) {
+  // `this` - это `requestEvent`
+  const secretKey = this.env.get('SECRET_KEY');
+  const encryptedMessage = encrypt(message, secretKey);
+  return encryptedMessage;
 });
 
 export default component$(() => {
@@ -653,7 +663,8 @@ export default component$(() => {
       <button
         onClick$={() => {
           // Этот код вызовет серверную функцию и дождётся результата.
-          const sum = await sumInTheServer(1, 2);
+          const encrypted = await encryptInServer('Hello world');
+          console.log(encrypted);
         }}
       >
         Нажми меня
@@ -662,6 +673,10 @@ export default component$(() => {
   );
 });
 ```
+
+### `routeAction$()`
+
+`routeAction$()` - это специальный компонент, который выполняется только на сервере. Он используется для обработки отправки форм и других действий. Например, вы можете использовать его для добавления пользователя в базу данных, а затем перенаправить на страницу профиля пользователя.
 
 ### `routeLoader$()`
 

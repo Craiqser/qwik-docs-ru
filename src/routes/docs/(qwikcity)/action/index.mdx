@@ -20,7 +20,7 @@ contributors:
 import { component$ } from '@builder.io/qwik';
 import { routeAction$, Form } from '@builder.io/qwik-city';
 
-export const useAddUser = routeAction$(async (data) => {
+export const useAddUser = routeAction$(async (data, requestEvent) => {
   // Этот код будет выполняться на сервере только тогда, когда пользователь отправит форму (или когда действие будет вызвано программно).
   const userID = await db.users.add({
     firstName: data.firstName,
@@ -171,6 +171,25 @@ export default component$(() => {
 При отправке данных в `routeAction()`, данные проверяются на соответствие схеме Zod. Если данные недействительны, действие поместит ошибку валидации в свойство `routeAction.value`.
 
 Пожалуйста, обратитесь к [документации Zod](https://zod.dev/) для получения дополнительной информации о том, как использовать схемы валидации Zod.
+
+## HTTP запрос и ответ
+
+`routeAction$` и `globalAction$` имеют доступ к объекту `RequestEvent`, который содержит информацию о текущем HTTP-запросе и ответе.
+
+Это позволяет действиям получать доступ к заголовкам запроса, кукам, url-адресу и переменным окружения в функции `routeAction$`.
+
+```tsx /requestEvent/ title="src/routes/product/[user]/index.tsx"
+import { routeAction$ } from '@builder.io/qwik-city';
+
+// Вторым аргументом действия является объект `RequestEvent`.
+export const useProductRecommendations = routeAction$(async (_data, requestEvent) => {
+  console.log('Request headers:', requestEvent.headers);
+  console.log('Request cookies:', requestEvent.cookie);
+  console.log('Request url:', requestEvent.url);
+  console.log('Request params:', requestEvent.params);
+  console.log('MY_ENV_VAR:', requestEvent.env.get('MY_ENV_VAR')));
+});
+```
 
 ## Ошибки действия
 

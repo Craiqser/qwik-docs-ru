@@ -6,7 +6,6 @@
 - Компоненты всегда объявляются с помощью функции `component$`;
 - Компоненты могут использовать хук `useSignal` для создания реактивного состояния;
 - Обработчики событий объявляются с суффиксом `$`;
-- Для `<input>` событие `onChange` в Qwik называется `onInput$`;
 - JSX предпочитает атрибуты HTML: `class` вместо `className`, `for` вместо `htmlFor`;
 - Проекция содержимого осуществляется компонентом `<Slot/>`. Слотам можно присваивать имена, и ссылаться на них с помощью атрибута `q:slot`.
 
@@ -26,7 +25,7 @@ interface MyComponentProps {
 export const MyComponent = component$((props: MyComponentProps) => {
   // Компонент использует хук `useSignal` для создания реактивного состояния.
   const seconds = useSignal(0); // { value: 0 }
-  const count = useSignal(0);
+  const count = useSignal(0); // Signal<number>
 
   useVisibleTask$(async (taskCtx) => {
     // `useVisibleTask$` запускается только в браузере, и после того, как компонент впервые установлен в DOM.
@@ -92,10 +91,22 @@ Qwik поставляется с маршрутизатором на основ�
 
 ```tsx title="src/routes/user/[userID]/index.tsx"
 import { component$ } from '@builder.io/qwik';
-import { useLocation, Link } from '@builder.io/qwik-city';
+import { routeLoader$, useLocation, Link } from '@builder.io/qwik-city';
+
+export const useUserData = routeLoader$(async (requestEvent) => {
+  const { userID } = requestEvent.params;
+  const db = await createDB(requestEvent.env.get('DB_KEY'));
+  const user = await db.from('users').filter('id', userID);
+  return {
+    name: user.name,
+    email: user.email,
+  }
+});
 
 export default component$(() => {
   const loc = useLocation();
+  const userData = useUserData(); // Signal<{name, email}>
+
   return (
     <>
       <nav>
@@ -104,6 +115,8 @@ export default component$(() => {
       </nav>
       <main>
         <h1>Пользователь: {loc.params.userID}</h1>
+        <div>Имя: {userData.value.name}</div>
+        <div>Email-адрес: {userData.value.email}</div>
         <div>Текущий URL-адрес: {loc.url.href}</div>
       </main>
     </>

@@ -112,7 +112,7 @@ export interface RouteLocation {
 }
 ```
 
-Возвращаемое значение [`useLocation()`](./index.mdx#uselocation) аналогично объекту `document.location`, но его безопасно использовать на сервере, где нет глобального объекта `location`.
+Возвращаемое значение [`useLocation()`](./index.mdx#uselocation) аналогично объекту `document.location`, но его безопасно использовать на сервере, где нет глобального объекта `location`, и он реактивный, поэтому за его изменением можно следить.
 
 ### Параметры маршрута
 
@@ -124,7 +124,7 @@ export interface RouteLocation {
 - Пользователь переходит к: `https://example.com/sku/1234`;
 - Затем `skuId` можно получить через `useLocation().params.skuId`.
 
-```tsx title="src/routes/sku/[skuId]/index.tsx"
+```tsx /useLocation/ title="src/routes/sku/[skuId]/index.tsx"
 import { component$ } from '@builder.io/qwik';
 import { useLocation } from '@builder.io/qwik-city';
 
@@ -157,7 +157,7 @@ export default component$(() => {
 
 Эта функция возвращает функцию `goto()`, которая может быть использована для перехода к новому пути.
 
-```tsx
+```tsx {12,21} /useNavigate/
 import { component$ } from '@builder.io/qwik';
 import { useNavigate } from '@builder.io/qwik-city';
 
@@ -167,18 +167,18 @@ export default component$(() => {
   return (
     <>
       <button
-        onClick$={() => {
-          // это присваивание вызывает SPA-навигацию
-          nav('/dashboard');
+        onClick$={async () => {
+          // SPA-навигация к `/dashboard`
+          await nav('/dashboard');
         }}
       >
         Перейти к информационной панели
       </button>
 
       <button
-        onClick$={() => {
+        onClick$={async() => {
           // вызов без аргументов для обновления текущей страницы
-          nav();
+          await nav();
         }}
       >
         Обновить страницу

@@ -11,11 +11,11 @@ contributors:
 Скажем, пользователь пытается перейти на страницу информационной панели, но ещё не вошёл в систему. И мы хотим, чтобы он был перенаправлен на страницу входа в систему, чтобы пройти аутентификацию.
 
 ```tsx title="src/routes/dashboard.tsx"
-import { component$ } from '@builder.io/qwik';
+import type { RequestEvent } from '@builder.io/qwik-city';
 import { checkAuthorization } from '../auth'; // Ваш код авторизации
 import type { DashboardData } from '../types'; // Ваши данные
 
-export const onGet: RequestHandler<any> = async ({ cookie, redirect }) => {
+export const onGet = async ({ cookie, redirect }: RequestEvent) => {
   const isAuthorized = checkAuthorization(cookie.get('cookie'));
 
   if (!isAuthorized) {

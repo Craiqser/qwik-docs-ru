@@ -12,11 +12,13 @@ contributors:
   - adamdbradley
 ---
 
-# Шпаргалка по React
+# React Vs Qwik
 
-### Компонент Hello world
+Несколько примеров, сравнивающих React и Qwik.
 
-#### ⚡️ Qwik
+## Компонент Hello world
+
+### ⚡️ Qwik
 
 ```tsx
 export const HelloWorld = component$(() => {
@@ -24,7 +26,7 @@ export const HelloWorld = component$(() => {
 });
 ```
 
-#### ⚛️ React
+### ⚛️ React
 
 ```tsx
 export function HelloWorld() {
@@ -32,9 +34,9 @@ export function HelloWorld() {
 }
 ```
 
-### Кнопка с обработкой нажатия
+## Кнопка с обработкой нажатия
 
-#### ⚡️ Qwik
+### ⚡️ Qwik
 
 ```tsx
 export const Button = component$(() => {
@@ -42,7 +44,7 @@ export const Button = component$(() => {
 });
 ```
 
-#### ⚛️ React
+### ⚛️ React
 
 ```tsx
 export function Button() {
@@ -50,20 +52,18 @@ export function Button() {
 }
 ```
 
-### Объявление локального состояния
+## Объявление локального состояния
 
-#### ⚡️ Qwik
+### ⚡️ Qwik
 
 ```tsx
 export const LocalStateExample = component$(() => {
-  const state = useStore({
-    value: 0,
-  });
-  return <div>Значение: {state.value}</div>;
+  const count = useSignal(0);
+  return <div>Значение: {count.value}</div>;
 });
 ```
 
-#### ⚛️ React
+### ⚛️ React
 
 ```tsx
 export function UseStateExample() {
@@ -72,9 +72,9 @@ export function UseStateExample() {
 }
 ```
 
-### Создание компонента счётчика
+## Создание компонента счётчика
 
-#### ⚡️ Qwik
+### ⚡️ Qwik
 
 ```tsx
 export const Counter = component$(() => {
@@ -88,7 +88,7 @@ export const Counter = component$(() => {
 });
 ```
 
-#### ⚛️ React
+### ⚛️ React
 
 ```tsx
 export function Counter() {
@@ -102,9 +102,9 @@ export function Counter() {
 }
 ```
 
-### Создание часов, которые тикают каждую секунду
+## Создание часов, которые тикают каждую секунду
 
-#### ⚡️ Qwik
+### ⚡️ Qwik
 
 ```tsx
 export const Clock = component$(() => {
@@ -120,7 +120,7 @@ export const Clock = component$(() => {
 });
 ```
 
-#### ⚛️ React
+### ⚛️ React
 
 ```tsx
 export function Clock() {
@@ -135,9 +135,9 @@ export function Clock() {
 }
 ```
 
-### Выполнение запроса при каждом изменении состояния
+## Выполнение запроса при каждом изменении состояния
 
-#### ⚡️ Qwik
+### ⚡️ Qwik
 
 ```tsx
 export const Fetch = component$(() => {
@@ -153,14 +153,14 @@ export const Fetch = component$(() => {
 
   return (
     <>
-      <div>{responseJson.value?.name} has {responseJson.value?.stargazers_count} ✨'s</div>
+      <div>{responseJson.value?.name} имеет {responseJson.value?.stargazers_count} ✨</div>
       <input name="url" bind:value={url} />
     </>
   );
 });
 ```
 
-#### ⚛️ React
+### ⚛️ React
 
 ```tsx
 export function Fetch() {
@@ -180,9 +180,9 @@ export function Fetch() {
 }
 ```
 
-### Объявление и использование контекста
+## Объявление и использование контекста
 
-#### ⚡️ Qwik
+### ⚡️ Qwik
 
 ```tsx
 export const MyContext = createContextId('my-context');
@@ -203,7 +203,7 @@ export const Child = component$(() => {
 });
 ```
 
-#### ⚛️ React
+### ⚛️ React
 
 ```tsx
 export const MyContext = createContext({ message: 'значение для примера' });
@@ -222,9 +222,9 @@ export const Child = () => {
 };
 ```
 
-### Создание ввода с блокировкой
+## Создание ввода с задержкой
 
-#### ⚡️ Qwik
+### ⚡️ Qwik
 
 ```tsx
 export const DebouncedInput = component$(() => {
@@ -237,7 +237,7 @@ export const DebouncedInput = component$(() => {
     const debounced = setTimeout(() => {
       debouncedValue.value = inputText.value;
     }, 1000);
-    
+
     cleanup(() => clearTimeout(debounced));
   });
 
@@ -250,7 +250,7 @@ export const DebouncedInput = component$(() => {
 });
 ```
 
-#### ⚛️ React
+### ⚛️ React
 
 ```tsx
 export const DebouncedInput = () => {
@@ -274,9 +274,9 @@ export const DebouncedInput = () => {
 };
 ```
 
-### Изменение цвета фона на случайный при нажатии кнопки
+## Изменение цвета фона на случайный при нажатии кнопки
 
-#### ⚡️ Qwik
+### ⚡️ Qwik
 
 ```tsx
 export const DynamicBackground = component$(() => {
@@ -304,7 +304,7 @@ export const DynamicBackground = component$(() => {
 });
 ```
 
-#### ⚛️ React
+### ⚛️ React
 
 ```tsx
 export function DynamicBackground() {
@@ -331,9 +331,9 @@ export function DynamicBackground() {
 }
 ```
 
-### Создание компонента со списком президентов
+## Создание компонента, отображающего список президентов
 
-#### ⚡️ Qwik
+### ⚡️ Qwik
 
 ```tsx
 export const Presidents = component$(() => {
@@ -373,7 +373,7 @@ export const Presidents = component$(() => {
 });
 ```
 
-#### ⚛️ React
+### ⚛️ React
 
 ```tsx
 export function Presidents() {
