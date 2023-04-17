@@ -51,11 +51,11 @@ export const onPost = (requestEvent: RequestEvent) => {
   console.log(requestEvent.get('DB_PRIVATE_KEY'))
 };
 
-export const useAction = routeAction$((_, requestEvent) => {
+export const useAction = routeAction$(async (_, requestEvent) => {
   console.log(requestEvent.get('DB_PRIVATE_KEY'))
 });
 
-export const useLoader = routeLoader$((requestEvent) => {
+export const useLoader = routeLoader$(async (requestEvent) => {
   console.log(requestEvent.get('DB_PRIVATE_KEY'))
 });
 
@@ -75,4 +75,4 @@ DB_PRIVATE_KEY=123456789
 
 > Убедитесь, что вы никогда не коммитите в git файлы `.env.local`.
 
-В производственной среде установка переменных на стороне сервера зависит от конкретной платформы. Большинство платформ позволяют устанавливать переменные окружения из своей панели управления или CLI. Пожалуйста, обратитесь к документации по вашей платформе для получения дополнительной информации.
+В производственной среде **установка переменных на стороне сервера зависит от конкретной платформы**. Большинство платформ позволяют устанавливать переменные окружения из своей панели управления или CLI. Пожалуйста, обратитесь к документации по вашей платформе (cloudflare, vercel, netlify) для получения дополнительной информации.

@@ -65,9 +65,9 @@ export const head: DocumentHead = {
 
 ## Динамический заголовок документа
 
-Вы также можете экспортировать функцию, которая возвращает объект `DocumentHead`, позволяя программно установить заголовок или мета-свойство.
+Вы также можете экспортировать функцию, которая возвращает объект `DocumentHead`, позволяя программно установить тэги `<title>`, `<meta>` или `<link>`.
 
-Это позволяет настроить `<head>`, включая заголовок, используя данные из `routeLoader$()` или `routeAction$()`.
+Это позволяет настроить `<head>`, включая заголовок, мета или ссылки, используя данные из `routeLoader$()` или `routeAction$()`.
 
 Мы можем использовать метод `resolveValue` для получения значения `routeLoader$()` или `routeAction$()` в функции `head`.
 
@@ -121,7 +121,7 @@ export const head: DocumentHead = {
 ```
 
 ```tsx title="src/routes/layout.tsx"
-export const head: DocumentHead<EndpointData> = ({ head }) => {
+export const head: DocumentHead = ({ head }) => {
   return {
     title: `Компания - ${head.title}`,
   };
