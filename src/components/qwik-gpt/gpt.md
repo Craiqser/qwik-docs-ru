@@ -49,7 +49,7 @@ export const MyComponent = component$((props: MyComponentProps) => {
       <header>
         <button
           class={{
-            [styles.button]: true,
+            'button': true,
             [styles.darkMode]: darkMode.value, // Поддерживаются условные классы
           }}
           onClick$={toggleDarkMode}

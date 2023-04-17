@@ -495,7 +495,8 @@ import { routeLoader$ } from '@builder.io/qwik-city';
 export const useUserData = routeLoader$(async (requestContext) => {
   const user = await db.table('users').get(requestContext.params.userID);
   return {
-    user,
+    name: user.name,
+    email: user.email,
   };
 });
 
@@ -505,11 +506,26 @@ export default component$(() => {
   return (
     <main>
       <h1>Данные пользователя</h1>
-      <div>Имя пользователя: {userData.value.user.name}</div>
-      <div>Email пользователя: {userData.value.user.email}</div>
+      <div>Имя пользователя: {userData.value.name}</div>
+      <div>Email пользователя: {userData.value.email}</div>
     </main>
   );
 });
+
+// Экспортируемая функция `head` используется для установки заголовка документа для маршрута.
+export const head: DocumentHead = ({resolveValue}) => {
+  // Она может использовать метод `resolveValue()` для разрешения значения из `routeLoader$()`.
+  const user = resolveValue(useUserData);
+  return {
+    title: `User: "${user.name}"`,
+    meta: [
+      {
+        name: 'description',
+        content: 'User page',
+      },
+    ],
+  };
+};
 ```
 
 Функция `routeLoader$()` принимает функцию, которая возвращает промис. Промис разрешается на сервере, и разрешённое значение передается в хук `useCustomLoader$()`. Хук `useCustomLoader$()` - это пользовательский хук, который создается функцией `routeLoader$()`. Хук `useCustomLoader$()` возвращает `Signal`, который содержит разрешённое значение промиса, возвращённого из функции `routeLoader$()`. Хук `useCustomLoader$()` будет рендерить компонент при каждом изменении маршрута и повторном запуске функции `routeLoader$()`.
