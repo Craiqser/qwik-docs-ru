@@ -4,11 +4,11 @@ export default component$(() => {
   const store = useStore({ count: 0 });
 
   return (
-    <div>
+    <main>
       <p>Счёт: {store.count}</p>
       <p>
         <button onClick$={() => store.count++}>Нажми</button>
       </p>
-    </div>
+    </main>
   );
 });

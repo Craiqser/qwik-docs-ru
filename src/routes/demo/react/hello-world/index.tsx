@@ -3,9 +3,9 @@ import { QGreetings } from './react';
 
 export default component$(() => {
   return (
-    <div>
-      <div>Привет от Qwik</div>
+    <main>
+      <p>Привет от Qwik</p>
       <QGreetings />
-    </div>
+    </main>
   );
 });

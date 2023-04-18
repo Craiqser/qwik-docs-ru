@@ -102,7 +102,7 @@ import { qwikify$ } from '@builder.io/qwik-react';
 
 // Создаем компонент React стандартным способом
 function Greetings() {
-  return <div>Hello from React</div>;
+  return <p>Hello from React</p>;
 }
 
 // Преобразование компонента React в компонент Qwik
@@ -118,10 +118,10 @@ import { QGreetings } from './react';
 
 export default component$(() => {
   return (
-    <div>
-      <div>Привет из Qwik</div>
+    <main>
+      <p>Привет из Qwik</p>
       <QGreetings />
-    </div>
+    </main>
   );
 });
 ```
@@ -170,9 +170,9 @@ import { QCounter } from './react';
 
 export default component$(() => {
   return (
-    <div>
+    <main>
       <QCounter />
-    </div>
+    </main>
   );
 });
 ```
@@ -217,9 +217,9 @@ import { QCounter } from './react';
 export default component$(() => {
   console.log('Qwik Render');
   return (
-    <div>
+    <main>
       <QCounter />
-    </div>
+    </main>
   );
 });
 ```
@@ -250,7 +250,7 @@ function Button({ onClick }: { onClick: () => void }) {
 
 function Display({ count }: { count: number }) {
   console.log('React <Display count=' + count + '/> Render');
-  return <div className="react">Count: {count}</div>;
+  return <p className="react">Счёт: {count}</p>;
 }
 
 export const QButton = qwikify$(Button, { eagerness: 'hover' });
@@ -268,7 +268,7 @@ export default component$(() => {
   console.log('Qwik Render');
   const count = useSignal(0);
   return (
-    <div>
+    <main>
       <QButton
         onClick$={() => {
           console.log('click', count.value);
@@ -276,7 +276,7 @@ export default component$(() => {
         }}
       />
       <QDisplay count={count.value}></QDisplay>
-    </div>
+    </main>
   );
 });
 ```
@@ -320,7 +320,7 @@ export default component$(() => {
   console.log('Qwik Render');
   const count = useSignal(0);
   return (
-    <div>
+    <main>
       <QButton
         host:onClick$={() => {
           console.log('click', count.value);
@@ -330,7 +330,7 @@ export default component$(() => {
         +1
       </QButton>
       <QDisplay count={count.value}></QDisplay>
-    </div>
+    </main>
   );
 });
 ```
@@ -350,7 +350,7 @@ function Button({ children }: { children?: ReactNode[] }) {
 
 function Display({ count }: { count: number }) {
   console.log('React <Display count=' + count + '/> Render');
-  return <div className="react">Count: {count}</div>;
+  return <p className="react">Счёт: {count}</p>;
 }
 
 export const QButton = qwikify$(Button);

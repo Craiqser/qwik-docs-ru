@@ -28,5 +28,5 @@ export default component$(() => {
 
 const Child = component$(() => {
   const theme = useContext(ThemeContext);
-  return <div>Тема: {theme.value}</div>;
+  return <p>Тема: {theme.value}</p>;
 });

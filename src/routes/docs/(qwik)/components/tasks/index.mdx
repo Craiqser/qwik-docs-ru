@@ -110,7 +110,7 @@ export default component$(() => {
     fibonacci.value = array;
   });
 
-  return <div>{fibonacci.value?.join(', ')}</div>;
+  return <p>{fibonacci.value?.join(', ')}</p>;
 });
 
 const delay = (time: number) => new Promise((res) => setTimeout(res, time));
@@ -160,10 +160,12 @@ export default component$(() => {
   });
 
   return (
-    <div>
-      Введите текст: <input bind:value={text} />
-      <div>Текст с задержкой: {delayText}</div>
-    </div>
+    <section>
+      <label>
+        Введите текст: <input bind:value={text} />
+      </label>
+      <p>Текст с задержкой: {delayText}</p>
+    </section>
   );
 });
 
@@ -211,11 +213,15 @@ export default component$(() => {
   });
 
   return (
-    <div>
-      Введите текст: <input bind:value={text} />
-      Прописной <input type="checkbox" bind:checked={isUppercase} />
-      <div>Текст с задержкой: {delayText}</div>
-    </div>
+    <section>
+      <label>
+        Введите текст: <input bind:value={text} />
+      </label>
+      <label>
+        Прописной <input type="checkbox" bind:checked={isUppercase} />
+      </label>
+      <p>Текст с задержкой: {delayText}</p>
+    </section>
   );
 });
 
@@ -252,10 +258,12 @@ export default component$(() => {
   });
 
   return (
-    <div>
-      Enter text: <input bind:value={text} />
-      <div>Debounced text: {debounceText}</div>
-    </div>
+    <section>
+      <label>
+        Введите текст: <input bind:value={text} />
+      </label>
+      <p>Текст с задержкой: {debounceText}</p>
+    </section>
   );
 });
 ```
@@ -294,12 +302,14 @@ export default component$(() => {
 >   });
 > 
 >   return (
->     <div>
->       Введите текст: <input bind:value={text} />
->       <div style={{ fontWeight: isBold.value ? 'bold' : 'normal' }}>
+>     <section>
+>       <label>
+>         Введите текст: <input bind:value={text} />
+>       </label>
+>       <p style={{ fontWeight: isBold.value ? 'bold' : 'normal' }}>
 >         Текст: {text}
->       </div>
->     </div>
+>       </p>
+>     </section>
 >   );
 > });
 > 

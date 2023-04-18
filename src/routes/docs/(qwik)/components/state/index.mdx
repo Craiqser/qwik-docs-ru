@@ -78,7 +78,7 @@ export default component$(() => {
   return (
     <>
       <button onClick$={() => state.count++}>Прибавить</button>
-      <div>Счётчик: {state.count}</div>
+      <p>Счётчик: {state.count}</p>
     </>
   );
 });
@@ -184,8 +184,8 @@ export default component$(() => {
   return (
     <>
       <input type="text" bind:value={name} />
-      <div>Name: {name.value}</div>
-      <div>Capitalized name: {capitalizedName.value}</div>
+      <p>Name: {name.value}</p>
+      <p>Capitalized name: {capitalizedName.value}</p>
     </>
   );
 });
@@ -294,7 +294,9 @@ export default component$(() => {
 
   return (
     <>
-      Запрос: <input bind:value={query} />
+      <label>
+        Запрос: <input bind:value={query} />
+      </label>
       <button>Поиск</button>
       <Resource
         value={jokes}
@@ -368,30 +370,34 @@ export default component$(() => {
   });
 
   return (
-    <div>
-      <div>Введите свое имя, и я угадаю ваш возраст!</div>
-      <input
-        onInput$={(e: Event) =>
-          (name.value = (e.target as HTMLInputElement).value)
-        }
-      />
+    <section>
+      <p>
+        <label>
+          Введите свое имя, и я угадаю ваш возраст!
+          <input
+            onInput$={(e: Event) =>
+              (name.value = (e.target as HTMLInputElement).value)
+            }
+          />
+        </label>
+      </p>
       <Resource
         value={ageResource}
-        onPending={() => <div>Загрузка...</div>}
-        onRejected={() => <div>Не удалось получить данные</div>}
+        onPending={() => <p>Загрузка...</p>}
+        onRejected={() => <p>Не удалось получить данные</p>}
         onResolved={(ageGuess) => {
           return (
-            <div>
+            <p>
               {name.value && (
                 <>
                   {ageGuess.name} {ageGuess.age} лет
                 </>
               )}
-            </div>
+            </p>
           );
         }}
       />
-    </div>
+    </section>
   );
 });
 ```
@@ -426,7 +432,7 @@ export const Child = component$<ChildProps>(({ userData }) => {
   return (
     <>
       <button onClick$={() => userData.count++}>Прибавить</button>
-      <div>Счётчик: {userData.count}</div>
+      <p>Счётчик: {userData.count}</p>
     </>
   );
 });
@@ -466,7 +472,7 @@ export const Child = component$(() => {
   return (
     <>
       <button onClick$={() => userData.count++}>Прибавить</button>
-      <div>Счётчик: {userData.count}</div>
+      <p>Счётчик: {userData.count}</p>
     </>
   );
 });

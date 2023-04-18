@@ -4,8 +4,10 @@ export default component$(() => {
   return (
     <main>
       <p>
-        GitHub-организация:
-        <input value="BuilderIO" />
+        <label>
+          GitHub-организация:
+          <input value="BuilderIO" />
+        </label>
       </p>
       <section>
         <ul>

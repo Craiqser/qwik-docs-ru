@@ -44,7 +44,7 @@ export default component$(() => {
       </Form>
       {action.value?.success && (
       // Если действие выполнено успешно, свойство `action.value` будет содержать возвращаемое значение действия.
-        <div>Пользователь {action.value.userID} успешно добавлен</div>
+        <p>Пользователь {action.value.userID} успешно добавлен</p>
       )}
     </>
   );
@@ -75,7 +75,7 @@ export default component$(() => {
     <Form action={action}>
       <input name="name" />
       <button type="submit">Добавить пользователя</button>
-      {action.value?.success && <div>Пользователь успешно добавлен</div>}
+      {action.value?.success && <p>Пользователь успешно добавлен</p>}
     </Form>
   );
 });
@@ -104,7 +104,7 @@ export const useAddUser = routeAction$(async (user) => {
 export default component$(() => {
   const action = useAddUser();
   return (
-    <div>
+    <section>
       <button
         onClick={async () => {
           const { value } = await action.submit({ name: 'John' });
@@ -113,8 +113,8 @@ export default component$(() => {
       >
         Добавить пользователя
       </button>
-      {action.value?.success && <div>Пользователь успешно добавлен</div>}
-    </div>
+      {action.value?.success && <p>Пользователь успешно добавлен</p>}
+    </section>
   );
 });
 ```
@@ -157,11 +157,11 @@ export default component$(() => {
         <input name="firstName" />
         <input name="lastName" />
 
-        {action.value?.failed && <div>{action.value.fieldErrors?.firstName}</div>}
+        {action.value?.failed && <p>{action.value.fieldErrors?.firstName}</p>}
         <button type="submit">Добавить пользователя</button>
       </Form>
       {action.value?.success && (
-        <div>Пользователь {action.value.userID} успешно добавлен</div>
+        <p>Пользователь {action.value.userID} успешно добавлен</p>
       )}
     </>
   );
@@ -229,8 +229,8 @@ export default component$(() => {
     <Form action={action}>
       <input name="name" />
       <button type="submit">Добавить пользователя</button>
-      {action.value?.failed && <div>{action.value.fieldErrors.name}</div>}
-      {action.value?.userID && <div>Пользователь успешно добавлен</div>}
+      {action.value?.failed && <p>{action.value.fieldErrors.name}</p>}
+      {action.value?.userID && <p>Пользователь успешно добавлен</p>}
     </Form>
   );
 });

@@ -11,9 +11,11 @@ export default component$(() => {
   });
 
   return (
-    <div>
-      Enter text: <input bind:value={text} />
-      <div>Debounced text: {debounceText}</div>
-    </div>
+    <section>
+      <label>
+        Введите текст: <input bind:value={text} />
+      </label>
+      <p>Текст с задержкой: {debounceText}</p>
+    </section>
   );
 });

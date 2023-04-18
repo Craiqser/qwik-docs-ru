@@ -3,7 +3,7 @@ import { qwikify$ } from '@builder.io/qwik-react';
 
 // Создаем компонент React стандартным способом
 function Greetings() {
-  return <div>Привет от React</div>;
+  return <p>Привет от React</p>;
 }
 
 // Преобразование компонента React в компонент Qwik

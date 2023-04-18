@@ -15,10 +15,12 @@ export default component$(() => {
   });
 
   return (
-    <div>
-      Введите текст: <input bind:value={text} />
-      <div>Текст с задержкой: {delayText}</div>
-    </div>
+    <section>
+      <label>
+        Введите текст: <input bind:value={text} />
+      </label>
+      <p>Текст с задержкой: {delayText}</p>
+    </section>
   );
 });
 

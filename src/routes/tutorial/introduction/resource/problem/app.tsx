@@ -25,18 +25,18 @@ export default component$(() => {
   return (
     <main>
       <p>
-        Имя пользователя GitHub:
-        <input
-          value={github.org}
-          onInput$={(ev) => (github.org = (ev.target as HTMLInputElement).value)}
-        />
+        <label>
+          Имя пользователя GitHub:
+          <input
+            value={github.org}
+            onInput$={(ev) => (github.org = (ev.target as HTMLInputElement).value)}
+          />
+        </label>
       </p>
       <section>
-        <Resource
-          value={reposResource}
-          onPending={() => <>Загрузка...</>}
-          onRejected={(error) => <>Ошибка: {error.message}</>}
-          onResolved={(repos) => (
+        {/* Используйте <Resource> для отображения данных из функции useResource$(). */}
+        {/* Чтобы помочь, вот функция обратного вызова для отображения данных при их получении. */}
+        {/* (repos) => (
             <ul>
               {repos.map((repo) => (
                 <li>
@@ -44,8 +44,7 @@ export default component$(() => {
                 </li>
               ))}
             </ul>
-          )}
-        />
+          ) */}
       </section>
     </main>
   );

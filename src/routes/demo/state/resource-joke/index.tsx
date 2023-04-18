@@ -32,7 +32,9 @@ export default component$(() => {
 
   return (
     <>
-      Запрос: <input bind:value={query} />
+      <label>
+        Запрос: <input bind:value={query} />
+      </label>
       <button>Поиск</button>
       <Resource
         value={jokes}

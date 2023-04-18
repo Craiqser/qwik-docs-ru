@@ -24,7 +24,7 @@ export const useProductDetails = routeLoader$(async (requestEvent) => {
 export default component$(() => {
   // Чтобы получить доступ к данным `routeLoader$` в компоненте Qwik, необходимо вызвать хук.
   const signal = useProductDetails(); // Readonly<Signal<Product>>
-  return <div>Наименование товара: {signal.value.product.name}</div>;
+  return <p>Наименование товара: {signal.value.product.name}</p>;
 });
 ```
 

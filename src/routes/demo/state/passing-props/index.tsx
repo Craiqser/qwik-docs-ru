@@ -12,7 +12,7 @@ export const Child = component$<ChildProps>(({ userData }) => {
   return (
     <>
       <button onClick$={() => userData.count++}>Прибавить</button>
-      <div>Счётчик: {userData.count}</div>
+      <p>Счётчик: {userData.count}</p>
     </>
   );
 });

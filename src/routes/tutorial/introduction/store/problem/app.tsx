@@ -11,8 +11,10 @@ export default component$(() => {
   return (
     <main>
       <p>
-        Имя пользователя GitHub:
-        <input value={github.org} />
+        <label>
+          Имя пользователя GitHub:
+          <input value={github.org} />
+        </label>
       </p>
       <section>
         {github.repos ? (

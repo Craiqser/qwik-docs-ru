@@ -81,7 +81,7 @@ import { loadProductIds } from './load-product-ids';
 export default component$(() => {
   const { params } = useLocation();
 
-  return <div>Пример: {params.id}</div>;
+  return <p>Пример: {params.id}</p>;
 });
 
 export const onStaticGenerate: StaticGenerateHandler = async () => {

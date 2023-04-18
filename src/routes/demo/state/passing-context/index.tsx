@@ -23,7 +23,7 @@ export const Child = component$(() => {
   return (
     <>
       <button onClick$={() => userData.count++}>Прибавить</button>
-      <div>Счётчик: {userData.count}</div>
+      <p>Счётчик: {userData.count}</p>
     </>
   );
 });

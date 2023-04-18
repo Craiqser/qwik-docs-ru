@@ -8,9 +8,9 @@ export const MyButton = (props: { text: string }) => {
 // Компонент: объявляется с помощью `component$()`.
 export default component$(() => {
   return (
-    <div>
-      Некоторый текст:
+    <p>
+      Какой-то текст:
       <MyButton text="Нажми меня" />
-    </div>
+    </p>
   );
 });

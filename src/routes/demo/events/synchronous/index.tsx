@@ -24,7 +24,7 @@ export default component$(() => {
       <div draggable ref={draggableRef}>
         Потяни меня!
       </div>
-      <div>{dragStatus.value}</div>
+      <p>{dragStatus.value}</p>
     </div>
   );
 });

@@ -27,9 +27,9 @@ export default component$(() => {
   const lastName = useSignal('');
 
   return (
-    <div>
-      Имя: <input bind:value={name} />
-      Фамилия: <input bind:value={name} />
+    <section>
+      <label>Имя: <input bind:value={name} /></label>
+      <label>Фамилия: <input bind:value={name} /></label>
 
       <button
         onClick$={async () => {
@@ -39,7 +39,7 @@ export default component$(() => {
       >
         приветствие
       </button>
-    </div>
+    </section>
   );
 });
 ```

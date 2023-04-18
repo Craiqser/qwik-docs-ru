@@ -55,7 +55,7 @@ export default component$(() => {
 
 const Child = component$(() => {
   const theme = useContext(ThemeContext);
-  return <div>Тема: {theme.value}</div>;
+  return <p>Тема: {theme.value}</p>;
 });
 ```
 </CodeSandbox>
@@ -130,7 +130,7 @@ export const Children = component$(() => {
   const appName = useContext(AppNameContext);
 
   return (
-      <div>Дочерние компоненты могут использовать любое из предоставленных контекстом значений, например {appName}</div>
+      <p>Дочерние компоненты могут использовать любое из предоставленных контекстом значений, например {appName}</p>
   );
 });
 ```

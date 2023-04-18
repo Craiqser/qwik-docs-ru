@@ -6,7 +6,7 @@ export default component$(() => {
   return (
     <>
       <button onClick$={() => state.count++}>Прибавить</button>
-      <div>Счётчик: {state.count}</div>
+      <p>Счётчик: {state.count}</p>
     </>
   );
 });

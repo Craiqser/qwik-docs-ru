@@ -17,5 +17,5 @@ export default component$(() => {
     // Однако мы можем инстанцировать его на клиенте после того, как компонент станет видимым.
     setTimeout(() => (store.monacoInstance = noSerialize(new Monaco())), 1000);
   });
-  return <div>{store.monacoInstance ? 'Monaco загружен' : 'загрузка...'}</div>;
+  return <p>{store.monacoInstance ? 'Monaco загружен' : 'загрузка...'}</p>;
 });

@@ -7,9 +7,9 @@ export default component$(() => {
       onClick$={(event) => (position.value = { x: event.x, y: event.y })}
       style="height: 100vh"
     >
-      <div>
+      <p>
         Позиция клика: ({position.value?.x}, {position.value?.y})
-      </div>
+      </p>
     </div>
   );
 });

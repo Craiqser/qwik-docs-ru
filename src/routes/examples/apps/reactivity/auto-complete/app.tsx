@@ -2,7 +2,7 @@ import { component$, useStore, useTask$ } from '@builder.io/qwik';
 
 export default component$(() => {
   return (
-    <div>
+    <article>
       В этом примере представлен компонент автозаполнения с задержкой 150 мс.
       <br />
       Функция `debouncedGetPeople` должна быть экспортирована, поскольку она используется в `useTask$`.
@@ -11,7 +11,7 @@ export default component$(() => {
       Ищите персонажей Звёздных войн, например "Luke Skywalker", с помощью{' '}
       <a href="https://swapi.dev/">API Звёздных войн</a>
       <AutoComplete></AutoComplete>
-    </div>
+    </article>
   );
 });
 
@@ -64,9 +64,9 @@ export const SuggestionsListComponent = (props: { state: IState }) => {
       })}
     </ul>
   ) : (
-    <div class="no-results">
+    <p class="no-results">
       <em>Никаких предположений, вы сами по себе!</em>
-    </div>
+    </p>
   );
 };
 

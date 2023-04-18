@@ -41,7 +41,7 @@ import CodeSandbox from '../../../../../components/code-sandbox/index.tsx';
 import { component$ } from '@builder.io/qwik';
 
 export default component$(() => {
-  return <span>Привет, мир!</span>;
+  return <p>Привет, мир!</p>;
 });
 ```
 </CodeSandbox>
@@ -59,14 +59,14 @@ import { component$ } from '@builder.io/qwik';
 export default component$(() => {
   return (
     <>
-      <div>Родительский текст</div>
+      <p>Родительский текст</p>
       <Child />
     </>
   );
 });
 
 const Child = component$(() => {
-  return <div>Дочерний текст</div>;
+  return <p>Дочерний текст</p>;
 });
 ```
 </CodeSandbox>
@@ -86,7 +86,7 @@ export default component$(() => {
 
   return (
     <>
-      <div>Счёт: {count.value}</div>
+      <p>Счёт: {count.value}</p>
       <button onClick$={() => count.value++}>Прибавить</button>
     </>
   );
@@ -168,15 +168,15 @@ export default component$(() => {
   });
 
   return (
-    <div>
-      <div ref={outputRef} style={{ border: '1px solid red', width: '100px' }}>
+    <section>
+      <article ref={outputRef} style={{ border: '1px solid red', width: '100px' }}>
         Измените здесь значение текста, чтобы растянуть поле.
-      </div>
-      <div>
+      </article>
+      <p>
         Красный блок выше имеет высоту {height.value} пикселей и ширину {width.value}{' '}
         пикселей.
-      </div>
-    </div>
+      </p>
+    </section>
   );
 });
 ```
@@ -205,7 +205,7 @@ const Parent = () => (
 import { component$ } from '@builder.io/qwik';
 
 export const Child = component$(() => {
-  return <span>дочерний</span>;
+  return <p>дочерний</p>;
 });
 
 export const Parent = component$(() => {
@@ -239,11 +239,11 @@ const Parent_onRender = () => (
 Что же происходит, когда компоненту `Parent` нужно отрендерить компонент `Child`, но компонент `Child` ещё не загружен? Во-первых, компонент `Parent` отображает свой DOM следующим образом:
 
 ```html
-<div>
+<main>
   <section>
     <!--qv--><!--/qv-->
   </section>
-</div>
+</main>
 ```
 
 Как видно из приведённого выше примера, `<!--qv-->` действует как маркер, куда будет вставлен компонент `Child` после того, как он будет лениво загружен.
@@ -264,10 +264,10 @@ export const MyButton = (props: { text: string }) => {
 // Компонент: объявляется с помощью `component$()`.
 export default component$(() => {
   return (
-    <div>
+    <p>
       Некоторый текст:
       <MyButton text="Нажми меня" />
-    </div>
+    </p>
   );
 });
 ```

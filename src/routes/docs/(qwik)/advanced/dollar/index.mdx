@@ -272,7 +272,7 @@ export const MyComp_onMount = () => {
 
 ```tsx
 export const Greeter = component$(() => {
-  return <span>Привет, мир!</span>;
+  return <p>Привет, мир!</p>;
 });
 ```
 
@@ -299,9 +299,9 @@ export const Greeter = component$((props: { name: string }) => {
   const salutation = 'Привет';
 
   return (
-    <span>
+    <p>
       {salutation} {props.name}!
-    </span>
+    </p>
   );
 });
 ```
@@ -321,9 +321,9 @@ const Greeter_onMount = (props) => {
 
 ```tsx title="chunk-b.js"
 const Greeter_onRender = () => (
-  <span>
+  <p>
     {salutation} {props.name}!
-  </span>
+  </p>
 );
 ```
 
@@ -341,9 +341,9 @@ const Greeter_onRender = () => {
   const [salutation, props] = useLexicalScope();
 
   return (
-    <span>
+    <p>
       {salutation} {props.name}!
-    </span>
+    </p>
   );
 };
 ```

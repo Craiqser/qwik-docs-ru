@@ -17,11 +17,15 @@ export default component$(() => {
   });
 
   return (
-    <div>
-      Введите текст: <input bind:value={text} />
-      Прописной <input type="checkbox" bind:checked={isUppercase} />
-      <div>Текст с задержкой: {delayText}</div>
-    </div>
+    <section>
+      <label>
+        Введите текст: <input bind:value={text} />
+      </label>
+      <label>
+        Прописной <input type="checkbox" bind:checked={isUppercase} />
+      </label>
+      <p>Текст с задержкой: {delayText}</p>
+    </section>
   );
 });
 

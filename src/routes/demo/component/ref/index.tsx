@@ -14,14 +14,17 @@ export default component$(() => {
   });
 
   return (
-    <div>
-      <div ref={outputRef} style={{ border: '1px solid red', width: '100px' }}>
+    <section>
+      <article
+        ref={outputRef}
+        style={{ border: '1px solid red', width: '100px' }}
+      >
         Измените здесь значение текста, чтобы растянуть поле.
-      </div>
-      <div>
+      </article>
+      <p>
         Красный блок выше имеет высоту {height.value} пикселей и ширину {width.value}{' '}
         пикселей.
-      </div>
-    </div>
+      </p>
+    </section>
   );
 });
