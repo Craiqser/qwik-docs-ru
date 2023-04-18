@@ -96,9 +96,9 @@ import { component$ } from '@builder.io/qwik';
 export const Parent = component$(() => {
   return (
     <>
-      {data.map(({ content, uniqueKey }) => (
+      {data.map(({ message, uniqueKey }) => (
         <div key={uniqueKey}>
-          <p>{content}</p>
+          <p>{message}</p>
         </div>
       ))}
     </>
@@ -129,11 +129,65 @@ export default component$(() => {
 
 ### `dangerouslySetInnerHTML`
 
-Qwik предлагает для HTML-элементов атрибут под названием `dangerouslySetInnerHTML` в качестве замены вызова `innerHTML` в DOM. Из-за возможности межсайтового скриптинга (XSS) при рендере недостоверного содержимого, вы должны использовать этот атрибут, чтобы помнить о том, что эта операция может быть опасной.
+Qwik предлагает для HTML-элементов атрибут под названием `dangerouslySetInnerHTML` в качестве замены вызова `innerHTML` в DOM.
+
+Из-за возможности межсайтового скриптинга (XSS) при рендере недостоверного содержимого, вы должны использовать этот атрибут, чтобы помнить о том, что эта операция может быть опасной.
 
 ```tsx
+const htmlString = "<strong>hello</strong>";
 <div dangerouslySetInnerHTML={htmlString}></div>
 ```
+
+### Атрибут `bind`
+
+Это удобный API для двусторонней привязки данных значения `<input>` к `Signal`.
+
+Для чекбоксов можно использовать `bind:checked`, который связывает булево значение `checked` с указанным сигналом.
+
+```tsx /bind:value/ /bind:checked/ /firstName/#a /acceptConditions/#b
+import { component$, useSignal } from '@builder.io/qwik';
+
+export default component$(() => {
+  const firstName = useSignal('');
+  const acceptConditions = useSignal(false);
+
+  return (
+    <form>
+      <input type="text" bind:value={firstName} />
+      <input type="checkbox" bind:checked={acceptConditions} />
+
+      <div>Имя: {firstName.value}</div>
+    </form>
+  );
+})
+```
+
+Оптимизатор Qwik компилирует `bind:` в набор свойств и обработчик событий, т.е. это просто синтаксический сахар.
+
+```tsx /bind:value/ /bind:checked/ /firstName/#a /acceptConditions/#b
+import { component$, useSignal } from '@builder.io/qwik';
+
+export default component$(() => {
+  const firstName = useSignal('');
+  const acceptConditions = useSignal(false);
+
+  return (
+    <form>
+      <input type="text"
+        value={firstName.value}
+        onInput$={(_, el) => firstName.value = firstName.value }
+      />
+      <input type="checkbox"
+        checked={acceptConditions.value}
+        onChange$={(_, el) => acceptConditions.value = firstName.checked }
+      />
+      <div>Имя: {firstName.value}</div>
+    </form>
+  );
+})
+```
+
+> Этот API гарантирует, что `значение` элемента всегда синхронизировано со значением сигнала, независимо от того, откуда пришло изменение.
 
 ## Асинхронный рендеринг
 

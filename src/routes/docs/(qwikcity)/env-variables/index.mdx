@@ -14,23 +14,26 @@ contributors:
 
 Переменные времени сборки работают через [Vite](https://vitejs.dev/guide/env-and-mode.html). Они определяются в файлах `.env` и доступны **в браузере и в коде на стороне сервера**.
 
+> ** ВАЖНО! НЕ** используйте `import.meta.env.PUBLIC_*` для хранения конфиденциальной информации, такой как ключи API, секреты, пароли и т.д. **Только общедоступные данные**.
+
 Обратите внимание, что переменные времени сборки следует рассматривать как **публичные**, поскольку они будут жестко закодированы в сборке для браузера, и могут быть легко прочитаны кем угодно.
 
-Переменные времени сборки по умолчанию имеют префикс `VITE_` и могут быть доступны с помощью `import.meta.env.VITE_`.
+Переменные времени сборки по умолчанию имеют префикс `PUBLIC_` и могут быть доступны с помощью `import.meta.env.PUBLIC_*`.
 
-```tsx title=".env" /VITE_API_URL/#a
+```tsx title=".env" /PUBLIC_API_URL/#a
 VITE_API_URL=https://api.example.com
 ```
 
-```tsx {4} /VITE_API_URL/#a title="src/routes/index.tsx"
+```tsx {4} /PUBLIC_API_URL/#a title="src/routes/index.tsx"
 import { component$ } from '@builder.io/qwik';
 
 export default component$(() => {
-  return <div>VITE_API_URL: {import.meta.env.VITE_API_URL}</div>
+  // переменные `import.meta.env.VITE_*` могут быть прочитаны где угодно, включая браузер
+  return <div>PUBLIC_API_URL: {import.meta.env.VITE_API_URL}</div>
 })
 ```
 
-> переменные `import.meta.url.VITE_*` можно читать где угодно, но не помещайте в них конфиденциальную информацию, так как она будет видна клиенту.
+> переменные `import.meta.url.PUBLIC_*` можно читать где угодно, но не помещайте в них конфиденциальную информацию, так как она будет видна клиенту.
 
 ## Переменные окружения на стороне сервера
 

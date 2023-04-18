@@ -565,12 +565,12 @@ export default component$(() => {
     <main>
       <h1>Данные пользователя</h1>
       <Form action={userData}>
-        <p>
+        <div>
           <label>Имя пользователя: <input name="name" defaultValue={userData.formData?.get('name')} /></label>
-        </p>
-        <p>
+        </div>
+        <div>
           <label>Электронная почта: <input name="email" defaultValue={userData.formData?.get('email')} /></label>
-        </p>
+        </div>
         <button type="submit">Обновить</button>
       </form>
     </main>

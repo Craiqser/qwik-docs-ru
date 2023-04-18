@@ -350,7 +350,7 @@ function Button({ children }: { children?: ReactNode[] }) {
 
 function Display({ count }: { count: number }) {
   console.log('React <Display count=' + count + '/> Render');
-  return <p className="react">Счёт: {count}</p>;
+  return <div className="react">Счёт: {count}</div>;
 }
 
 export const QButton = qwikify$(Button);

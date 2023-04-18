@@ -29,7 +29,7 @@ import { component$ } from '@builder.io/qwik';
 
 export default component$(() => {
   console.log('рендер');
-  return <p onClick$={() => console.log('привет')}>Привет, Qwik</p>;
+  return <button onClick$={() => console.log('привет')}>Привет, Qwik</button>;
 });
 ```
 
@@ -272,7 +272,7 @@ export const MyComp_onMount = () => {
 
 ```tsx
 export const Greeter = component$(() => {
-  return <p>Привет, мир!</p>;
+  return <div>Привет, мир!</div>;
 });
 ```
 
@@ -299,9 +299,9 @@ export const Greeter = component$((props: { name: string }) => {
   const salutation = 'Привет';
 
   return (
-    <p>
+    <div>
       {salutation} {props.name}!
-    </p>
+    </div>
   );
 });
 ```
@@ -321,9 +321,9 @@ const Greeter_onMount = (props) => {
 
 ```tsx title="chunk-b.js"
 const Greeter_onRender = () => (
-  <p>
+  <div>
     {salutation} {props.name}!
-  </p>
+  </div>
 );
 ```
 
@@ -341,9 +341,9 @@ const Greeter_onRender = () => {
   const [salutation, props] = useLexicalScope();
 
   return (
-    <p>
+    <div>
       {salutation} {props.name}!
-    </p>
+    </div>
   );
 };
 ```

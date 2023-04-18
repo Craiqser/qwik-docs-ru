@@ -1,21 +1,26 @@
 import {
   component$,
   useStore,
+  useSignal,
   noSerialize,
   useVisibleTask$,
+  type NoSerialize,
 } from '@builder.io/qwik';
-import Monaco from './monaco';
+import * as monaco from './monaco';
 
 export default component$(() => {
-  const store = useStore<{ monacoInstance: Monaco | undefined }>({
-    // Не инициализировать на сервере
+  const editorRef = useSignal<HTMLElement>();
+  const store = useStore<{ monacoInstance: NoSerialize<any> }>({
     monacoInstance: undefined,
   });
 
   useVisibleTask$(() => {
+    const editor = monaco.editor.create(editorRef.value!, {
+      value: 'Hello, world!',
+    });
     // Monaco является несериализуемым объектом, поэтому мы не можем сериализовать его во время SSR.
     // Однако мы можем инстанцировать его на клиенте после того, как компонент станет видимым.
-    setTimeout(() => (store.monacoInstance = noSerialize(new Monaco())), 1000);
+    store.monacoInstance = noSerialize(editor);
   });
-  return <p>{store.monacoInstance ? 'Monaco загружен' : 'загрузка...'}</p>;
+  return <div ref={editorRef} />;
 });

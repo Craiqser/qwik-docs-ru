@@ -22,7 +22,7 @@ contributors:
 
 ```tsx
 export const HelloWorld = component$(() => {
-  return <p>Привет, мир</p>;
+  return <div>Привет, мир</div>;
 });
 ```
 
@@ -30,7 +30,7 @@ export const HelloWorld = component$(() => {
 
 ```tsx
 export function HelloWorld() {
-  return <p>Привет, мир</p>;
+  return <div>Привет, мир</div>;
 }
 ```
 
@@ -59,7 +59,7 @@ export function Button() {
 ```tsx
 export const LocalStateExample = component$(() => {
   const count = useSignal(0);
-  return <p>Значение: {count.value}</p>;
+  return <div>Значение: {count.value}</div>;
 });
 ```
 
@@ -68,7 +68,7 @@ export const LocalStateExample = component$(() => {
 ```tsx
 export function UseStateExample() {
   const [value, setValue] = useState(0);
-  return <p>Значение: {value}</p>;
+  return <div>Значение: {value}</div>;
 }
 ```
 
