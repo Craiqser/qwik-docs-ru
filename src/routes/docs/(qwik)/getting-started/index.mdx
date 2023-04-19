@@ -189,7 +189,6 @@ export default component$(() => {
 
 <CodeSandbox src="/src/routes/demo/getting-started/03-posting-data/index.tsx" style={{ height: '8em' }}>
 ```tsx {21,25-29} /favoriteJokeAction/ title="src/routes/joke/index.tsx"
-/* eslint-disable no-console */
 import { component$ } from '@builder.io/qwik';
 import { routeLoader$, Form, routeAction$ } from '@builder.io/qwik-city';
 
@@ -209,6 +208,7 @@ export const useJokeVoteAction = routeAction$((props) => {
 });
 
 export default component$(() => {
+  // Вызов нашего хука `useDadJoke`, вернёт реактивный сигнал на загруженные данные.
   const dadJokeSignal = useDadJoke();
   const favoriteJokeAction = useJokeVoteAction();
   return (
@@ -257,7 +257,7 @@ export default component$(() => {
 
 Для справки, полный фрагмент кода для этого раздела выглядит следующим образом:
 
-<CodeSandbox maxHeight={500} src="/src/routes/demo/getting-started/04-state/index.tsx" style={{ height: '10em' }}>
+<CodeSandbox src="/src/routes/demo/getting-started/04-state/index.tsx" style={{ height: '10em' }} maxHeight={500}>
 ```tsx /isFavoriteSignal/
 import { component$, useSignal } from '@builder.io/qwik';
 import { routeLoader$, Form, routeAction$ } from '@builder.io/qwik-city';
@@ -279,6 +279,7 @@ export const useJokeVoteAction = routeAction$((props) => {
 
 export default component$(() => {
   const isFavoriteSignal = useSignal(false);
+    // Вызов нашего хука `useDadJoke`, вернёт реактивный сигнал на загруженные данные.
   const dadJokeSignal = useDadJoke();
   const favoriteJokeAction = useJokeVoteAction();
 
@@ -287,8 +288,12 @@ export default component$(() => {
       <p>{dadJokeSignal.value.joke}</p>
       <Form action={favoriteJokeAction}>
         <input type="hidden" name="jokeID" value={dadJokeSignal.value.id} />
-        <button name="vote" value="up">👍</button>
-        <button name="vote" value="down">👎</button>
+        <button name="vote" value="up">
+          👍
+        </button>
+        <button name="vote" value="down">
+          👎
+        </button>
       </Form>
       <button
         onClick$={() => (isFavoriteSignal.value = !isFavoriteSignal.value)}
@@ -341,7 +346,7 @@ export default component$(() => {
 
 Для справки, полный фрагмент кода для этого раздела выглядит следующим образом:
 
-<CodeSandbox maxHeight={500} src="/src/routes/demo/getting-started/05-tasks/index.tsx" style={{ height: '10em' }}>
+<CodeSandbox src="/src/routes/demo/getting-started/05-tasks/index.tsx" style={{ height: '10em' }} maxHeight={500}>
 ```tsx {28-34}
 import { component$, useSignal, useTask$ } from '@builder.io/qwik';
 import {
@@ -368,6 +373,7 @@ export const useJokeVoteAction = routeAction$((props) => {
 
 export default component$(() => {
   const isFavoriteSignal = useSignal(false);
+  // Вызов нашего хука `useDadJoke`, вернёт реактивный сигнал на загруженные данные.
   const dadJokeSignal = useDadJoke();
   const favoriteJokeAction = useJokeVoteAction();
   useTask$(({ track }) => {
@@ -382,8 +388,12 @@ export default component$(() => {
       <p>{dadJokeSignal.value.joke}</p>
       <Form action={favoriteJokeAction}>
         <input type="hidden" name="jokeID" value={dadJokeSignal.value.id} />
-        <button name="vote" value="up">👍</button>
-        <button name="vote" value="down">👎</button>
+        <button name="vote" value="up">
+          👍
+        </button>
+        <button name="vote" value="down">
+          👎
+        </button>
       </Form>
       <button
         onClick$={() => (isFavoriteSignal.value = !isFavoriteSignal.value)}
@@ -467,6 +477,7 @@ const useJokeVoteAction = routeAction$((props) => {
 export default component$(() => {
   useStylesScoped$(STYLES);
   const isFavoriteSignal = useSignal(false);
+  // Вызов нашего хука `useDadJoke`, вернёт реактивный сигнал на загруженные данные.
   const dadJokeSignal = useDadJoke();
   const favoriteJokeAction = useJokeVoteAction();
   useTask$(({ track }) => {

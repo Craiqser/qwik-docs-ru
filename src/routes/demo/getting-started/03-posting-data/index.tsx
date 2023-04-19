@@ -1,4 +1,3 @@
-/* eslint-disable no-console */
 import { component$ } from '@builder.io/qwik';
 import { routeLoader$, Form, routeAction$ } from '@builder.io/qwik-city';
 
@@ -18,6 +17,7 @@ export const useJokeVoteAction = routeAction$((props) => {
 });
 
 export default component$(() => {
+  // Вызов нашего хука `useDadJoke`, вернёт реактивный сигнал на загруженные данные.
   const dadJokeSignal = useDadJoke();
   const favoriteJokeAction = useJokeVoteAction();
   return (
