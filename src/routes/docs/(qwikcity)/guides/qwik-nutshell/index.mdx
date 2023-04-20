@@ -284,7 +284,6 @@ export const useStore: <T>(value?: T | (() => T), options?: StoreOptions): React
 
 - Когда вам нужна реактивность в массиве.
 - Когда вам нужен реактивный объект, к которому можно легко добавлять свойства.
-- Когда вы хотите использовать опцию `deep`, чтобы сделать вложенные свойства реактивными.
 
 ```tsx
 import { component$, useSignal } from '@builder.io/qwik';
@@ -296,7 +295,6 @@ export const Counter = component$(() => {
     {
       array: [],
     },
-    { deep: true }
   );
 
   // todoList.array - это реактивный массив, поэтому при его изменении компонент перерендерится.

@@ -77,16 +77,16 @@ export const Footer = component$(() => {
 import { component$ } from '@builder.io/qwik';
 import { routeLoader$ } from '@builder.io/qwik-city';
 
-export const useLoginStatus = routeLoader$(async ({cookie}) => {
+export const useLoginStatus = routeLoader$(async ({ cookie }) => {
   return {
-    isUserLoggedIn: checkCookie(cookie)
-  }
+    isUserLoggedIn: checkCookie(cookie),
+  };
 });
 
-export const useCurrentUser = routeLoader$(async ({cookie}) => {
+export const useCurrentUser = routeLoader$(async ({ cookie }) => {
   return {
-    user: currentUserFromCookie(cookie)
-  }
+    user: currentUserFromCookie(cookie),
+  };
 });
 
 export default component$(() => {
@@ -167,6 +167,7 @@ export const useProductRecommendations = routeLoader$(async (requestEvent) => {
 Это полезно, когда загрузчику нужно вернуть значение "ошибки", которое не является `undefined`, но должно указывать на то, что данные не удалось загрузить.
 
 ```tsx /requestEvent.fail/ /errorMessage/#a title="src/routes/product/[productId]/index.tsx"
+import { component$ } from '@builder.io/qwik';
 import { routeLoader$ } from '@builder.io/qwik-city';
 
 export const useProductDetails = routeLoader$(async (requestEvent) => {

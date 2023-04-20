@@ -62,7 +62,7 @@ export default component$<{
           <ul>
             <li class="edit">
               <a
-                href={examplePath(exampleUrl)}
+                href={'https://qwik-docs-ru.pages.dev/' + (url || src)}
                 rel="noopener"
                 target="_blank"
                 title="edit this snippet"

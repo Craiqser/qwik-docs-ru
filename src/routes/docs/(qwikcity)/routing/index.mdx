@@ -103,9 +103,9 @@ export default component$(() => {
 `index.ts` может напрямую обращаться к HTTP-запросу и возвращать необработанный HTTP-ответ без участия какого-либо компонента Qwik. Это делается путём экспорта метода `onRequest` или `onGet`, `onPost`, `onPut`, `onDelete` в зависимости от того, хотите ли вы обработать только конкретный запрос с учётом его HTTP-метода.
 
 ```tsx title="src/routes/index.ts"
-import { component$ } from '@builder.io/qwik';
+import type { RequestHandler } from '@builder.io/qwik-city';
 
-export const onGet = ({ json }) => {
+export const onGet: RequestHandler = ({ json }) => {
   json(200, { message: 'Привет, мир' });
 };
 ```
@@ -116,17 +116,18 @@ export const onGet = ({ json }) => {
 
 Как видите, в Qwik City нет чёткого разделения между страницами и конечными точками, в обоих случаях это файл `index.tsx`, который экспортирует компонент Qwik или метод `onRequest`. Однако можно комбинировать оба подхода. Например, вы можете экспортировать метод `onRequest`, который будет обрабатывать запрос, а затем рендерить компонент Qwik.
 
-```tsx title="src/routes/index.ts"
+```tsx title="src/routes/index.tsx"
 import { component$ } from '@builder.io/qwik';
+import type { RequestHandler } from '@builder.io/qwik-city';
 
-export const onRequest = ({ headers, query, json }) => {
+export const onRequest: RequestHandler = ({ headers, query, json }) => {
   headers.set('Cache-Control', 'private');
   if (query.get('format') === 'json') {
     json(200, { message: 'Привет, мир' });
   }
 };
 
-export default component$(async () => {
+export default component$(() => {
   return <h1>Привет, мир</h1>;
 });
 ```
@@ -193,14 +194,15 @@ Qwik предоставляет компонент `<Link>` и хук `useNaviga
 Однако, если вам необходимо осуществлять навигацию программно, вы можете использовать хук `useNavigate()`.
 
 ```tsx
-import { component$, Link, useNavigate } from '@builder.io/qwik';
+import { component$ } from '@builder.io/qwik';
+import { Link, useNavigate } from '@builder.io/qwik-city';
 
 export default component$(() => {
   const nav = useNavigate();
   return (
     <div>
       <Link href="/about">Описание (предпочтительно)</Link>
-      <button onClick={() => nav('/about')}>Описание</button>
+      <button onClick$={() => nav('/about')}>Описание</button>
     </div>
   );
 });
@@ -213,7 +215,8 @@ export default component$(() => {
 Вы также можете вызвать функцию `nav()` из хука `useNavigate()` без каких-либо аргументов.
 
 ```tsx
-import { component$, Link, useNavigate } from '@builder.io/qwik';
+import { component$ } from '@builder.io/qwik';
+import { Link, routeLoader$, useNavigate } from '@builder.io/qwik-city';
 
 export const useServerTime = routeLoader$(() => {
   // Это будет выполняться на сервере каждый раз при обновлении страницы.
@@ -227,7 +230,7 @@ export default component$(() => {
   return (
     <div>
       <Link reload>Обновить (лучшая доступность)</Link>
-      <button onClick={() => nav()}>Обновить</button>
+      <button onClick$={() => nav()}>Обновить</button>
       <p>Серверное время: {serverTime.value}</p>
     </div>
   );
