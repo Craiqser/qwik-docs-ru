@@ -19,7 +19,7 @@ import { server$ } from '@builder.io/qwik-city';
 
 // Обернув функцию в `server$()`, мы помечаем её, как всегда
 // выполняющуюся на сервере. Это одна из форм механизма RPC.
-const serverGreeter = server$((firstName, lastName) => {
+const serverGreeter = server$((firstName: string, lastName: string) => {
   const greeting = `Привет ${firstName} ${lastName}`;
   console.log('Вывод на сервере', greeting);
   return greeting;
@@ -31,8 +31,8 @@ export default component$(() => {
 
   return (
     <section>
-      <label>Имя: <input bind:value={name} /></label>
-      <label>Фамилия: <input bind:value={name} /></label>
+      <label>Имя: <input bind:value={firstName} /></label>
+      <label>Фамилия: <input bind:value={lastName} /></label>
 
       <button
         onClick$={async () => {
@@ -81,10 +81,10 @@ const addUser = server$(async function(id: number, fullName: string, address: Ad
 import { component$, useSignal } from '@builder.io/qwik';
 import { server$ } from '@builder.io/qwik-city';
 
-const stream = server$(async function() {
+const stream = server$(async function* () {
   for (let i = 0; i < 10; i++) {
     yield i;
-    await new Promise(resolve => setTimeout(resolve, 1000));
+    await new Promise((resolve) => setTimeout(resolve, 1000));
   }
 });
 
@@ -94,7 +94,8 @@ export default component$(() => {
     <div>
       <button
         onClick$={async () => {
-          for await (const i of stream()) {
+          const response = await stream();
+          for await (const i of response) {
             message.value += ` ${i}`;
           }
         }}

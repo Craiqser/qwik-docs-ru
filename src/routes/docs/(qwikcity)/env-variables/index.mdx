@@ -28,12 +28,12 @@ VITE_API_URL=https://api.example.com
 import { component$ } from '@builder.io/qwik';
 
 export default component$(() => {
-  // переменные `import.meta.env.VITE_*` могут быть прочитаны где угодно, включая браузер
+  // переменные `import.meta.env.PUBLIC_*` могут быть прочитаны где угодно, включая браузер
   return <div>PUBLIC_API_URL: {import.meta.env.VITE_API_URL}</div>
 })
 ```
 
-> переменные `import.meta.url.PUBLIC_*` можно читать где угодно, но не помещайте в них конфиденциальную информацию, так как она будет видна клиенту.
+> переменные `import.meta.env.PUBLIC_*` можно читать где угодно, но не помещайте в них конфиденциальную информацию, так как она будет видна клиенту.
 
 ## Переменные окружения на стороне сервера
 
@@ -44,27 +44,32 @@ export default component$(() => {
 Доступ к таким переменным на стороне сервера возможен только в API, которые используют объект `RequestEvent`, например, `routeLoader$()`, `routeAction$()`, `server$()` и обработчики конечных точек, такие как `onGet`, `onPost`, `onRequest` и т.д.
 
 ```tsx /DB_PRIVATE_KEY/ title="src/routes/index.tsx"
-import { routeLoader$, routeAction$, server$ } from '@builder.io/qwik-city';
+import {
+  routeLoader$,
+  routeAction$,
+  server$,
+  type RequestEvent,
+} from '@builder.io/qwik-city';
 
 export const onGet = (requestEvent: RequestEvent) => {
-  console.log(requestEvent.get('DB_PRIVATE_KEY'))
+  console.log(requestEvent.env.get('DB_PRIVATE_KEY'));
 };
 
 export const onPost = (requestEvent: RequestEvent) => {
-  console.log(requestEvent.get('DB_PRIVATE_KEY'))
+  console.log(requestEvent.env.get('DB_PRIVATE_KEY'));
 };
 
 export const useAction = routeAction$(async (_, requestEvent) => {
-  console.log(requestEvent.get('DB_PRIVATE_KEY'))
+  console.log(requestEvent.env.get('DB_PRIVATE_KEY'));
 });
 
 export const useLoader = routeLoader$(async (requestEvent) => {
-  console.log(requestEvent.get('DB_PRIVATE_KEY'))
+  console.log(requestEvent.env.get('DB_PRIVATE_KEY'));
 });
 
-export const serverFunction = server$(function() {
+export const serverFunction = server$(function () {
   // `this` - объект `RequestEvent`.
-  console.log(this.get('DB_PRIVATE_KEY'))
+  console.log(this.env.get('DB_PRIVATE_KEY'));
 });
 ```
 

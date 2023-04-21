@@ -3,6 +3,8 @@ title: useTask$()
 contributors:
   - manucorporat
   - adamdbradley
+  - mhevery
+  - zanettin
 ---
 
 Используйте [`useTask$()`](/docs/(qwik)/components/tasks/index.mdx#usetask) для выполнения функции перед начальным рендером и при каждом изменении отслеживаемых значений. Функция выполняется перед рендером, но она не может задержать рендер, поэтому если [`useTask$()`](/docs/(qwik)/components/tasks/index.mdx#usetask) является асинхронной, рендер произойдет до того, как [`useTask$()`](/docs/(qwik)/components/tasks/index.mdx#usetask) будет полностью выполнена.
