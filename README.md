@@ -1,6 +1,6 @@
 ## Translate status
 
-- Last update - 20.04.2023;
+- Last update - 21.04.2023;
 - Translated: Qwik, QwikCity, Examples, Tutorials.
 
 <br>
