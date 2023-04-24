@@ -194,7 +194,7 @@ src/
 ```
 
 ```tsx title="src/routes/layout.tsx"
-import { component$ } from '@builder.io/qwik';
+import { component$, Slot } from '@builder.io/qwik';
 
 export default component$(() => {
   return (
@@ -206,7 +206,7 @@ export default component$(() => {
 ```
 
 ```tsx title="src/routes/about/layout.tsx"
-import { component$ } from '@builder.io/qwik';
+import { component$, Slot } from '@builder.io/qwik';
 
 export default component$(() => {
   return (
@@ -230,7 +230,7 @@ export default component$(() => {
 ```html
 <main>
   <section>
-    <h1>О сайте</h1>
+    <h1>Описание</h1>
   </section>
 </main>
 ```

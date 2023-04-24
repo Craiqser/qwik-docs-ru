@@ -117,15 +117,16 @@ const Counter_onClick = () => {
 5. Qwikloader теперь получает ссылку на функцию `Counter_onClick` из `http://localhost/build/chunk-c.js` и вызывает её.
    ```tsx
    const Counter_onClick = () => {
-     const [store, props] = useLexicalScope();
-     return (store.count += props.step || 1);
+     const [count, props] = useLexicalScope();
+     return (count.value += props.step || 1);
    };
    ```
 6. В этот момент выполнение передается из Qwikloader-а в лениво загруженный чанк. Это делается для того, чтобы Qwikloader был как можно меньше, поскольку он встраивается в HTML.
-7. `useLexicalScope` импортируется из `@builder.io/qwik` и отвечает за получение `store` и `props` (`const [store, props] = useLexicalScope();`).
+7. `useLexicalScope` импортируется из `@builder.io/qwik` и отвечает за получение `count` и `props`.
+`const [count, props] = useLexicalScope();`
 8. Происходит парсинг JSON `<script type="qwik/json">{...json...}</script>` и распределение десериализованных объектов по атрибуту `q:obj`. В нашем случае:
-   - `<div q:id="123" q:obj="456" q:host>` получает объект с идентификатором `123`. Это будет `store`, созданный в функции `Counter_onMount`.
-   - `<button q:obj="456, 123"` получает `store`, а также ссылку на `<div q:id="457">`.
+   - `<div q:id="123" q:obj="456" q:host>` получает объект с идентификатором `123`. Это будет `count`, созданный в функции `Counter_onMount`.
+   - `<button q:obj="456, 123"` получает `count`, а также ссылку на `<div q:id="457">`.
 9. После десериализации `qwik/json`, `useLexicalScope` может использовать массив QRL `[0,1]` для поиска в `q:obj="456, 123"`, откуда получает объекты с id `456` и `123`, являющиеся параметрами `<div q:id="123" q:obj="456" q:host>`, а также `store` из функции `Counter_onMount`.
 
 > **ПРИМЕЧАНИЕ:** По соображениям производительности `q:obj` и `<script type="qwik/json">` обновляются только при десериализации приложения в HTML. Когда приложение работает, эти атрибуты могут иметь устаревшие значения.
