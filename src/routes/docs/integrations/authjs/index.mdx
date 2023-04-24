@@ -1,0 +1,68 @@
+---
+title: Qwik City и Auth.js
+keywords: 'authentication, auth, oauth'
+contributors:
+  - the-r3aper7
+  - ulic75
+---
+
+# Auth.js
+
+[Auth.js](https://authjs.dev/) позволяет разработчикам настроить в вашем веб-приложении процесс аутентификации. Эта библиотека поддерживает широкий спектр провайдеров аутентификации и может быть легко интегрирована с любым фреймворком `Node.js`.
+
+## Использование
+
+Вы можете легко добавить Auth.js с помощью следующей команды Qwik:
+
+```shell
+npm run qwik add auth
+```
+
+Эта команда добавит новые пакеты:
+
+- `@auth/core`
+- `@builder.io/qwik-city`
+
+и создаст новый файл с именем `plugin@auth.ts` с конфигурацией по умолчанию:
+
+```ts title="src/routes/plugin@auth.ts"
+import { serverAuth$ } from '@builder.io/qwik-auth';
+import GitHub from '@auth/core/providers/github';
+import type { Provider } from '@auth/core/providers';
+
+export const { onRequest, useAuthSession, useAuthSignin, useAuthSignout } = serverAuth$(
+  ({ env }) => ({
+    secret: env.get("AUTH_SECRET"),
+    trustHost: true,
+    providers: [
+      GitHub({
+        clientId: env.get("GITHUB_ID"),
+        clientSecret: env.get("GITHUB_SECRET"),
+      }),
+    ] as Provider[],
+  })
+);
+```
+
+Поскольку `Qwik` использует `Vite`, мы будем следовать документации [Переменные и режимы Vite Env] (https://vitejs.dev/guide/env-and-mode.html).
+
+Теперь создадим файл `.env.local` для хранения секретов.
+
+```bash title=".env.local"
+GITHUB_ID=
+GITHUB_SECRET=
+AUTH_SECRET=
+```
+
+Ознакомьтесь с [GitHub OAuth Guide](https://docs.github.com/en/apps/oauth-apps/building-oauth-apps/creating-an-oauth-app) для получения `GitHub Client ID`, `GitHub Client Secrets` и сгенерируйте `AUTH_SECRET` с помощью `openssl rand -base64 32` или [Secret Generator](https://generate-secret.vercel.app/32).
+
+Теперь мы закончили с настройкой `Auth.js`. У нас будут следующие маршруты:
+
+- `/api/auth/session`: информация о текущем зарегистрированном пользователе;
+- `/api/auth/signin`: здесь представлены все поставщики прав доступа;
+- `/api/auth/signout`: для выхода из текущей сессии;
+- `/api/auth/csrf`: для генерации csrf-токена;
+- `/api/auth/error`: страница ошибки по умолчанию;
+- `/api/auth/providers`: для получения списка всех провайдеров.
+
+Ознакомьтесь с [`Auth.js`](https://authjs.dev/) для получения более подробной информации.

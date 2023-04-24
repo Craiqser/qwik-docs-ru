@@ -34,6 +34,7 @@
 ## Интеграции
 
 - [Обзор](integrations/index.mdx)
+- [Auth.js](integrations/authjs/index.mdx)
 - [Оптимизация изображений](integrations/image-optimization/index.mdx)
 - [Интернационализация](integrations/i18n/index.mdx)
 - [Partytown](integrations/partytown/index.mdx)
