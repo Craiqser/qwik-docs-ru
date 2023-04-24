@@ -84,6 +84,7 @@
 - [Спекулятивное получение модуля](/docs/(qwikcity)/advanced/speculative-module-fetching/index.mdx)
 - [Меню](/docs/(qwikcity)/advanced/menu/index.mdx)
 - [Статические ассеты](/docs/(qwikcity)/advanced/static-assets/index.mdx)
+- [Карта сайта](/docs/(qwikcity)/advanced/sitemaps/index.mdx)
 
 ## Сообщество
 
