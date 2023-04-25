@@ -27,7 +27,7 @@ npm run qwik add auth
 
 ### Необходимые действия
 
-After installing the auth package using `npm run qwik add auth` the `@auth/core` package will need to be added to the dependency optimzation settings of the `vite.config.js` file:
+После установки пакета auth с помощью `npm run qwik add auth` пакет `@auth/core` необходимо добавить в настройки оптимизации зависимостей в файле `vite.config.js`:
 
 ```js {9-11} title="vite.config.js"
 export default defineConfig(() => {
@@ -49,7 +49,7 @@ export default defineConfig(() => {
 
 ### useAuthSession
 
-A [routerLoader$](/docs/route-loader/) that returns a session object or an empty object if there is no session. The contents of the session object that is returned are configurable with the session callback. Session data can also be retrieved using the [session](#session) REST API.
+[routerLoader$](/docs/route-loader/), который возвращает объект сессии или пустой объект, если сессия отсутствует. Содержимое возвращаемого объекта сессии настраивается с помощью функции обратного вызова сессии. Данные сессии также можно получить с помощью REST API [session](#session).
 
 ```tsx
 import { component$ } from '@builder.io/qwik';
@@ -59,23 +59,22 @@ export default component$(() => {
   const session = useAuthSession();
   return <p>{session.value?.user?.email}</p>;
 });
-
 ```
 
 ### useAuthSignin
 
-A [routeAction$](/docs/action/) used to initiate a signin flow or send the user to the signin page listing all possible providers. The CSRF token is handled internally when signing in using `useAuthSignin`.
+[routeAction$](/docs/action/) используется для инициирования потока регистрации или отправки пользователя на страницу регистрации со списком всех возможных провайдеров. Токен CSRF обрабатывается внутренне при входе в систему с помощью `useAuthSignin`.
 
-#### Parameters
+#### Параметры
 
-* `providerId`: An optional string parameter with the name of the provider. When supplied will initiate the Authorization Request to your Identity Provider. When omited will redirect to the built-in/unbranded sign-in page.
-* `options`: An optional object of options.
-  * `callbackUrl`: An optional string specifying to which URL the user will be redirected after signing in. Defaults to the page URL the sign-in is initiated from.
-* `authorizationParams`: An optional object of additional parameters sent to the /authorize endpoint. See the Authorization Request OIDC spec for some ideas.
+* `providerId`: Необязательный строковый параметр с именем провайдера. Если установлен, то инициирует запрос авторизации к поставщику идентификационных данных. При отсутствии этого параметра происходит перенаправление на встроенную/небрендированную страницу регистрации.
+* `options`: Необязательный объект опций.
+  * `callbackUrl`: Необязательная строка, указывающая, на какой URL-адрес будет перенаправлен пользователь после входа в систему. По умолчанию используется URL страницы, с которой инициируется вход.
+* `authorizationParams`: Необязательный объект дополнительных параметров, передаваемых конечной точке `/authorize`. Некоторые идеи см. в спецификации Authorization Request OIDC.
 
-> **NOTE:** You can also set the `authorizationParams` through the provider.authorizationParams configuration
+> **ПРИМЕЧАНИЕ:** Вы также можете установить `authorizationParams` через конфигурацию provider.authorizationParams.
 
-Example using `useAuthSignin` with the [&lt;Form&gt;](/docs/action/#using-actions-with-form) component and optional `providerId` and `options.callbackUrl`:
+Пример использования `useAuthSignin` с компонентом [&lt;Form&gt;](/docs/action/#using-actions-with-form) и необязательными `providerId` и `options.callbackUrl`:
 
 ```tsx
 import { component$ } from '@builder.io/qwik';
@@ -88,13 +87,13 @@ export default component$(() => {
     <Form action={signIn}>
       <input type="hidden" name="providerId" value="github" />
       <input type="hidden" name="options.callbackUrl" value="http://qwik-auth-example.com/dashboard" />
-      <button>Sign In</button>
+      <button>Войти</button>
     </Form>
   );
 });
 ```
 
-Example using `useAuthSignin` programatically with optional `providerId` and `options.callbackUrl`:
+Пример использования `useAuthSignin` программно с дополнительными `providerId` и `options.callbackUrl`:
 
 ```tsx
 import { component$ } from '@builder.io/qwik';
@@ -103,22 +102,22 @@ import { useAuthSignin } from '~/routes/plugin@auth';
 export default component$(() => {
   const signIn = useAuthSignin();
   return (
-    <button onClick$={() => signIn.submit({ providerId: 'github', options: { callbackUrl: 'http://qwik-auth-example.com/dashboard' } })}>Sign In</button>
+    <button onClick$={() => signIn.submit({ providerId: 'github', options: { callbackUrl: 'http://qwik-auth-example.com/dashboard' } })}>Войти</button>
   );
 });
 ```
 
 ### useAuthSignout
 
-A [routeAction$](/docs/action/) used to initiate a signout flow. The user session will be invalidated/removed from the cookie/database, depending on the flow you chose to store sessions.
+[routeAction$](/docs/action/), используемый для инициирования процесса выхода из системы. Сессия пользователя будет аннулирована/удалена из кук/базы данных, в зависимости от выбранного вами способа хранения сессий.
 
-#### Parameters
+#### Параметры
 
-* `callbackUrl`: An optional string specifying to which URL the user will be redirected after signing out. Defaults to the page URL the sign-in is initiated from.
+* `callbackUrl`: Необязательная строка, указывающая, на какой URL-адрес будет перенаправлен пользователь после выхода из системы. По умолчанию используется URL страницы, с которой инициируется вход.
 
-The 'callbackUrl' must be considered valid by the redirect callback handler. By default, it requires the URL to be an absolute URL at the same host name, or you can also supply a relative URL starting with a slash. If it does not match it will redirect to the homepage. You can define your own redirect callback to allow other URLs.
+'callbackUrl' должен считаться действительным обработчиком функции обратного вызова перенаправления. По умолчанию он требует, чтобы URL был абсолютным URL с тем же именем хоста, или вы можете указать относительный URL, начинающийся со слэша. Если он не совпадает, произойдёт перенаправление на домашнюю страницу. Вы можете определить свою собственную функцию обратного вызова перенаправления, чтобы разрешить другие URL-адреса.
 
-Example using `useAuthSignout` with the [&lt;Form&gt;](/docs/action/#using-actions-with-form) component and optional `callbackUrl`:
+Пример использования `useAuthSignout` с компонентом [&lt;Form&gt;](/docs/action/#using-actions-with-form) и необязательным `callbackUrl`:
 
 ```tsx
 import { component$ } from '@builder.io/qwik';
@@ -130,13 +129,13 @@ export default component$(() => {
   return (
     <Form action={signOut}>
       <input type="hidden" name="callbackUrl" value="/signedout" />
-      <button>Sign Out</button>
+      <button>Выйти</button>
     </Form>
   );
 });
 ```
 
-Example using `useAuthSignout` programatically with optional `callbackUrl`:
+Пример использования `useAuthSignout` программно с необязательным `callbackUrl`:
 
 ```tsx
 import { component$ } from '@builder.io/qwik';
@@ -144,23 +143,23 @@ import { useAuthSignout } from '~/routes/plugin@auth';
 
 export default component$(() => {
   const signOut = useAuthSignout();
-  return <button onClick$={() => signOut.submit({ callbackUrl: '/signedout' })}>Sign Out</button>;
+  return <button onClick$={() => signOut.submit({ callbackUrl: '/signedout' })}>Выйти</button>;
 });
 ```
 
 ## REST API
 
-All the same REST APIs as provided by Auth.js are available.
+Доступны все те же REST API, что и в Auth.js.
 
 ### signin
 
 **GET /api/auth/signin**
 
-Displays the built-in/unbranded sign-in page.
+Отображает встроенную/небрендированную страницу входа в систему.
 
 **POST /api/auth/signin/:provider**
 
-Starts a provider-specific sign-in flow. In the case of an OAuth provider, calling this endpoint will initiate the Authorization Request to your Identity Provider.  This endpoint is also used by the [useAuthSignin](#useauthsignin) action internally.
+Запускает процесс регистрации для конкретного поставщика услуг. В случае OAuth-провайдера вызов этой конечной точки инициирует запрос авторизации к вашему поставщику идентификационных данных. Эта конечная точка также используется внутренним действием [useAuthSignin](#useauthsignin).
 
 ### callback
 
@@ -170,36 +169,37 @@ Starts a provider-specific sign-in flow. In the case of an OAuth provider, calli
 
 **GET /api/auth/signout**
 
-Displays the built-in/unbranded sign out page.
+Отображает встроенную/небрендированную страницу выхода из системы.
 
 **POST /api/auth/signout**
 
-Handles signing the user out - this is a POST submission to prevent malicious links from triggering signing a user out without their consent. The user session will be invalidated/removed from the cookie/database, depending on the flow you chose to store sessions. This endpoint is also used by the [useAuthSignout](#useauthsignout) method internally.
+Обработка выхода пользователя из системы - это POST-представление для предотвращения того, чтобы вредоносные ссылки вызывали выход пользователя из системы без его согласия. Сессия пользователя будет аннулирована/удалена из кук/базы данных, в зависимости от выбранного вами способа хранения сессий. Эта конечная точка также используется внутренним методом [useAuthSignout](#useauthsignout).
 
 ### session
 
 **GET /api/auth/session**
 
-Returns client-safe session object - or an empty object if there is no session. The contents of the session object that is returned are configurable with the session callback. Session data can also be retrieved using the [useAuthSession](#useauthsession) routerLoader.
+Возвращает безопасный для клиента объект сессии - или пустой объект, если сессия отсутствует. Содержимое возвращаемого объекта сессии настраивается с помощью функции обратного вызова сессии. Данные сессии также можно получить с помощью загрузчика маршрута [useAuthSession](#useauthsession).
 
 ### csrf
 
 **GET /api/auth/csrf**
 
-Returns object containing CSRF token. In NextAuth.js, CSRF protection is present on all authentication routes. It uses the "double submit cookie method", which uses a signed HttpOnly, host-only cookie. The CSRF token returned by this endpoint must be passed as form variable named csrfToken in all POST submissions to any API endpoint.
+Возвращает объект, содержащий CSRF-токен. В NextAuth.js CSRF-защита присутствует на всех маршрутах аутентификации. Он использует "метод двойной отправки кук", который использует HttpOnly-, host-only-куки. CSRF-токен, возвращаемый этой конечной точкой, должен передаваться как переменная формы с именем csrfToken во всех POST-запросах к любой конечной точке API.
 
 ### providers
 
 **GET /api/auth/providers**
 
-Returns a list of configured OAuth services and details (e.g. sign in and callback URLs) for each service. It is useful to dynamically generate custom sign up pages and to check what callback URLs are configured for each OAuth provider that is configured.
+Возвращает список настроенных сервисов OAuth и подробную информацию (например, URL-адреса входа и функции обратного вызова) для каждой службы. Это полезно для динамического создания пользовательских страниц регистрации и для проверки того, какие URL функций обратного вызова настроены для каждого настроенного провайдера OAuth.
 
-## Examples
+## Примеры
 
 ### GitHub
 
-1. Follow the [GitHub OAuth Guide](https://docs.github.com/en/apps/oauth-apps/building-oauth-apps/creating-an-oauth-app) to get your `GitHub Client ID`, `GitHub Client Secrets` and generate `AUTH_SECRET` using `openssl rand -base64 32` or [Secret Generator](https://generate-secret.vercel.app/32).
-2. Since the default `plugin@auth.ts` uses GitHub as an example, we don't need to change anything there. However a provider other than GitHub could be used or additional provides could be added. Auth.js also supports many [additional options](https://next-auth.js.org/configuration/options#options) that can be set in this file.
+1. Следуйте [руководству GitHub OAuth](https://docs.github.com/en/apps/oauth-apps/building-oauth-apps/creating-an-oauth-app) для получения `GitHub Client ID`, `GitHub Client Secrets` и сгенерируйте `AUTH_SECRET` с помощью `openssl rand -base64 32` или [Secret Generator](https://generate-secret.vercel.app/32).
+2. Поскольку по умолчанию `plugin@auth.ts` использует GitHub в качестве примера, нам не нужно ничего менять. Однако можно использовать не только GitHub, но и других провайдеров, или добавить дополнительные. Auth.js также поддерживает множество [дополнительных опций](https://next-auth.js.org/configuration/options#options), которые могут быть установлены в этом файле.
+
 ```ts title="src/routes/plugin@auth.ts"
 import { serverAuth$ } from '@builder.io/qwik-auth';
 import GitHub from '@auth/core/providers/github';
@@ -218,7 +218,8 @@ export const { onRequest, useAuthSession, useAuthSignin, useAuthSignout } = serv
   })
 );
 ```
-3. Create or edit the `.env.local` file at the root of your project to store secrets
+
+3. Для хранения секретов создайте или отредактируйте файл `.env.local` в корне вашего проекта
 
 ```bash title=".env.local"
 GITHUB_ID=
@@ -226,7 +227,7 @@ GITHUB_SECRET=
 AUTH_SECRET=
 ```
 
-> *IMPORTANT*: Please read the Qwik documentation about [Environment Variables](/docs/env-variables/) to ensure you are using them safely. Many provider secrets should be kept secure and not exposed to the client/browser.
+> *ВАЖНО*: Пожалуйста, прочитайте документацию Qwik о [Переменных среды](/docs/env-variables/), чтобы убедиться, что вы безопасно их используете. Секретные токены многих провайдеров должны храниться в безопасности и не раскрываться клиенту/браузеру.
 
-4. The application is now ready to impliment authentication using Auth.js.
-5. Enjoy!
+4. Теперь приложение готово к реализации аутентификации с помощью Auth.js.
+5. Наслаждайтесь!
