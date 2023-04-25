@@ -47,6 +47,7 @@
 - [Vitest](integrations/vitest/index.mdx)
 - [Supabase](integrations/supabase/index.mdx)
 - [Prisma](integrations/prisma/index.mdx)
+- [Storybook](integrations/storybook/index.mdx)
 
 ## Развёртывание
 

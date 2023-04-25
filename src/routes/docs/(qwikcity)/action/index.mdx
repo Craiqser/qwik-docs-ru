@@ -63,8 +63,8 @@ export default component$(() => {
 Лучший способ вызвать действие - использовать компонент `<Form/>`, экспортированный в `@builder.io/qwik-city`.
 
 ```tsx title="src/routes/index.tsx"
-import { routeAction$, Form } from '@builder.io/qwik-city';
 import { component$ } from '@builder.io/qwik';
+import { routeAction$, Form } from '@builder.io/qwik-city';
 
 export const useAddUser = routeAction$(async (user) => {
   const userID = await db.users.add(user);
@@ -95,8 +95,8 @@ export default component$(() => {
 Действия могут быть запущены из кода с помощью метода `action.submit()`, т.е. компонент `<Form />` не обязателен. Вы можете запустить действие по нажатию кнопки или при наступлении любого другого события, точно так же, как вы бы делали это с помощью функции.
 
 ```tsx {18} title="src/routes/index.tsx"
-import { routeAction$ } from '@builder.io/qwik-city';
 import { component$ } from '@builder.io/qwik';
+import { routeAction$ } from '@builder.io/qwik-city';
 
 export const useAddUser = routeAction$(async (user) => {
   const userID = await db.users.add(user);
@@ -111,7 +111,7 @@ export default component$(() => {
   return (
     <section>
       <button
-        onClick={async () => {
+        onClick$={async () => {
           const { value } = await action.submit({ name: 'John' });
           console.log(value);
         }}
@@ -132,8 +132,9 @@ Qwik поставляется со встроенной поддержкой [Zo
 
 Действия + [Zod](https://zod.dev/) позволяют создавать безопасные формы, в которых данные проверяются на стороне сервера перед выполнением действия.
 
-```tsx {15-18} /firstName/#a /lastName/#b /email/#c title="src/routes/index.tsx"
-import { routeAction$, zod$, z } from '@builder.io/qwik-city';
+```tsx {16-20} /firstName/#a /lastName/#b title="src/routes/index.tsx"
+import { component$ } from '@builder.io/qwik';
+import { routeAction$, zod$, z, Form } from '@builder.io/qwik-city';
 
 export const useAddUser = routeAction$(
   async (user) => {
@@ -187,13 +188,15 @@ export default component$(() => {
 import { routeAction$ } from '@builder.io/qwik-city';
 
 // Вторым аргументом действия является объект `RequestEvent`.
-export const useProductRecommendations = routeAction$(async (_data, requestEvent) => {
-  console.log('Request headers:', requestEvent.headers);
-  console.log('Request cookies:', requestEvent.cookie);
-  console.log('Request url:', requestEvent.url);
-  console.log('Request params:', requestEvent.params);
-  console.log('MY_ENV_VAR:', requestEvent.env.get('MY_ENV_VAR')));
-});
+export const useProductRecommendations = routeAction$(
+  async (_data, requestEvent) => {
+    console.log('Request headers:', requestEvent.headers);
+    console.log('Request cookies:', requestEvent.cookie);
+    console.log('Request url:', requestEvent.url);
+    console.log('Request params:', requestEvent.params);
+    console.log('MY_ENV_VAR:', requestEvent.env.get('MY_ENV_VAR'));
+  }
+);
 ```
 
 ## Ошибки действия
@@ -276,7 +279,7 @@ export default component$(() => {
 
 ### `routeAction$()`
 
-`globalAction$()` может быть объявлен только внутри папки `src/routes`, в файле `layout.tsx` или `index.tsx`, и он ДОЛЖЕН быть экспортирован, как и `routeLoader$()`. Поскольку `routeAction$()` доступны только в пределах объявленного маршрута, их рекомендуется использовать, когда действие должно получить доступ к каким-либо пользовательским данным, или это защищённый маршрут. Думайте о нём, как о приватном действии.
+`routeAction$()` может быть объявлен только внутри папки `src/routes`, в файле `layout.tsx` или `index.tsx`, и он ДОЛЖЕН быть экспортирован, как и `routeLoader$()`. Поскольку `routeAction$()` доступны только в пределах объявленного маршрута, их рекомендуется использовать, когда действие должно получить доступ к каким-либо пользовательским данным, или это защищённый маршрут. Думайте о нём, как о приватном действии.
 
 ```tsx title="src/routes/form/index.tsx"
 import { routeAction$ } from '@builder.io/qwik-city';
