@@ -1,0 +1,74 @@
+---
+title: Иконки
+keywords: >-
+  icons, icones, iconify, iconoir, bootstrap, heroicons, tabler, lucide, mono, simple, octicons, ionicons
+contributors:
+  - manucorporat
+---
+
+import image from './icones.png';
+import CodeSandbox from '../../../../components/code-sandbox/index.tsx';
+
+# Иконки
+
+Иконки являются важной частью любого приложения. Уже существует более 180.000 иконок, которые вы можете добавить в своё приложение Qwik.
+
+## `qwikest/icons`
+
+Этот пакет позволяет добавить в приложение Qwik иконки из различных наборов иконок.
+
+- `Bs`: Bootstrap Icons
+- `Go`: Octicons by GitHub
+- `Hi`: Heroicons by Tailwind
+- `In`: Iconoir
+- `Io`: Ionicons by Ionic
+- `Lu`: Lucide [superset of feather icons]
+- `Mo`: Mono Icons
+- `Si`: Simple Icons [icons for popular brands]
+- `Tb`: Tabler Icons
+
+Просто установите пакет с помощью выбранного вами менеджера пакетов:
+
+```bash
+npm i @qwikest/icons
+yarn add @qwikest/icons
+pnpm add @qwikest/icons
+```
+
+### Использование
+
+```tsx
+import { LuRocket } from "@qwikest/icons/lucide";
+
+export const MyComponent = component$(() => {
+  // Размер и цвет иконки наследуются по умолчанию ⬇️
+  return (
+    <div style={{ color: "red", fontSize: "40px" }}>
+      <LuRocket />
+    </div>
+  );
+});
+```
+
+Пожалуйста, обратитесь к [официальной документации для более подробной информации](https://github.com/qwikest/icons).
+
+## `icones.js.org`
+
+[icones.js.org](https://icones.js.org/) - это сборник коллекций иконок. Доступно более 180.000 иконок из общественного достояния, готовых к использованию в вашем Qwik-приложении.
+
+Icones работает на базе [iconify](https://iconify.design/), который позволяет легко добавлять иконки из Material Design, Phosphor, Remix, Carbon, Bootstrap, Tabler, Feather, Fluent, IconPark, Octicons и многих других наборов иконок. Twitter Emoji, Fluent Emoji, EmojiOne, Noto Emoji... в любое приложение Qwik.
+
+<img src={image}/>
+
+Нажмите кнопку `Qwik`, чтобы скопировать код иконки в буфер обмена, а затем вставьте его в свой проект.
+
+```tsx
+import type { QwikIntrinsicElements } from '@builder.io/qwik'
+
+export function OcticonAlertFill12(props: QwikIntrinsicElements['svg'], key: string) {
+  return (
+    <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 12 12" {...props} key={key}><path fill="#888888" d="M4.855.708c.5-.896 1.79-.896 2.29 0l4.675 8.351a1.312 1.312 0 0 1-1.146 1.954H1.33A1.313 1.313 0 0 1 .183 9.058ZM7 7V3H5v4Zm-1 3a1 1 0 1 0 0-2a1 1 0 0 0 0 2Z"></path></svg>
+  )
+}
+export default OcticonAlertFill12
+```

@@ -1,0 +1,44 @@
+---
+title: Qwik City и Supabase
+keywords: 'supabase, db'
+contributors:
+  - manucorporat
+---
+
+# Supabase
+
+Использовать `supabase` в Qwik очень просто. Библиотека Supabase JS прекрасно взаимодействует с серверными API Qwik, такими как `routeLoader$`, `routeAction` или `server$`.
+
+Сначала установите Supabase в свой Qwik-проект:
+
+```bash
+npm install @supabase/supabase-js supabase-auth-helpers-qwik
+```
+
+Вторым шагом будет добавление конфигурации `PUBLIC_SUPABASE_URL` и `PUBLIC_SUPABASE_ANON_KEY` в качестве переменных окружения в файл `.env`, "anon" ключ безопасен в плане раскрытия на стороне клиента.
+
+```bash
+PUBLIC_SUPABASE_URL=https://xxxxxxx.supabase.co
+PUBLIC_SUPABASE_ANON_KEY=eyJhb.......
+```
+
+Вы должны иметь возможность получить эти значения из панели Supabase, создать новый файл `.env.local` в корне проекта и вставить их туда.
+
+## Серверная часть
+
+Теперь клиент Supabase можно использовать на стороне сервера - в `routeLoader` и `routeAction` - путём вызова функции `createServerClient`.
+
+```tsx
+import { routeLoader$ } from '@builder.io/qwik-city';
+import { createServerClient } from 'supabase-auth-helpers-qwik';
+
+export const useDBTest = routeLoader$(async (requestEv) => {
+  const supabaseClient = createServerClient(
+    import.meta.env.PUBLIC_SUPABASE_URL,
+    import.meta.env.PUBLIC_SUPABASE_ANON_KEY,
+    requestEv
+  );
+  const { data } = await supabaseClient.from('test').select('*')
+  return { data };
+});
+```

@@ -36,6 +36,7 @@
 - [Обзор](integrations/index.mdx)
 - [Auth.js](integrations/authjs/index.mdx)
 - [Оптимизация изображений](integrations/image-optimization/index.mdx)
+- [Иконки](integrations/icons/index.mdx)
 - [Интернационализация](integrations/i18n/index.mdx)
 - [Partytown](integrations/partytown/index.mdx)
 - [Playwright](integrations/playwright/index.mdx)
@@ -44,6 +45,8 @@
 - [Styled-Vanilla-Extract](integrations/styled-vanilla-extract/index.mdx)
 - [Tailwind CSS](integrations/tailwind/index.mdx)
 - [Vitest](integrations/vitest/index.mdx)
+- [Supabase](integrations/supabase/index.mdx)
+- [Prisma](integrations/prisma/index.mdx)
 
 ## Развёртывание
 

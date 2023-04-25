@@ -39,7 +39,7 @@ export default component$(() => {
 });
 
 export const head: DocumentHead = {
-  // Это будет использоваться для определения элемента <title> страницы
+  // Будет использоваться для определения элемента <title> страницы
   title: 'About page',
   meta: [
     {
@@ -56,8 +56,16 @@ export const head: DocumentHead = {
       content: 'This is the about page',
     },
   ],
+  link: [
+    {
+      rel: 'canonical',
+      href: 'https://example.com/about',
+    },
+  ],
 };
 ```
+
+В приведённом выше примере задаётся заголовок, а также некоторые метаданные [Open Graph](https://ogp.me/) и [каноническая ссылка](https://developers.google.com/search/docs/crawling-indexing/canonicalization).
 
 > HTML размещает тег `<head>` как первый элемент в `<html>` (в самом верху содержимого HTML). Секция `<head>` не является тем, что компонент маршрута рендерит напрямую, поскольку это нарушит потоковую передачу HTML.
 
