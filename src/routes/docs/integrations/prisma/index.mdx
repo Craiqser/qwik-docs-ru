@@ -8,15 +8,19 @@ contributors:
 
 # Prisma
 
-Prisma ORM можно использовать в Qwik с помощью функций `routeLoader$`, `routeAction$` и `server$`. Эти API позволяют выполнять код только на стороне сервера, что и нужно Prisma.
+[Prisma](https://www.prisma.io/) позволяет взаимодействовать с [MongoDB](https://www.prisma.io/docs/concepts/database-connectors/mongodb) или [SQL базами данных](https://www.prisma.io/docs/concepts/database-connectors/postgresql) с полной безопасностью типов.
+
+В Prisma вы определяете схему БД в файлах `.prisma`, а CLI автоматически генерирует миграции БД, а также типы Typescript.
+
+Prima ORM можно использовать в Qwik с функциями `routeLoader$`, `routeAction$` и `server$`. Это API Qwik, позволяющие выполнять код только на стороне сервера.
 
 Самый простой способ добавить Prisma в Qwik - это использовать команду `pnpm qwik add prisma`. Это позволит установить необходимые зависимости и создать папку `prisma` со схемой Prisma и миграциями.
-
-Prisma позволяет легко использовать различные базы данных, такие как Postgres, MySQL, SQLite и MongoDB.
 
 ```bash
 npm run qwik add prisma
 ```
+
+> Prisma позволяет легко использовать различные базы данных, такие как Postgres, MySQL, SQLite и MongoDB.
 
 ## Список всех пользователей
 
@@ -131,3 +135,15 @@ export default component$(() => {
   )
 });
 ```
+
+## Ограничения
+
+### Большой бинарник WASM
+
+Prima Client требует двоичный файл WASM размером 14 МБ, который может оказаться слишком большим, если вы планируете развернуть своё приложение в бессерверной среде. Мы рекомендуем использовать Prisma только при развертывании в среде Node.js, такой как Google Cloud Run, Express или Azure.
+
+Посмотрите [эту статью в блоге для более подробной информации](https://dev.to/nexxeln/typesafe-database-queries-on-the-edge-5bbn).
+
+### Клиент Prisma может не очень хорошо работать с `pnpm`.
+
+Способ, которым Prisma генерирует типы клиентов, нарушает принцип работы `npm` node_modules, который отличается от принципа работы `pnpm`. Мы рекомендуем использовать `npm`, если вы планируете использовать Prisma.
