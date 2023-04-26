@@ -1,0 +1,124 @@
+---
+title: Библиотека компонентов
+contributors:
+  - manucorporat
+---
+
+# Библиотека
+
+Qwik использует [библиотечный режим Vite](https://vitejs.dev/guide/build.html#library-mode) для создания библиотек компонентов.
+
+Для того чтобы создать библиотеку компонентов для Qwik, необходимо соблюдать определённые правила, это связано с тем, что оптимизатор Qwik должен распознать вашу библиотеку как библиотеку Qwik.
+
+Самый простой способ создать новую библиотеку компонентов - использовать встроенный шаблон `library`:
+
+```bash
+pnpm create qwik library my-library
+```
+
+В результате будет создана новая папка `my-library` со следующей структурой:
+
+```bash {2,11,14}
+├── README.md
+├── package.json
+├── src
+│   ├── components
+│   │   ├── counter
+│   │   │   └── counter.tsx
+│   │   └── logo
+│   │       └── logo.tsx
+│   ├── entry.dev.tsx
+│   ├── entry.ssr.tsx
+│   ├── index.ts
+│   └── root.tsx
+├── tsconfig.json
+└── vite.config.ts
+```
+
+Наиболее важными файлами библиотеки являются правильно настроенные `package.json` и `vite.config.ts`.
+
+## package.json
+
+```json
+{
+  "name": "my-qwik-library-name",
+  "version": "0.0.1",
+  "description": "Create a reusable Qwik component library",
+  "main": "./lib/index.qwik.mjs",
+  "qwik": "./lib/index.qwik.mjs",
+  "types": "./lib-types/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./lib/index.qwik.mjs",
+      "require": "./lib/index.qwik.cjs",
+      "types": "./lib-types/index.d.ts"
+    }
+  },
+  "files": [
+    "lib",
+    "lib-types"
+  ],
+  "type": "module",
+}
+```
+
+Обратите внимание на поле `qwik`, это точка входа для Qwik Optimizer, он будет использовать этот файл для генерации файла `index.qwik.mjs`.
+
+> Файл должен быть с расширением `.qwik.mjs`, иначе оптимизатор Qwik не распознает его.
+
+## vite.config.ts
+
+```ts {8-12}
+import { defineConfig } from 'vite';
+import { qwikVite } from '@builder.io/qwik/optimizer';
+
+export default defineConfig(() => {
+  return {
+    build: {
+      target: 'es2020',
+      lib: {
+        entry: './src/index.ts',
+        formats: ['es', 'cjs'],
+        fileName: (format) => `index.qwik.${format === 'es' ? 'mjs' : 'cjs'}`,
+      },
+    },
+    plugins: [qwikVite()],
+  };
+});
+```
+
+По сравнению с обычной конфигурацией Vite, библиотеки будут использовать [`lib`-режим Vite](https://vitejs.dev/guide/build.html#library-mode), который требует конфигурирования свойства `build.lib`.
+
+## `src/index.ts`
+
+Это начальная точка вашей библиотеки, она экспортирует все компоненты и функции, которые вы хотите представить миру.
+
+```ts
+// В качестве примера мы экспортируем компоненты Logo и Counter.
+export { Logo } from './components/logo/logo';
+export { Counter } from './components/counter/counter';
+```
+
+## Библиотеки также являются приложениями
+
+Стартовый шаблон библиотеки также является отдельным приложением Qwik (без маршрутизации и Qwik City), поэтому вы найдёте файлы `entry.dev.tsx`, `entry.ssr.tsx` и `root.tsx`.
+
+Не беспокойтесь о них, они не будут частью конечной библиотеки, но они полезны во время разработки и тестирования, чтобы вы могли проверить свои компоненты в реальном приложении Qwik.
+
+## Сборка и публикация
+
+Чтобы опубликовать свою библиотеку, вы должны сначала собрать её в режиме `lib`, а затем опубликовать в npm.
+
+```bash
+npm run build
+```
+
+В результате будет создана папка `lib` со следующей структурой. Затем вы можете опубликовать её в npm.
+
+```bash {2,11,14}
+npm publish
+```
+
+> Обратите внимание, что перед первой публикацией вы можете захотеть обновить поля `package.json`, такие как `name`, `version`, `description` и т.д.
+
+> Для любой другой последующей публикации вам нужно будет обновить поле `version`.

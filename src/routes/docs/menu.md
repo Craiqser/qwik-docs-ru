@@ -79,6 +79,7 @@
 - [Знак доллара `$`](/docs/(qwik)/advanced/dollar/index.mdx)
 - [Контейнеры](/docs/(qwik)/advanced/containers/index.mdx)
 - [QRL](/docs/(qwik)/advanced/qrl/index.mdx)
+- [Библиотека](/docs/(qwik)/advanced/library/index.mdx)
 - [Qwikloader](/docs/(qwik)/advanced/qwikloader/index.mdx)
 - [Оптимизатор](/docs/(qwik)/advanced/optimizer/index.mdx)
 - [Предзагрузка](/docs/(qwik)/advanced/prefetching/index.mdx)
