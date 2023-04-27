@@ -1,0 +1,19 @@
+{
+	"compilerOptions": {
+		"declaration": true,
+		"esModuleInterop": true,
+		"incremental": true,
+		"inlineSourceMap": true,
+		"inlineSources": true,
+		"lib": ["es2022", "DOM", "webworker"],
+		"module": "ES2022",
+		"moduleResolution": "node",
+		"resolveJsonModule": true,
+		"jsx": "react-jsx",
+		"jsxImportSource": "@builder.io/qwik",
+		"strict": true,
+		"target": "ES2022",
+		"types": ["node", "vite/client"],
+		"verbatimModuleSyntax": true,
+	}
+}
