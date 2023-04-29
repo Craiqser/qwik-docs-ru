@@ -1,0 +1,163 @@
+---
+title: Modular Forms
+keywords: 'form, library, validation, type-safe'
+contributors:
+  - fabian-hiller
+---
+
+# Modular Forms
+
+[Modular Forms](https://modularforms.dev/) - это типобезопасная библиотека форм, построенная на базе Qwik. Headless-дизайн даёт вам полный контроль над внешним видом вашей формы. Библиотека заботится об управлении состоянием и проверке ввода.
+
+Чтобы начать работу, установите пакет npm:
+
+```bash
+npm install @modular-forms/qwik
+```
+
+## Определите вашу форму
+
+Прежде чем приступить к созданию формы, вы определяете структуру и типы данных полей. Кроме строк Modular Forms может работать с логическими типами, числами, файлами, датами, объектами и массивами.
+
+```ts
+type LoginForm = {
+  email: string;
+  password: string;
+};
+```
+
+Поскольку Modular Forms поддерживает Zod для валидации ввода, вы можете получить определение типа из схемы.
+
+```ts
+const loginSchema = z.object({
+  email: z
+    .string()
+    .min(1, 'Please enter your email.')
+    .email('The email address is badly formatted.'),
+  password: z
+    .string()
+    .min(1, 'Please enter your password.')
+    .min(8, 'You password must have 8 characters or more.'),
+});
+
+type LoginForm = z.infer<typeof loginSchema>;
+```
+
+## Установите начальные значения
+
+После того как вы создали определение типа, продолжите работу с начальными значениями вашей формы. Для этого создайте [`routeLoader$`](../../route-loader/) с использованием в качестве дженерика ваш ранее созданный тип.
+
+```ts
+export const useFormLoader = routeLoader$<InitialValues<LoginForm>>(() => ({
+  email: '',
+  password: '',
+}));
+```
+
+Вместо пустых строк, в `routeLoader$` вы можете запрашивать и передавать значения из вашей базы данных. На основе переданного объекта будет инициализировано хранилище вашей формы, чтобы Qwik мог надежно пререндерить ваш сайт на сервере. Начальные значения также используются для проверки, изменилось ли значение поля после пользовательского ввода.
+
+## Создайте форму
+
+Чтобы создать форму, вы используете хук [`useForm`](https://modularforms.dev/qwik/api/useForm). Он возвращает хранилище вашей формы и объект с компонентами `Form`, `Field` и `FieldArray`. В качестве параметра вы передаете объект `useForm`, с ранее созданным загрузчиком.
+
+```ts
+export default component$(() => {
+  const [loginForm, { Form, Field, FieldArray }] = useForm<LoginForm>({
+    loader: useFormLoader(),
+  });
+});
+```
+
+Вы можете использовать объект `loginForm` для доступа к текущему состоянию вашей формы. Кроме того, вы можете передать его в различные методы, предоставляемые библиотекой, такие как [`reset`](https://modularforms.dev/qwik/api/reset) или [`setValue`](https://modularforms.dev/qwik/api/setValue), чтобы вручную изменить состояние.
+
+В JSX-части вашего компонента вы продолжаете компонент [`Form`](https://modularforms.dev/qwik/api/Form). Он окружает поля вашей формы, и через его свойства вы можете определить, что произойдет, когда форма будет отправлена.
+
+```tsx
+export default component$(() => {
+  const [loginForm, { Form, Field, FieldArray }] = useForm<LoginForm>({
+    loader: useFormLoader(),
+  });
+
+  return <Form>…</Form>;
+});
+```
+
+## Добавьте поля формы
+
+Теперь вы можете продолжить работу с полями вашей формы. С компонентами [`Field`](https://modularforms.dev/qwik/api/Field) и [`FieldArray`](https://modularforms.dev/qwik/api/FieldArray) вы регистрируете поле или множество полей. Оба компонента являются автономными и предоставляют вам прямой доступ к их текущему состоянию. Второй параметр свойства рендера должен быть передан элементу `<input />`, `<select />` или `<textarea />`, чтобы связать его с вашей формой.
+
+```tsx
+<Form>
+  <Field name="email">
+    {(field, props) => (
+      <input {...props} type="email" value={field.value} />
+    )}
+  </Field>
+  <Field name="password">
+    {(field, props) => (
+      <input {...props} type="password" value={field.value} />
+    )}
+  </Field>
+  <input type="submit" />
+</Form>
+```
+
+Такая конструкция API приводит к полностью типобезопасной форме. Кроме того, она даёт вам полный контроль над пользовательским интерфейсом. Вы можете разработать собственный компонент [`TextInput`](https://modularforms.dev/qwik/guides/input-components) или подключить готовую библиотеку компонентов.
+
+## Валидация значений
+
+Одной из основных функций Modular Forms является валидация ввода. Для этого можно использовать схему Zod или наши внутренние функции валидации. Чтобы упростить это руководство, мы используем схему Zod, которую мы создали ранее, и передадим ее в хук `useForm`.
+
+```ts
+const [loginForm, { Form, Field, FieldArray }] = useForm<LoginForm>({
+  loader: useFormLoader(),
+  validate: zodForm$(loginSchema),
+});
+```
+
+Теперь вам нужно только отобразить сообщения об ошибках ваших полей в случае её возникновения.
+
+```tsx
+<Field name="email">
+  {(field, props) => (
+    <div>
+      <input {...props} type="email" value={field.value} />
+      {field.error && <div>{field.error}</div>}
+    </div>
+  )}
+</Field>
+```
+
+## Обработка отправки
+
+На последнем этапе вам остаётся только получить доступ к значениям через функцию при отправке формы, чтобы обработать и использовать их в дальнейшем. Для этого можно использовать [`formAction$`](https://modularforms.dev/qwik/api/formAction$) или свойство `onSubmit$` компонента `Form`.
+
+```tsx
+export const useFormAction = formAction$<LoginForm>((values) => {
+  // Запускается на сервере
+}, zodForm$(loginSchema));
+
+export default component$(() => {
+  const [loginForm, { Form, Field }] = useForm<LoginForm>({
+    loader: useFormLoader(),
+    action: useFormAction(),
+    validate: zodForm$(loginSchema),
+  });
+
+  const handleSubmit: SubmitHandler<LoginForm> = $((values, event) => {
+    // Запускается на клиенте
+  });
+
+  return (
+    <Form onSubmit$={handleSubmit}>
+      …
+    </Form>
+  );
+});
+```
+
+## Резюме
+
+Вы изучили основы Modular Forms и готовы создать свою первую простую форму. Для получения дополнительной информации вы можете найти другие руководства и справочник API на нашем сайте: [modularforms.dev](https://modularforms.dev/).
+
+> Вам нравится Modular Forms? Для нас было бы большой честью получить от вас звезду на [GitHub](https://github.com/fabian-hiller/modular-forms)!
