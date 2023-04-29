@@ -35,21 +35,22 @@
 
 - [Обзор](integrations/index.mdx)
 - [Auth.js](integrations/authjs/index.mdx)
-- [Оптимизация изображений](integrations/image-optimization/index.mdx)
-- [Иконки](integrations/icons/index.mdx)
-- [Интернационализация](integrations/i18n/index.mdx)
 - [Cypress](integrations/cypress/index.mdx)
+- [Modular Forms](integrations/modular-forms/index.mdx)
+- [NX Monorepos](integrations/nx/index.mdx)
 - [Partytown](integrations/partytown/index.mdx)
 - [Playwright](integrations/playwright/index.mdx)
 - [PostCSS](integrations/postcss/index.mdx)
+- [Prisma](integrations/prisma/index.mdx)
 - [React](integrations/react/index.mdx)
+- [Storybook](integrations/storybook/index.mdx)
 - [Styled-Vanilla-Extract](integrations/styled-vanilla-extract/index.mdx)
+- [Supabase](integrations/supabase/index.mdx)
 - [Tailwind CSS](integrations/tailwind/index.mdx)
 - [Vitest](integrations/vitest/index.mdx)
-- [Supabase](integrations/supabase/index.mdx)
-- [Prisma](integrations/prisma/index.mdx)
-- [Storybook](integrations/storybook/index.mdx)
-- [Modular Forms](integrations/modular-forms/index.mdx)
+- [Иконки](integrations/icons/index.mdx)
+- [Интернационализация](integrations/i18n/index.mdx)
+- [Оптимизация изображений](integrations/image-optimization/index.mdx)
 
 ## Развёртывание
 
@@ -60,6 +61,7 @@
 - [Netlify Edge](deployments/netlify-edge/index.mdx)
 - [Node](deployments/node/index.mdx)
 - [Vercel Edge](deployments/vercel-edge/index.mdx)
+- [Deno](deployments/deno/index.mdx)
 
 ## Руководства
 
