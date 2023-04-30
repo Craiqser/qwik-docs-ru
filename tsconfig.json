@@ -15,5 +15,6 @@
 		"target": "ES2022",
 		"types": ["node", "vite/client"],
 		"verbatimModuleSyntax": true,
-	}
+	},
+	"include": ["src", "./*.d.ts"]
 }
