@@ -3,11 +3,12 @@ title: Qwik City и Supabase
 keywords: 'supabase, db'
 contributors:
   - manucorporat
+  - hamatoyogi
 ---
 
 # Supabase
 
-Использовать `supabase` в Qwik очень просто. Библиотека Supabase JS прекрасно взаимодействует с серверными API Qwik, такими как `routeLoader$`, `routeAction` или `server$`.
+JS-библиотека `Supabase` прекрасно работает с серверными API Qwik, такими как `routeLoader$`, `routeAction$` или `server$`.
 
 Сначала установите Supabase в свой Qwik-проект:
 
@@ -23,6 +24,8 @@ PUBLIC_SUPABASE_ANON_KEY=eyJhb.......
 ```
 
 Вы должны иметь возможность получить эти значения из панели Supabase, создать новый файл `.env.local` в корне проекта и вставить их туда.
+
+> Примечание: Можно использовать Supabase с Qwik полностью на стороне клиента, однако при этом вы потеряете некоторые преимущества в производительности, которые можно получить, используя сервер. Для получения рабочего примера и кода перейдите по ссылке в [этот репозиторий](https://github.com/hamatoyogi/qwik-supabase-example).
 
 ## Серверная часть
 

@@ -126,6 +126,63 @@ export default component$(() => {
 
 В приведённом выше примере действие `addUser` срабатывает, когда пользователь нажимает на кнопку. Метод `action.submit()` возвращает `Promise`, который разрешается, когда действие выполнено.
 
+## Действия с обработчиками событий
+
+Мы можем использовать обработчик события `onSubmitCompleted$` после того, как действие успешно выполнено и возвращает некоторые данные. Это особенно полезно, когда после успешного завершения действия необходимо выполнить дополнительные задачи, такие как сброс элементов пользовательского интерфейса или обновление состояния приложения.
+
+Вот пример обработчика `onSubmitCompleted$`, используемого для редактирования элемента в компоненте EditForm приложения Todo.
+
+```tsx title="src/components/EditForm.tsx"
+import { component$, type Signal, useSignal } from '@builder.io/qwik';
+import { Form } from '@builder.io/qwik-city';
+import { type ListItem, useEditFromListAction } from '../../routes/index';
+
+export interface EditFormProps {
+  item: listItem;
+  editingIdSignal: Signal<string>;
+}
+
+const EditForm = component$(
+  ({ item, editingIdSignal }: EditFormProps) => {
+    const editAction = useEditFromListAction();
+
+    return (
+      <div>
+        <Form
+          action={editAction}
+          onSubmitCompleted$={() => {
+            editingIdSignal.value = '';
+          }}
+          spaReset
+        >
+          <input
+            type="text"
+            value={item.text}
+            name="text"
+            id={`edit-${item.id}`}
+          />
+          {/* Отправляет item.id с данными формы при отправке. */}
+          <input type="hidden" name="id" value={item.id} />
+          <button type="submit">
+            Отправить
+          </button>
+        </Form>
+
+        <div>
+          <button onClick$={() => (editingIdSignal.value = '')}>
+            Отмена
+          </button>
+        </div>
+      </div>
+    );
+  }
+);
+
+export default EditForm;
+```
+
+В этом примере `onSubmitCompleted$` используется для сброса значения editIdSignal в пустую строку после успешного завершения отправки формы. Это позволяет приложению обновить свое состояние и вернуться к виду по умолчанию.
+
 ## Валидация и безопасность типов
 
 Qwik поставляется со встроенной поддержкой [Zod](https://zod.dev/), проверкой схем на основе TypeScript, которые можно использовать непосредственно в действиях с помощью функции `zod$()`.
