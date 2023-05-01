@@ -5,7 +5,7 @@ contributors:
   - adamdbradley
 ---
 
-Мощной частью оптимизатора является возможность создания собственных API с суффиксом `$`.
+Мощной особенностью оптимизатора является то, что вы можете создавать свои собственные API с суффиксом `$`.
 
 Представьте, что мы хотим иметь метод задержки, который лениво загружает свою функцию обратного вызова. Обычно мы пишем что-то вроде этого:
 
@@ -54,10 +54,8 @@ export const delay$ = implicit$FirstArg(delayQrl);
 Вот типы, чтобы было понятнее, что происходит.
 
 ```tsx
-declare;
-delayQrl: (fn: QRL<() => T>, delayInMs: number) => Promise<T>;
-declare;
-delay$: (fn: () => T, delayInMs: number) => Promise<T>;
+declare function delayQrl<T>(fn: QRL<() => T>, delayInMs: number): Promise<T>;
+declare function delay$<T>(fn: () => T, delayInMs: number): Promise<T>;
 ```
 
 Вышеприведённое позволяет нам использовать `delay$` во вложенном виде, но оптимизатор преобразует `delay$` в форму `delayQrl`.
