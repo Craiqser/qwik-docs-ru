@@ -35,6 +35,7 @@
 
 - [Обзор](integrations/index.mdx)
 - [Auth.js](integrations/authjs/index.mdx)
+- [Builder.io](integrations/builderio/index.mdx)
 - [Cypress](integrations/cypress/index.mdx)
 - [Modular Forms](integrations/modular-forms/index.mdx)
 - [NX Monorepos](integrations/nx/index.mdx)

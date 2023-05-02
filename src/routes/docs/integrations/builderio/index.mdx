@@ -1,0 +1,88 @@
+---
+title: Builder.io + Qwik
+keywords: 'visual cms, headless cms, builder.io'
+contributors:
+  - manucorporat
+---
+
+# Builder.io
+
+[Builder.io](https://builder.io/) - это визуальная Headless CMS. Представьте CMS, которая интегрируется в существующую кодовую базу Qwik, позволяя вам и вашей команде редактировать контент без необходимости писать код.
+
+## Настройка
+
+Вы можете легко добавить builder.io с помощью следующей команды:
+
+```shell
+npm run qwik add builder.io
+```
+
+После выполнения вышеприведённой команды будет установлен пакет `@builder.io/sdk-qwik`, а также будут созданы новый образец компонента и маршрут по умолчанию в `src/components` и `src/routes` соответственно.
+
+Создайте бесплатный аккаунт [Builder.io](https://builder.io/signup) (это займёт всего пару минут) и вставьте свой [открытый ключ API](https://www.builder.io/c/docs/using-your-api-key) в `.env`.
+
+```diff
+- BUILDER_PUBLIC_API_KEY=YOUR_API_KEY
++ BUILDER_PUBLIC_API_KEY=abc123
+```
+
+Затем запустите сервер разработки:
+
+```bash
+npm run dev
+```
+
+Теперь перейдите по вашему [URL для предварительного просмотра](https://www.builder.io/c/docs/guides/preview-url) на `http://localhost:5173/`.
+
+1. Перейдите на [https://builder.io/models](builder.io/models)
+2. Выберите модель `page`
+3. Установите URL для предварительного просмотра на `http://localhost:5173/` и нажмите `сохранить` в правом верхнем углу.
+
+Теперь давайте создадим страницу в Builder.io и увидим её вживую в Qwik!
+
+1. Перейдите на [https://builder.io/content](builder.io/content)
+2. Клик на `+ New` и выберите `Page`
+3. Дайте странице имя и нажмите `Create`.
+
+Теперь опробуйте визуальный редактор! Пользовательские компоненты Qwik можно найти в разделе `Custom Components` на вкладке вставки.
+
+Вы также можете ограничить визуальное редактирование только вашими пользовательскими компонентами с помощью [components-only mode](https://www.builder.io/c/docs/guides/components-only-mode).
+
+## Регистрация своих компонентов
+
+Одной из главных особенностей визуальной CMS является то, что вы можете использовать свои компоненты в CMS, т.е. ваши компоненты Qwik могут быть использованы как блоки в Builder.io.
+
+```tsx
+import { MyFunComponent } from './fun/fun';
+
+export const CUSTOM_COMPONENTS: RegisteredComponent[] = [
+  {
+    component: MyFunComponent,
+    name: 'MyFunComponent',
+    inputs: [
+      {
+        name: 'text',
+        type: 'string',
+        defaultValue: 'Hello world',
+      },
+    ],
+  },
+];
+
+export default component$(() => {
+  const content = useBuilderContent();
+  return (
+    <RenderContent
+      customComponents={CUSTOM_COMPONENTS}
+    />
+  );
+});
+```
+
+## Следующие шаги
+
+Смотрите наши полные руководства по интеграции [здесь](https://www.builder.io/c/docs/developers).
+
+Кроме того, когда вы запустите интеграцию в производственной среде, вернитесь и обновите URL для предварительного просмотра на URL для производственной среды, чтобы теперь любой член вашей команды мог визуально создавать контент в вашем приложении Qwik!
+
+Также для интеграции структурированных данных см. [это руководство](https://www.builder.io/c/docs/integrate-cms-data).
