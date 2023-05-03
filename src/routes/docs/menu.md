@@ -38,7 +38,7 @@
 - [Builder.io](integrations/builderio/index.mdx)
 - [Cypress](integrations/cypress/index.mdx)
 - [Modular Forms](integrations/modular-forms/index.mdx)
-- [NX Monorepos](integrations/nx/index.mdx)
+- [Nx монорепозитории](integrations/nx/index.mdx)
 - [Partytown](integrations/partytown/index.mdx)
 - [Playwright](integrations/playwright/index.mdx)
 - [PostCSS](integrations/postcss/index.mdx)
