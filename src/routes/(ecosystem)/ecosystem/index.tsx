@@ -45,7 +45,6 @@ export default component$(() => {
               <AddIntegrationItem
                 title="Добавить развёртывание"
                 href="/docs/deployments/#добавить-новое-развёртывание"
-                imgSrc="/ecosystem/add-integration.svg"
               />
             </ul>
           </section>
@@ -74,7 +73,6 @@ export default component$(() => {
               <AddIntegrationItem
                 title="Добавить интеграцию"
                 href="/docs/integrations/#добавление-новой-интеграции"
-                imgSrc="/ecosystem/add-integration.svg"
               />
             </ul>
           </section>
@@ -95,11 +93,7 @@ export default component$(() => {
                   thumbnailBg={true}
                 />
               ))}
-              <AddIntegrationItem
-                title="Добавить библиотеку"
-                href="/docs/advanced/library/"
-                imgSrc="/ecosystem/add-integration.svg"
-              />
+              <AddIntegrationItem title="Добавить библиотеку" href="/docs/advanced/library/" />
             </ul>
           </section>
 
@@ -144,6 +138,10 @@ export default component$(() => {
                   thumbnailBg={true}
                 />
               ))}
+              <AddIntegrationItem
+                title="Добавить курс"
+                href="https://github.com/BuilderIO/qwik/blob/main/packages/docs/src/routes/(ecosystem)/media/index.tsx"
+              />
             </ul>
           </section>
 
@@ -169,6 +167,10 @@ export default component$(() => {
                   thumbnailBg={true}
                 />
               ))}
+              <AddIntegrationItem
+                title="Добавить видео"
+                href="https://github.com/BuilderIO/qwik/blob/main/packages/docs/src/routes/(ecosystem)/media/index.tsx"
+              />
             </ul>
           </section>
 
@@ -194,6 +196,10 @@ export default component$(() => {
                   thumbnailBg={true}
                 />
               ))}
+              <AddIntegrationItem
+                title="Добавить подкаст"
+                href="https://github.com/BuilderIO/qwik/blob/main/packages/docs/src/routes/(ecosystem)/media/index.tsx"
+              />
             </ul>
           </section>
 
@@ -219,6 +225,10 @@ export default component$(() => {
                   thumbnailBg={true}
                 />
               ))}
+              <AddIntegrationItem
+                title="Добавить сайт"
+                href="https://github.com/BuilderIO/qwik/edit/main/packages/docs/scripts/pages.json"
+              />
             </ul>
           </section>
 
@@ -244,6 +254,10 @@ export default component$(() => {
                   thumbnailBg={true}
                 />
               ))}
+              <AddIntegrationItem
+                title="Добавить презентацию"
+                href="https://github.com/BuilderIO/qwik/blob/main/packages/docs/src/routes/(ecosystem)/media/index.tsx"
+              />
             </ul>
           </section>
 
