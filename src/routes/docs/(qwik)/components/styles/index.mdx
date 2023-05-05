@@ -142,13 +142,13 @@ export const Cmp = component$(() => {
 
 ## Локальные стили
 
-Чтобы использовать локальные стили CSS, вы можете воспользоваться хуком `useStyleScoped$()`, экспортированным из `@builder.io/qwik`.
+Чтобы использовать локальные стили CSS, вы можете воспользоваться хуком `useStylesScoped$()`, экспортированным из `@builder.io/qwik`.
 
 ```tsx {4-8} title="src/components/MyComponent/MyComponent.tsx"
-import { component$, useStyleScoped$ } from '@builder.io/qwik';
+import { component$, useStylesScoped$ } from '@builder.io/qwik';
 
 export default component$(() => {
-  useStyleScoped$(`
+  useStylesScoped$(`
     .container {
       background-color: red;
     }
@@ -166,12 +166,12 @@ export default component$(() => {
 ```
 
 ```tsx {3,6} title="src/components/MyComponent/MyComponent.tsx"
-import { component$, useStyleScoped$ } from '@builder.io/qwik';
+import { component$, useStylesScoped$ } from '@builder.io/qwik';
 
 import styles from './MyComponent.css?inline';
 
 export default component$(() => {
-  useStyleScoped$(styles);
+  useStylesScoped$(styles);
   return <div class="container">Hello world</div>;
 });
 ```

@@ -8,6 +8,7 @@ contributors:
   - nnelgxorz
   - cunzaizhuyi
   - the-r3aper7
+  - zanettin
 ---
 
 # MDX
@@ -120,13 +121,13 @@ export default defineConfig(() => {
 Вы можете использовать свойство `og` или `opengraph` для определения метаданных [протокола Open Graph](https://ogp.me/).
 
 ```yaml
-title: My Title
-description: My Description
+title: Мой заголовок
+description: Моё описание
 og:
-  - title: My Custom Title
+  - title: Мой пользовательский заголовок
     description: true
   - image: https://example.com/rock.jpg
-    image:alt: A shiny red apple with a bite taken out
+    image:alt: Блестящее красное яблоко с откушенным кусочком
   - image: https://example.com/rock2.jpg
 ```
 
@@ -135,14 +136,54 @@ og:
 Для приведённого выше примера будет сгенерирован следующий HTML-код:
 
 ```html
-<title>My Title</title>
-<meta name="description" content="My Description" />
+<title>Мой заголовок</title>
+<meta name="description" content="Моё описание" />
 
-<meta property="og:title" content="My Custom Title" />
-<meta property="og:description" content="My Description" />
+<meta property="og:title" content="Мой пользовательский заголовок" />
+<meta property="og:description" content="Моё описание" />
 
 <meta property="og:image" content="https://example.com/rock.jpg" />
-<meta property="og:image:alt" content="A shiny red apple with a bite taken out" />
+<meta property="og:image:alt" content="Блестящее красное яблоко с откушенным кусочком" />
 
 <meta property="og:image" content="https://example.com/rock2.jpg" />
+```
+
+## Чтение данных заголовка
+
+Ключи полей заголовка доступны с помощью хука `useDocumentHead()`.
+
+```Markdown title="src/routes/some/path/index.mdx"
+---
+title: Заголовок компонента Hello World
+tags:
+  - super
+  - exiting
+  - docs
+---
+import { Tags } from "../../../components/tags/tags";
+
+Это простой компонент Hello World.
+
+<Tags />
+```
+
+```tsx title="src/components/tags/tags.tsx"
+import { component$, useSignal } from '@builder.io/qwik';
+import { useDocumentHead } from '@builder.io/qwik-city';
+
+export const Tags = component$(() => {
+  const { frontmatter } = useDocumentHead();
+  
+  if (frontmatter.tags.length) {
+    return;
+  }
+  
+  return (
+    <ul>
+      {frontmatter.tags.map((tag: string) => (
+        <li key={`tag-${tag}`}>{tag}</li>
+      )}
+    </ul>
+  );
+});
 ```
