@@ -351,3 +351,15 @@ export const onGet: RequestHandler = async (requestEvent) => {
 
 const wait = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
 ```
+
+### Перенаправление на другой URL
+
+Конечные точки могут перенаправлять на другой URL, используя метод `redirect(status, url)`. Метод `redirect()` автоматически установит заголовок `Location` на URL перенаправления.
+
+```tsx
+import type { RequestHandler } from '@builder.io/qwik-city';
+
+export const onGet: RequestHandler = async (requestEvent) => {
+  throw requestEvent.redirect(302,'/auth/login');
+};
+```
