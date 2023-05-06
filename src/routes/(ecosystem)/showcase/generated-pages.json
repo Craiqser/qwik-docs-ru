@@ -531,5 +531,53 @@
     },
     "href": "https://upester.com",
     "tags": "app"
+  },
+  {
+    "title": "Pay4Me App | Fastest SEVIS Fees, WES Fees, & Payments",
+    "imgSrc": "/showcases/pay4me_app.webp",
+    "perf": {
+      "score": 1,
+      "fcpDisplay": "1.4 s",
+      "fcpScore": 0.98,
+      "lcpDisplay": "1.4 s",
+      "lcpScore": 1,
+      "ttiDisplay": "2.3 s",
+      "ttiScore": 0.99,
+      "ttiTime": 2255.491415771103
+    },
+    "href": "https://pay4me.app",
+    "tags": "sass"
+  },
+  {
+    "title": "OSM POIS - Cities",
+    "imgSrc": "/showcases/qwik-osm-poc_netlify_app_.webp",
+    "perf": {
+      "score": 1,
+      "fcpDisplay": "1.0 s",
+      "fcpScore": 1,
+      "lcpDisplay": "1.0 s",
+      "lcpScore": 1,
+      "ttiDisplay": "1.0 s",
+      "ttiScore": 1,
+      "ttiTime": 971
+    },
+    "href": "https://qwik-osm-poc.netlify.app/",
+    "tags": "site"
+  },
+  {
+    "title": "Welcome to LeoNerd",
+    "imgSrc": "/showcases/leonerd_blog.webp",
+    "perf": {
+      "score": 1,
+      "fcpDisplay": "1.1 s",
+      "fcpScore": 0.99,
+      "lcpDisplay": "1.5 s",
+      "lcpScore": 1,
+      "ttiDisplay": "1.1 s",
+      "ttiScore": 1,
+      "ttiTime": 1146.3402242908126
+    },
+    "href": "https://leonerd.blog",
+    "tags": "portfolio"
   }
 ]
