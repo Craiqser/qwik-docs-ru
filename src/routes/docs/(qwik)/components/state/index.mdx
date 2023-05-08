@@ -25,6 +25,7 @@ contributors:
   - wtlin1228
   - AnthonyPAlicea
   - sreeisalso
+  - wmertens
 ---
 
 import CodeSandbox from '../../../../../components/code-sandbox/index.tsx';
@@ -143,6 +144,28 @@ const shallowStore = useStore(
 );
 ```
 
+### Методы
+
+Чтобы предоставить методы в состоянии, вы должны обернуть их в QRL и ссылаться на хранилище состояния с помощью `this`, как показано ниже:
+
+```tsx
+import { component$, useStore } from '@builder.io/qwik';
+
+export default component$(() => {
+  const state = useStore({
+    count: 0,
+    increment: $(function () { this.count++; }),
+  });
+
+  return (
+    <>
+      <button onClick$={() => state.increment()}>Прибаивть</button>
+      <p>Счётчик: {state.count}</p>
+    </>
+  );
+});
+```
+
 ## Вычисленное состояние
 
 В Qwik есть два способа создания вычисляемых свойств, каждый из которых имеет свой сценарий использования (в порядке предпочтения):
@@ -173,8 +196,8 @@ export default component$(() => {
   return (
     <>
       <input type="text" bind:value={name} />
-      <p>Name: {name.value}</p>
-      <p>Capitalized name: {capitalizedName.value}</p>
+      <p>Название: {name.value}</p>
+      <p>Прописное название: {capitalizedName.value}</p>
     </>
   );
 });
