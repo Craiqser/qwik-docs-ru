@@ -77,7 +77,7 @@ yarn start
 2. Файл `index.tsx` каждого маршрута должен содержать `export default component$(...)`, чтобы Qwikcity знал, какой контент обслуживать. Вставьте следующее содержимое в `src/routes/joke/index.tsx`:
 
 <CodeSandbox src="/src/routes/demo/getting-started/01-route/index.tsx" style={{ height: '6em' }}>
-```tsx {3-5}
+```tsx {3-5} title="src/routes/joke/index.tsx"
 import { component$ } from "@builder.io/qwik";
 
 export default component$(() => {
@@ -263,7 +263,7 @@ export default component$(() => {
 Для справки, полный фрагмент кода для этого раздела выглядит следующим образом:
 
 <CodeSandbox src="/src/routes/demo/getting-started/04-state/index.tsx" style={{ height: '10em' }} maxHeight={500}>
-```tsx /isFavoriteSignal/
+```tsx /isFavoriteSignal/ title="src/routes/joke/index.tsx"
 import { component$, useSignal } from '@builder.io/qwik';
 import { routeLoader$, Form, routeAction$ } from '@builder.io/qwik-city';
 
@@ -352,7 +352,7 @@ export default component$(() => {
 Для справки, полный фрагмент кода для этого раздела выглядит следующим образом:
 
 <CodeSandbox src="/src/routes/demo/getting-started/05-tasks/index.tsx" style={{ height: '10em' }} maxHeight={500}>
-```tsx {28-34}
+```tsx {28-34} title="src/routes/joke/index.tsx"
 import { component$, useSignal, useTask$ } from '@builder.io/qwik';
 import {
   routeLoader$,
@@ -449,7 +449,7 @@ export default component$(() => {
 Для справки, полный фрагмент кода для этого раздела выглядит следующим образом:
 
 <CodeSandbox maxHeight={500} src="/src/routes/demo/getting-started/06-styling/index.tsx" style={{ height: '10em' }}>
-```tsx /useStylesScoped\$/
+```tsx /useStylesScoped\$/ title="src/routes/joke/index.tsx"
 import {
   component$,
   useSignal,
