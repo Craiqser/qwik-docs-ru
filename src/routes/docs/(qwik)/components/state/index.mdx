@@ -149,7 +149,7 @@ const shallowStore = useStore(
 Чтобы предоставить методы в состоянии, вы должны обернуть их в QRL и ссылаться на хранилище состояния с помощью `this`, как показано ниже:
 
 ```tsx
-import { component$, useStore } from '@builder.io/qwik';
+import { component$, useStore, $ } from '@builder.io/qwik';
 
 export default component$(() => {
   const state = useStore({
