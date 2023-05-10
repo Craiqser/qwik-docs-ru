@@ -96,6 +96,10 @@
 - [Статические ассеты](/docs/(qwikcity)/advanced/static-assets/index.mdx)
 - [Карта сайта](/docs/(qwikcity)/advanced/sitemaps/index.mdx)
 
+## Справочники
+
+- [Справочник API](/api/)
+
 ## Сообщество
 
 - [GitHub](https://github.com/BuilderIO/qwik)
