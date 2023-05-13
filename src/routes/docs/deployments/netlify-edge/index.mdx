@@ -101,16 +101,6 @@ export const onRequest = async ({ platform }) => {
 };
 ```
 
-Кроме того, вы можете импортировать тип `RequestHandlerNetlify`, чтобы иметь автокомплит типов в вашем редакторе.
-
-```tsx
-import { type RequestHandlerNetlify } from '@builder.io/qwik-city/middleware/netlify-edge';
-
-export const onGet: RequestHandlerNetlify = ({ platform }) => {
-  //...
-};
-```
-
 ### Переменные окружения
 
 ```ts
@@ -121,42 +111,3 @@ export const onRequest = async ({ env }) => {
 
 - [Netlify Environment Variables](https://docs.netlify.com/environment-variables/overview/#environment-variable-options)
 - [Netlify Edge Middleware Source](https://github.com/BuilderIO/qwik/blob/main/packages/qwik-city/middleware/netlify-edge/index.ts)
-
-## Миграция
-
-Предыдущие версии Qwik City использовали плагин `@netlify/vite-plugin-netlify-edge`. Этот плагин по-прежнему отлично работает, но использует "всеобъёмлющий" подход, который означает, что все запросы будут проходить через edge-функции, чтобы использовать статические файлы.
-
-Обновлённый адаптер, используя команду `npm run qwik add netlify-edge`, будет генерировать конфигурацию `.netlify/edge-functions/manifest.json` во время сборки. Если вы хотите использовать новый адаптер, вы можете удалить плагин `@netlify/vite-plugin-netlify-edge` из корневого файла `vite.config.ts` и корневого файла `netlify.toml`.
-
-```diff title="vite.config.ts"
-import { defineConfig } from "vite";
-import { qwikVite } from "@builder.io/qwik/optimizer";
-import { qwikCity } from "@builder.io/qwik-city/vite";
-import tsconfigPaths from "vite-tsconfig-paths";
--import netlifyEdge from "@netlify/vite-plugin-netlify-edge";
-
-export default defineConfig(() => {
-  return {
-    plugins: [
-      qwikCity(),
-      qwikVite({
--        ssr: {
--          outDir: "netlify/edge-functions",
--        },
-      }),
-      tsconfigPaths(),
--      netlifyEdge({
--        functionName: "entry.netlify-edge",
--      }),
-    ],
-  };
-});
-```
-
-Удалите универсальную конфигурацию `edge_functions` из `netlify.toml`.
-
-```diff title="netlify.toml"
--[[edge_functions]]
--path = "/*"
--function = "entry.netlify-edge"
-```
