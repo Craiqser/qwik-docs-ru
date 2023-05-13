@@ -41,12 +41,12 @@ npm run qwik add fastify
 npm run build
 ```
 
-## Развёртывание в среде разработки
+## Для разработки
 
 Чтобы развернуть приложение для разработки:
 
 ```shell
-npm run deploy
+npm run serve
 ```
 
 ## Развёртывание в производственной среде
@@ -57,3 +57,30 @@ npm run deploy
 - Будет создана папка `server`, включающая все файлы сервера.
 
 Чтобы развернуть сервер, вам нужно запустить файл `server/entry.[server].js` на сервере по вашему выбору, где `[server]` может быть [express](https://expressjs.com/) или [fastify](https://fastify.io/).
+
+*Очень важно правильно настроить переменную окружения `ORIGIN`*, которая используется для проверки против [CSRF-атак](https://owasp.org/www-community/attacks/csrf). ORIGIN должен совпадать с ORIGIN клиентского приложения.
+
+> Например, если вы планируете развернуть своё приложение на `https://example.com/app`, то вам нужно установить переменную окружения `ORIGIN` на `https://example.com`.
+>
+> ```shell
+> ORIGIN=https://example.com node server/entry.express
+> ```
+
+### Защита от CSRF
+
+По умолчанию все приложения Qwik City защищены от [CSRF-атак](https://owasp.org/www-community/attacks/csrf) для всех POST-, PATCH-, DELETE-отправок форм.
+
+Эта защита включена по умолчанию, и это та причина, по которой вам необходимо установить переменную окружения `ORIGIN` при развёртывании вашего приложения для производства.
+
+Если вы хотите отключить защиту от CSRF, вы можете установить `checkOrigin: false` в опциях `createQwikCity()` в `src/entry.express.tsx`:
+
+```tsx {6} /checkOrigin/ title="entry.express.tsx"
+// ...
+const { router, notFound, staticFile } = createQwikCity({
+  render,
+  qwikCityPlan,
+  manifest,
+  checkOrigin: false,
+});
+// ...
+```
