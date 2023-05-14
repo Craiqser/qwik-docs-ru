@@ -17,8 +17,15 @@ contributors:
 - Для `<input>` событие `onChange` в Qwik называется `onInput$`;
 - JSX предпочитает атрибуты HTML: `class` вместо `className`, `for` вместо `htmlFor`;
 - Условный рендер осуществляется с помощью тернарного оператора `?` и оператора `&&`, как и в React;
-- Списки отображаются с помощью функции `map`, однако каждый элемент должен иметь уникальное свойство `key`;
-- Проекция содержимого осуществляется компонентом `<Slot/>`. Слотам можно присваивать имена, и ссылаться на них с помощью атрибута `q:slot`.
+
+```tsx title="src/components/my-other-component/index.tsx"
+import { component$, Slot } from '@builder.io/qwik';
+import type { ClassList } from '@builder.io/qwik'
+
+export component$((props: { class?: ClassList }) => { // ✅
+  return <div class={class}><Slot /></div>;
+});
+```
 
 ```tsx
 import { component$, useSignal } from '@builder.io/qwik';
@@ -51,7 +58,7 @@ export const MyComponent = component$((props: MyComponentProps) => {
         }}
       >
         <h1>Счёт: {count.value}</h1>
-        <MyOtherComponent >
+        <MyOtherComponent class="correct-way" /> {/* ✅ */}
           {count.value > 10 && <p>Счёт больше 10</p>}
           {count.value > 10 ? <p>Счёт больше 10</p> : <p>Счёт меньше 10</p>}
         </MyOtherComponent>
