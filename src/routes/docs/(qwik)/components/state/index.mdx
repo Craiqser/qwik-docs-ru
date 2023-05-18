@@ -149,17 +149,21 @@ const shallowStore = useStore(
 Чтобы предоставить методы в состоянии, вы должны обернуть их в QRL и ссылаться на хранилище состояния с помощью `this`, как показано ниже:
 
 ```tsx
-import { component$, useStore, $ } from '@builder.io/qwik';
+import { component$, useStore, $, type QRL } from "@builder.io/qwik";
+
+type CountStore = { count: number; increment: QRL<(this: CountStore) => void> };
 
 export default component$(() => {
-  const state = useStore({
+  const state = useStore<CountStore>({
     count: 0,
-    increment: $(function () { this.count++; }),
+    increment: $(function (this: CountStore) {
+      this.count++;
+    }),
   });
 
   return (
     <>
-      <button onClick$={() => state.increment()}>Прибаивть</button>
+      <button onClick$={() => state.increment()}>Прибавить</button>
       <p>Счётчик: {state.count}</p>
     </>
   );
