@@ -347,7 +347,7 @@ export const Counter = component$(() => {
 import { component$, useSignal, useTask$ } from '@builder.io/qwik';
 
 export const Counter = component$(() => {
-  const currentPage = useSignal(0);
+  const page = useSignal(0);
   const listOfUsers = useSignal([]);
 
   // Хук `useTask$` используется для создания задачи.

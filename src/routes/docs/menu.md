@@ -50,8 +50,8 @@
 - [Tailwind](integrations/tailwind/index.mdx)
 - [Tauri](integrations/tauri/index.mdx)
 - [Vitest](integrations/vitest/index.mdx)
-- [Иконки](integrations/icons/index.mdx)
 - [Интернационализация](integrations/i18n/index.mdx)
+- [Иконки](integrations/icons/index.mdx)
 - [Оптимизация изображений](integrations/image-optimization/index.mdx)
 
 ## Развёртывание
@@ -59,11 +59,11 @@
 - [Обзор](deployments/index.mdx)
 - [Azure SWA](deployments/azure-swa/index.mdx)
 - [Cloudflare Pages](deployments/cloudflare-pages/index.mdx)
+- [Deno](deployments/deno/index.mdx)
 - [Google Cloud Run](deployments/gcp-cloud-run/index.mdx)
 - [Netlify Edge](deployments/netlify-edge/index.mdx)
 - [Node](deployments/node/index.mdx)
 - [Vercel Edge](deployments/vercel-edge/index.mdx)
-- [Deno](deployments/deno/index.mdx)
 
 ## Руководства
 
