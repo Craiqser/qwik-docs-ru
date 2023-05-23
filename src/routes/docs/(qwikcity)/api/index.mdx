@@ -209,7 +209,7 @@ export default component$(() => {
 
 ## `routeLoader$()`
 
-Функция `routeLoader$()` используется для объявления нового серверного загрузчика для заданной страницы/конечной точки или макета. Qwik City выполнит все объявленные загрузчики для заданного маршрута. Компоненты Qwik могут позже ссылаться на загрузчики, импортируя их и вызывая метод `.use()` для получения данных.
+Функция `routeLoader$()` используется для объявления нового серверного загрузчика для заданной страницы/конечной точки или макета. Qwik City выполнит все объявленные загрузчики для заданного маршрута. Компоненты Qwik могут позже ссылаться на загрузчики, импортируя их и вызывая возвращаемую пользовательскую функцию для получения данных.
 
 ```tsx
 import { component$ } from '@builder.io/qwik';
@@ -265,6 +265,31 @@ export default function Root() {
 Этот компонент отвечает за рендер совпадающего маршрута, он использует внутреннюю функцию [`useContent()`](./index.mdx#usecontent) для рендера текущей страницы, а также всех вложенных макетов.
 
 Этот компонент обычно находится в дочернем элементе `<body>`, в большинстве интеграций вы найдёте его в файле `src/root.tsx`.
+
+```tsx title="src/routes.tsx"
+export default component$(() => {
+  /**
+   * The root of a QwikCity site always start with the <QwikCityProvider> component,
+   * immediately followed by the document's <head> and <body>.
+   *
+   * Dont remove the `<head>` and `<body>` elements.
+   */
+
+  return (
+    <QwikCityProvider>
+      <head>
+        <meta charSet="utf-8" />
+        <link rel="manifest" href="/manifest.json" />
+        <RouterHead />
+      </head>
+      <body lang="en">
+        <RouterOutlet />
+        <ServiceWorkerRegister />
+      </body>
+    </QwikCityProvider>
+  );
+});
+```
 
 ## `<Form>`
 
