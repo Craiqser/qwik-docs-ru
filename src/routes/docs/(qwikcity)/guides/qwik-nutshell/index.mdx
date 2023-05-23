@@ -300,7 +300,7 @@ export const useStore: <T>(value?: T | (() => T), options?: StoreOptions): React
 - Когда вам нужен реактивный объект, к которому можно легко добавлять свойства.
 
 ```tsx
-import { component$, useSignal } from '@builder.io/qwik';
+import { component$, useStore } from '@builder.io/qwik';
 
 export const Counter = component$(() => {
 
