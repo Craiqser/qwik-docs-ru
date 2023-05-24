@@ -28,6 +28,7 @@
 - [Страницы](/docs/(qwikcity)/pages/index.mdx)
 - [Конечные точки](/docs/(qwikcity)/endpoints/index.mdx)
 - [server$](/docs/(qwikcity)/server$/index.mdx)
+- [Кэширование](/docs/(qwikcity)/caching/index.mdx)
 - [Переменные окружения](/docs/(qwikcity)/env-variables/index.mdx)
 - [Справочник API](/docs/(qwikcity)/api/index.mdx)
 
