@@ -73,6 +73,7 @@
 - [SSG](/docs/(qwikcity)/guides/static-site-generation/index.mdx)
 - [Шпаргалка по React](/docs/(qwikcity)/guides/react-cheat-sheet/index.mdx)
 - [Лучшие практики](/docs/(qwikcity)/guides/best-practices/index.mdx)
+- [Оптимизация бандла](/docs/(qwik)/guides/bundle/index.mdx)
 
 ## Концепции
 
