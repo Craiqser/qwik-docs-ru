@@ -223,7 +223,25 @@
       "ttiTime": 836
     },
     "href": "https://www.burgersonfleek.ca/",
-    "tags": "site"
+    "tags": "site",
+    "repo": "https://github.com/saboooor/burgersonfleek"
+  },
+  {
+    "title": "SimplyMC: A Minecraft Multitool",
+    "imgSrc": "/showcases/simplymc_art_.webp",
+    "perf": {
+      "score": 0.95,
+      "fcpDisplay": "1.7 s",
+      "fcpScore": 0.92,
+      "lcpDisplay": "2.3 s",
+      "lcpScore": 0.93,
+      "ttiDisplay": "1.7 s",
+      "ttiScore": 1,
+      "ttiTime": 1683.238
+    },
+    "href": "https://simplymc.art/",
+    "tags": "site",
+    "repo": "https://github.com/LuminescentDev/SimplyMC"
   },
   {
     "title": "Guillermo Peralta Scura",
@@ -595,5 +613,22 @@
     },
     "href": "https://seifen.vercel.app/",
     "tags": "site"
+  },
+  {
+    "title": "Built with Appwrite",
+    "imgSrc": "/showcases/builtwith_appwrite_io_.webp",
+    "perf": {
+      "score": 0.95,
+      "fcpDisplay": "1.9 s",
+      "fcpScore": 0.88,
+      "lcpDisplay": "1.9 s",
+      "lcpScore": 0.97,
+      "ttiDisplay": "2.3 s",
+      "ttiScore": 0.99,
+      "ttiTime": 2321.5
+    },
+    "href": "https://builtwith.appwrite.io/",
+    "tags": "site",
+    "repo": "https://github.com/appwrite/builtwith"
   }
 ]
