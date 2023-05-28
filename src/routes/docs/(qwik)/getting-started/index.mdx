@@ -432,12 +432,12 @@ export default component$(() => {
 2. Импортируйте стили в `src/routes/joke/index.tsx`:
 
    ```tsx
-   import STYLES from "./index.css?inline";
+    import styles from "./index.css?inline";
    ```
 
 3. Сообщите компоненту о необходимости загрузить стили:
    ```tsx
-   useStylesScoped$(STYLES);
+   useStylesScoped$(styles);
    ```
 
 Объяснение кода:
@@ -449,7 +449,7 @@ export default component$(() => {
 Для справки, полный фрагмент кода для этого раздела выглядит следующим образом:
 
 <CodeSandbox maxHeight={500} src="/src/routes/demo/getting-started/06-styling/index.tsx" style={{ height: '10em' }}>
-```tsx /useStylesScoped\$/ title="src/routes/joke/index.tsx"
+```tsx /useStylesScoped\$/#a /styles/#b title="src/routes/joke/index.tsx"
 import {
   component$,
   useSignal,
@@ -462,7 +462,7 @@ import {
   routeAction$,
   server$,
 } from '@builder.io/qwik-city';
-import STYLES from './index.css?inline';
+import styles from './index.css?inline';
 
 export const useDadJoke = routeLoader$(async () => {
   const response = await fetch('https://icanhazdadjoke.com/', {
@@ -480,7 +480,7 @@ export const useJokeVoteAction = routeAction$((props) => {
 });
 
 export default component$(() => {
-  useStylesScoped$(STYLES);
+  useStylesScoped$(styles);
   const isFavoriteSignal = useSignal(false);
   // Вызов нашего хука `useDadJoke`, вернёт реактивный сигнал на загруженные данные.
   const dadJokeSignal = useDadJoke();
