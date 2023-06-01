@@ -25,7 +25,7 @@ contributors:
 
 Например, если у вас есть файл по пути `src/routes/some/path/index.tsx`, он будет сопоставлен с URL-адресом `https://example.com/some/path`.
 
-```bash
+```bash title="Структура каталога"
 src/
 └── routes/
     ├── contact/
@@ -51,13 +51,13 @@ src/
 
 Специальные именованные каталоги с квадратными скобками, такие как `[paramName]` и `[...catchAll]`, могут использоваться для сопоставления сегментов маршрута, которые являются динамическими:
 
-```
+```bash title="Структура каталога"
 src/routes/blog/index.tsx → /blog
 src/routes/user/[username]/index.tsx → /user/:username (/user/foo)
 src/routes/post/[...all]/index.tsx → /post/* (/post/2020/id/title)
 ```
 
-```bash
+```bash title="Структура каталога"
 src/
 └── routes/
     ├── blog/
@@ -149,7 +149,7 @@ export default component$(() => {
 
 Возьмите этот каталог `src/routes` в качестве примера:
 
-```bash
+```bash title="Структура каталога"
 src/
 └── routes/
     ├── admin/
