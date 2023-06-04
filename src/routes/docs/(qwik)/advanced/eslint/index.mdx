@@ -36,7 +36,7 @@ import './styles.css';
 <h2>Possible Problems</h2>
 <p>These rules are available.</p>
 <div class="my-6">
-  
+
     <a href="#use-method-usage" class="p-4 flex panel">
       <div class="flex-1">
         <code>use-method-usage</code>
@@ -47,7 +47,7 @@ import './styles.css';
           class={{
             'icon': false,
             'icon icon-inactive': false,
-          }}     
+          }}
         >
           ✅
         </span>
@@ -61,8 +61,8 @@ import './styles.css';
         </span>
       </div>
     </a>
-  
-  
+
+
     <a href="#valid-lexical-scope" class="p-4 flex panel">
       <div class="flex-1">
         <code>valid-lexical-scope</code>
@@ -73,7 +73,7 @@ import './styles.css';
           class={{
             'icon': false,
             'icon icon-inactive': false,
-          }}     
+          }}
         >
           ✅
         </span>
@@ -87,8 +87,8 @@ import './styles.css';
         </span>
       </div>
     </a>
-  
-  
+
+
     <a href="#loader-location" class="p-4 flex panel">
       <div class="flex-1">
         <code>loader-location</code>
@@ -99,7 +99,7 @@ import './styles.css';
           class={{
             'icon': false,
             'icon icon-inactive': true,
-          }}     
+          }}
         >
           ✅
         </span>
@@ -113,8 +113,8 @@ import './styles.css';
         </span>
       </div>
     </a>
-  
-  
+
+
     <a href="#no-react-props" class="p-4 flex panel">
       <div class="flex-1">
         <code>no-react-props</code>
@@ -125,7 +125,7 @@ import './styles.css';
           class={{
             'icon': false,
             'icon icon-inactive': false,
-          }}     
+          }}
         >
           ✅
         </span>
@@ -139,8 +139,8 @@ import './styles.css';
         </span>
       </div>
     </a>
-  
-  
+
+
     <a href="#prefer-classlist" class="p-4 flex panel">
       <div class="flex-1">
         <code>prefer-classlist</code>
@@ -151,7 +151,7 @@ import './styles.css';
           class={{
             'icon': false,
             'icon icon-inactive': true,
-          }}     
+          }}
         >
           ✅
         </span>
@@ -165,8 +165,8 @@ import './styles.css';
         </span>
       </div>
     </a>
-  
-  
+
+
     <a href="#jsx-no-script-url" class="p-4 flex panel">
       <div class="flex-1">
         <code>jsx-no-script-url</code>
@@ -177,7 +177,7 @@ import './styles.css';
           class={{
             'icon': false,
             'icon icon-inactive': true,
-          }}     
+          }}
         >
           ✅
         </span>
@@ -191,8 +191,8 @@ import './styles.css';
         </span>
       </div>
     </a>
-  
-  
+
+
     <a href="#jsx-key" class="p-4 flex panel">
       <div class="flex-1">
         <code>jsx-key</code>
@@ -203,7 +203,7 @@ import './styles.css';
           class={{
             'icon': false,
             'icon icon-inactive': true,
-          }}     
+          }}
         >
           ✅
         </span>
@@ -217,8 +217,8 @@ import './styles.css';
         </span>
       </div>
     </a>
-  
-  
+
+
     <a href="#unused-server" class="p-4 flex panel">
       <div class="flex-1">
         <code>unused-server</code>
@@ -229,7 +229,7 @@ import './styles.css';
           class={{
             'icon': false,
             'icon icon-inactive': false,
-          }}     
+          }}
         >
           ✅
         </span>
@@ -243,8 +243,8 @@ import './styles.css';
         </span>
       </div>
     </a>
-  
-  
+
+
     <a href="#jsx-img" class="p-4 flex panel">
       <div class="flex-1">
         <code>jsx-img</code>
@@ -255,7 +255,7 @@ import './styles.css';
           class={{
             'icon': false,
             'icon icon-inactive': true,
-          }}     
+          }}
         >
           ✅
         </span>
@@ -269,7 +269,7 @@ import './styles.css';
         </span>
       </div>
     </a>
-  
+
 </div>
 <h2>Details</h2>
 <div class="my-6">
@@ -277,63 +277,15 @@ import './styles.css';
     <div class="rule-wrapper">
       <h3 id="use-method-usage">use-method-usage</h3>
       <span>Object destructuring is not recommended for component$</span>
-  
+
 <h4>use-after-await</h4>
-<p>Examples of <b>correct</b> code for this rule:</p>
-<div class="code-wrapper">
-<span class="badge good">✓</span>
-```tsx {2-3} /await/#a /use/#b
-export const HelloWorld = component$(async () => {
-  useMethod();
-  await something();
-  return $(() => {
-    return (
-      <h1>Hello World</h1>
-    );
-  });
-});
-```
-</div>
-<p>Examples of <b>incorrect</b> code for this rule:</p>
-<div class="code-wrapper">
-<span class="badge bad">✕</span>
-```tsx {2-3} /await/#a /use/#b
-export const HelloWorld = component$(async () => {
-  await something();
-  useMethod();
-  return $(() => {
-    return (
-      <h1>Hello World</h1>
-    );
-  });
-});
-```
-<p class="code-description">`useMethod()` is called after `await`.</p>
-</div>
-<div class="code-wrapper">
-<span class="badge bad">✕</span>
-```tsx {3,5} /await/#a /use/#b
-export const HelloWorld = component$(async () => {
-  if (stuff) {
-    await something();
-  }
-  useMethod();
-  return $(() => {
-    return (
-      <h1>Hello World</h1>
-    );
-  });
-});
-```
-<p class="code-description">`useMethod()` is called after a condition.</p>
-</div>
 <div class="edit-examples-wrapper"><a href="https://github.com/BuilderIO/qwik/edit/main/packages/eslint-plugin-qwik/src/useMethodUsage.ts" target="_blank" class="edit-btn">Edit examples</a></div>
 <h4>use-wrong-function</h4>
 <p>Examples of <b>correct</b> code for this rule:</p>
 <div class="code-wrapper">
 <span class="badge good">✓</span>
 ```tsx {2} /component$/#a
-export const Counter = component$(async () => {
+export const Counter = component$(() => {
   const count = useSignal(0);
 });
 ```
@@ -342,7 +294,7 @@ export const Counter = component$(async () => {
 <div class="code-wrapper">
 <span class="badge bad">✕</span>
 ```tsx {2} /component$/#a
-export const Counter = (async () => {
+export const Counter = (() => {
   const count = useSignal(0);
 });
 ```
@@ -363,7 +315,7 @@ export const Counter = (() => {
 <div class="code-wrapper">
 <span class="badge good">✓</span>
 ```tsx {2} /component$/#a
-export const Counter = component$(async () => {
+export const Counter = component$(() => {
   const count = useSignal(0);
 });
 ```
@@ -372,7 +324,7 @@ export const Counter = component$(async () => {
 <div class="code-wrapper">
 <span class="badge bad">✕</span>
 ```tsx {2} /component$/#a
-export const Counter = (async () => {
+export const Counter = (() => {
   const count = useSignal(0);
 });
 ```
@@ -390,12 +342,12 @@ export const Counter = (() => {
 <div class="edit-examples-wrapper"><a href="https://github.com/BuilderIO/qwik/edit/main/packages/eslint-plugin-qwik/src/useMethodUsage.ts" target="_blank" class="edit-btn">Edit examples</a></div>
 
     </div>
-  
+
 
     <div class="rule-wrapper">
       <h3 id="valid-lexical-scope">valid-lexical-scope</h3>
       <span>Used the tsc typechecker to detect the capture of unserializable data in dollar ($) scopes.</span>
-  
+
 <h4>referencesOutside</h4>
 <p>Examples of <b>correct</b> code for this rule:</p>
 <div class="code-wrapper">
@@ -511,19 +463,19 @@ export const HelloWorld = component$(() => {
 <div class="edit-examples-wrapper"><a href="https://github.com/BuilderIO/qwik/edit/main/packages/eslint-plugin-qwik/src/validLexicalScope.ts" target="_blank" class="edit-btn">Edit examples</a></div>
 
     </div>
-  
+
 
     <div class="rule-wrapper">
       <h3 id="loader-location">loader-location</h3>
       <span>Detect declaration location of loader$</span>
-  
+
 <h4>invalidLoaderLocation</h4>
 <p>Examples of <b>correct</b> code for this rule:</p>
 <div class="code-wrapper">
 <span class="badge good">✓</span>
 ```tsx {3} /routeLoader$/#a title="src/routes/product/[productId]/index.tsx"
 import { routeLoader$ } from '@builder.io/qwik-city';
- 
+
 export const useProductDetails = routeLoader$(async (requestEvent) => {
   const res = await fetch(`https://.../products/${requestEvent.params.productId}`);
   const product = await res.json();
@@ -536,7 +488,7 @@ export const useProductDetails = routeLoader$(async (requestEvent) => {
 <span class="badge bad">✕</span>
 ```tsx {3} /routeLoader$/#a title="src/components/product/product.tsx"
 import { routeLoader$ } from '@builder.io/qwik-city';
- 
+
 export const useProductDetails = routeLoader$(async (requestEvent) => {
   const res = await fetch(`https://.../products/${requestEvent.params.productId}`);
   const product = await res.json();
@@ -552,7 +504,7 @@ export const useProductDetails = routeLoader$(async (requestEvent) => {
 <span class="badge good">✓</span>
 ```tsx {3} /export/#a
 import { routeLoader$ } from '@builder.io/qwik-city';
- 
+
 export const useProductDetails = routeLoader$(async (requestEvent) => {
   const res = await fetch(`https://.../products/${requestEvent.params.productId}`);
   const product = await res.json();
@@ -565,7 +517,7 @@ export const useProductDetails = routeLoader$(async (requestEvent) => {
 <span class="badge bad">✕</span>
 ```tsx {3}
 import { routeLoader$ } from '@builder.io/qwik-city';
- 
+
 const useProductDetails = routeLoader$(async (requestEvent) => {
   const res = await fetch(`https://.../products/${requestEvent.params.productId}`);
   const product = await res.json();
@@ -581,7 +533,7 @@ const useProductDetails = routeLoader$(async (requestEvent) => {
 <span class="badge good">✓</span>
 ```tsx {3} /use/#a
 import { routeLoader$ } from '@builder.io/qwik-city';
- 
+
 export const useProductDetails = routeLoader$(async (requestEvent) => {
   const res = await fetch(`https://.../products/${requestEvent.params.productId}`);
   const product = await res.json();
@@ -594,7 +546,7 @@ export const useProductDetails = routeLoader$(async (requestEvent) => {
 <span class="badge bad">✕</span>
 ```tsx {3} /get/#a
 import { routeLoader$ } from '@builder.io/qwik-city';
- 
+
 export const getProductDetails = routeLoader$(async (requestEvent) => {
   const res = await fetch(`https://.../products/${requestEvent.params.productId}`);
   const product = await res.json();
@@ -610,7 +562,7 @@ export const getProductDetails = routeLoader$(async (requestEvent) => {
 <span class="badge good">✓</span>
 ```tsx {3} /=>/#a
 import { routeLoader$ } from '@builder.io/qwik-city';
- 
+
 export const useProductDetails = routeLoader$(async (requestEvent) => {
   const res = await fetch(`https://.../products/${requestEvent.params.productId}`);
   const product = await res.json();
@@ -623,7 +575,7 @@ export const useProductDetails = routeLoader$(async (requestEvent) => {
 <span class="badge bad">✕</span>
 ```tsx {9} /fetcher/#a
 import { routeLoader$ } from '@builder.io/qwik-city';
- 
+
 async function fetcher() {
   const res = await fetch(`https://.../products/${requestEvent.params.productId}`);
   const product = await res.json();
@@ -637,12 +589,12 @@ export const useProductDetails = routeLoader$(fetcher);
 <div class="edit-examples-wrapper"><a href="https://github.com/BuilderIO/qwik/edit/main/packages/eslint-plugin-qwik/src/loaderLocation.ts" target="_blank" class="edit-btn">Edit examples</a></div>
 
     </div>
-  
+
 
     <div class="rule-wrapper">
       <h3 id="no-react-props">no-react-props</h3>
       <span>Disallow usage of React-specific `className`/`htmlFor` props.</span>
-  
+
 <h4>prefer</h4>
 <p>Examples of <b>correct</b> code for this rule:</p>
 <div class="code-wrapper">
@@ -662,12 +614,12 @@ export const useProductDetails = routeLoader$(fetcher);
 <div class="edit-examples-wrapper"><a href="https://github.com/BuilderIO/qwik/edit/main/packages/eslint-plugin-qwik/src/noReactProps.ts" target="_blank" class="edit-btn">Edit examples</a></div>
 
     </div>
-  
+
 
     <div class="rule-wrapper">
       <h3 id="prefer-classlist">prefer-classlist</h3>
       <span>Enforce using the classlist prop over importing a classnames helper. The classlist prop accepts an object `{ [class: string]: boolean }` just like classnames.</span>
-  
+
 <h4>preferClasslist</h4>
 <p>Examples of <b>correct</b> code for this rule:</p>
 <div class="code-wrapper">
@@ -675,18 +627,18 @@ export const useProductDetails = routeLoader$(fetcher);
 ```tsx {7-10,15,16} /class/#a
 import { component$ } from '@builder.io/qwik';
 import styles from './MyComponent.module.css';
- 
+
 export default component$((props) => {
   // Array syntax example
   return <div class={[
-    styles.container, 
-    'p-8', 
+    styles.container,
+    'p-8',
     props.isHighAttention ? 'text-green-500' : 'text-slate-500',
     { active: true}
   ]}>Hello world</div>;
- 
+
   // Object syntax example
-  return <div class={{  
+  return <div class={{
     'text-green-500': props.isHighAttention,
     'p-4': true
   }}>Hello world</div>;
@@ -700,11 +652,11 @@ export default component$((props) => {
 import { component$ } from '@builder.io/qwik';
 import classnames from 'classnames';
 import styles from './MyComponent.module.css';
- 
+
 export default component$((props) => {
   return <div class={classnames(
-    styles.container, 
-    'p-8', 
+    styles.container,
+    'p-8',
     {
       'text-green-500' : props.isHighAttention,
       'text-slate-500' : !props.isHighAttention,
@@ -718,12 +670,12 @@ export default component$((props) => {
 <div class="edit-examples-wrapper"><a href="https://github.com/BuilderIO/qwik/edit/main/packages/eslint-plugin-qwik/src/preferClasslist.ts" target="_blank" class="edit-btn">Edit examples</a></div>
 
     </div>
-  
+
 
     <div class="rule-wrapper">
       <h3 id="jsx-no-script-url">jsx-no-script-url</h3>
       <span>Disallow javascript: URLs.</span>
-  
+
 <h4>noJSURL</h4>
 <p>Examples of <b>correct</b> code for this rule:</p>
 <div class="code-wrapper">
@@ -742,12 +694,12 @@ export default component$((props) => {
 <div class="edit-examples-wrapper"><a href="https://github.com/BuilderIO/qwik/edit/main/packages/eslint-plugin-qwik/src/jsxNoScriptUrl.ts" target="_blank" class="edit-btn">Edit examples</a></div>
 
     </div>
-  
+
 
     <div class="rule-wrapper">
       <h3 id="jsx-key">jsx-key</h3>
       <span>Disallow missing `key` props in iterators/collection literals</span>
-  
+
 <h4>missingIterKey</h4>
 <p>Examples of <b>correct</b> code for this rule:</p>
 <div class="code-wrapper">
@@ -979,12 +931,12 @@ export const ColorList = component$(() => {
 <div class="edit-examples-wrapper"><a href="https://github.com/BuilderIO/qwik/edit/main/packages/eslint-plugin-qwik/src/jsxKey.ts" target="_blank" class="edit-btn">Edit examples</a></div>
 
     </div>
-  
+
 
     <div class="rule-wrapper">
       <h3 id="unused-server">unused-server</h3>
       <span>Detect unused server$() functions</span>
-  
+
 <h4>unusedServer</h4>
 <p>Examples of <b>correct</b> code for this rule:</p>
 <div class="code-wrapper">
@@ -992,12 +944,12 @@ export const ColorList = component$(() => {
 ```tsx {4,12} /serverGreeter/#a
 import { component$ } from '@builder.io/qwik';
 import { server$ } from '@builder.io/qwik-city';
- 
+
 const serverGreeter = server$((firstName: string, lastName: string) => {
   const greeting = `Hello ${firstName} ${lastName}`;
   return greeting;
 });
- 
+
 export default component$(() => (
     <button
       onClick$={async () => {
@@ -1017,12 +969,12 @@ export default component$(() => (
 ```tsx {4,12} /serverGreeter/#a
 import { component$ } from '@builder.io/qwik';
 import { server$ } from '@builder.io/qwik-city';
- 
+
 const serverGreeter = server$((firstName: string, lastName: string) => {
   const greeting = `Hello ${firstName} ${lastName}`;
   return greeting;
 });
- 
+
 export default component$(() => (
     <button
       onClick$={async () => {
@@ -1040,31 +992,31 @@ export default component$(() => (
 <div class="edit-examples-wrapper"><a href="https://github.com/BuilderIO/qwik/edit/main/packages/eslint-plugin-qwik/src/unusedServer.ts" target="_blank" class="edit-btn">Edit examples</a></div>
 
     </div>
-  
+
 
     <div class="rule-wrapper">
       <h3 id="jsx-img">jsx-img</h3>
       <span>For performance reasons, always provide width and height attributes for &lt;img&gt; elements, it will help to prevent layout shifts.</span>
-  
+
 <h4>noWidthHeight</h4>
 <p>Examples of <b>correct</b> code for this rule:</p>
 <div class="code-wrapper">
 <span class="badge good">✓</span>
 ```tsx /width/#a /height/#b
-<img width="200" height="600" src="/static/images/portrait-01.webp>
+<img width="200" height="600" src="/static/images/portrait-01.webp">
 ```
 </div>
 <p>Examples of <b>incorrect</b> code for this rule:</p>
 <div class="code-wrapper">
 <span class="badge bad">✕</span>
 ```tsx
-<img src="/static/images/portrait-01.webp>
+<img src="/static/images/portrait-01.webp">
 ```
 <p class="code-description">For performance reasons, always provide width and height attributes for `<img>` elements, it will help to prevent layout shifts.</p>
 </div>
 <div class="edit-examples-wrapper"><a href="https://github.com/BuilderIO/qwik/edit/main/packages/eslint-plugin-qwik/src/jsxImg.ts" target="_blank" class="edit-btn">Edit examples</a></div>
 
     </div>
-  
+
 </div>
 </div>

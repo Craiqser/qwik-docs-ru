@@ -231,3 +231,18 @@ AUTH_SECRET=
 
 4. Теперь приложение готово к реализации аутентификации с помощью Auth.js.
 5. Наслаждайтесь!
+
+### Защита маршрута
+
+Доступ к данным сессии можно получить через маршрут `event.sharedMap`. Таким образом, маршрут может быть защищён и перенаправлен с помощью чего-то подобного, расположенного в `layout.tsx` или на странице `index.tsx`:
+
+```tsx
+export const onRequest: RequestHandler = (event) => {
+  const session: Session | null = event.sharedMap.get('session');
+  if (!session || new Date(session.expires) < new Date()) {
+    throw event.redirect(302, `/api/auth/signin?callbackUrl=${event.url.href}`);
+  }
+};
+```
+
+> Примечание: При размещении в layout.tsx убедитесь, что место назначения перенаправления не находится в том же layout.tsx, иначе может возникнуть вечный цикл перенаправления.
