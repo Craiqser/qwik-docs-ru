@@ -96,33 +96,37 @@ export default component$(() => {
 import { component$, useStore } from '@builder.io/qwik';
 
 export default component$(() => {
-  const store = useStore(
-    {
-      nested: {
-        fields: { are: 'also tracked' }
-      },
-      list: [],
+  const store = useStore({
+    nested: {
+      fields: { are: 'также отслеживается' },
     },
-  );
+    list: ['Item 1'],
+  });
 
   return (
     <>
       <p>{store.nested.fields.are}</p>
-      <button onClick$={() => {
-        // Несмотря на то, что мы мутируем вложенный объект, это вызовёт повторный рендер.
-        store.nested.fields.are = 'tracked'
-      }}>
-        Клик работает, так как состояние просматривается на всю глубину
+      <button
+        onClick$={() => {
+          // Несмотря на то, что мы изменяем вложенный объект, это вызовет ререндер.
+          store.nested.fields.are = 'отслеживается';
+        }}
+      >
+        Нажатие на меня работает, потому что состояние отслеживается на всю глубину вложенности
       </button>
       <br />
-      <button onClick$={() => {
-        // Поскольку состояние просматривается на всю глубину, это вызовет повторный рендер.
-        store.list.push(`Item ${store.list.length}`);
-      }}>
-        Добавить к списку
+      <button
+        onClick$={() => {
+          // Поскольку состояние отслеживается на всю глубину вложенности, это вызовет ререндер.
+          store.list.push(`Item ${store.list.length}`);
+        }}
+      >
+        Добавить в список
       </button>
       <ul>
-        {store.list.map((item) => <li>{item}</li>)}
+        {store.list.map((item) => (
+          <li>{item}</li>
+        ))}
       </ul>
     </>
   );
@@ -136,11 +140,11 @@ export default component$(() => {
 const shallowStore = useStore(
   {
     nested: {
-      fields: { are: 'also tracked' }
+      fields: { are: 'также отслеживается' }
     },
-    list: [],
+    list: ['Item 1'],
   },
-  { deep: false}
+  { deep: false }
 );
 ```
 
@@ -311,6 +315,7 @@ export default component$(() => {
       <label>
         Запрос: <input bind:value={query} />
       </label>
+      <button>поиск</button>
       <Resource
         value={jokes}
         onPending={() => <>Загрузка...</>}
