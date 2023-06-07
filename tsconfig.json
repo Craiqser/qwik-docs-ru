@@ -13,7 +13,7 @@
 		"jsxImportSource": "@builder.io/qwik",
 		"strict": true,
 		"target": "ES2022",
-		"types": ["node", "vite/client"],
+		"types": ["vite/client"],
 		"verbatimModuleSyntax": true,
 	},
 	"include": ["src", "./*.d.ts"]

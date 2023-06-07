@@ -100,8 +100,11 @@ export const Header = component$(() => {
               <a
                 href="/examples/introduction/hello-world/"
                 class={{ active: pathname.startsWith('/examples') }}
+                aria-label="Qwik playground"
               >
-                <span>Песочница</span>
+                <span class="qwiksand" aria-hidden="true">
+                  Песочница Qwik
+                </span>
               </a>
             </li>
             {/* <li>
