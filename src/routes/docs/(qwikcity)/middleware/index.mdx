@@ -91,42 +91,42 @@ function isLoggedIn() {
 
 ## `RequestEvent`
 
-All middleware functions are passed a `RequestEvent` object which can be used to control the flow of HTTP response. For example, you can read/write cookies, headers, redirect, produce responses and exit the middleware chain early. Middleware functions are executed in the order as described above, from the topmost `layout.tsx` to the last `index.tsx`.
+Всем промежуточным функциям передаётся объект `RequestEvent`, который можно использовать для управления потоком ответа HTTP. Например, вы можете читать/записывать файлы куки, заголовки, перенаправлять, создавать ответы и выходить из цепочки промежуточного ПО раньше. Функции промежуточного ПО выполняются в порядке, описанном выше, от самого верхнего файла `layout.tsx` до последнего файла `index.tsx`.
 
 ### `next()`
 
-Use the `next()` function to execute the next middleware function in the chain. This is the default behavior when a middleware function returns normally, without an explicit call to `next()`. One can use the `next()` function to achieve a wrapping behavior around the next middleware function.
+Используйте функцию `next()`, чтобы выполнить следующую промежуточную функцию в цепочке. Это поведение по умолчанию, когда функция промежуточного ПО возвращается нормально, без явного вызова `next()`. Можно использовать функцию `next()` для достижения оборачивающего поведения вокруг следующей функции промежуточного ПО.
 
 <CodeSandbox src="/src/routes/demo/qwikcity/middleware/next/index.tsx">
 ```tsx /next()/
 import { type RequestHandler } from '@builder.io/qwik-city';
 
-// Generic function `onRequest` is executed first
+// Сначала выполняется общая функция `onRequest`
 export const onRequest: RequestHandler = async ({ next, sharedMap, json }) => {
   const log: string[] = [];
   sharedMap.set('log', log);
 
   log.push('onRequest start');
-  await next(); // Execute next middleware function (onGet)
+  await next(); // Выполнение следующей промежуточной функции (onGet)
   log.push('onRequest end');
 
   json(200, log);
 };
 
-// Specific functions such as `onGet` are executed next
+// Затем выполняются определённые функции, такие как `onGet`
 export const onGet: RequestHandler = async ({ next, sharedMap }) => {
   const log = sharedMap.get('log') as string[];
 
   log.push('onGET start');
-  // execute next middleware function
-  // (in our case, there are no more middleware functions nor components.)
+  // выполнение следующей промежуточной функции
+  // (в нашем случае больше нет промежуточных функций и компонентов)
   await next();
   log.push('onGET end');
 };
 ```
 </CodeSandbox>
 
-In general, a normal (non-exception) return of a function will execute the next function in the chain. However, throwing an error from the function will stop the execution chain. This is typically used for authentication or authorization and returning a `401` or `403` HTTP status code. Because the `next()` is implicit, to prevent calling the next middleware function in the chain it is necessary to `throw`.
+Нормальный (не исключение) возврат из функции приведёт к выполнению следующей функции в цепочке. Однако выдача ошибки из функции остановит цепочку выполнения. Обычно это используется для аутентификации или авторизации и возврата кода состояния HTTP `401` или `403`. Поскольку `next()` является неявным, для предотвращения вызова следующей промежуточной функции в цепочке необходимо вызвать `throw`.
 
 <CodeSandbox src="/src/routes/demo/qwikcity/middleware/throw/index.tsx">
 ```tsx /next()/
@@ -138,10 +138,10 @@ export const onRequest: RequestHandler = async ({ next, sharedMap, json }) => {
 
   log.push('onRequest');
   if (isLoggedIn()) {
-    // normal behavior call next middleware
+    // обычное поведение вызывает следующее промежуточное ПО
     await next();
   } else {
-    // If not logged in throw to prevent implicit call to the next middleware.
+    // Если не вошли в систему, бросаем исключение, чтобы предотвратить неявный вызов следующего промежуточного ПО.
     throw json(404, log);
   }
 };
@@ -152,15 +152,14 @@ export const onGet: RequestHandler = async ({ sharedMap }) => {
 };
 
 function isLoggedIn() {
-  return false; // always return false as mock example
+  return false; // всегда возвращает false в качестве фиктивного примера
 }
 ```
 </CodeSandbox>
 
 ### `sharedMap`
 
-Use `sharedMap` as a way to share data between middleware functions. The `sharedMap` is scoped to HTTP request. A common use case is to use `sharedMap` to store user details so that it can be used by other middleware functions, `routeLoader$()` or components.
-
+Используйте `sharedMap` как способ обмена данными между функциями промежуточного ПО. `sharedMap` ограничивается HTTP-запросом. Распространённым вариантом использования является использование `sharedMap` для хранения сведений о пользователе, чтобы его можно было использовать другими функциями промежуточного ПО, `routeLoader$()` или компонентами.
 
 <CodeSandbox src="/src/routes/demo/qwikcity/middleware/sharedMap/index.tsx">
 ```tsx
@@ -190,9 +189,9 @@ export const onRequest: RequestHandler = async ({
 };
 
 function loadUserFromCookie(cookie: Cookie): User | null {
-  // this is where you would check cookie for user.
+  // здесь вы должны проверить куки для пользователя
   if (cookie) {
-    // just return mock user for this demo.
+    // просто возвращаем фиктивного пользователя для этого демо
     return {
       username: `Mock User`,
       email: `mock@users.com`,
@@ -219,10 +218,7 @@ export default component$(() => {
 
 ### `headers`
 
-Use `headers` to set response headers associated with the current request.
-(For reading request headers see [`request.headers`](#request).) Middleware can manually add response headers to the response, using the `headers` property.
-
-
+Используйте `headers`, чтобы установить заголовки ответа, связанные с текущим запросом (для чтения заголовков запросов см. [`request.headers`](#request)). Промежуточное ПО может вручную добавлять заголовки ответа к ответу, используя свойство `headers`.
 
 <CodeSandbox src="/src/routes/demo/qwikcity/middleware/headers/index.tsx">
 ```tsx
@@ -239,7 +235,7 @@ export const onGet: RequestHandler = async ({ headers, json }) => {
 
 ### `cookie`
 
-Use `cookie` to set and retrieve cookie information for a request. Middleware can manually read and set cookies, using the `cookie` function. This might be useful for setting a session cookie, such as a JWT token, or a cookie to track a user.
+Используйте `cookie`, чтобы установить и получить информацию о куки для запроса. Промежуточное ПО может вручную считывать и устанавливать файлы cookie, используя функцию `cookie`. Это может быть полезно для установки файла куки сеанса, такого как токен JWT, или файла куки для отслеживания пользователя.
 
 <CodeSandbox src="/src/routes/demo/qwikcity/middleware/cookie/index.tsx">
 ```tsx
@@ -256,8 +252,7 @@ export const onGet: RequestHandler = async ({ cookie, json }) => {
 
 ### `method`
 
-Returns current HTTP request method: `GET`, `POST`, `PATCH`, `PUT`, `DELETE`.
-
+Возвращает текущий метод HTTP-запроса: `GET`, `POST`, `PATCH`, `PUT`, `DELETE`.
 
 <CodeSandbox src="/src/routes/demo/qwikcity/middleware/method/index.tsx">
 ```tsx
@@ -271,9 +266,7 @@ export const onRequest: RequestHandler = async ({ method, json }) => {
 
 ### `url`
 
-
-Returns current HTTP request URL. (Use `useLocation()` if you need the current URL in a component. The `url` is meant for middleware functions.)
-
+Возвращает текущий URL-адрес HTTP-запроса (используйте `useLocation()`, если вам нужен текущий URL-адрес в компоненте. `url` предназначен для функций промежуточного ПО).
 
 <CodeSandbox src="/src/routes/demo/qwikcity/middleware/url/index.tsx">
 ```tsx
@@ -285,14 +278,9 @@ export const onGet: RequestHandler = async ({ url, json }) => {
 ```
 </CodeSandbox>
 
-
 ### `basePathname`
 
-
-Returns the current base pathname URL of where the application is mounted. Typically this is `/` but it can be different if the application is mounted in a sub-path. See vite `qwikCity({root: '/my-sub-path-location'})`.
-
-
-
+Возвращает текущий базовый URL-адрес пути, по которому смонтировано приложение. Обычно это `/`, но он может быть другим, если приложение смонтировано в подкаталоге. См. vite `qwikCity({root: '/my-sub-path-location'})`.
 
 <CodeSandbox src="/src/routes/demo/qwikcity/middleware/basePathname/index.tsx">
 ```tsx
@@ -304,12 +292,9 @@ export const onGet: RequestHandler = async ({ basePathname, json }) => {
 ```
 </CodeSandbox>
 
-
 ### `params`
 
-Retrieve the "params" of the URL. For example `params.myId` will allow you to retrieve the `myId` from this route definition `/base/[myId]/something`.
-
-
+Получить «параметры» URL-адреса. Например, `params.myId` позволит вам получить `myId` из этого определения маршрута `/base/[myId]/something`.
 
 <CodeSandbox src="/src/routes/demo/qwikcity/middleware/params/[myId]/index.tsx" url="/src/routes/demo/qwikcity/middleware/params/some-id/">
 ```tsx
@@ -323,8 +308,7 @@ export const onGet: RequestHandler = async ({ params, json }) => {
 
 ### `query`
 
-Use `query` to retrieve the URL query parameters. (This is a shorthand for `url.searchParams`.) It is provided for the middleware functions, and components should use `useLocation()` API.
-
+Используйте `query`, чтобы получить параметры запроса URL (это сокращение от `url.searchParams`). Он предоставляется для функций промежуточного ПО, и компоненты должны использовать API `useLocation()`.
 
 <CodeSandbox src="/src/routes/demo/qwikcity/middleware/query/index.tsx" url="/src/routes/demo/qwikcity/middleware/query/?someKey=someValue">
 ```tsx
@@ -340,11 +324,11 @@ export const onGet: RequestHandler = async ({ query, json }) => {
 
 ### `parseBody()`
 
-Use `parseBody()` to parse form data submitted to the URL.
+Используйте `parseBody()` для анализа данных формы, отправленных по URL-адресу.
 
-This method will check the request headers for a `Content-Type` header and parse the body accordingly. It supports `application/json`, `application/x-www-form-urlencoded`, and `multipart/form-data` content types.
+Этот метод проверит заголовки запроса на наличие заголовка `Content-Type` и соответствующим образом проанализирует тело. Он поддерживает типы содержимого `application/json`, `application/x-www-form-urlencoded` и `multipart/form-data`.
 
-If the `Content-Type` header is not set, it will return `null`.
+Если заголовок `Content-Type` не установлен, он вернет `null`.
 
 <CodeSandbox src="/src/routes/demo/qwikcity/middleware/parseBody/index.tsx">
 ```tsx
@@ -370,7 +354,7 @@ export const onPost: RequestHandler = async ({ parseBody, json }) => {
 
 ### `cacheControl`
 
-Convenience API for setting the cache header.
+Удобный API для настройки заголовка кеша.
 
 <CodeSandbox src="/src/routes/demo/qwikcity/middleware/cacheControl/index.tsx">
 ```tsx
@@ -391,7 +375,7 @@ export const onGet: RequestHandler = async ({
 
 ### `platform`
 
-Deployment platform (Azure, Cloudflare, Deno, Google Cloud Run, Netlify, Node.js, Vercel, etc...) specific API.
+API, специфичный для платформы развертывания (Azure, Cloudflare, Deno, Google Cloud Run, Netlify, Node.js, Vercel и т. д.).
 
 <CodeSandbox src="/src/routes/demo/qwikcity/middleware/platform/index.tsx">
 ```tsx
@@ -403,10 +387,9 @@ export const onGet: RequestHandler = async ({ platform, json }) => {
 ```
 </CodeSandbox>
 
-
 ### `locale()`
 
-Set or retrieve the current locale.
+Установить или получить текущую локаль.
 
 <CodeSandbox src="/src/routes/demo/qwikcity/middleware/locale/index.tsx">
 ```tsx
@@ -427,8 +410,7 @@ export const onGet: RequestHandler = async ({ locale, json }) => {
 
 ### `status()`
 
-Set the status of the response independently of writing the response, useful for streaming. Endpoints can manually change the HTTP status code of the response, using the `status()` method.
-
+Установите статус ответа независимо от написания ответа, полезно для потоковой передачи. Конечные точки могут вручную изменить код состояния HTTP ответа, используя метод `status()`.
 
 <CodeSandbox src="/src/routes/demo/qwikcity/middleware/status/index.tsx">
 ```tsx
@@ -444,10 +426,9 @@ export const onGet: RequestHandler = async ({ status, getWritableStream }) => {
 ```
 </CodeSandbox>
 
-
 ### `redirect()`
 
-Redirect to a new URL. Notice the importance of throwing to prevent other middleware functions from running. he `redirect()` method will automatically set the `Location` header to the redirect URL.
+Перенаправление на новый URL. Обратите внимание на важность исключения для предотвращения запуска других функций промежуточного слоя. Метод `redirect()` автоматически установит заголовок `Location` на URL-адрес перенаправления.
 
 <CodeSandbox src="/src/routes/demo/qwikcity/middleware/redirect/index.tsx">
 ```tsx
@@ -464,7 +445,7 @@ export const onGet: RequestHandler = async ({ redirect, url }) => {
 
 ### `error()`
 
-Set an error response.
+Устанавливает ошибку ответа.
 
 <CodeSandbox src="/src/routes/demo/qwikcity/middleware/error/index.tsx">
 ```tsx
@@ -476,11 +457,9 @@ export const onGet: RequestHandler = async ({ error }) => {
 ```
 </CodeSandbox>
 
-
 ### `text()`
 
-Send a text-based response. Creating a text endpoint is as simple as calling the `text(status, string)` method. The `text()` method will automatically set the `Content-Type` header to `text/plain; charset=utf-8`.
-
+Отправка текстового ответа. Создание текстовой конечной точки так же просто, как вызвать метод text(status, string). Метод `text()` автоматически установит для заголовка `Content-Type` значение `text/plain; charset=utf-8`.
 
 <CodeSandbox src="/src/routes/demo/qwikcity/middleware/text/index.tsx">
 ```tsx
@@ -492,11 +471,9 @@ export const onGet: RequestHandler = async ({ text }) => {
 ```
 </CodeSandbox>
 
-
-
 ### `html()`
 
-Send an HTML response.
+Отправка HTML-ответа.
 
 <CodeSandbox src="/src/routes/demo/qwikcity/middleware/html/index.tsx">
 ```tsx
@@ -516,11 +493,9 @@ export const onGet: RequestHandler = async ({ html }) => {
 ```
 </CodeSandbox>
 
-
-
 ### `json()`
 
-Creating a JSON endpoint is as simple as calling the `json(status, object)` method. The `json()` method will automatically set the `Content-Type` header to `application/json; charset=utf-8` and JSON stringify the data.
+Создать конечную точку JSON так же просто, как вызвать метод `json(status, object)`. Метод `json()` автоматически установит для заголовка `Content-Type` значение `application/json; charset=utf-8` и JSON преобразует данные в строку.
 
 <CodeSandbox src="/src/routes/demo/qwikcity/middleware/json/index.tsx">
 ```tsx
@@ -534,7 +509,7 @@ export const onGet: RequestHandler = async ({ json }) => {
 
 ### `send()`
 
-Creating a raw endpoint is as simple as calling the `send(Response)` method. The `send()` method takes a standard `Response` object, which can be created using the `Response` constructor.
+Создать необработанную конечную точку так же просто, как вызвать метод `send(Response)`. Метод send() принимает стандартный объект `Response`, который можно создать с помощью конструктора `Response`.
 
 <CodeSandbox src="/src/routes/demo/qwikcity/middleware/send/index.tsx">
 ```tsx
@@ -554,7 +529,7 @@ export const onGet: RequestHandler = async (requestEvent) => {
 
 ### `exit()`
 
-Throw to stop the execution of the middleware functions.
+Выбрасывание остановит выполнение функций промежуточного ПО.
 
 <CodeSandbox src="/src/routes/demo/qwikcity/middleware/exit/index.tsx">
 ```tsx
@@ -568,7 +543,7 @@ export const onGet: RequestHandler = async ({ exit }) => {
 
 ### `env`
 
-Retrieve environmental property in a platform-independent way.
+Извлекайте свойства окружающей среды независимым от платформы способом.
 
 <CodeSandbox src="/src/routes/demo/qwikcity/middleware/env/index.tsx">
 ```tsx
@@ -587,8 +562,7 @@ export const onGet: RequestHandler = async ({ env, json }) => {
 
 ### `getWritableStream()`
 
-
-Set stream response.
+Установка потока ответа.
 
 <CodeSandbox src="/src/routes/demo/qwikcity/middleware/getWritableStream/index.tsx">
 ```tsx
@@ -613,11 +587,9 @@ const wait = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
 ```
 </CodeSandbox>
 
-
 ### `headerSent`
 
-
-Check to see if the header has been set.
+Проверяет, установлен ли заголовок.
 
 <CodeSandbox src="/src/routes/demo/qwikcity/middleware/headerSent/index.tsx">
 ```tsx
@@ -635,11 +607,9 @@ export const onRequest: RequestHandler = async ({ status }) => {
 ```
 </CodeSandbox>
 
-
-
 ### `request`
 
-Get the HTTP request object. Useful for getting hold of the request data such as the headers.
+Получите объект HTTP-запроса. Полезно для получения данных запроса, таких как заголовки.
 
 <CodeSandbox src="/src/routes/demo/qwikcity/middleware/request/index.tsx">
 ```tsx
