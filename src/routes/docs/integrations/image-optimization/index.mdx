@@ -68,15 +68,19 @@ pnpm install qwik-image
 > Это подключаемый компонент, поэтому разработчики могут подключать к нему различные загрузчики изображений (например, builder.io или другие CDN).
 
 <CodeSandbox src="/src/routes/demo/integration/img/qwik-image/index.tsx" style={{ height: '40em' }}>
-```tsx {6} /Slot/
+```tsx
 import { $, component$ } from '@builder.io/qwik';
 import { Image, useImageProvider } from 'qwik-image';
-import type { ImageTransformerProps } from 'qwik-image';
+import {
+  Image,
+  type ImageTransformerProps,
+  useImageProvider,
+} from 'qwik-image';
 
 export default component$(() => {
   const imageTransformer$ = $(
     ({ src, width, height }: ImageTransformerProps): string => {
-      // Здесь вы можете установить ваш любимый CDN загрузчика изображений
+      // Здесь вы можете установить ваш любимый сервис загрузчика изображений
       return `https://cdn.builder.io/api/v1/${src}?height=${height}&width=${width}}&format=webp&fit=fill`;
     }
   );

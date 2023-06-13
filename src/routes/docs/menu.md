@@ -18,15 +18,16 @@
 - [Рендер](/docs/(qwik)/components/rendering/index.mdx)
 - [Стилизация](/docs/(qwik)/components/styles/index.mdx)
 
-## Маршрутизация (Qwik City)
+## Qwik City
 
-- [Qwik City](/docs/(qwikcity)/qwikcity/index.mdx)
+- [Обзор](/docs/(qwikcity)/qwikcity/index.mdx)
 - [Маршрутизация](/docs/(qwikcity)/routing/index.mdx)
-- [Загрузчики маршрута](/docs/(qwikcity)/route-loader/index.mdx)
-- [Действия формы](/docs/(qwikcity)/action/index.mdx)
-- [Макеты](/docs/(qwikcity)/layout/index.mdx)
 - [Страницы](/docs/(qwikcity)/pages/index.mdx)
+- [Макеты](/docs/(qwikcity)/layout/index.mdx)
+- [Загрузчики](/docs/(qwikcity)/route-loader/index.mdx)
+- [Действия](/docs/(qwikcity)/action/index.mdx)
 - [Конечные точки](/docs/(qwikcity)/endpoints/index.mdx)
+- [Промежуточное ПО](/docs/(qwikcity)/middleware/index.mdx)
 - [server$](/docs/(qwikcity)/server$/index.mdx)
 - [Кэширование](/docs/(qwikcity)/caching/index.mdx)
 - [Переменные окружения](/docs/(qwikcity)/env-variables/index.mdx)

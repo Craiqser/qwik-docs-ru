@@ -1,11 +1,15 @@
 import { $, component$ } from '@builder.io/qwik';
 import { Image, useImageProvider } from 'qwik-image';
-import type { ImageTransformerProps } from 'qwik-image';
+import {
+  Image,
+  type ImageTransformerProps,
+  useImageProvider,
+} from 'qwik-image';
 
 export default component$(() => {
   const imageTransformer$ = $(
     ({ src, width, height }: ImageTransformerProps): string => {
-      // Здесь вы можете установить ваш любимый CDN загрузчика изображений
+      // Здесь вы можете установить ваш любимый сервис загрузчика изображений
       return `https://cdn.builder.io/api/v1/${src}?height=${height}&width=${width}}&format=webp&fit=fill`;
     }
   );
