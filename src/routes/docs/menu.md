@@ -17,6 +17,7 @@
 - [Слоты](/docs/(qwik)/components/slots/index.mdx)
 - [Рендер](/docs/(qwik)/components/rendering/index.mdx)
 - [Стилизация](/docs/(qwik)/components/styles/index.mdx)
+- [Устаревшие методы](/docs/(qwik)/deprecated-features/index.mdx)
 
 ## Qwik City
 
@@ -32,6 +33,7 @@
 - [Кэширование](/docs/(qwikcity)/caching/index.mdx)
 - [Переменные окружения](/docs/(qwikcity)/env-variables/index.mdx)
 - [Справочник API](/docs/(qwikcity)/api/index.mdx)
+- [Устаревшие методы](/docs/(qwikcity)/qwikcity-deprecated-features/index.mdx)
 
 ## Интеграции
 
