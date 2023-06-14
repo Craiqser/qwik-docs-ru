@@ -8,19 +8,8 @@ export default extendConfig(baseConfig, () => {
       ssr: true,
       rollupOptions: {
         input: ['src/entry.cloudflare-pages.tsx', '@qwik-city-plan'],
-      },
-      minify: false,
+      }
     },
-    plugins: [
-      cloudflarePagesAdapter({
-        ssg: {
-          include: ['/*'],
-          exclude: ['/', '/demo/tasks/resource/'],
-          origin:
-            (process.env.CF_PAGES_BRANCH !== 'main' ? process.env.CF_PAGES_URL : null) ??
-            'https://qwik-docs-ru.pages.dev',
-        },
-      }),
-    ],
+    plugins: [cloudflarePagesAdapter()]
   };
 });

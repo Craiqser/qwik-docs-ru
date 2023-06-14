@@ -16,7 +16,8 @@
     "build.showcase": "pnpm node scripts/showcase.js",
     "start": "pnpm dev",
     "codesandbox.sync": "tsm codesandbox.sync.ts",
-    "deploy": "wrangler pages publish ./dist"
+    "deploy": "wrangler pages publish ./dist",
+    "serve": "wrangler pages dev ./dist"
   },
   "devDependencies": {
     "@algolia/autocomplete-core": "1.7.4",

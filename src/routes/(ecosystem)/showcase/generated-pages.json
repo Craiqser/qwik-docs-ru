@@ -13,7 +13,7 @@
       "ttiTime": 8514.950938924118
     },
     "href": "https://wope.com/",
-    "tags": "sass"
+    "tags": "saas"
   },
   {
     "title": "Builder.io - Drag and drop Visual CMS",
@@ -77,6 +77,22 @@
       "ttiTime": 5150.5
     },
     "href": "https://reflect.app/",
+    "tags": "saas"
+  },
+  {
+    "title": "Hexa Center: Modern EMR (EPD) Solution for your Healthcare Practice",
+    "imgSrc": "/showcases/www_hexa_center_.webp",
+    "perf": {
+      "score": 1,
+      "fcpDisplay": "1.1 s",
+      "fcpScore": 0.99,
+      "lcpDisplay": "1.1 s",
+      "lcpScore": 1,
+      "ttiDisplay": "1.1 s",
+      "ttiScore": 1,
+      "ttiTime": 1110
+    },
+    "href": "https://www.hexa.center/",
     "tags": "saas"
   },
   {
