@@ -102,7 +102,7 @@
 - [Статические ассеты](/docs/(qwikcity)/advanced/static-assets/index.mdx)
 - [Карта сайта](/docs/(qwikcity)/advanced/sitemaps/index.mdx)
 - [Правила ESLint](/docs/(qwik)/advanced/eslint/index.mdx)
-- [Политика безопасности контента](/docs/(qwik)/advanced/content-security-policy/index.mdx)
+- [Политика безопасности контента](/docs/(qwikcity)/advanced/content-security-policy/index.mdx)
 
 ## Справочники
 
