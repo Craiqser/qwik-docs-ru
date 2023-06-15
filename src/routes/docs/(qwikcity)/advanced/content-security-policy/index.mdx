@@ -1,0 +1,111 @@
+---
+title: Политика безопасности контента
+contributors:
+  - tzdesign
+  - jordanw66
+---
+
+# Политика безопасности контента
+
+## Что это такое?
+
+[Политика безопасности контента (CSP)](https://developer.mozilla.org/en-US/docs/Web/HTTP/CSP) — это дополнительный уровень безопасности, который помогает обнаруживать и смягчать определённые типы атак, включая межсайтовые сценарии (XSS) и атаки с внедрением данных. Эти атаки используются для всего: от кражи данных до порчи сайта и распространения вредоносных программ.
+
+## Шаги по интеграции
+
+### Добавить плагин маршрутизации
+
+Чтобы добавить подключаемый модуль промежуточного ПО в ваше приложение, просто добавьте файл с именем ```plugin@your-plugin-name.ts``` в папку маршрутов. Этот файл будет загружаться при каждом запросе, что позволит вам добавлять заголовки, изменять ответ и многое другое.
+
+```bash {3} /plugin@csp\.ts/ title="Добавление плагина"
+src/
+└── routes/
+    ├── plugin@csp.ts         # Плагин, который запускается при каждом запросе (промежуточное ПО маршрута).
+    ├── contact/
+    │   └── index.mdx         # https://example.com/contact
+    ├── about/
+    │   └── index.md          # https://example.com/about
+    ├── index.mdx             # https://example.com/
+    │
+    └── layout.tsx            # Этот макет используется для всех страниц.
+```
+
+#### Пример
+
+> Этот шаблон предоставляет очень снисходительные обратно совместимые значения по умолчанию.
+> Настоятельно рекомендуется настроить его так, чтобы он лучше соответствовал вашему конкретному случаю использования.
+> Поскольку это сложная тема, вам следует более внимательно изучить [MDN](https://developer.mozilla.org/en-US/docs/Web/HTTP/CSP) или [web.dev](https://web.dev/csp/), чтобы лучше понять CSP.
+> Обратите внимание, что в режиме разработки скрипты Vite не имеют одноразового номера и будут сообщать об этом. По этой причине пример не будет добавлять csp в режиме разработки.
+
+```typescript title="src/routes/plugin@csp.ts"
+import type { RequestHandler } from "@builder.io/qwik-city";
+import { isDev } from "@builder.io/qwik/build";
+
+export const onRequest: RequestHandler = event => {
+  if (isDev) return; // Не будет возвращать заголовки CSP в режиме разработки.
+  const nonce = Date.now().toString(36); // Здесь ваша пользовательская логика данного случая.
+  event.sharedMap.set("@nonce", nonce);
+  const csp = [
+    `default-src 'self' 'unsafe-inline'`,
+    `font-src 'self'`,
+    `img-src 'self' 'unsafe-inline' data:`,
+    `script-src 'self' 'unsafe-inline' https: 'nonce-${nonce}' 'strict-dynamic'`,
+    `style-src 'self' 'unsafe-inline'`,
+    `frame-src 'self' 'nonce-${nonce}'`,
+    `object-src 'none'`,
+    `base-uri 'self'`,
+  ];
+
+  event.headers.set("Content-Security-Policy", csp.join("; "));
+};
+```
+
+### Добавление в сервис-воркер
+
+```tsx {12,22} /nonce/ title="src/root.ts"
+import { component$, useServerData } from "@builder.io/qwik";
+import {
+  QwikCityProvider,
+  RouterOutlet,
+  ServiceWorkerRegister,
+} from "@builder.io/qwik-city";
+import { RouterHead } from "./components/router-head/router-head";
+
+import "./global.css";
+
+export default component$(() => {
+  const nonce = useServerData<string | undefined>("nonce");
+  return (
+    <QwikCityProvider>
+      <head>
+        <meta charSet="utf-8" />
+        <link rel="manifest" href="/manifest.json" />
+        <RouterHead />
+      </head>
+      <body lang="en">
+        <RouterOutlet />
+        <ServiceWorkerRegister nonce={nonce} />
+      </body>
+    </QwikCityProvider>
+  );
+});
+```
+
+### Пользовательские скрипты
+
+Если у вас есть пользовательские теги скрипта, к которым нужно добавить одноразовый номер, вы можете использовать хук `useServerData`, чтобы получить одноразовый номер с сервера и добавить его в теги скрипта.
+
+```tsx {2,5} /nonce/ title="src/components/some-component.tsx"
+export default component$(() => {
+  const nonce = useServerData<string | undefined>("nonce");
+  return (
+    <div>
+      <script nonce={nonce}>alert("Привет, мир")</script>
+    </div>
+  );
+});
+```
+
+## Проверка CSP
+
+Существует отличный инструмент для проверки CSP: [https://csp-evaluator.withgoogle.com/](https://csp-evaluator.withgoogle.com/)
