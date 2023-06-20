@@ -2,38 +2,38 @@
 
 ## Введение
 
-- [Обзор](/docs/(qwik)/index.mdx)
-- [Начало работы](/docs/(qwik)/getting-started/index.mdx)
-- [Структура проекта](/docs/(qwikcity)/project-structure/index.mdx)
-- [FAQ](/docs/(qwik)/faq/index.mdx)
+- [Обзор](./(qwik)/index.mdx)
+- [Начало работы](./(qwik)/getting-started/index.mdx)
+- [Структура проекта](./(qwikcity)/project-structure/index.mdx)
+- [FAQ](./(qwik)/faq/index.mdx)
 
 ## Компонент
 
-- [Обзор](/docs/(qwik)/components/overview/index.mdx)
-- [Состояние](/docs/(qwik)/components/state/index.mdx)
-- [События](/docs/(qwik)/components/events/index.mdx)
-- [Задачи/Жизненный цикл](/docs/(qwik)/components/tasks/index.mdx)
-- [Контекст](/docs/(qwik)/components/context/index.mdx)
-- [Слоты](/docs/(qwik)/components/slots/index.mdx)
-- [Рендер](/docs/(qwik)/components/rendering/index.mdx)
-- [Стилизация](/docs/(qwik)/components/styles/index.mdx)
-- [Устаревшие методы](/docs/(qwik)/deprecated-features/index.mdx)
+- [Обзор](./(qwik)/components/overview/index.mdx)
+- [Состояние](./(qwik)/components/state/index.mdx)
+- [События](./(qwik)/components/events/index.mdx)
+- [Задачи/Жизненный цикл](./(qwik)/components/tasks/index.mdx)
+- [Контекст](./(qwik)/components/context/index.mdx)
+- [Слоты](./(qwik)/components/slots/index.mdx)
+- [Рендер](./(qwik)/components/rendering/index.mdx)
+- [Стилизация](./(qwik)/components/styles/index.mdx)
+- [Устаревшие методы](./(qwik)/deprecated-features/index.mdx)
 
 ## Qwik City
 
-- [Обзор](/docs/(qwikcity)/qwikcity/index.mdx)
-- [Маршрутизация](/docs/(qwikcity)/routing/index.mdx)
-- [Страницы](/docs/(qwikcity)/pages/index.mdx)
-- [Макеты](/docs/(qwikcity)/layout/index.mdx)
-- [Загрузчики](/docs/(qwikcity)/route-loader/index.mdx)
-- [Действия](/docs/(qwikcity)/action/index.mdx)
-- [Конечные точки](/docs/(qwikcity)/endpoints/index.mdx)
-- [Промежуточное ПО](/docs/(qwikcity)/middleware/index.mdx)
-- [server$](/docs/(qwikcity)/server$/index.mdx)
-- [Кэширование](/docs/(qwikcity)/caching/index.mdx)
-- [Переменные окружения](/docs/(qwikcity)/env-variables/index.mdx)
-- [Справочник API](/docs/(qwikcity)/api/index.mdx)
-- [Устаревшие методы](/docs/(qwikcity)/qwikcity-deprecated-features/index.mdx)
+- [Обзор](./(qwikcity)/qwikcity/index.mdx)
+- [Маршрутизация](./(qwikcity)/routing/index.mdx)
+- [Страницы](./(qwikcity)/pages/index.mdx)
+- [Макеты](./(qwikcity)/layout/index.mdx)
+- [Загрузчики](./(qwikcity)/route-loader/index.mdx)
+- [Действия](./(qwikcity)/action/index.mdx)
+- [Конечные точки](./(qwikcity)/endpoints/index.mdx)
+- [Промежуточное ПО](./(qwikcity)/middleware/index.mdx)
+- [server$](./(qwikcity)/server$/index.mdx)
+- [Кэширование](./(qwikcity)/caching/index.mdx)
+- [Переменные окружения](./(qwikcity)/env-variables/index.mdx)
+- [Справочник API](./(qwikcity)/api/index.mdx)
+- [Устаревшие методы](./(qwikcity)/qwikcity-deprecated-features/index.mdx)
 
 ## Интеграции
 
@@ -71,47 +71,47 @@
 
 ## Руководства
 
-- [Qwik в двух словах](/docs/(qwikcity)/guides/qwik-nutshell/index.mdx)
-- [Markdown & MDX](/docs/(qwikcity)/guides/mdx/index.mdx)
-- [SSG](/docs/(qwikcity)/guides/static-site-generation/index.mdx)
-- [Шпаргалка по React](/docs/(qwikcity)/guides/react-cheat-sheet/index.mdx)
-- [Лучшие практики](/docs/(qwikcity)/guides/best-practices/index.mdx)
-- [Оптимизация бандла](/docs/(qwikcity)/guides/bundle/index.mdx)
+- [Qwik в двух словах](./(qwikcity)/guides/qwik-nutshell/index.mdx)
+- [Markdown & MDX](./(qwikcity)/guides/mdx/index.mdx)
+- [SSG](./(qwikcity)/guides/static-site-generation/index.mdx)
+- [Шпаргалка по React](./(qwikcity)/guides/react-cheat-sheet/index.mdx)
+- [Лучшие практики](./(qwikcity)/guides/best-practices/index.mdx)
+- [Оптимизация бандла](./(qwikcity)/guides/bundle/index.mdx)
 
 ## Концепции
 
-- [Философия Qwik](/docs/(qwik)/think-qwik/index.mdx)
-- [Возобновляемый](/docs/(qwik)/concepts/resumable/index.mdx)
-- [Прогрессивный](/docs/(qwik)/concepts/progressive/index.mdx)
-- [Реактивность](/docs/(qwik)/concepts/reactivity/index.mdx)
+- [Философия Qwik](./(qwik)/concepts/think-qwik/index.mdx)
+- [Возобновляемый](./(qwik)/concepts/resumable/index.mdx)
+- [Прогрессивный](./(qwik)/concepts/progressive/index.mdx)
+- [Реактивность](./(qwik)/concepts/reactivity/index.mdx)
 
 ## Дополнительно
 
-- [Знак доллара `$`](/docs/(qwik)/advanced/dollar/index.mdx)
-- [Контейнеры](/docs/(qwik)/advanced/containers/index.mdx)
-- [QRL](/docs/(qwik)/advanced/qrl/index.mdx)
-- [Библиотека](/docs/(qwik)/advanced/library/index.mdx)
-- [Qwikloader](/docs/(qwik)/advanced/qwikloader/index.mdx)
-- [Оптимизатор](/docs/(qwik)/advanced/optimizer/index.mdx)
-- [Предзагрузка](/docs/(qwik)/advanced/prefetching/index.mdx)
-- [Каталог сборки](/docs/(qwik)/advanced/custom-build-dir/index.mdx)
-- [Vite](/docs/(qwik)/advanced/vite/index.mdx)
-- [Расширенная маршрутизация](/docs/(qwikcity)/advanced/routing/index.mdx)
-- [Спекулятивное получение модуля](/docs/(qwikcity)/advanced/speculative-module-fetching/index.mdx)
-- [Меню](/docs/(qwikcity)/advanced/menu/index.mdx)
-- [Статические ассеты](/docs/(qwikcity)/advanced/static-assets/index.mdx)
-- [Карта сайта](/docs/(qwikcity)/advanced/sitemaps/index.mdx)
-- [Правила ESLint](/docs/(qwik)/advanced/eslint/index.mdx)
-- [Политика безопасности контента](/docs/(qwikcity)/advanced/content-security-policy/index.mdx)
+- [Знак доллара `$`](./(qwik)/advanced/dollar/index.mdx)
+- [Контейнеры](./(qwik)/advanced/containers/index.mdx)
+- [QRL](./(qwik)/advanced/qrl/index.mdx)
+- [Библиотека](./(qwik)/advanced/library/index.mdx)
+- [Qwikloader](./(qwik)/advanced/qwikloader/index.mdx)
+- [Оптимизатор](./(qwik)/advanced/optimizer/index.mdx)
+- [Предзагрузка](./(qwik)/advanced/prefetching/index.mdx)
+- [Каталог сборки](./(qwik)/advanced/custom-build-dir/index.mdx)
+- [Vite](./(qwik)/advanced/vite/index.mdx)
+- [Расширенная маршрутизация](./(qwikcity)/advanced/routing/index.mdx)
+- [Спекулятивное получение модуля](./(qwikcity)/advanced/speculative-module-fetching/index.mdx)
+- [Меню](./(qwikcity)/advanced/menu/index.mdx)
+- [Статические ассеты](./(qwikcity)/advanced/static-assets/index.mdx)
+- [Карта сайта](./(qwikcity)/advanced/sitemaps/index.mdx)
+- [Правила ESLint](./(qwik)/advanced/eslint/index.mdx)
+- [Политика безопасности контента](./(qwikcity)/advanced/content-security-policy/index.mdx)
 
 ## Справочники
 
-- [Справочник API](/api/)
+- [Справочник API](../api/)
 
 ## Сообщество
 
 - [GitHub](https://github.com/BuilderIO/qwik)
 - [@QwikDev](https://twitter.com/QwikDev)
 - [Discord](https://qwik.builder.io/chat)
-- [Проекты сообщества](/community/projects/index.mdx)
-- [Ценности](/community/values/index.mdx)
+- [Проекты сообщества](../community/projects/index.mdx)
+- [Ценности](../community/values/index.mdx)
