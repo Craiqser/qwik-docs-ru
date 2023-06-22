@@ -43,6 +43,7 @@
 - [Cypress](integrations/cypress/index.mdx)
 - [Modular Forms](integrations/modular-forms/index.mdx)
 - [Nx монорепозитории](integrations/nx/index.mdx)
+- [Panda CSS](integrations/panda-css/index.mdx)
 - [Partytown](integrations/partytown/index.mdx)
 - [Playwright](integrations/playwright/index.mdx)
 - [PostCSS](integrations/postcss/index.mdx)

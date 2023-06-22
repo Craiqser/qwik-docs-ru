@@ -486,6 +486,22 @@
     "tags": "site"
   },
   {
+    "title": "短链",
+    "imgSrc": "/showcases/ss-link_netlify_app_.webp",
+    "perf": {
+      "score": 1,
+      "fcpDisplay": "1.4 s",
+      "fcpScore": 0.97,
+      "lcpDisplay": "1.4 s",
+      "lcpScore": 1,
+      "ttiDisplay": "1.4 s",
+      "ttiScore": 1,
+      "ttiTime": 1428.889885899698
+    },
+    "href": "https://ss-link.netlify.app/",
+    "tags": "app"
+  },
+  {
     "title": "Necati Koçlu - Front-end Developer",
     "imgSrc": "/showcases/necatikcl_dev_.webp",
     "perf": {

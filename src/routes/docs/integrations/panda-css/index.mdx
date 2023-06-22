@@ -1,0 +1,36 @@
+---
+title: Qwik City и Panda CSS
+keywords: 'styles, styling'
+contributors:
+  - anubra266
+---
+
+# Panda CSS
+
+Panda - это механизм стилизации, который генерирует примитивы стилизации для создания атомарного CSS и решений в типобезопасной и читабельной манере. [Panda CSS Website](https://panda-css.com/).
+
+## Использование
+
+Вы можете легко добавить Panda с помощью следующего стартового шаблона Qwik:
+
+```shell
+npm run qwik add pandacss
+```
+
+Предыдущая команда обновляет ваше приложение необходимыми зависимостями. Также она добавляет новые файлы в папку проекта:
+
+- `postcss.config.js`
+- `panda.config.js`
+- `.vscode/settings.json`
+
+и модифицирует ваш файл `src/global.css`, добавляя следующие строки:
+
+```css title="src/global.css"
+
+# global.css file
+
+@layer reset, base, tokens, recipes, utilities;
+
+...stuff...
+
+```
