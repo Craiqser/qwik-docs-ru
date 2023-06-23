@@ -35,6 +35,11 @@
 - [Справочник API](./(qwikcity)/api/index.mdx)
 - [Устаревшие методы](./(qwikcity)/qwikcity-deprecated-features/index.mdx)
 
+## Лаборатория Qwik 🧪
+
+- [Обзор](./labs/index.mdx)
+- [Insights](./labs/insights/index.mdx)
+
 ## Интеграции
 
 - [Обзор](integrations/index.mdx)
