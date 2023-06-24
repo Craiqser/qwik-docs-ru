@@ -39,6 +39,7 @@
 
 - [Обзор](./labs/index.mdx)
 - [Insights](./labs/insights/index.mdx)
+- [Типизированные маршруты](./labs/typed-routes/index.mdx)
 
 ## Интеграции
 

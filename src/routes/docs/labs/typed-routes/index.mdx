@@ -1,0 +1,45 @@
+---
+title: 🧪 Типизированные маршруты
+contributors:
+  - mhevery
+---
+
+# 🧪 Типизированные маршруты
+
+**Stage:** `prototyping`
+
+Обеспечивает безопасный способ построения URL-адресов в приложении.
+
+## Установка
+
+1. `npm install github:BuilderIo/qwik-labs-build#main`
+2. Обновите файл `vite.config.js`
+```typescript
+// ...
+import { qwikTypes } from '@builder.io/qwik-labs/vite';
+
+export default defineConfig(() => {
+	return {
+		plugins: [
+			// ...
+			qwikTypes() // <== Добавьте `qwikTypes()` к списку плагинов.
+		],
+	// ...
+};
+});
+```
+3. Выполните команду build, которая сгенерирует файлы `~/routes.gen.d.ts` и `~/routes.config.tsx`.
+4. Чтобы создать типобезопасный маршрут:
+```typescript
+import { AppLink } from '~/routes.config';
+
+export default component$(() => {
+	// ...
+	return (
+		// ...
+		<AppLink route="/your/[appParam]/link/" param:appParam={"some-value"}>
+			Link text
+		</AppLink>
+	);
+});
+```
