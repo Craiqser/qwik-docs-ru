@@ -17,7 +17,6 @@
 - [Слоты](./(qwik)/components/slots/index.mdx)
 - [Рендер](./(qwik)/components/rendering/index.mdx)
 - [Стилизация](./(qwik)/components/styles/index.mdx)
-- [Устаревшие методы](./(qwik)/deprecated-features/index.mdx)
 
 ## Qwik City
 
@@ -33,13 +32,6 @@
 - [Кэширование](./(qwikcity)/caching/index.mdx)
 - [Переменные окружения](./(qwikcity)/env-variables/index.mdx)
 - [Справочник API](./(qwikcity)/api/index.mdx)
-- [Устаревшие методы](./(qwikcity)/qwikcity-deprecated-features/index.mdx)
-
-## Лаборатория Qwik 🧪
-
-- [Обзор](./labs/index.mdx)
-- [Insights](./labs/insights/index.mdx)
-- [Типизированные маршруты](./labs/typed-routes/index.mdx)
 
 ## Интеграции
 
@@ -47,6 +39,7 @@
 - [Auth.js](integrations/authjs/index.mdx)
 - [Builder.io](integrations/builderio/index.mdx)
 - [Cypress](integrations/cypress/index.mdx)
+- [i18n](integrations/i18n/index.mdx)
 - [Modular Forms](integrations/modular-forms/index.mdx)
 - [Nx монорепозитории](integrations/nx/index.mdx)
 - [Panda CSS](integrations/panda-css/index.mdx)
@@ -61,7 +54,6 @@
 - [Tailwind](integrations/tailwind/index.mdx)
 - [Tauri](integrations/tauri/index.mdx)
 - [Vitest](integrations/vitest/index.mdx)
-- [Интернационализация](integrations/i18n/index.mdx)
 - [Иконки](integrations/icons/index.mdx)
 - [Оптимизация изображений](integrations/image-optimization/index.mdx)
 
@@ -97,7 +89,7 @@
 - [Знак доллара `$`](./(qwik)/advanced/dollar/index.mdx)
 - [Контейнеры](./(qwik)/advanced/containers/index.mdx)
 - [QRL](./(qwik)/advanced/qrl/index.mdx)
-- [Библиотека](./(qwik)/advanced/library/index.mdx)
+- [Режим библиотеки](./(qwik)/advanced/library/index.mdx)
 - [Qwikloader](./(qwik)/advanced/qwikloader/index.mdx)
 - [Оптимизатор](./(qwik)/advanced/optimizer/index.mdx)
 - [Предзагрузка](./(qwik)/advanced/prefetching/index.mdx)
@@ -114,6 +106,13 @@
 ## Справочники
 
 - [Справочник API](../api/)
+- [Устаревшие методы](./(qwik)/deprecated-features/index.mdx)
+
+## Лаборатория Qwik 🧪
+
+- [Обзор](./labs/index.mdx)
+- [Insights](./labs/insights/index.mdx)
+- [Типизированные маршруты](./labs/typed-routes/index.mdx)
 
 ## Сообщество
 

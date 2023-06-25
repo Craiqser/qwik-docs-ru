@@ -6,7 +6,7 @@ contributors:
 
 # Библиотека
 
-Qwik использует [библиотечный режим Vite](https://vitejs.dev/guide/build.html#library-mode) для создания библиотек компонентов.
+Qwik использует [режим библиотеки Vite](https://vitejs.dev/guide/build.html#library-mode) для создания библиотек компонентов.
 
 Для того чтобы создать библиотеку компонентов для Qwik, необходимо соблюдать определённые правила, это связано с тем, что оптимизатор Qwik должен распознать вашу библиотеку как библиотеку Qwik.
 
@@ -87,7 +87,7 @@ export default defineConfig(() => {
 });
 ```
 
-По сравнению с обычной конфигурацией Vite, библиотеки будут использовать [`lib`-режим Vite](https://vitejs.dev/guide/build.html#library-mode), который требует конфигурирования свойства `build.lib`.
+По сравнению с обычной конфигурацией Vite, библиотеки будут использовать [`lib`-режим Vite](https://vitejs.dev/guide/build.html#library-mode), что требует от вас правильной настройки свойства `build.lib`.
 
 ## `src/index.ts`
 

@@ -4,13 +4,15 @@ contributors:
   - nsdonato
 ---
 
-# Устаревшие методы Qwik
+# Устаревшие методы
 
 Эти методы были объявлены устаревшими при подготовке стабильной версии Qwik.
 
 Если вы случайно столкнулись с одним из них и не знаете, чем его заменить, мы упомянем их в этой таблице со ссылкой на их новую документацию ✨.
 
-## Устаревшие методы и варианты их замены
+## Qwik
+
+### Устаревшие методы и варианты их замены
 
 ---
 
@@ -25,3 +27,15 @@ contributors:
 | `useRef` | [useSignal](../components/state/#usesignal) |
 | `useServerMount` | [useTask$](../components/tasks/#usetask) + [isServer](../../(qwikcity)/guides/qwik-nutshell/#isserver-conditional)
 | `useWatch$` | [useTask$](../components/tasks/#usetask) |
+
+## Qwik City
+
+### Устаревшие методы и варианты их замены
+
+---
+
+| Устаревший метод | Замена |
+| :-- | :-- |
+| `useEndpoint` | [routeLoader$](../../(qwikcity)/route-loader/#routeloader) |
+| `loader$` - `loaderQrl` | [routeLoader$](../../(qwikcity)/route-loader/#routeloader) |
+| `action$` - `actionQrl` | [routeLoader$](../../(qwikcity)/route-loader/#routeloader) |
