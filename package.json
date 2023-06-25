@@ -2,7 +2,7 @@
   "name": "qwik-docs",
   "version": "0.0.1",
   "description": "Qwik Docs Site",
-  "homepage": "https://qwik.builder.io/",
+  "homepage": "https://qwik-docs-ru.pages.dev/",
   "scripts": {
     "build": "qwik build",
     "build.client": "vite build",
@@ -24,8 +24,8 @@
     "@algolia/autocomplete-core": "1.7.4",
     "@algolia/client-search": "4.14.3",
     "@builder.io/partytown": "0.8.0",
-    "@builder.io/qwik": "^1.1.5",
-    "@builder.io/qwik-city": "^1.1.5",
+    "@builder.io/qwik": "github:BuilderIo/qwik-build#main",
+    "@builder.io/qwik-city": "github:BuilderIo/qwik-city-build#main",
     "@builder.io/qwik-react": "0.5.0",
     "@builder.io/sdk-qwik": "^0.4.1",
     "@docsearch/css": "3.3.4",
@@ -70,7 +70,7 @@
   "bugs": {
     "url": "https://github.com/BuilderIO/qwik"
   },
-  "packageManager": "pnpm@8.6.1",
+  "packageManager": "pnpm@8.6.3",
   "engines": {
     "node": ">=18.11",
     "npm": "please-use-pnpm",
