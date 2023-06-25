@@ -11,17 +11,17 @@ export default extendConfig(baseConfig, () => {
       },
       minify: true,
     },
-    // plugins: [
-    //   cloudflarePagesAdapter({
-    //     ssg: {
-    //       include: ['/*'],
-    //       exclude: ['/', '/demo/*', '/shop/*'],
-    //       origin:
-    //         (process.env.CF_PAGES_BRANCH !== 'main' ? process.env.CF_PAGES_URL : null) ??
-    //         'https://qwik.builder.io',
-    //     },
-    //   }),
-    // ],
-    plugins: [cloudflarePagesAdapter()]
+    plugins: [
+      cloudflarePagesAdapter({
+        ssg: {
+          include: ['/*'],
+          exclude: ['/', '/demo/*', '/shop/*'],
+          origin:
+            (process.env.CF_PAGES_BRANCH !== 'main' ? process.env.CF_PAGES_URL : null) ??
+            'https://qwik-docs-ru.pages.dev',
+        },
+      }),
+    ],
+    // plugins: [cloudflarePagesAdapter()]
   };
 });
