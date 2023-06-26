@@ -1,24 +1,24 @@
-import { cloudflarePagesAdapter } from '@builder.io/qwik-city/adapters/cloudflare-pages/vite';
-import { extendConfig } from '@builder.io/qwik-city/vite';
-import baseConfig from '../../vite.config';
+import { cloudflarePagesAdapter } from "@builder.io/qwik-city/adapters/cloudflare-pages/vite";
+import { extendConfig } from "@builder.io/qwik-city/vite";
+import baseConfig from "../../vite.config";
 
 export default extendConfig(baseConfig, () => {
   return {
     build: {
       ssr: true,
       rollupOptions: {
-        input: ['src/entry.cloudflare-pages.tsx', '@qwik-city-plan'],
+        input: ["src/entry.cloudflare-pages.tsx", "@qwik-city-plan"],
       },
       minify: true,
     },
     plugins: [
       cloudflarePagesAdapter({
         ssg: {
-          include: ['/*'],
-          exclude: ['/', '/demo/*', '/shop/*'],
+          include: ["/*"],
+          exclude: ["/", "/demo/*", "/shop/*"],
           origin:
-            (process.env.CF_PAGES_BRANCH !== 'main' ? process.env.CF_PAGES_URL : null) ??
-            'https://qwik-docs-ru.pages.dev',
+            (process.env.CF_PAGES_BRANCH !== "main" ? process.env.CF_PAGES_URL : null) ??
+            "https://qwik-docs-ru.pages.dev",
         },
       }),
     ],
