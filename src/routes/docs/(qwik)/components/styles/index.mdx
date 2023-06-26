@@ -1,5 +1,5 @@
 ---
-title: Стили
+title: Стили | Компоненты
 contributors:
   - manucorporat
   - zanettin
@@ -54,8 +54,8 @@ import styles from './MyComponent.module.css';
 export default component$((props) => {
   // Пример синтаксиса с передачей массива
   return <div class={[
-    styles.container, 
-    'p-8', 
+    styles.container,
+    'p-8',
     props.isHighAttention ? 'text-green-500' : 'text-slate-500',
     { active: true}
   ]}>Привет, мир!</div>;
