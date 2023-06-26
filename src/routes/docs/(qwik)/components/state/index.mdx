@@ -340,7 +340,7 @@ export default component$(() => {
 - `false` - данные пока отсутствуют;
 - `true` - данные доступны (промис либо разрешён, либо отклонён).
 
-Обратный вызов, переданный в [`useResource$()`](/docs/(qwik)/components/state/index.mdx), запускается сразу после завершения обратного вызова [`useTask$()`](/docs/(qwik)/components/tasks/index.mdx#usetask). Более подробную информацию см. в разделе [Lifecycle](../tasks/index.mdx#lifecycle).
+Обратный вызов, переданный в [`useResource$()`](#useresource), запускается сразу после завершения обратного вызова [`useTask$()`](../tasks/index.mdx#usetask). Более подробную информацию см. в разделе [Lifecycle](../tasks/index.mdx#lifecycle).
 
 #### `<Resource />`
 
@@ -499,7 +499,7 @@ export const Child = component$(() => {
 
 ## `noSerialize()`
 
-Qwik гарантирует, что всё состояние приложения всегда сериализуемо. Это важно для того, чтобы приложения Qwik имели свойство [возобновляемости](/docs/(qwik)/concepts/resumable/index.mdx).
+Qwik гарантирует, что всё состояние приложения всегда сериализуемо. Это важно для того, чтобы приложения Qwik имели свойство [возобновляемости](../../concepts/resumable/index.mdx).
 
 Иногда необходимо хранить данные, которые не могут быть сериализованы, `noSerialize()` говорит Qwik даже не пытаться сериализовать помеченное значение.
 
