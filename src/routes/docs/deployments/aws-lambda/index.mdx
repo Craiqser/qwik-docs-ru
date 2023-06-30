@@ -1,0 +1,47 @@
+---
+title: AWS Lambda | Развёртывание
+contributors:
+  - leifermendez
+---
+
+# AWS адаптер
+
+Qwik City AWS адаптер позволяет подключить Qwik City к [AWS Lambda](https://docs.aws.amazon.com/lambda/latest/dg/nodejs-handler.html?icmpid=docs_lambda_hel).
+
+## Установка
+
+Чтобы интегрировать адаптер `aws-lambda`, используйте команду `add`:
+
+```shell
+npm run qwik add aws-lambda
+```
+
+Адаптер добавит новый `vite.config.ts` в каталог `adapters/`, и будет создан файл точки входа:
+
+```shell
+└── adapters/
+    └── aws-lambda
+        └── vite.config.ts
+└── src/
+    └── entry_aws-lambda.tsx
+```
+
+Кроме того, в `package.json` будут обновлены скрипты `build.server` и `serverless:preview`.
+
+## Сборка для производственной среды
+
+Чтобы собрать приложение для производственной среды, используйте команду `build`, эта команда автоматически запустит `npm run build.server` и `npm run build.client`:
+
+```shell
+npm run build
+```
+
+## Развёртывание в AWS
+
+Перед развёртыванием необходимо настроить [Учетные данные AWS](https://www.serverless.com/framework/docs/providers/aws/guide/credentials), под капотом адаптер использует [serverless](https://www.serverless.com/).
+
+```shell
+serverless deploy
+```
+
+Готово!
