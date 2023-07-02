@@ -1,5 +1,5 @@
 import { useLocation } from '@builder.io/qwik-city';
-import { component$, useStyles$, useContext, useVisibleTask$ } from '@builder.io/qwik';
+import { component$, useStyles$, useContext, useTask$ } from '@builder.io/qwik';
 // import { DocSearch } from '../docsearch/doc-search';
 import { CloseIcon } from '../svgs/close-icon';
 import { DiscordLogo } from '../svgs/discord-logo';
@@ -17,18 +17,21 @@ import {
 } from '../theme-toggle/theme-toggle';
 import BuilderContentComp from '../../components/builder-content';
 import { BUILDER_TOP_BAR_MODEL, BUILDER_PUBLIC_API_KEY } from '../../constants';
+import { isBrowser } from '@builder.io/qwik/build';
 
 export const Header = component$(() => {
   useStyles$(styles);
   const globalStore = useContext(GlobalStore);
   const pathname = useLocation().url.pathname;
 
-  useVisibleTask$(() => {
-    globalStore.theme = getColorPreference();
-    return colorSchemeChangeListener((isDark) => {
-      globalStore.theme = isDark ? 'dark' : 'light';
-      setPreference(globalStore.theme);
-    });
+  useTask$(() => {
+    if (isBrowser) {
+      globalStore.theme = getColorPreference();
+      return colorSchemeChangeListener((isDark) => {
+        globalStore.theme = isDark ? 'dark' : 'light';
+        setPreference(globalStore.theme);
+      });
+    }
   });
 
   const hasBuilderBar = !(
