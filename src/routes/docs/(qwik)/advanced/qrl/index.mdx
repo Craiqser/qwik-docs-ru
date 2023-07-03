@@ -36,7 +36,7 @@ Qwik использует `q:base` для преобразования QRL в а
 QRL-адреса также могут восстанавливать переменные с лексической областью видимости. В этом случае переменные кодируются в конце QRL в виде массива индексов атрибута `q:obj`.
 
 ```
-./path/to/chunk.js#SymbolName[0,2]
+./path/to/chunk.js#SymbolName[0,1]
 ```
 
 Массив используется функцией `useLexicalScope()` для восстановления значений переменных.
@@ -110,9 +110,9 @@ const Counter_onClick = () => {
 2. Пользователь кликает на `<button>`. Это вызывает событие `click`, которое всплывает и обрабатывается Qwikloader-ом.
 3. Qwikloader прослеживает путь всплытия события и ищет атрибут `on:click`, который он находит на `<button>`.
 4. Теперь Qwikloader пытается загрузить соответствующий чанк. Для этого Qwikloader должен разрешить относительный путь `./chunk-c.js`. Он использует эти значения для построения абсолютного пути, начинающегося в `<button>` и идущего к документу.
-   - `on:click="./chunk-c.js#Counter_onClick[0,2]"`.
+   - `on:click="./chunk-c.js#Counter_onClick[0,1]"`
    - `<body q:base="/build/">`
-   - `document.baseURI = "http://localhost/index.html"`.
+   - `document.baseURI = "http://localhost/index.html"`
    - В результате получается абсолютный URL `http://localhost/build/chunk-c.js`, по которому Qwikloader забирает данные.
 5. Qwikloader теперь получает ссылку на функцию `Counter_onClick` из `http://localhost/build/chunk-c.js` и вызывает её.
    ```tsx
