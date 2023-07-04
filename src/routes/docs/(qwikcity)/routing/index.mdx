@@ -9,17 +9,20 @@ contributors:
   - adamdbradley
   - wtlin1228
   - AnthonyPAlicea
+  - hamatoyogi
 ---
+import ImgRouting from '~/media/docs/qwikcity/routing.png?jsx';
 
 # Маршрутизация
 
 Маршрутизация в Qwik City основана на файловой системе, как в [Next.js](https://nextjs.org/docs/routing/introduction), [SvelteKit](https://kit.svelte.dev/docs/routing), [SolidStart](https://start.solidjs.com/core-concepts/routing) или [Remix](https://remix.run/docs/en/main/guides/routing). Файлы и каталоги в `src/routes` играют определенную роль в маршрутизации вашего приложения.
 
 - **📂 Директории:** Определяют сегменты URL, которые будут соответствовать маршрутизатору.
-- **📄 `index.tsx/mdx` файлы:** Определяют [страницу](../pages/) и/или [конечную точку](../endpoints/).
+- **📄 `index.tsx/mdx` файлы:** Определяют [страницу](../pages/).
+- **📄 `index.ts` файлы:** Определяют [конечную точку](../endpoints/).
 - **🖼️ `layout.tsx` файлы:** Определяют вложенные [макеты](../layout/) и/или [промежуточное ПО](../middleware).
 
-<img width="100%" src="/docs/qwikcity/routing.png"/>
+<ImgRouting />
 
 ## Маршрутизация на основе каталогов
 
@@ -314,5 +317,6 @@ Qwik City также поддерживает:
 - [Параметры маршрута](../advanced/routing/index.mdx)
 - [Вложенные макеты](../advanced/routing/index.mdx#nested-layout)
 - [Меню](../advanced/menu/index.mdx)
+- [Обработка запросов](../advanced/request-handling/index.mdx)
 
 Они рассматриваются дальше.
