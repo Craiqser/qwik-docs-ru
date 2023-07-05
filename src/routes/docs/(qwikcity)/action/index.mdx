@@ -11,6 +11,7 @@ contributors:
   - thejackshelton
   - adnanebrahimi
   - mhevery
+  - tzdesign
 ---
 
 # `routeAction$()`
@@ -234,6 +235,40 @@ export default component$(() => {
 При отправке данных в `routeAction()`, данные проверяются на соответствие схеме Zod. Если данные недействительны, действие поместит ошибку валидации в свойство `routeAction.value`.
 
 Пожалуйста, обратитесь к [документации Zod](https://zod.dev/) для получения дополнительной информации о том, как использовать схемы валидации Zod.
+
+### Расширенная проверка на основе событий
+
+Конструктор `zod$` может принимать функцию, поскольку первым аргументом является сам zod, поэтому вы можете использовать его непосредственно для построения схемы. Вторым параметром является RequestEvent для построения схемы zod на основе событий. Особенно в сочетании с `refine` и `superDefine` в zod, единственным пределом является ваше воображение.
+
+```tsx {5-5} /ev/#a  title="Расширенная проверка на основе событий"
+export const useAddUser = routeAction$(
+  async (user) => {
+    // "user" по-прежнему сильно типизирован, но firstname
+    // теперь является необязательным: { firstName? string | undefined, LastName: string }
+    const userID = await db.users.add({
+      firstName: user.firstName,
+      lastName: user.lastName,
+    });
+    return {
+      success: true,
+      userID,
+    };
+  },
+  // Схема Zod используется для проверки того, что FormData включает "firstName" и "LastName".
+  zod$((z, ev) => {
+    // Имя является необязательным, если url содержит параметр запроса "firstname=optional".
+    const firstName =
+      ev.url.searchParams.get("firstname") === "optional"
+        ? z.string().optional()
+        : z.string().nonempty();
+
+    return z.object({
+      firstName,
+      lastName: z.string(),
+    });
+  })
+);
+```
 
 ## HTTP запрос и ответ
 
