@@ -20,7 +20,7 @@ contributors:
 
 Оптимизатор Qwik может лучше оптимизировать реактивность приложения, если операции встроены в шаблон.
 
-```tsx title="Плохая реализация"
+```tsx title="Неоптимальная реализация"
 // Не делай так!
 export default component$(() => {
   const signal = useSignal(0);
@@ -58,18 +58,18 @@ Qwik позволяет регистрировать слушателей соб
 
 При использовании `useVisibleTask` для программной регистрации событий, мы загружаем и выполняем JavaScript сразу, даже если событие не сработает.
 
-```tsx title="Плохая реализация"
+```tsx title="Неоптимальная реализация"
 // Не делай так!
-useVisibleTask$(() => {
+useVisibleTask$(({ cleanup }) => {
   const listener = (event) => {
     const mouseEvent = event as MouseEvent;
     console.log(mouseEvent.x, mouseEvent.y);
   };
   document.addEventListener('mousemove', listener);
 
-  return () => {
-    document.removeEventListener('mousemove', listener)
-  };
+  cleanup(() => {
+    document.removeEventListener('mousemove', listener);
+  });
 });
 ```
 
@@ -97,7 +97,7 @@ useOnDocument(
 
 Не обращайтесь напрямую к `window.location`, вместо этого используйте хук `useLocation()`.
 
-```tsx title="Неправильная реализация"
+```tsx title="Неоптимальная реализация"
 // Не делай так!
 useVisibleTask$(()=> {
     if (window.location.href).includes('foo') {
