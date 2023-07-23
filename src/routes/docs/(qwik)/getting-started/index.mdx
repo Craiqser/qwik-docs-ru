@@ -323,20 +323,20 @@ export default component$(() => {
 2. Добавьте вызов `track` для повторного выполнения задачи при изменении состояния `isFavoriteSignal`:
    ```tsx /track/
    useTask$(({ track }) => {
-     track(()=> isFavoriteSignal.value);
+     track(() => isFavoriteSignal.value);
    });
    ```
 3. Добавьте код, который вы хотите выполнить при изменении состояния:
    ```tsx {3}
    useTask$(({ track }) => {
-     track(()=> isFavoriteSignal.value);
+     track(() => isFavoriteSignal.value);
      console.log('FAVORITE (isomorphic)', isFavoriteSignal.value);
    });
    ```
 4. Если вы хотите, чтобы работа происходила только на сервере, оберните её в `server$()`.
    ```tsx /server\$/ {4-6}
    useTask$(({ track }) => {
-     track(()=> isFavoriteSignal.value);
+     track(() => isFavoriteSignal.value);
      console.log('FAVORITE (isomorphic)', isFavoriteSignal.value);
      server$(() => {
        console.log('FAVORITE (server)', isFavoriteSignal.value);
