@@ -1,0 +1,134 @@
+---
+title: Turso | Интеграции
+keywords: "database, edge"
+contributors:
+  - xinnks
+---
+
+# Turso
+
+[Turso](https://turso.tech) - база данных, основанная на [libSQL](https://libsql.org) - форке SQLite с открытым исходным кодом.
+
+Она позволяет вам разместить ваши данные рядом с пользователями в более, чем 35 точках по всему миру.
+
+## Использование
+
+Вы можете легко добавить Turso, используя следующий стартовый шаблон Qwik:
+
+```shell
+npm run qwik add turso
+```
+
+Эта команда добавит необходимые зависимости для использования Turso.
+
+Он также добавляет новые файлы в папку проекта:
+
+- `src/lib/turso.ts`
+
+и добавляет или изменяет файл `.env.local` для включения в него
+
+```txt title=".env.local"
+PRIVATE_TURSO_DB_URL=
+PRIVATE_TURSO_DB_AUTH_TOKEN=
+```
+
+## Использование файловых баз данных
+
+Для локальной разработки и CI-интеграции идеальным вариантом является использование локальных файлов баз данных.
+
+Прежде всего, проверьте, установлен ли SQLite на вашей машине, выполнив команду `sqlite3 --version`. Если вы получите что-либо, отличное от номера версии (например, `0-14 20:58:05 554764a6e721fab307c63a4f98cd958c8428a5d9d8edfde951858d6fd02daapl`), посетите [эту ссылку для получения инструкции по установке](https://sqlite.org/download.html).
+
+Приступите к созданию файловой базы данных SQLite, выполнив следующую команду:
+
+```sh
+sqlite3 foo.db
+```
+
+Создайте схему базы данных:
+
+```sh
+sqlite> create table todo (id integer not null, task text, done int default 0);
+```
+
+Поместите в таблицу некоторые данные:
+
+```sh
+sqlite> insert into todo(id, task) values(1, "Go to the gym");
+sqlite> insert into todo(id, task) values(2, "Buy groceries");
+```
+
+Выход из оболочки - `.quit`
+
+Затем присвойте путь к файлу базы данных переменной окружения `PRIVATE_TURSO_DB_URL` внутри `.env.local`.
+
+```
+PRIVATE_TURSO_DB_URL=file:foo.db
+```
+
+> **Примечание**: При работе с файловыми базами данных токен базы данных не требуется.
+
+## Использование базы данных Turso
+
+Когда вы захотите развернуть свой проект в производственной среде, вы можете [установить Turso CLI](https://docs.turso.tech/reference/turso-cli#installation) на свою машину и [создать базу данных Turso](https://docs.turso.tech/reference/turso-cli#create-a-logical-database).
+
+Для выполнения запросов к базе данных в Turso CLI используется команда `db shell`.
+
+```sh
+turso db shell <database-name>
+```
+
+Создайте схему базы данных:
+
+```sh
+→  create table todo (id integer not null, task text, done int default 0);
+```
+
+Вставьте в таблицу какие-нибудь данные:
+
+```sh
+→  insert into todo(id, task) values(1, "Go to the gym");
+→  insert into todo(id, task) values(2, "Buy groceries");
+```
+
+Выход из оболочки - `.quit`.
+
+С помощью следующих инструкций можно получить учётные данные базы данных Turso и присвоить их переменным окружения в среде развёртывания.
+
+Начнём с url базы данных, выполните следующую команду:
+
+```sh
+turso db show <database-name> --url
+```
+
+Скопируйте полученный URL и присвойте его переменной окружения `PRIVATE_TURSO_DB_URL`.
+
+А для получения токена аутентификации базы данных выполните команду:
+
+```sh
+turso db tokens create <database-name>
+```
+
+Скопируйте полученный токен и присвойте его переменной окружения `PRIVATE_TURSO_DB_AUTH_TOKEN`.
+
+## Как использовать Turso в Qwik
+
+Импортируйте `tursoClient` в свои маршруты и инициируйте экземпляр клиента базы данных в серверных API Qwik, которые открывают объект `RequestEvent`, например
+`routeLoader$()`, `routeAction$()`, `server$()` и обработчики конечных точек, такие как `onGet`, `onPost`, `onRequest`.
+
+```ts
+import { tursoClient } from "~/utils/turso";
+
+export const useRouteLoader = routeLoader$(
+  async (requestEvent: RequestEventBase) => {
+    const client = tursoClient(requestEvent);
+
+    const items = await client.execute("select * from table");
+
+    return {
+      items: items.rows,
+    };
+  }
+);
+```
+
+Более подробную информацию можно найти на сайте [Turso docs](https://docs.turso.tech).
