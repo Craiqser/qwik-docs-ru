@@ -5,13 +5,13 @@ export default component$(() => {
     value: '',
     debouncedValue: '',
   });
-  useTask$(({ track }) => {
+  useTask$(({ track, cleanup }) => {
     // Повторный запуск этой функции при изменении свойства `value`.
     track(() => store.value);
     // Установка тайм-аута для дебаунса.
     const id = setTimeout(() => (store.debouncedValue = store.value), 500);
     // Возвращает функцию очистки для случая, если свойство `value` изменится до истечения времени.
-    return () => clearTimeout(id);
+    cleanup(() => clearTimeout(id));
   });
   return (
     <>
