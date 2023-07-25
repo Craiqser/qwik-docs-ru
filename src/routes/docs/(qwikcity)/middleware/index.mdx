@@ -42,7 +42,7 @@ export const onPatch: RequestHandler = async (requestEvent) => { ... }
 export const onDelete: RequestHandler = async (requestEvent) => { ... }
 ```
 
-Каждой промежуточной функции передается объект [`RequestEvent`](#requestevent), который позволяет промежуточному ПО управлять ответом.
+Каждой промежуточной функции передается объект [`RequestEvent`](#request), который позволяет промежуточному ПО управлять ответом.
 
 ## Порядок вызова
 
@@ -609,7 +609,7 @@ export const onRequest: RequestHandler = async ({ status }) => {
 
 ### `request`
 
-Получите объект HTTP-запроса. Полезно для получения данных запроса, таких как заголовки.
+Получает объект HTTP-запроса. Полезно для получения данных запроса, например, заголовков.
 
 <CodeSandbox src="/src/routes/demo/qwikcity/middleware/request/index.tsx">
 ```tsx
