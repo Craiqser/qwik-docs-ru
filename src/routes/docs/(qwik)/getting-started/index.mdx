@@ -22,6 +22,7 @@ contributors:
   - sreeisalso
   - dustinsgoodman
   - nsdonato
+  - seqshem
 ---
 
 import CodeSandbox from '../../../../components/code-sandbox/index.tsx';
@@ -149,7 +150,7 @@ export default component$(() => {
 Для объявления действия добавьте следующий код:
 
 ```tsx /routeAction\$/ title="src/routes/joke/index.tsx"
-import { routeAction$, Form } from '@builder.io/qwik-city';
+import { routeLoader$, Form, routeAction$ } from '@builder.io/qwik-city';
 
 export const useJokeVoteAction = routeAction$((props) => {
   // Предоставляем читателю реализовать это самостоятельно в качестве упражнения.
@@ -316,24 +317,28 @@ export default component$(() => {
 
 В Qwik [задача](../components/tasks/#usetask) - это работа, которая должна произойти при изменении состояния (это похоже на хук "effect" в других фреймворках). В этом примере мы будем использовать задачу для вызова кода на сервере.
 
-1. Создайте новую задачу, которая отслеживает состояние `isFavoriteSignal`:
+1. Импортируйте `useTask$` из `qwik`.
+   ```tsx /useTask$/
+   import { component$, useSignal, useTask$ } from "@builder.io/qwik";
+   ```
+2. Создайте новую задачу, которая отслеживает состояние `isFavoriteSignal`:
    ```tsx /useTask\$/
    useTask$(({ track }) => {});
    ```
-2. Добавьте вызов `track` для повторного выполнения задачи при изменении состояния `isFavoriteSignal`:
+3. Добавьте вызов `track` для повторного выполнения задачи при изменении состояния `isFavoriteSignal`:
    ```tsx /track/
    useTask$(({ track }) => {
      track(() => isFavoriteSignal.value);
    });
    ```
-3. Добавьте код, который вы хотите выполнить при изменении состояния:
+4. Добавьте код, который вы хотите выполнить при изменении состояния:
    ```tsx {3}
    useTask$(({ track }) => {
      track(() => isFavoriteSignal.value);
      console.log('FAVORITE (isomorphic)', isFavoriteSignal.value);
    });
    ```
-4. Если вы хотите, чтобы работа происходила только на сервере, оберните её в `server$()`.
+5. Если вы хотите, чтобы работа происходила только на сервере, оберните её в `server$()`.
    ```tsx /server\$/ {4-6}
    useTask$(({ track }) => {
      track(() => isFavoriteSignal.value);
@@ -436,7 +441,12 @@ export default component$(() => {
     import styles from "./index.css?inline";
    ```
 
-3. Сообщите компоненту о необходимости загрузить стили:
+3. Импортируйте `useStylesScoped$` из `qwik`.
+   ```tsx /useStylesScoped$/
+   import { component$, useSignal, useStylesScoped$, useTask$ } from "@builder.io/qwik";
+   ```
+
+4. Сообщите компоненту о необходимости загрузить стили:
    ```tsx
    useStylesScoped$(styles);
    ```
