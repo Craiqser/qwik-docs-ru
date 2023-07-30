@@ -80,6 +80,22 @@
     "tags": "saas"
   },
   {
+    "title": "realm | Landing",
+    "imgSrc": "/showcases/realmof_tech_.webp",
+    "perf": {
+      "score": 0.83,
+      "fcpDisplay": "1.9 s",
+      "fcpScore": 0.88,
+      "lcpDisplay": "4.5 s",
+      "lcpScore": 0.38,
+      "ttiDisplay": "3.9 s",
+      "ttiScore": 0.88,
+      "ttiTime": 3946
+    },
+    "href": "https://realmof.tech/",
+    "tags": "portfolio"
+  },
+  {
     "title": "Hexa Center: Modern EMR (EPD) Solution for your Healthcare Practice",
     "imgSrc": "/showcases/www_hexa_center_.webp",
     "perf": {
@@ -517,6 +533,22 @@
     },
     "href": "https://keyboardz.co/",
     "tags": "ecommerce"
+  },
+  {
+    "title": "Home",
+    "imgSrc": "/showcases/itbusinesshub_com_.webp",
+    "perf": {
+      "score": 0.91,
+      "fcpDisplay": "2.5 s",
+      "fcpScore": 0.68,
+      "lcpDisplay": "2.5 s",
+      "lcpScore": 0.9,
+      "ttiDisplay": "5.2 s",
+      "ttiScore": 0.74,
+      "ttiTime": 5237.5
+    },
+    "href": "https://itbusinesshub.com/",
+    "tags": "blog"
   },
   {
     "title": "Main page - Travel Calculator",
