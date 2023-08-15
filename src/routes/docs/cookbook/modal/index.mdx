@@ -1,0 +1,242 @@
+---
+title: Рецепты | Модальные окна
+contributors:
+  - mhevery
+---
+
+import CodeSandbox, {CodeFile} from '../../../../components/code-sandbox/index.tsx';
+
+# Модальные окна
+
+При разработке фронтэнда часто возникает задача вывести на экран модальный диалог из компонента. Сложность заключается в том, что модальный диалог должен рендериться в другой части DOM-дерева, а компонент, открывающий окно, должен иметь возможность влиять на место рендера.
+
+В других фреймворках эта проблема часто решается с помощью специальных API, таких как [`createPortal()`](https://react.dev/reference/react-dom/createPortal). Однако, такие API не очень хорошо работают с рендером на стороне сервера, поэтому необходим альтернативный подход.
+
+## Альтернативы
+
+Возможно, вам стоит обратить внимание на эти альтернативы модальным окнам в современных браузерах:
+
+- https://developer.mozilla.org/en-US/docs/Web/HTML/Element/dialog
+- https://developer.chrome.com/blog/introducing-popover-api/
+
+## Проблема
+
+Фундаментальными проблемами, требующими решения, являются:
+
+1. Определять место отображения всплывающего окна в приложении (назовем этот компонент `PopupManager`);
+2. Иметь способ взаимодействия с `PopupManager`, чтобы сообщить ему, когда и какой компонент должен быть отображён (из компонента, вызывающего всплывающее окно).
+
+## Решение
+
+<CodeSandbox url="/demo/cookbook/modal/"  style={{ height: '15em' }}>
+</CodeSandbox>
+
+Давайте разобьём решение на этапы:
+
+1. Создадим компонент `PopupManager`, отвечающий за рендер всплывающего окна;
+2. Поместим `<PopupManager>` в компонент верхнего уровня `layout.tsx`;
+3. Создадим `PopupManagerContext`, который может быть использован для взаимодействия с `PopupManager`;
+4. Создадим метод `PopupManager.show()`, который можно использовать для показа всплывающего окна.
+5. Создадим метод `PopupManager.hide()`, который может быть использован для скрытия всплывающего окна.
+
+### Использование PopupManager
+
+Предположим, что у нас уже есть `PopupManager`, и сначала остановимся на том, как он используется.
+
+1. Мы получаем доступ к API `PopuManager` через:
+   ```tsx
+   const popupManager = useContext(PopupManagerContext);
+   ```
+2. Затем мы используем API `popupManager` для показа всплывающего окна:
+   ```tsx
+   await popupManager.show(PopupExample, {
+     salutation: 'Hello',
+     name: 'World'
+   })
+   ```
+   > Обратите внимание на передачу дополнительных свойств всплывающему окну.
+3. Наконец, мы можем использовать API `popupManager` для скрытия всплывающего окна:
+   ```tsx
+   await popupManager.hide();
+   ```
+
+Полный исходный код можно найти здесь:
+
+<CodeFile src="/src/routes/demo/cookbook/modal/index.tsx">
+```tsx
+import { component$, useContext, useStylesScoped$ } from '@builder.io/qwik';
+import { PopupManagerContext } from './popup-manager';
+import PopupExampleCSS from './popup-example.css?inline';
+
+export default component$(() => {
+  // Получение API менеджера всплывающих окон
+  const popupManager = useContext(PopupManagerContext);
+  return (
+    <button
+      onClick$={async () => {
+        await popupManager.show(PopupExample, {
+          salutation: 'Привет',
+          name: 'Мир',
+        });
+      }}
+    >
+      Показать модальное окно
+    </button>
+  );
+});
+
+// Данный компонент отображается как модальный.
+export const PopupExample = component$<{ salutation: string; name: string }>(
+  ({ salutation, name }) => {
+    useStylesScoped$(PopupExampleCSS);
+    const popupManager = useContext(PopupManagerContext);
+    return (
+      <div class="popup-example">
+        <h1>Модальное окно</h1>
+        <p>
+          {salutation} {name}
+        </p>
+        <button onClick$={async () => await popupManager.hide()}>X</button>
+      </div>
+    );
+  }
+);
+```
+</CodeFile>
+
+Стилизация компонента `PopupExample` имеет вид (`popup-example.css`):
+
+<CodeFile src="/src/routes/demo/cookbook/modal/popup-example.css">
+```css
+.popup-example {
+  border: 1x solid black;
+  border-radius: 5px;
+  background-color: white;
+  padding: 20px;
+}
+```
+</CodeFile>
+
+## Реализация `PopupManager`
+
+`PopupManager` - это компонент, отвечающий за рендер всплывающего окна. Он также предоставляет контекстный API, который может быть использован для показа/скрытия всплывающего окна.
+
+1. Создайте `PopupManagerContext`, который будет использоваться для взаимодействия с `PopupManager`.
+   ```tsx
+   useContextProvider(PopupManagerContext, {
+    show: $(<T extends {}>(component: Component<T>, props: T) => {...}),
+    hide: $(() => {...})
+   });
+   ```
+2. Условное отображение компонента:
+   ```tsx
+   {
+     // Условное отображение модального окна
+     modal.value && <div class="modal">
+       <modal.value.Component {...modal.value.props} />
+     </div>
+   }
+   ```
+
+Полностью с реализацией можно ознакомиться здесь:
+
+<CodeFile src="/src/routes/demo/cookbook/modal/popup-manager.tsx">
+```tsx
+import {
+  type Component,
+  Slot,
+  component$,
+  createContextId,
+  useSignal,
+  useContextProvider,
+  $,
+  useStylesScoped$,
+} from '@builder.io/qwik';
+import CSS from './popup-manager.css?inline';
+
+// Определение публичного API для PopupManager.
+export const PopupManagerContext = createContextId<{
+  /**
+   * Используется для отображения всплывающего окна.
+   * @param Component Компонент для отображения.
+   * @param props Реквизиты, которые необходимо передать компоненту.
+   */
+  show: <T extends {}>(Component: Component<T>, props: T) => Promise<void>;
+
+  /**
+   * Скрыть текущее отображаемое всплывающее окно.
+   */
+  hide: () => Promise<void>;
+}>('PopupManager');
+
+export const PopupManager = component$(() => {
+  useStylesScoped$(CSS);
+  const modal = useSignal<{ Component: Component<any>; props: any }>();
+
+  // Предоставляем публичный API PopupManager другим компонентам.
+  useContextProvider(PopupManagerContext, {
+    show: $(<T extends {}>(component: Component<T>, props: T) => {
+      modal.value = { Component: component as any, props };
+    }),
+    hide: $(() => {
+      modal.value = undefined;
+    }),
+  });
+  return (
+    <>
+      <Slot />
+      {
+        // Условное отображение модального окна.
+        modal.value && (
+          <div class="modal">
+            <modal.value.Component {...modal.value.props} />
+          </div>
+        )
+      }
+    </>
+  );
+});
+```
+</CodeFile>
+
+Стилизация компонента `PopupManager` имеет вид (`popup-manager.css`):
+
+<CodeFile src="/src/routes/demo/cookbook/modal/popup-manager.css">
+```tsx
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 1000;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  outline: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: rgba(0, 0, 0, 0.5);
+  -webkit-tap-highlight-color: transparent;
+}
+```
+</CodeFile>
+
+## Добавление `PopuManager` в корневой файл `layout.tsx`
+
+<CodeFile src="/src/routes/demo/cookbook/modal/layout.tsx">
+```tsx
+import { Slot, component$ } from '@builder.io/qwik';
+import { PopupManager } from './popup-manager';
+
+export default component$(() => {
+  // Оберните корневой компонент в <PopupManager>, чтобы включить всплывающие окна.
+  // Компонент <PopupManager> будет предоставлять контекстный API
+  // другим компонентам для показа/скрытия всплывающих окон.
+  return (
+    <PopupManager>
+      <Slot />
+    </PopupManager>
+  );
+});
+```
+</CodeFile>

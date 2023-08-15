@@ -33,6 +33,11 @@
 - [Переменные окружения](./(qwikcity)/env-variables/index.mdx)
 - [Справочник API](./(qwikcity)/api/index.mdx)
 
+## Рецепты
+
+- [Обзор](./cookbook/index.mdx)
+- [Модальные окна](./cookbook/modal/index.mdx)
+
 ## Интеграции
 
 - [Обзор](integrations/index.mdx)
