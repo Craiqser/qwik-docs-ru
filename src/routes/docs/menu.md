@@ -36,7 +36,7 @@
 ## Рецепты
 
 - [Обзор](./cookbook/index.mdx)
-- [Модальные окна](./cookbook/modal/index.mdx)
+- [Портал](./cookbook/portal/index.mdx)
 
 ## Интеграции
 
