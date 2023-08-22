@@ -1,0 +1,106 @@
+---
+title: Сложные формы | Дополнительно
+contributors:
+  - ulic75
+---
+
+# Сложные формы
+
+## Что такое сложные формы?
+
+Сложные формы обычно содержат данные в структуре, которая представляет собой нечто большее, чем просто пары ключ/значение. Например, список людей, у каждого из которых есть собственный адрес электронной почты, телефон и почтовый адрес. По сути, это будет массив объектов.
+
+## Именование входных данных
+
+### Объекты
+
+Вложенные элементы могут быть созданы путём разделения с помощью `.` (точки) в имени. Например, `person.name` будет преобразовано в `{ person: { name: 'sam' } }`.
+
+### Массивы
+
+Массивы, верхнего уровня или вложенные, создаются путем указания в имени индекса, отсчитываемого от нуля. Например, `person.pets.0` будет преобразован в `{ person: { pets: [ 'cat' ] } }`.
+
+### Пример
+
+Ключом к созданию сложной формы является именование входных данных. Ниже приведён пример списка, описанного выше:
+
+```html
+<form>
+  <input name="person.0.name" value="Sam">
+  <input name="person.0.email" value="sam@complexform.com">
+  <input name="person.0.pets.0" value="cat">
+  <input name="person.0.pets.1" value="dog">
+  <input name="person.0.address.street" value="1234 Example Ave.">
+  <input name="person.0.address.city" value="Qwik">
+  <input name="person.0.address.state" value="IA">
+  <input name="person.0.address.zip" value="00000">
+  <input name="person.0.pets.0" value="beaver">
+
+  <input name="person.1.name" value="Bonnie">
+  <input name="person.1.email" value="bonnie@hishai.net">
+  <input name="person.1.address.street" value="768 Resolution Way">
+  <input name="person.1.address.city" value="Jaffa">
+  <input name="person.1.address.state" value="IL">
+  <input name="person.1.address.zip" value="01948">
+</form>
+```
+
+#### Выходные данные
+
+После отправки формы данные будут преобразованы в такой объект:
+
+```json
+{
+  "person": [
+    {
+      "name": "Sam",
+      "email": "sam@complexform.com",
+      "address": {
+        "street": "1234 Example Ave.",
+        "city": "Qwik",
+        "state": "IA",
+        "zip": "00000"
+      },
+      "pets": ["beaver"]
+    },
+    {
+      "name": "Bonnie",
+      "email": "bonnie@hishai.net",
+      "address": {
+        "street": "768 Resolution Way",
+        "city": "Jaffa",
+        "state": "IL",
+        "zip": "01948"
+      }
+    }
+  ]
+}
+```
+
+## Использование с действиями
+
+Сложные формы можно проверить с помощью zod$ с помощью RouteAction$ и globalAction$. Продолжая предыдущие примеры, это будет выглядеть так:
+
+```tsx
+export const action = routeAction$(
+  async (person) => {
+    return { success: true, person, };
+  },
+  // Zod-схема используется для проверки FormData.
+  zod$({
+    person: z.array(
+      z.object({
+        name: z.string(),
+        email: z.string().email(),
+        address: z.object({
+          street: z.string(),
+          city: z.string(),
+          state: z.string(),
+          zip: z.coerce.number()
+        }),
+        pets: z.array(z.string())
+      })
+    ),
+  })
+);
+```

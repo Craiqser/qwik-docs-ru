@@ -111,6 +111,7 @@
 - [Карта сайта](./(qwikcity)/advanced/sitemaps/index.mdx)
 - [Правила ESLint](./(qwik)/advanced/eslint/index.mdx)
 - [Политика безопасности контента](./(qwikcity)/advanced/content-security-policy/index.mdx)
+- [Сложные формы](./(qwikcity)/advanced/complex-forms/index.mdx)
 
 ## Справочники
 

@@ -5,7 +5,7 @@
 		"incremental": true,
 		"inlineSourceMap": true,
 		"inlineSources": true,
-		"lib": ["es2022", "DOM", "webworker"],
+		"lib": ["es2022", "DOM", "webworker", "DOM.Iterable"],
 		"module": "ES2022",
 		"moduleResolution": "node",
 		"resolveJsonModule": true,
