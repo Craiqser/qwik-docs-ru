@@ -12,6 +12,7 @@ contributors:
   - adamdbradley
   - AnthonyPAlicea
   - mhevery
+  - nsdonato
 ---
 
 # React Vs Qwik
@@ -19,14 +20,6 @@ contributors:
 Несколько примеров, сравнивающих React и Qwik.
 
 ## Компонент Hello world
-
-### ⚡️ Qwik
-
-```tsx
-export const HelloWorld = component$(() => {
-  return <div>Привет, мир</div>;
-});
-```
 
 ### ⚛️ React
 
@@ -36,15 +29,21 @@ export function HelloWorld() {
 }
 ```
 
-## Кнопка с обработчиком нажатия
-
 ### ⚡️ Qwik
 
 ```tsx
-export const Button = component$(() => {
-  return <button onClick$={() => console.log('click')}>Нажми меня</button>;
+export const HelloWorld = component$(() => {
+  return <div>Привет, мир</div>;
 });
 ```
+
+<details>
+  <summary style={{color: "#17ADF5"}}>Что такое component$ и $?</summary>
+  <p><span style={{color: "#A273F2"}}>component$</span> используется для объявления <a href="../../../(qwik)/components/overview/#component">компонента Qwik.</a></p>
+  <p><a href="../../../(qwik)/advanced/dollar/#the-dollar--sign">Знак доллара</a> <span style={{color: "#A273F2"}}>$</span> используется как для оптимизатора, так и для разработчика, когда Qwik разбивает ваше приложение на множество маленьких частей, которые мы называем символами.</p>
+</details>
+
+## Кнопка с обработчиком нажатия
 
 ### ⚛️ React
 
@@ -54,29 +53,21 @@ export function Button() {
 }
 ```
 
-## Использование параметров
-
 ### ⚡️ Qwik
 
 ```tsx
-export const Parent = component$(() => {
-  const userData = useStore({ count: 0 });
-  return <Child userData={userData} />;
-});
-
-interface ChildProps {
-  userData: { count: number };
-}
-
-export const Child = component$<ChildProps>(({ userData }) => {
-  return (
-    <>
-      <button onClick$={() => userData.count++}>Прибавить</button>
-      <p>Счёт: {userData.count}</p>
-    </>
-  );
+export const Button = component$(() => {
+  return <button onClick$={() => console.log('click')}>Нажми меня</button>;
 });
 ```
+
+<details>
+  <summary style={{color: "#17ADF5"}}>Помните $?</summary>
+  <p>Обработчики событий в Qwik ведут себя так же, как и в других фреймворках, просто нужно иметь в виду, что их контент будет загружаться лениво благодаря суффиксу доллара.</p>
+  <p>Внимание ⚠️: <a href="https://qwik.builder.io/docs/components/events/#inline-handler">обработчики</a> JSX, такие как onClick$ и onInput$ выполняются только на клиенте. Потому что это события DOM, и поскольку на сервере нет DOM, они не будут выполняться на сервере.</p>
+</details>
+
+## Использование параметров
 
 ### ⚛️ React
 
@@ -105,16 +96,29 @@ export const Child = ((props: ChildProps) => {
 })
 ```
 
-## Объявление локального состояния
-
 ### ⚡️ Qwik
 
 ```tsx
-export const LocalStateExample = component$(() => {
-  const count = useSignal(0);
-  return <div>Значение: {count.value}</div>;
+export const Parent = component$(() => {
+  const userData = useStore({ count: 0 });
+  return <Child userData={userData} />;
+});
+
+interface ChildProps {
+  userData: { count: number };
+}
+
+export const Child = component$<ChildProps>(({ userData }) => {
+  return (
+    <>
+      <button onClick$={() => userData.count++}>Прибавить</button>
+      <p>Счёт: {userData.count}</p>
+    </>
+  );
 });
 ```
+
+## Объявление локального состояния
 
 ### ⚛️ React
 
@@ -125,21 +129,21 @@ export function UseStateExample() {
 }
 ```
 
-## Создание компонента счётчика
-
 ### ⚡️ Qwik
 
 ```tsx
-export const Counter = component$(() => {
+export const LocalStateExample = component$(() => {
   const count = useSignal(0);
-  return (
-    <>
-      <p>Значение: {count.value}</p>
-      <button onClick$={() => count.value++}>Увеличить</button>
-    </>
-  );
+  return <div>Значение: {count.value}</div>;
 });
 ```
+
+<details>
+  <summary style={{color: "#17ADF5"}}>Что делать, если у меня более сложное состояние?</summary>
+  <p><a href="../../../(qwik)/components/state/#usestore">useStore()</a> работает очень похоже на useSignal(), но в качестве начального значения принимает объект, и реактивность по умолчанию распространяется на вложенные объекты и массивы. Хранилище можно представить как сигнал с несколькими значениями или как объект, состоящий из нескольких сигналов.</p>
+</details>
+
+## Создание компонента счётчика
 
 ### ⚛️ React
 
@@ -155,7 +159,36 @@ export function Counter() {
 }
 ```
 
+### ⚡️ Qwik
+
+```tsx
+export const Counter = component$(() => {
+  const count = useSignal(0);
+  return (
+    <>
+      <p>Значение: {count.value}</p>
+      <button onClick$={() => count.value++}>Увеличить</button>
+    </>
+  );
+});
+```
+
 ## Создание часов, которые тикают каждую секунду
+
+### ⚛️ React
+
+```tsx
+export function Clock() {
+  const [seconds, setSeconds] = useState(0);
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setSeconds(seconds + 1);
+    }, 1000);
+    return () => clearInterval(interval);
+  });
+  return <p>Секунды: {seconds}</p>;
+}
+```
 
 ### ⚡️ Qwik
 
@@ -173,22 +206,27 @@ export const Clock = component$(() => {
 });
 ```
 
+## Выполнение запроса при каждом изменении состояния
+
 ### ⚛️ React
 
 ```tsx
-export function Clock() {
-  const [seconds, setSeconds] = useState(0);
+export function Fetch() {
+  const [url, setUrl] = useState('https://api.github.com/repos/BuilderIO/qwik');
+  const [responseJson, setResponseJson] = useState(undefined);
   useEffect(() => {
-    const interval = setInterval(() => {
-      setSeconds(seconds + 1);
-    }, 1000);
-    return () => clearInterval(interval);
-  });
-  return <p>Секунды: {seconds}</p>;
+    fetch(url)
+      .then((res) => res.json())
+      .then((json) => setResponseJson(json));
+  }, [url]);
+  return (
+    <>
+      <p>{responseJson?.name} has {responseJson?.stargazers_count} ✨'s</p>
+      <input name="url" onInput={(ev) => setUrl((ev.target as HTMLInputElement).value)} />
+    </>
+  );
 }
 ```
-
-## Выполнение запроса при каждом изменении состояния
 
 ### ⚡️ Qwik
 
@@ -213,27 +251,32 @@ export const Fetch = component$(() => {
 });
 ```
 
+<details>
+  <summary style={{color: "#17ADF5"}}>Что такое useTask$ и атрибут bind?</summary>
+  <p><a href="../../../(qwik)/components/tasks/#usetask">useTask$()</a> регистрирует хук, который будет выполняться при создании компонента, он будет запущен как минимум один раз либо на сервере, либо в браузере, в зависимости от того, где компонент будет первоначально рендериться.</p>
+  <p><a href="../../../(qwik)/components/rendering/#bind-attribute">Атрибут bind</a> - это удобный API для двусторонней привязки значения `входа` к сигналу.</p>
+</details>
+
+## Объявление и использование контекста
+
 ### ⚛️ React
 
 ```tsx
-export function Fetch() {
-  const [url, setUrl] = useState('https://api.github.com/repos/BuilderIO/qwik');
-  const [responseJson, setResponseJson] = useState(undefined);
-  useEffect(() => {
-    fetch(url)
-      .then((res) => res.json())
-      .then((json) => setResponseJson(json));
-  }, [url]);
+export const MyContext = createContext({ message: 'значение для примера' });
+
+export default function Parent() {
   return (
-    <>
-      <p>{responseJson?.name} has {responseJson?.stargazers_count} ✨'s</p>
-      <input name="url" onInput={(ev) => setUrl((ev.target as HTMLInputElement).value)} />
-    </>
+    <MyContext.Provider value={{ message: 'обновлённое значение' }}>
+      <Child />
+    </MyContext.Provider>
   );
 }
-```
 
-## Объявление и использование контекста
+export const Child = () => {
+  const value = useContext(MyContext);
+  return <p>{value.message}</p>;
+};
+```
 
 ### ⚡️ Qwik
 
@@ -256,26 +299,37 @@ export const Child = component$(() => {
 });
 ```
 
+<details>
+  <summary style={{color: "#17ADF5"}}>Как я могу избежать пробрасывания параметров?</summary>
+  <p>Для этого достаточно создать <a href="https://qwik.builder.io/docs/components/context/#context">контекст</a>.</p>
+  <p>Достаточно создать контекст в компоненте, в котором необходимо хранить информацию, а затем в его потомках получить эту информацию через соответствующий ContextId.</p>
+</details>
+
+## Создание ввода с задержкой
+
 ### ⚛️ React
 
 ```tsx
-export const MyContext = createContext({ message: 'значение для примера' });
+export const DebouncedInput = () => {
+  const [value, setValue] = useState('');
+  const [debouncedValue, setDebouncedValue] = useState(value);
 
-export default function Parent() {
+  useEffect(() => {
+    const debounced = setTimeout(() => setDebouncedValue(value), 1000);
+
+    return () => {
+      clearTimeout(debounced);
+    };
+  }, [value]);
+
   return (
-    <MyContext.Provider value={{ message: 'обновлённое значение' }}>
-      <Child />
-    </MyContext.Provider>
+    <>
+      <input value={value} onChange={(ev) => setValue((ev.target as HTMLInputElement).value))} />
+      <p>{debouncedValue}</p>
+    </>
   );
-}
-
-export const Child = () => {
-  const value = useContext(MyContext);
-  return <p>{value.message}</p>;
 };
 ```
-
-## Создание ввода с задержкой
 
 ### ⚡️ Qwik
 
@@ -303,31 +357,34 @@ export const DebouncedInput = component$(() => {
 });
 ```
 
+## Изменение цвета фона на случайный при нажатии кнопки
+
 ### ⚛️ React
 
 ```tsx
-export const DebouncedInput = () => {
-  const [value, setValue] = useState('');
-  const [debouncedValue, setDebouncedValue] = useState(value);
-
-  useEffect(() => {
-    const debounced = setTimeout(() => setDebouncedValue(value), 1000);
-
-    return () => {
-      clearTimeout(debounced);
-    };
-  }, [value]);
-
+export function DynamicBackground() {
+  const [red, setRed] = useState(0);
+  const [green, setGreen] = useState(0);
+  const [blue, setBlue] = useState(0);
   return (
-    <>
-      <input value={value} onChange={(ev) => setValue((ev.target as HTMLInputElement).value))} />
-      <p>{debouncedValue}</p>
-    </>
+    <div
+      style={{
+        background: `rgb(${red}, ${green}, ${blue})`,
+      }}
+    >
+      <button
+        onClick={() => {
+          setRed(Math.random() * 256);
+          setGreen(Math.random() * 256);
+          setBlue(Math.random() * 256);
+        }}
+      >
+        Изменить фон
+      </button>
+    </div>
   );
-};
+}
 ```
-
-## Изменение цвета фона на случайный при нажатии кнопки
 
 ### ⚡️ Qwik
 
@@ -357,74 +414,7 @@ export const DynamicBackground = component$(() => {
 });
 ```
 
-### ⚛️ React
-
-```tsx
-export function DynamicBackground() {
-  const [red, setRed] = useState(0);
-  const [green, setGreen] = useState(0);
-  const [blue, setBlue] = useState(0);
-  return (
-    <div
-      style={{
-        background: `rgb(${red}, ${green}, ${blue})`,
-      }}
-    >
-      <button
-        onClick={() => {
-          setRed(Math.random() * 256);
-          setGreen(Math.random() * 256);
-          setBlue(Math.random() * 256);
-        }}
-      >
-        Изменить фон
-      </button>
-    </div>
-  );
-}
-```
-
 ## Создание компонента, отображающего список президентов
-
-### ⚡️ Qwik
-
-```tsx
-export const Presidents = component$(() => {
-  const presidents = [
-    { name: 'George Washington', years: '1789-1797' },
-    { name: 'John Adams', years: '1797-1801' },
-    { name: 'Thomas Jefferson', years: '1801-1809' },
-    { name: 'James Madison', years: '1809-1817' },
-    { name: 'James Monroe', years: '1817-1825' },
-    { name: 'John Quincy Adams', years: '1825-1829' },
-    { name: 'Andrew Jackson', years: '1829-1837' },
-    { name: 'Martin Van Buren', years: '1837-1841' },
-    { name: 'William Henry Harrison', years: '1841-1841' },
-    { name: 'John Tyler', years: '1841-1845' },
-    { name: 'James K. Polk', years: '1845-1849' },
-    { name: 'Zachary Taylor', years: '1849-1850' },
-    { name: 'Millard Fillmore', years: '1850-1853' },
-    { name: 'Franklin Pierce', years: '1853-1857' },
-    { name: 'James Buchanan', years: '1857-1861' },
-    { name: 'Abraham Lincoln', years: '1861-1865' },
-    { name: 'Andrew Johnson', years: '1865-1869' },
-    { name: 'Ulysses S. Grant', years: '1869-1877' },
-    { name: 'Rutherford B. Hayes', years: '1877-1881' },
-    { name: 'James A. Garfield', years: '1881-1881' },
-    { name: 'Chester A. Arthur', years: '1881-1885' },
-    { name: 'Grover Cleveland', years: '1885-1889' },
-  ];
-  return (
-    <ul>
-      {presidents.map((president) => (
-        <li key={president.name + president.years}>
-          {president.name} ({president.years})
-        </li>
-      ))}
-    </ul>
-  );
-});
-```
 
 ### ⚛️ React
 
@@ -464,4 +454,44 @@ export function Presidents() {
     </ul>
   );
 }
+```
+
+### ⚡️ Qwik
+
+```tsx
+export const Presidents = component$(() => {
+  const presidents = [
+    { name: 'George Washington', years: '1789-1797' },
+    { name: 'John Adams', years: '1797-1801' },
+    { name: 'Thomas Jefferson', years: '1801-1809' },
+    { name: 'James Madison', years: '1809-1817' },
+    { name: 'James Monroe', years: '1817-1825' },
+    { name: 'John Quincy Adams', years: '1825-1829' },
+    { name: 'Andrew Jackson', years: '1829-1837' },
+    { name: 'Martin Van Buren', years: '1837-1841' },
+    { name: 'William Henry Harrison', years: '1841-1841' },
+    { name: 'John Tyler', years: '1841-1845' },
+    { name: 'James K. Polk', years: '1845-1849' },
+    { name: 'Zachary Taylor', years: '1849-1850' },
+    { name: 'Millard Fillmore', years: '1850-1853' },
+    { name: 'Franklin Pierce', years: '1853-1857' },
+    { name: 'James Buchanan', years: '1857-1861' },
+    { name: 'Abraham Lincoln', years: '1861-1865' },
+    { name: 'Andrew Johnson', years: '1865-1869' },
+    { name: 'Ulysses S. Grant', years: '1869-1877' },
+    { name: 'Rutherford B. Hayes', years: '1877-1881' },
+    { name: 'James A. Garfield', years: '1881-1881' },
+    { name: 'Chester A. Arthur', years: '1881-1885' },
+    { name: 'Grover Cleveland', years: '1885-1889' },
+  ];
+  return (
+    <ul>
+      {presidents.map((president) => (
+        <li key={president.name + president.years}>
+          {president.name} ({president.years})
+        </li>
+      ))}
+    </ul>
+  );
+});
 ```
