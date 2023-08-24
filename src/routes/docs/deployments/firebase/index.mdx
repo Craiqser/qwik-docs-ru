@@ -1,0 +1,50 @@
+---
+title: Firebase | Развёртывание
+contributors:
+  - leifermendez
+  - mhevery
+---
+
+# Адаптер Firebase
+
+Адаптер Qwik City Firebase позволяет подключить Qwik City к [Firebase](https://firebase.google.com/docs/hosting).
+
+## Установка
+
+Чтобы интегрировать адаптер `firebase`, используйте команду `add`:
+
+```shell
+npm run qwik add firebase
+```
+
+Адаптер добавит новый файл `vite.config.ts` в каталог `adapters/`, и создаст файл точки входа, как показано ниже:
+
+```shell
+└── adapters/
+    └── firebase
+        └── vite.config.ts
+└── src/
+    └── entry-firebase.tsx
+```
+
+Кроме того, в `package.json` будут обновлены скрипты `build.server` и `serve`.
+
+## Сборка для производственной среды
+
+Чтобы собрать приложение для производственной среды, используйте команду `build`, эта команда автоматически запустит `npm run build.server` и `npm run build.client`:
+
+```shell
+npm run build
+```
+
+## Развёртывание на Firebase
+
+Перед развёртыванием необходимо настроить учётные данные Firebase и добавить проект Firebase в репозиторий с помощью следующих команд:
+
+```shell
+firebase login
+firebase use --add
+npm run deploy
+```
+
+Готово!
