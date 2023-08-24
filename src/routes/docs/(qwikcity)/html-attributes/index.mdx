@@ -1,0 +1,44 @@
+---
+title: HTML-атрибуты | QwikCity
+contributors:
+  - bab2683
+---
+
+# HTML-атрибуты
+
+Иногда нам необходимо добавить атрибуты, чтобы задать некоторую функциональность сайта, будь то управление темой приложения, определение направления текста (атрибут `dir`) или установка языка (атрибут `lang`). Чаще всего эти атрибуты целесообразно добавлять к тегу `html`, поскольку он обычно является [контейнером](../../(qwik)/advanced/containers/index.mdx) приложения.
+
+Чтобы сделать это с помощью Qwik City, перейдите в файл `src/entry.ssr.tsx` и добавьте их в секцию `containerAttributes` следующим образом:
+
+```tsx
+export default function (opts: RenderToStreamOptions) {
+  return renderToStream(<Root />, {
+    manifest,
+    ...opts,
+    // Используйте атрибуты контейнера для установки атрибутов html-тега.
+    containerAttributes: {
+      lang: "en-us",
+      ...opts.containerAttributes,
+    },
+  });
+}
+```
+
+Кроме того, из объекта `opts.serverData` (и вложенных в него объектов) можно получить информацию о запросе, такую как `заголовки запроса`, `url`, `параметры маршрута` и т.д.
+Используя эту информацию, мы можем сделать следующее:
+
+```tsx
+export default function (opts: RenderToStreamOptions) {
+  // При такой структуре маршрута src/routes/[locale]/post/[id]/index.tsx
+  const isRTL = opts.serverData?.qwikcity.params.locale === 'ar';
+
+  return renderToStream(<Root />, {
+    manifest,
+    ...opts,
+    containerAttributes: {
+      dir: isRTL ? 'rtl' : 'ltr'
+      ...opts.containerAttributes,
+    },
+  });
+}
+```

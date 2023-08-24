@@ -30,6 +30,7 @@
 - [Промежуточное ПО](./(qwikcity)/middleware/index.mdx)
 - [server$](./(qwikcity)/server$/index.mdx)
 - [Кэширование](./(qwikcity)/caching/index.mdx)
+- [HTML-атрибуты](./(qwikcity)/html-attributes/index.mdx)
 - [Переменные окружения](./(qwikcity)/env-variables/index.mdx)
 - [Справочник API](./(qwikcity)/api/index.mdx)
 
