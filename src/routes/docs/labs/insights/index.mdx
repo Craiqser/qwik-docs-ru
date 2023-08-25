@@ -17,7 +17,7 @@ Insights позволяет вашему приложению собирать �
 
 - Компонент `<Insights>`, который собирает реальные данные об использовании от пользователей;
 - Зарегистрированное приложение в базе данных builder.io;
-- Конфигурация qwikVite для загрузки данных об использовании от реальных пользователей в процессе сборки.
+- Vite-плагин `qwikInsights` для загрузки и сохранения реальных данных об использовании от пользователя в процессе сборки.
 
 > ПРИМЕЧАНИЕ:
 > Чтобы попробовать новую функцию, пожалуйста, напишите сообщение в [Qwik Discord server](https://qwik.builder.io/chat)
@@ -71,15 +71,13 @@ file: `vite.config.js`
 ```typescript
 //..
 import { defineConfig, loadEnv } from 'vite';
-import { insightsEntryStrategy } from '@builder.io/qwik-labs/vite';
+import { qwikInsights } from '@builder.io/qwik-labs/vite';
 
 export default defineConfig(async () => {
   return {
     plugins: [
-      qwikVite({
-        entryStrategy: await insightsEntryStrategy({
-          publicApiKey: loadEnv('', '.', '').PUBLIC_QWIK_INSIGHTS_KEY,
-        }),
+      qwikInsights({
+        publicApiKey: loadEnv('', '.', '').PUBLIC_QWIK_INSIGHTS_KEY,
       }),
       //...
     ],
