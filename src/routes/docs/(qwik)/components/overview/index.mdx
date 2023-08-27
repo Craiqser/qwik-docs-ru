@@ -207,6 +207,45 @@ export default component$(() => {
 ```
 </CodeSandbox>
 
+## Доступ к элементам по `id` в серверной и клиентской средах
+
+В серверных и клиентских средах к элементам иногда приходится обращаться по их `id`. Используйте функцию `useId()` для получения уникального идентификатора текущего компонента, который остаётся неизменным при рендере на стороне сервера (SSR) и при работе на стороне клиента. Это очень важно, когда серверные компоненты требуют выполнения сценариев на стороне клиента, например:
+
+1. **Анимационные эффекты**.
+2. **Улучшение доступности**
+3. **Другие клиентские библиотеки**.
+
+В системе микрофронтов, где одновременно выполняется несколько фрагментов, `useId()` обеспечивает уникальность и согласованность идентификаторов во всех средах выполнения, исключая конфликты.
+
+<CodeSandbox src="/src/routes/demo/component/useId/index.tsx" style={{ height: '10em' }}>
+```tsx /const outputRef = useSignal<Element>();/ /ref={outputRef}/
+import { component$, useId, useSignal, useVisibleTask$ } from '@builder.io/qwik';
+
+export default component$(() => {
+  const elemIdSignal = useSignal<string | null>(null);
+  const id = useId();
+  const elemId = `${id}-example`;
+  console.log('server-side id:', elemId);
+
+  useVisibleTask$(() => {
+    const elem = document.getElementById(elemId);
+    elemIdSignal.value = elem?.getAttribute('id') || null;
+    console.log('client-side id:', elemIdSignal.value);
+  });
+
+  return (
+    <section>
+      <div id={elemId}>
+        Этому идентификатору должны соответствовать как консоль на стороне сервера, так и консоль на стороне клиента:
+        <br />
+        <b>{elemIdSignal.value || null}</b>
+      </div>
+    </section>
+  );
+});
+```
+</CodeSandbox>
+
 ## Ленивая загрузка
 
 Компонент также играет важную роль в разрыве отношений родитель-потомок в целях разбиения на чанки.
