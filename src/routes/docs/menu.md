@@ -38,6 +38,7 @@
 
 - [Обзор](./cookbook/index.mdx)
 - [Портал](./cookbook/portal/index.mdx)
+- [Медиа-контроллер](./cookbook/mediaController/index.mdx)
 
 ## Интеграции
 

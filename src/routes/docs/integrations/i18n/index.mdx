@@ -3,6 +3,7 @@ title: Интернационализация | Интеграции
 contributors:
   - mhevery
   - manucorporat
+  - gioboa
 ---
 
 # Интернационализация
@@ -63,5 +64,22 @@ contributors:
 
 ## Библиотеки интернационализации
 
-- [$localize](https://github.com/mhevery/qwik-i18n)
-- [qwik-speak](https://github.com/robisim74/qwik-speak)
+### $localize
+
+[$localize](https://angular.io/api/localize/init/$localize) - система перевода, основанная на системе $localize из [Angular](https://angular.io/). Переводы можно извлечь из файлов в форматах xmb, xlf, xlif, xliff, xlf2, xlif2, xliff2 и json.
+
+>ПРИМЕЧАНИЕ. Система $localize представляет собой систему перевода времени компиляции и полностью удалена из конечного вывода. $localize — это подпроект Angular, и его использование не означает, что Angular используется для рендера приложений.
+
+Самый простой способ добавить $localize в Qwik — использовать команду `pnpm qwik add localize`. Это установит необходимые зависимости и создаст новый общедоступный маршрут `/src/routes/[locale]`, демонстрирующий интеграцию i18n $localize.
+
+```bash
+npm run qwik add localize
+```
+
+Для получения дополнительной информации, пожалуйста, ознакомьтесь с [примером репозитория](https://github.com/mhevery/qwik-i18n).
+
+### qwik-speak
+
+Библиотека [qwik-speak](https://github.com/robisim74/qwik-speak) для перевода текста, дат и чисел в приложениях Qwik.
+
+Самый простой способ добавить qwik-speak в Qwik — следовать официальному [руководству](https://github.com/robisim74/qwik-speak/blob/main/docs/quick-start.md).
