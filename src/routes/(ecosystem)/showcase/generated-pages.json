@@ -694,5 +694,21 @@
     },
     "href": "https://www.anirbandas.in/",
     "tags": "portfolio"
+  },
+  {
+    "title": "Polaris: AI-powered Site Reliability",
+    "imgSrc": "/showcases/getpolaris_ai_.webp",
+    "perf": {
+      "score": 0.69,
+      "fcpDisplay": "3.0 s",
+      "fcpScore": 0.51,
+      "lcpDisplay": "7.5 s",
+      "lcpScore": 0.04,
+      "ttiDisplay": "6.7 s",
+      "ttiScore": 0.56,
+      "ttiTime": 6744.5
+    },
+    "href": "https://getpolaris.ai/",
+    "tags": "sass"
   }
 ]
