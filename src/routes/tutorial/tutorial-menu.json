@@ -181,7 +181,7 @@
     "apps": [
       {
         "id": "template",
-        "title": "Неявные обновления шаблонов",
+        "title": "Шаблон — неявная реактивность",
         "enableHtmlOutput": false,
         "enableClientOutput": false,
         "enableSsrOutput": false
