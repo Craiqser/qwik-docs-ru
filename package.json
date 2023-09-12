@@ -31,7 +31,6 @@
     "@unpic/qwik": "^0.0.24",
     "algoliasearch": "4.16.0",
     "autoprefixer": "^10.4.14",
-    "cross-fetch": "^4.0.0",
     "express": "4.18.2",
     "fflate": "0.8.0",
     "gray-matter": "4.0.3",
