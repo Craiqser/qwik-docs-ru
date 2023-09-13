@@ -47,6 +47,7 @@
 - [Builder.io](integrations/builderio/index.mdx)
 - [Cypress](integrations/cypress/index.mdx)
 - [i18n](integrations/i18n/index.mdx)
+- [Leaflet Map](integrations/leaflet-map/index.mdx)
 - [Modular Forms](integrations/modular-forms/index.mdx)
 - [Nx монорепозитории](integrations/nx/index.mdx)
 - [Orama](integrations/orama/index.mdx)
