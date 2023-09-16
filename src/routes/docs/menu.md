@@ -26,6 +26,7 @@
 - [Макеты](./(qwikcity)/layout/index.mdx)
 - [Загрузчики](./(qwikcity)/route-loader/index.mdx)
 - [Действия](./(qwikcity)/action/index.mdx)
+- [Валидаторы](./(qwikcity)/validator/index.mdx)
 - [Конечные точки](./(qwikcity)/endpoints/index.mdx)
 - [Промежуточное ПО](./(qwikcity)/middleware/index.mdx)
 - [server$](./(qwikcity)/server$/index.mdx)

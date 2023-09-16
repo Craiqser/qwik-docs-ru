@@ -1,0 +1,177 @@
+---
+title: Валидаторы | QwikCity
+contributors:
+  - wtlin1228
+---
+
+# Валидаторы данных
+
+Валидаторы данных в QwikCity необходимы для проверки событий запроса и данных для действий и загрузчиков. Эти проверки происходят на стороне сервера перед выполнением соответствующего действия или загрузчика. Подобно функции `zod$()`, Qwik предоставляет для этой цели специальную функцию `validator$()`.
+
+```tsx {12-22} /validator$/#a
+import {
+  type RequestEvent,
+  type RequestEventAction,
+  routeAction$,
+  validator$,
+} from "@builder.io/qwik-city";
+
+export const useAction = routeAction$(
+  async (data, requestEvent: RequestEventAction) => {
+    return { foo: "bar" };
+  },
+  validator$(async (ev: RequestEvent, data) => {
+    if (ev.query.get("secret") === "123") {
+      return { success: true };
+    }
+    return {
+      success: false,
+      error: {
+        message: "secret is not correct",
+      },
+    };
+  }),
+);
+```
+
+При отправке запроса в `routeAction()`, событие запроса и данные проходят проверку с помощью определённого валидатора. Если проверка не удалась, действие поместит ошибку проверки в свойство `routeAction.value`.
+
+```tsx
+export default component$(() => {
+  const action = useAction();
+
+  // action value is undefined before submitting
+  if (action.value) {
+    if (action.value.failed) {
+      // action failed if query string has no secret
+      action.value satisfies { failed: true; message: string };
+    } else {
+      action.value satisfies { searchResult: string };
+    }
+  }
+
+  return (
+    <button onClick$={() => action.submit({ search: "foo" })}>Submit</button>
+  );
+});
+```
+
+## Множественные валидаторы
+
+Действия и загрузчики могут иметь несколько валидаторов, которые выполняются в обратном порядке. В следующем примере валидаторы выполняются в порядке `validator3` -> `validator2` -> `validator1`.
+
+```tsx {9-11}
+const validator1 = validator$(/*...*/)
+const validator2 = validator$(/*...*/)
+const validator3 = validator$(/*...*/)
+
+export const useAction = routeAction$(
+  async (data, requestEvent: RequestEventAction) => {
+    return { foo: "bar" };
+  },
+  validator1,
+  validator2,
+  validator3, // будет выполняться первым
+);
+```
+
+Если `validator3` имеет свойство `data` в объекте, возвращаемым в случае успешной проверки, то эти данные будут переданы следующему валидатору - `validator2`. Если вы не хотите переопределять исходные переданные данные, не помещайте свойство `data` в объект, возвращаемый в случае успешной проверки.
+
+```tsx /message: "hi, I am validator3"/#a /message: "hi, I am validator2"/#b /message: "hi, I am validator1"/#c
+export const useAction = routeAction$(
+  async (data, requestEvent: RequestEventAction) => {
+    console.log(data); // { message: "hi, I am validator1" }
+    return { foo: "bar" };
+  },
+  // validator1
+  validator$((ev, data) => {
+    console.log(data); // { message: "hi, I am validator2" }
+    return {
+      success: true,
+      data: {
+        message: "hi, I am validator1",
+      },
+    };
+  }),
+  // validator2
+  validator$((ev, data) => {
+    console.log(data); // { message: "hi, I am validator3" }
+    return {
+      success: true,
+      data: {
+        message: "hi, I am validator2",
+      },
+    };
+  }),
+  // validator3
+  validator$((ev, data) => {
+    console.log(data); // Your submitted data
+    return {
+      success: true,
+      data: {
+        message: "hi, I am validator3",
+      },
+    };
+  }),
+);
+```
+
+## Возвращаемый объект
+
+Валидаторы данных ожидают наличия определённых свойств в возвращаемых объектах.
+
+### Успешная проверка
+
+В случае успешной проверки свойство `success` должно быть равно true.
+
+```ts
+interface Success {
+  success: true;
+  data?: any;
+}
+```
+
+### Неудачная проверка
+
+```ts
+interface Fail {
+  success: false;
+  error: Record<string, any>;
+  status?: number;
+}
+```
+
+Валидатор ведёт себя так же, как и при использовании метода `fail()` в действии или загрузчике, когда он возвращает объект неудачной проверки.
+
+```tsx /status/#a /errorObject/#b
+const status = 500;
+const errorObject = { message: "123" };
+
+export const useAction = routeAction$(
+  async (_, { fail }) => {
+    return fail(status, errorObject);
+  },
+  validator$(async () => {
+    return {
+      success: false,
+      status,
+      errorObject,
+    };
+  }),
+);
+```
+
+## Совместное использование `validator$()` и `zod$()` в действиях
+
+Для действий вторым аргументом `routeAction$` должен быть типизированный валидатор данных `zod$()`, за которым следуют другие валидаторы данных `validator$()`.
+
+```tsx {5-7}
+export const useAction = routeAction$(
+  async (data, requestEvent: RequestEventAction) => {
+    return { foo: "bar" };
+  },
+  zod$(/*...*/),
+  validator$(/*...*/),
+  validator$(/*...*/),
+);
+```
