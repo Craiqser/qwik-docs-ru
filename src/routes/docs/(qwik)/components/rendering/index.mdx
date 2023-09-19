@@ -53,7 +53,7 @@ export const MyComponent = component$((props) => {
       <main
         class={{
           even: count.value % 2 === 0, // условный класс
-          omode: count.value % 2 === 1,
+          odd: count.value % 2 === 1,
         }}
       >
         <h1>Счёт: {count.value}</h1>
