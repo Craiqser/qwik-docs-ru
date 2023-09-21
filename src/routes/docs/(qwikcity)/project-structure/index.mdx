@@ -43,7 +43,7 @@ qwik-app-demo
 - `src/routes/index.tsx` — домашняя страница вашего приложения;
 - `src/routes/layout.tsx` — это корневой макет вашего приложения, все страницы будут отображаться внутри этого макета.
 
-> Дополнительную информацию см. в разделе [Маршрутизация](/docs/routing).
+> Дополнительную информацию см. в разделе [Маршрутизация](../routing/).
 
 ### `src/components/`
 
@@ -115,7 +115,7 @@ qwik-app-demo
 │   │   └── router-head
 │   │       └── router-head.tsx
 │   │       Button
-│   │       └── index.tsx
+│   │       └── button.tsx
 │   ├── entry.ssr.tsx
 │   ├── global.css
 │   ├── root.tsx
@@ -130,6 +130,23 @@ qwik-app-demo
 │       └── service-worker.ts
 ├── tsconfig.json
 └── vite.config.ts
+```
+
+Если вы предпочитаете создавать компонент `Button` с соглашением об именах вида `Button/index.tsx`, вы можете использовать команду:
+
+```tsx
+pnpm qwik new --barrel Button
+```
+
+В этом случае папка `src/comComponents` будет выглядеть так:
+
+```bash
+src
+│   ├── components
+│   │   └── router-head
+│   │       └── router-head.tsx
+│   │       Button
+│   │       └── index.tsx
 ```
 
 > Эта возможность была добавлена в Qwik v1.2, и те, кто использует более старую версию, не увидят этой функциональности.

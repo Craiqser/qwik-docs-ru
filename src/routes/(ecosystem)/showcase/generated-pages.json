@@ -1,5 +1,21 @@
 [
   {
+    "title": "Dimension — The new standard for collaboration.",
+    "imgSrc": "/showcases/www_dimension_dev.webp",
+    "perf": {
+      "score": 0.95,
+      "fcpDisplay": "1.4 s",
+      "fcpScore": 0.97,
+      "lcpDisplay": "2.9 s",
+      "lcpScore": 0.81,
+      "ttiDisplay": "1.4 s",
+      "ttiScore": 1,
+      "ttiTime": 1441
+    },
+    "href": "https://www.dimension.dev",
+    "tags": "saas"
+  },
+  {
     "title": "Wope: The New Era Of Rank Tracking",
     "imgSrc": "/showcases/wope_com_.webp",
     "perf": {
