@@ -1,0 +1,51 @@
+---
+title: Bootstrap | Интеграции
+keywords: 'bootstrap, spinners, alerts, buttons'
+contributors:
+  - mugan86
+---
+
+# Bootstrap
+
+Это мощный, расширяемый и многофункциональный инструментарий фронтенда (с HTML, CSS и JavaScript). Создание и настройка с помощью Sass, использование предопределённой системы сеток и компонентов, а также воплощение проектов в жизнь с помощью мощных JavaScript-плагинов.
+
+Дополнительная информация на сайте [https://getbootstrap.com/](https://getbootstrap.com/)
+
+## Использование
+
+Вы можете легко добавить Bootstrap, используя следующий стартовый шаблон Qwik:
+
+```shell
+npm run qwik add bootstrap
+```
+
+Предыдущая команда обновляет приложение, добавляя необходимые зависимости.
+
+- `bootstrap@5`
+- `@types/bootstrap@5`
+
+При этом в папку проекта добавляются новые файлы:
+
+- `src/models/bootstrap.ts`: Модель для определения информации о компонентах Boostrap для использования в реквизитах.
+- `src/constants/data.ts`: Информация о константах, которую мы будем использовать в примере, который будет создан с помощью этой интеграции.
+- `src/components/bootstrap/button.tsx`: Функциональность компонента Button с использованием Bootstrap.
+- `src/components/bootstrap/alert.tsx`:  Функциональность компонента Alert с использованием Bootstrap.
+- `src/components/bootstrap/spinner.tsx`: Функциональность компонента Spinner с использованием Bootstrap.
+- `src/components/bootstrap/index.ts`: Точка входа, куда мы будем добавлять компоненты используемых элементов для более удобного и чистого доступа к ним.
+- `src/components/bootstrap/navbar.tsx`: Функциональность компонента Navbar с использованием Bootstrap, демонстрирующая, как добавлять и использовать функциональные возможности JavaScript, не сталкиваясь с ошибкой 'document is not defined', связанной с неправильным объявлением импорта в жизненном цикле Qwik.
+- `src/routes/bootstrap/layout.tsx`: Макет, где мы добавляем конфигурацию стилей Bootstrap, чтобы обеспечить применение стилей ко всем маршрутам, вложенным в основной маршрут Bootstrap.
+- `src/routes/bootstrap/index.tsx`: Главная страница опций компонентов Boostrap.
+- `src/routes/bootstrap/buttons/index.tsx`: Пример использования компонента Button с демонстрационными данными.
+- `src/routes/bootstrap/alerts/index.tsx`: Пример использования компонента Alert с демонстрационными данными.
+- `src/routes/bootstrap/spinners/index.tsx`: Пример использования компонента Spinner с демонстрационными данными.
+
+## После интеграции Bootstrap
+
+Мы обращаемся к маршруту `/bootstrap/` и там находим все примеры, доступные в данной интеграции.
+
+## Дополнительная информация
+
+### Официальный сайт
+
+- `Examples`: Примеры, которые мы можем использовать в качестве вдохновения и научиться создавать интересные сайты с помощью Bootstrap. [Ссылка](https://getbootstrap.com/docs/5.3/examples/).
+- `Docs`: Вся необходимая информация для работы с Bootstrap. [Ссылка](https://getbootstrap.com/docs/5.3/getting-started/introduction/).
