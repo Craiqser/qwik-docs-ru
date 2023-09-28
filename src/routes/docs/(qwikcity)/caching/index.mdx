@@ -3,15 +3,16 @@ title: Кэширование | QwikCity
 contributors:
   - steve8708
   - harishkrishnan24
+  - maiieul
 ---
 
 # Кэширование ответов
 
-Кэширование ответов имеет решающее значение для обеспечения максимально возможной скорости работы вашего сайта, как для [страниц](/docs/(qwikcity)/pages/index.mdx), так и для [конечных точек](/docs/(qwikcity)/middleware/index.mdx).
+Кэширование ответов имеет решающее значение для обеспечения максимально возможной скорости работы вашего сайта, как для [страниц](../pages/index.mdx), так и для [конечных точек](../middleware/index.mdx).
 
 Хорошим вариантом по умолчанию является использование [stale-while-revalidate](https://web.dev/stale-while-revalidate/)-кэширования для всех ответов.
 
-Например, мы можем добавить экспорт `onGet` в наш корневой [макет](/docs/(qwikcity)/layout/index.mdx) (`src/routes/layout.tsx`) следующим образом, чтобы применить хорошие настройки кэширования по умолчанию для всего сайта:
+Например, мы можем добавить экспорт `onGet` в наш корневой [макет](../layout/index.mdx) (`src/routes/layout.tsx`) следующим образом, чтобы применить хорошие настройки кэширования по умолчанию для всего сайта:
 
 ```tsx title="src/routes/layout.tsx"
 import { component$, Slot } from "@builder.io/qwik";
@@ -39,7 +40,7 @@ export default component$(() => {
 
 ## `cacheControl`
 
-Любой метод, принимающий [событие request](https://qwik.builder.io/docs/advanced/request-handling/#request-event), может вызвать `request.cacheControl` для установки заголовков управления кэшем для ответа:
+Любой метод, принимающий [событие request](../advanced/request-handling/#request-event), может вызвать `request.cacheControl` для установки заголовков управления кэшем для ответа:
 
 ```tsx title="src/routes/layout.tsx"
 import type { RequestHandler } from "@builder.io/qwik-city";
@@ -92,5 +93,44 @@ export const onGet: RequestHandler = async ({ cacheControl, url }) => {
       staleWhileRevalidate: 60 * 60 * 24 * 365,
     });
   }
+};
+```
+
+## Контроль кэша CDN
+
+Для ещё большего контроля над стратегией кэширования CDN может иметь ещё один уровень заголовков управления кэшем.
+
+Для удобства, метод `cacheControl` может принимать второй аргумент (по умолчанию он имеет значение `"Cache-Control"`). Вы можете передать любое строковое значение, характерное для вашей CDN, например "CDN-Cache-Control", "Cloudflare-CDN-Cache-Control", "Vercel-CDN-Cache-Control" и т.д.
+
+```tsx
+cacheControl({
+  maxAge: 5,
+  staleWhileRevalidate: 60 * 60 * 24 * 365,
+}, "CDN-Cache-Control");
+```
+
+### Пропущенные заголовки
+
+Некоторые CDN (например, Vercel Edge) могут исключать часть ваших заголовков "Cache-Control".
+
+[Документация Vercel](https://vercel.com/docs/edge-network/caching#cdn-cache-control)
+
+> Если задать Cache-Control без CDN-Cache-Control, то сеть Vercel Edge удаляет s-maxage и stale-while-revalidate из ответа перед отправкой его браузеру. Чтобы определить, был ли ответ получен из кэша, проверьте в ответе заголовок [x-vercel-cache](https://vercel.com/docs/edge-network/caching#x-vercel-cache).
+
+Таким образом, если ваша CDN по умолчанию удаляет некоторые заголовки управления кэшем (например, Vercel Edge) и вы хотите, чтобы браузер использовал "stale-while-revalidate" или "s-maxage", можно добавить ещё один `cacheControl`:
+
+```tsx title="src/routes/layout.tsx"
+import type { RequestHandler } from "@builder.io/qwik-city";
+
+export const onGet: RequestHandler = async ({ cacheControl }) => {
+  // Если вы хотите, чтобы браузер использовал заголовки Cache Control "stale-while-revalidate" или "s-maxage", необходимо добавить второй cacheControl с параметром "CDN-Cache-Control" или "Vercel-CDN-Cache-Control".
+  cacheControl({
+    staleWhileRevalidate: 60 * 60 * 24 * 365,
+    maxAge: 5,
+  });
+  cacheControl({
+    maxAge: 5,
+    staleWhileRevalidate: 60 * 60 * 24 * 365,
+  }, "CDN-Cache-Control");
 };
 ```
