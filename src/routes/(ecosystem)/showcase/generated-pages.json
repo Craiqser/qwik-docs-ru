@@ -1,5 +1,21 @@
 [
   {
+    "title": "Frosty Tools | Streaming just got a whole lot cooler.",
+    "imgSrc": "/showcases/frostytools_com.webp",
+    "perf": {
+      "score": 0.99,
+      "fcpDisplay": "1.2 s",
+      "fcpScore": 0.99,
+      "lcpDisplay": "1.8 s",
+      "lcpScore": 0.98,
+      "ttiDisplay": "1.5 s",
+      "ttiScore": 1,
+      "ttiTime": 1499
+    },
+    "href": "https://frostytools.com",
+    "tags": "saas"
+  },
+  {
     "title": "Dimension — The new standard for collaboration.",
     "imgSrc": "/showcases/www_dimension_dev.webp",
     "perf": {
@@ -46,6 +62,23 @@
     },
     "href": "https://www.builder.io/",
     "tags": "saas"
+  },
+  {
+    "title": "ExpoBeds - Your Expo Hotel Booking And Information Directory",
+    "imgSrc": "/showcases/www_expobeds_com_.webp",
+    "perf": {
+      "score": 0.95,
+      "fcpDisplay": "1.6 s",
+      "fcpScore": 0.94,
+      "lcpDisplay": "2.7 s",
+      "lcpScore": 0.86,
+      "ttiDisplay": "3.6 s",
+      "ttiScore": 0.91,
+      "ttiTime": 3635.5
+    },
+    "href": "https://www.expobeds.com/",
+    "size": "large",
+    "tags": "conpany"
   },
   {
     "title": "Jose Aguilar | Web developer 🚀",
