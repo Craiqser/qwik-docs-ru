@@ -28,26 +28,30 @@ type LoginForm = {
 };
 ```
 
-Поскольку Modular Forms поддерживает Zod для валидации ввода, вы можете получить определение типа из схемы.
+Поскольку Modular Forms поддерживает [Valibot](https://valibot.dev/) и [Zod](https://zod.dev/) для валидации ввода, вы можете получить определение типа из схемы.
 
 ```ts
-const loginSchema = z.object({
-  email: z
-    .string()
-    .min(1, 'Please enter your email.')
-    .email('The email address is badly formatted.'),
-  password: z
-    .string()
-    .min(1, 'Please enter your password.')
-    .min(8, 'You password must have 8 characters or more.'),
+import { email, type Input, minLength, object, string } from 'valibot';
+
+const LoginSchema = object({
+  email: string([
+    minLength(1, 'Пожалуйста, введите свой e-mail.'),
+    email('Адрес электронной почты неверно отформатирован.'),
+  ]),
+  password: string([
+    minLength(1, 'Пожалуйста, введите пароль.'),
+    minLength(8, 'Ваш пароль должен состоять из 8 или более символов.'),
+  ]),
 });
 
-type LoginForm = z.infer<typeof loginSchema>;
+type LoginForm = Input<typeof LoginSchema>;
 ```
+
+Если вам интересно, почему в этом руководстве предпочтение отдается Valibot, а не Zod, рекомендую прочитать вот этот [анонсирующий пост](https://www.builder.io/blog/introducing-valibot).
 
 ## Установите начальные значения
 
-После того как вы создали определение типа, продолжите работу с начальными значениями вашей формы. Для этого создайте [`routeLoader$`](../../route-loader/) с использованием в качестве дженерика ваш ранее созданный тип.
+После того как вы создали определение типа, продолжите работу с начальными значениями вашей формы. Для этого создайте [`routeLoader$`](../../(qwikcity)/route-loader/) с использованием в качестве дженерика ваш ранее созданный тип.
 
 ```ts
 export const useFormLoader = routeLoader$<InitialValues<LoginForm>>(() => ({
@@ -104,20 +108,22 @@ export default component$(() => {
 </Form>
 ```
 
-Такая конструкция API приводит к полностью типобезопасной форме. Кроме того, она даёт вам полный контроль над пользовательским интерфейсом. Вы можете разработать собственный компонент [`TextInput`](https://modularforms.dev/qwik/guides/input-components) или подключить готовую библиотеку компонентов.
+Такая конструкция API приводит к полностью типобезопасной форме. Кроме того, она даёт вам полный контроль над пользовательским интерфейсом. Вы можете разработать собственный компонент [`TextInput`](https://modularforms.dev/qwik/guides/input-components) или подключить библиотеку готовых компонентов.
 
 ## Валидация значений
 
-Одной из основных функций Modular Forms является валидация ввода. Для этого можно использовать схему Zod или наши внутренние функции валидации. Чтобы упростить это руководство, мы используем схему Zod, которую мы создали ранее, и передадим ее в хук `useForm`.
+Одной из основных функций Modular Forms является валидация ввода. Для этого можно использовать схему Valibot или Zod, или наши внутренние функции валидации. Чтобы упростить это руководство, мы используем схему Valibot, которую мы создали ранее, и передадим ее в хук `useForm`.
+
+> `valiForm$` - это адаптер, преобразующий сообщения об ошибках Valibot в формат, ожидаемый Modular Forms. Для Zod вместо этого используйте `zodForm$`.
 
 ```ts
 const [loginForm, { Form, Field, FieldArray }] = useForm<LoginForm>({
   loader: useFormLoader(),
-  validate: zodForm$(loginSchema),
+  validate: valiForm$(LoginSchema),
 });
 ```
 
-Теперь вам нужно только отобразить сообщения об ошибках ваших полей в случае её возникновения.
+Теперь вам нужно только отобразить сообщения об ошибках ваших полей в случае их возникновения.
 
 ```tsx
 <Field name="email">
@@ -137,13 +143,13 @@ const [loginForm, { Form, Field, FieldArray }] = useForm<LoginForm>({
 ```tsx
 export const useFormAction = formAction$<LoginForm>((values) => {
   // Запускается на сервере
-}, zodForm$(loginSchema));
+}, valiForm$(LoginSchema));
 
 export default component$(() => {
   const [loginForm, { Form, Field }] = useForm<LoginForm>({
     loader: useFormLoader(),
     action: useFormAction(),
-    validate: zodForm$(loginSchema),
+    validate: valiForm$(LoginSchema),
   });
 
   const handleSubmit = $<SubmitHandler<LoginForm>>((values, event) => {
@@ -167,22 +173,23 @@ export default component$(() => {
 // @ts-nocheck
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { $, component$ } from '@builder.io/qwik';
-import { routeLoader$, z } from '@builder.io/qwik-city';
+import { routeLoader$ } from '@builder.io/qwik-city';
 import type { InitialValues, SubmitHandler } from '@modular-forms/qwik';
-import { formAction$, useForm, zodForm$ } from '@modular-forms/qwik';
+import { formAction$, useForm, valiForm$ } from '@modular-forms/qwik';
+import { email, type Input, minLength, object, string } from 'valibot';
 
-const loginSchema = z.object({
-  email: z
-    .string()
-    .min(1, 'Please enter your email.')
-    .email('The email address is badly formatted.'),
-  password: z
-    .string()
-    .min(1, 'Please enter your password.')
-    .min(8, 'You password must have 8 characters or more.'),
+const LoginSchema = object({
+  email: string([
+    minLength(1, 'Пожалуйста, введите свой e-mail.'),
+    email('Адрес электронной почты неверно отформатирован.'),
+  ]),
+  password: string([
+    minLength(1, 'Пожалуйста, введите пароль.'),
+    minLength(8, 'Ваш пароль должен состоять из 8 или более символов.'),
+  ]),
 });
 
-type LoginForm = z.infer<typeof loginSchema>;
+type LoginForm = Input<typeof LoginSchema>;
 
 export const useFormLoader = routeLoader$<InitialValues<LoginForm>>(() => ({
   email: '',
@@ -191,16 +198,16 @@ export const useFormLoader = routeLoader$<InitialValues<LoginForm>>(() => ({
 
 export const useFormAction = formAction$<LoginForm>((values) => {
   // Запускается на сервере
-}, zodForm$(loginSchema));
+}, valiForm$(LoginSchema));
 
 export default component$(() => {
   const [loginForm, { Form, Field }] = useForm<LoginForm>({
     loader: useFormLoader(),
     action: useFormAction(),
-    validate: zodForm$(loginSchema),
+    validate: valiForm$(LoginSchema),
   });
 
-  const handleSubmit = $<SubmitHandler<LoginForm>>((values, event) => {
+  const handleSubmit: SubmitHandler<LoginForm> = $((values, event) => {
     // Запускается на клиенте
     console.log(values);
   });
