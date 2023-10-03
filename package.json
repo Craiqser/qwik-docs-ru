@@ -34,7 +34,7 @@
     "fflate": "0.8.0",
     "gray-matter": "4.0.3",
     "openai": "^3.3.0",
-    "postcss": "8.4.27",
+    "postcss": "8.4.31",
     "prettier": "3.0.0",
     "prism-themes": "1.9.0",
     "prismjs": "1.29.0",
