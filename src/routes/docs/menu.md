@@ -123,13 +123,14 @@
 ## Справочники
 
 - [Справочник API](../api/)
-- [Устаревшие методы](./(qwik)/deprecated-features/index.mdx)
+- [Устаревшие методы](<./(qwik)/deprecated-features/index.mdx>)
 
 ## Лаборатория Qwik 🧪
 
 - [Обзор](./labs/index.mdx)
 - [Insights](./labs/insights/index.mdx)
 - [Типизированные маршруты](./labs/typed-routes/index.mdx)
+- [Средства разработчика](./labs/devtools/index.mdx)
 
 ## Сообщество
 
