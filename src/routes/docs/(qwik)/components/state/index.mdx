@@ -26,6 +26,7 @@ contributors:
   - AnthonyPAlicea
   - sreeisalso
   - wmertens
+  - nicvazquez
 ---
 
 import CodeSandbox from '../../../../../components/code-sandbox/index.tsx';
@@ -89,7 +90,7 @@ export default component$(() => {
 > **ПРИМЕЧАНИЕ**
 > Чтобы реактивность работала так, как ожидается, убедитесь, что сохранили ссылку на реактивный объект, а не только на его свойства. Например, написание `let { count } = useStore({ count: 0 })` и последующее изменение `count` не вызовет обновления компонентов, зависящих от этого свойства.
 
-Поскольку [`useStore()`](/docs/(qwik)/components/state/index.mdx#usestore) отслеживает глубокую реактивность, это означает, что массивы и объекты внутри состояния также будут реактивными.
+Поскольку [`useStore()`](#usestore) отслеживает глубокую реактивность, это означает, что массивы и объекты внутри состояния также будут реактивными.
 
 <CodeSandbox src="/src/routes/demo/state/counter-store-deep/index.tsx" style={{ height: '10em' }}>
 ```tsx
@@ -124,8 +125,8 @@ export default component$(() => {
         Добавить в список
       </button>
       <ul>
-        {store.list.map((item) => (
-          <li>{item}</li>
+        {store.list.map((item, index) => (
+          <li key={`items-${index}`}>{item}</li>
         ))}
       </ul>
     </>
