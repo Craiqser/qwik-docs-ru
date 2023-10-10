@@ -25,8 +25,8 @@ export const Child = component$((props: { store: CountStore }) => {
     <>
       <code>&lt;Child&gt;</code>
       Этот компонент является динамическим, поскольку он привязан к <code>props.store.count</code>.
-      {/** Закомментируйте привязку, чтобы отследить влияние на код, загружаемый клиенту! **/}
-      {/** props.store.count **/}
+      {/* Закомментируйте привязку, чтобы отследить влияние на код, загружаемый клиенту! */}
+      {/* props.store.count */}
       <GrandChild store={props.store} />
     </>
   );
