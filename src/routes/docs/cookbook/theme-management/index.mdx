@@ -1,0 +1,140 @@
+---
+title: Рецепты | Темная и светлая тема
+contributors:
+  - inaamurrehman
+---
+
+## Проблема
+
+Мы привыкли видеть на современных сайтах, что они имеют функцию переключения темной и светлой темы, что создает хорошее впечатление на пользователей. Они могут менять тему в соответствии со своими предпочтениями.
+
+Для достижения этой цели мы будем использовать для стилизации tailwindcss.
+
+Сначала нам необходимо установить tailwindcss на нашем сайте. Добавить tailwind в проект Qwik очень просто. Для этого нужно просто выполнить эту команду в терминале:
+
+```shell
+npm run qwik add tailwind
+```
+
+Вы должны включить darkmode в файле `tailwind.config.js`. Это должно выглядеть следующим образом:
+
+```js
+module.exports = {
+  content: ["./src/**/*.{js,ts,jsx,tsx,mdx}"],
+  darkMode: "class",
+  theme: {},
+  plugins: [],
+};
+```
+
+Затем необходимо добавить этот код в тег `head` нашего файла `root.tsx`.
+
+```js
+<script dangerouslySetInnerHTML={`
+  (function() {
+    function setTheme(theme) {
+      document.documentElement.className = theme;
+      localStorage.setItem('theme', theme);
+    }
+    var theme = localStorage.getItem('theme');
+    console.log(theme);
+    if (theme) {
+      setTheme(theme);
+    } else {
+      setTheme('light');
+    }
+  })();
+  window.addEventListener('load', function() {
+    var themeSwitch = document.getElementById('hide-checkbox');
+    themeSwitch.checked = localStorage.getItem('theme') === 'light' ? true: false;
+  });
+`}>
+</script>
+```
+
+Вы можете изменить имя переменной "hide-checkbox" на любое другое. Оно должно быть таким же, как и в html-файле.
+
+Затем в любой компонент можно добавить код переключения темы:
+
+```tsx
+import { component$, useStylesScoped$ } from "@builder.io/qwik";
+import styles from "./style.css?inline";
+
+export const ThemeSwitch = component$(() => {
+  useStylesScoped$(styles);
+  return (
+    <div class="flex items-center gap-3">
+      <label class="switch">
+        <input
+          type="checkbox"
+          id="hide-checkbox"
+          onClick$={() => {
+            const theme = document.documentElement.className;
+            if (theme === "light") {
+              document.documentElement.className = "dark";
+              localStorage.setItem("theme", "dark");
+            } else {
+              document.documentElement.className = "light";
+              localStorage.setItem("theme", "light");
+            }
+          }}
+        />
+        <span class="slider round"></span>
+      </label>
+    </div>
+  );
+});
+```
+
+Для стилизации переключателя тем:
+
+```css
+.switch{
+  position: relative;
+  display: inline-block;
+  width: 50px;
+  height: 30px;
+  background-color: red;
+  border-radius: 100px;
+  cursor: pointer;
+}
+
+.switch input{
+  display: none;
+}
+
+.slider{
+  width: 50px;
+  height: 25px;
+  border-radius: 25px;
+  background-color: #ccc;
+  position: relative;
+  cursor: pointer;
+  transition: all .3s linear;
+}
+
+.slider:before{
+  content: "";
+  position: absolute;
+  width: 25px;
+  height: 25px;
+  background-size: cover;
+  border-radius: 50%;
+  background-color: #fff;
+  top: 15px;
+  left: 5px;
+  bottom: 0;
+  margin: auto;
+  transition: all .3s linear;
+}
+
+input:checked + .slider{
+  background-color: #2196F3;
+}
+
+input:checked + .slider:before{
+  left: 22px;
+}
+```
+
+Теперь запустите ваш код. В вашем распоряжении темная и светлая темы.

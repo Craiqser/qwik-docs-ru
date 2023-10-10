@@ -1,5 +1,21 @@
 [
   {
+    "title": "QuoteMingle",
+    "imgSrc": "/showcases/quotemingle_com_.webp",
+    "perf": {
+      "score": 0.99,
+      "fcpDisplay": "1.3 s",
+      "fcpScore": 0.98,
+      "lcpDisplay": "1.8 s",
+      "lcpScore": 0.98,
+      "ttiDisplay": "1.3 s",
+      "ttiScore": 1,
+      "ttiTime": 1298
+    },
+    "href": "https://quotemingle.com/",
+    "tags": "site"
+  },
+  {
     "title": "Frosty Tools | Streaming just got a whole lot cooler.",
     "imgSrc": "/showcases/frostytools_com.webp",
     "perf": {
