@@ -13,7 +13,7 @@ contributors:
 Промежуточное ПО Qwik City Node позволяет подключить Qwik City к серверу Node.js, который использует функциональность общего промежуточного ПО. Некоторые серверы Node включают:
 
 - [Express](https://expressjs.com/)
-- [Fastify](https://fastify.io/)
+- [Fastify](https://fastify.dev/)
 - [Connect](https://www.npmjs.com/package/connect)
 - [Polka](https://www.npmjs.com/package/polka)
 
@@ -27,7 +27,7 @@ contributors:
 npm run qwik add express
 ```
 
-- Для [Fastify](https://fastify.io/)
+- Для [Fastify](https://fastify.dev/)
 
 ```shell
 npm run qwik add fastify
@@ -56,7 +56,7 @@ npm run serve
 - Будет создана папка `dist` со всеми статическими файлами;
 - Будет создана папка `server`, включающая все файлы сервера.
 
-Чтобы развернуть сервер, вам нужно запустить файл `server/entry.[server].js` на сервере по вашему выбору, где `[server]` может быть [express](https://expressjs.com/) или [fastify](https://fastify.io/).
+Чтобы развернуть сервер, вам нужно запустить файл `server/entry.[server].js` на сервере по вашему выбору, где `[server]` может быть [express](https://expressjs.com/) или [fastify](https://fastify.dev/).
 
 *Очень важно правильно настроить переменную окружения `ORIGIN`*, которая используется для проверки против [CSRF-атак](https://owasp.org/www-community/attacks/csrf). ORIGIN должен совпадать с ORIGIN клиентского приложения.
 
