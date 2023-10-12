@@ -104,15 +104,15 @@ export default defineConfig(async () => {
         },
       }),
       qwikVite({
-        entryStrategy: {
-          type: 'smart',
-          manual: {
-            ...page,
-            ...menus,
-            ...algoliaSearch,
-            ...repl,
-          },
-        },
+        // entryStrategy: {
+        //   type: 'smart',
+        //   manual: {
+        //     ...page,
+        //     ...menus,
+        //     ...algoliaSearch,
+        //     ...repl,
+        //   },
+        // },
       }),
       partytownVite({
         dest: resolve('dist', '~partytown'),

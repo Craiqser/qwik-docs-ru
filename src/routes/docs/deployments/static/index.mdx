@@ -1,0 +1,44 @@
+---
+title: Статический сайт
+contributors:
+  - the-r3aper7
+---
+
+# Адаптер статического сайта
+
+Адаптер статического сайта Qwik позволяет генерировать статические html-файлы, которые могут быть легко развёрнуты у любых облачных провайдеров.
+
+## Установка
+
+Для интеграции адаптера `static-site` используйте команду `add`:
+
+```shell
+npm run qwik add static
+```
+
+Вышеприведённая команда создаст в корне проекта каталог с именем `adapters/static/vite.config.ts` с приведённым ниже кодом.
+
+```tsx file="apdaters/static/vite.config.ts"
+import { extendConfig } from '@builder.io/qwik-city/vite';
+import baseConfig from '../../vite.config';
+
+export default extendConfig(baseConfig, () => {
+  return {
+    build: {
+      ssr: true,
+      rollupOptions: {
+        input: ['@qwik-city-plan'],
+      },
+    },
+    plugins: [
+      staticAdapter({
+        origin: 'https://yoursite.qwik.dev',
+      }),
+    ],
+  };
+});
+```
+
+> Не забудьте изменить `origin` в этом файле на свой домен.
+
+Теперь вы можете генерировать статический сайт, используя богатую экосистему `Qwik`, маршрутизацию на основе файлов и многое другое.
