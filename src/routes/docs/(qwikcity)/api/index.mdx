@@ -40,27 +40,27 @@ menu: ContentMenu | undefined;
 ```ts
 export interface DocumentHead {
   /**
-   * Represents the `<title>` element of the document.
+   * Представляет собой элемент `<title>` документа.
    */
   readonly title?: string;
   /**
-   * Used to manually set meta tags in the head. Additionally, the `data`
-   * property could be used to set arbitrary data which the `<head>` component
-   * could later use to generate `<meta>` tags.
+   * Используется для ручной установки метатегов в заголовке. Кроме того,
+   * свойство `data` может быть использовано для вставки произвольных данных,
+   * которые компонент `<head>` в дальнейшем может использовать для генерации тегов `<meta>`.
    */
   readonly meta?: readonly DocumentMeta[];
   /**
-   * Used to manually append `<link>` elements to the `<head>`.
+   * Используется для ручного добавления элементов `<link>` к `<head>`.
    */
   readonly links?: readonly DocumentLink[];
   /**
-   * Used to manually append `<style>` elements to the `<head>`.
+   * Используется для ручного добавления элементов `<style>` к `<head>`.
    */
   readonly styles?: readonly DocumentStyle[];
   /**
-   * Arbitrary object containing custom data. When the document head is created from
-   * markdown files, the frontmatter attributes that are not recognized as a well-known
-   * meta names (such as title, description, author, etc...), are stored in this property.
+   * Произвольный объект, содержащий пользовательские данные. При создании `<head>` из
+   * markdown-файлов, атрибуты frontmatter, которые не распознаются как известные
+   * мета-имена (такие как title, description, author и т.д.), хранятся в этом свойстве.
    */
   readonly frontmatter?: Readonly<Record<string, any>>;
 }
