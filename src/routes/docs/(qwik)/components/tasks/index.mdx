@@ -62,7 +62,7 @@ import CodeSandbox from '../../../../../components/code-sandbox/index.tsx';
 
 **БРАУЗЕР**: Иногда компонент первоначально монтируется/рендерится в браузере, например, когда пользователь SPA переходит на новую страницу или когда "модальный" компонент первоначально появляется на странице. В этом случае жизненный цикл будет выглядеть следующим образом:
 
-```bash /useTask$/#d /RENDER/#b /useVisibleTask$/#c
+```bash
   useTask$ --> RENDER --> useVisibleTask$
 
 | -------------- BROWSER --------------- |
@@ -82,7 +82,7 @@ import CodeSandbox from '../../../../../components/code-sandbox/index.tsx';
 
 **Обратите внимание, что любое последующее выполнение всегда будет происходить в браузере**, потому что реактивность - это только для клиента.
 
-```bash /useTask$(track)/#d /RENDER/#b /CLICK/#a
+```bash
                       (state change) -> (re-execute)
                                   ^            |
                                   |            v
