@@ -15,6 +15,7 @@ contributors:
   - AnthonyPAlicea
   - amatiash
   - harishkrishnan24
+  - maiieul
 ---
 
 import CodeSandbox from '../../../../../components/code-sandbox/index.tsx';
@@ -233,36 +234,65 @@ export default component$(() => {
 
 > **ПРИМЕЧАНИЕ** Использование `VisibleTask` для прослушивания событий является анти-паттерном в Qwik, поскольку это приводит к немедленному выполнению кода в браузере, что нарушает принцип [возобновляемости](../../concepts/resumable/index.mdx). Используйте его только тогда, когда у вас нет другого выбора. В большинстве случаев для прослушивания событий следует использовать JSX: `<div onClick$={...}>` или `useOn(...)` методы событий, если вам нужно слушать события программно.
 
-## `PropFunction`
+## Пользовательские свойства событий
 
-При создании компонентов иногда приходится передавать то, что выглядит как обработчики событий (функции обратного вызова, которые не являются событиями DOM). Границы компонентов в Qwik должны быть сериализуемыми, а функции не являются сериализуемыми, если они не преобразованы в QRL с помощью оптимизатора. Это делается с помощью суффикса `$`. QRL являются асинхронными, поэтому нам нужно сообщить TypeScript, что функция не может быть вызвана синхронно, мы делаем это через тип `PropFunction`.
+При создании компонентов часто бывает полезно передавать пользовательские свойства событий, которые выглядят как обработчики событий (хотя они являются не событиями DOM, а функциями обратного вызова). Границы компонентов в Qwik должны быть сериализуемыми, чтобы оптимизатор мог разделить их на отдельные чанки, а функции не являются сериализуемыми, если они не преобразованы в QRL с помощью знака `$`.
 
+При вводе `component$` с синтаксисом дженериков Qwik автоматически обрабатывает преобразование типов.
+
+<CodeSandbox src="/src/routes/demo/events/custom-event/index.tsx" style={{ height: '10em' }}>
 ```tsx
-<CmpButton onClick={() => alert('CLICKED!')}>Нажми меня!</CmpButton>
-```
-
-Вышеописанное невозможно, поскольку `onClick` - это функция, которая не является сериализуемой. Нам нужно указать оптимизатору на преобразование нашей функции в QRL. Это делается путём именования свойства с суффиксом `$`, как в данном примере.
-
-<CodeSandbox src="/src/routes/demo/events/prop-function/index.tsx" style={{ height: '10em' }}>
-```tsx
-import { type PropFunction, component$, Slot } from '@builder.io/qwik';
+import { component$, Slot, useStore } from '@builder.io/qwik';
 
 export default component$(() => {
-  return <CmpButton onClick$={() => alert('CLICKED!')}>Нажми меня!</CmpButton>;
+  return (
+    <Button onTripleClick$={() => alert('ТРОЙНОЙ КЛИК!')}>
+      Трижды кликни меня!
+    </Button>
+  );
 });
 
-export const CmpButton = component$<{
-  // Важно сообщить TypeScript, что это async
-  onClick$?: PropFunction<() => void>;
-}>((props) => {
+type ButtonProps = {
+  onTripleClick$: () => void;
+};
+
+export const Button = component$<ButtonProps>(({ onTripleClick$ }) => {
+  const state = useStore({
+    clicks: 0,
+    lastClickTime: 0,
+  });
   return (
-    <button onClick$={props.onClick$}>
+    <button
+      onClick$={() => {
+        // логика тройного клика
+        const now = Date.now();
+        const timeBetweenClicks = now - state.lastClickTime;
+        state.lastClickTime = now;
+        if (timeBetweenClicks > 500) {
+          state.clicks = 0;
+        }
+        state.clicks++;
+        if (state.clicks === 3) {
+          // handle custom event
+          onTripleClick$();
+          state.clicks = 0;
+        }
+      }}
+    >
       <Slot />
     </button>
   );
 });
 ```
 </CodeSandbox>
+
+⚠️ При использовании аннотаций типов необходимо обернуть тип события в `PropFunction`, чтобы сообщить TypeScript, что функция не может быть вызвана синхронно.
+
+```tsx
+component$(({ onTripleClick$ } : { onTripleClick$?: PropFunction<() => void> }) => {
+  ...
+});
+```
 
 ## События объектов window и document
 

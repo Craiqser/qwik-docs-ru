@@ -29,8 +29,8 @@ export default component$(() => {
         Добавить в список
       </button>
       <ul>
-        {store.list.map((item) => (
-          <li>{item}</li>
+        {store.list.map((item, key) => (
+          <li key={key}>{item}</li>
         ))}
       </ul>
     </>
