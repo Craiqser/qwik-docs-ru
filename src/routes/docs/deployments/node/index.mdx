@@ -58,7 +58,7 @@ npm run serve
 
 Чтобы развернуть сервер, вам нужно запустить файл `server/entry.[server].js` на сервере по вашему выбору, где `[server]` может быть [express](https://expressjs.com/) или [fastify](https://fastify.dev/).
 
-*Очень важно правильно настроить переменную окружения `ORIGIN`*, которая используется для проверки против [CSRF-атак](https://owasp.org/www-community/attacks/csrf). ORIGIN должен совпадать с ORIGIN клиентского приложения.
+**Очень важно правильно настроить переменную окружения `ORIGIN`**, которая используется для проверки против [CSRF-атак](https://owasp.org/www-community/attacks/csrf). ORIGIN должен совпадать с ORIGIN клиентского приложения.
 
 > Например, если вы планируете развернуть своё приложение на `https://example.com/app`, то вам нужно установить переменную окружения `ORIGIN` на `https://example.com`.
 >

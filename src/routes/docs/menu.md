@@ -44,6 +44,7 @@
 ## Интеграции
 
 - [Обзор](integrations/index.mdx)
+- [Astro](integrations/astro/index.mdx)
 - [Auth.js](integrations/authjs/index.mdx)
 - [Bootstrap](integrations/bootstrap/index.mdx)
 - [Builder.io](integrations/builderio/index.mdx)
