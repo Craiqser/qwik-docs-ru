@@ -251,6 +251,54 @@ AUTH_SECRET=
 4. Теперь приложение готово к реализации аутентификации с помощью Auth.js.
 5. Наслаждайтесь!
 
+### Учётные данные
+
+> Предупреждение: Эта функциональность не приветствуется в Auth.js.
+>
+> https://next-auth.js.org/providers/credentials
+>
+> - Функциональность, предоставляемая для аутентификации на основе учётных данных, намеренно ограничена, чтобы предотвратить использование паролей из-за присущих им рисков безопасности и дополнительной сложности, связанной с поддержкой имён пользователей и паролей.
+
+1. Поскольку в стандартном `plugin@auth.ts` в качестве примера используется GutHub, нам необходимо заменить его на Credentials.
+
+```ts title="src/routes/plugin@auth.ts"
+import { serverAuth$ } from '@builder.io/qwik-auth';
+import Credentials from "@auth/core/providers/credentials";
+import type { Provider } from '@auth/core/providers';
+
+export const { onRequest, useAuthSession, useAuthSignin, useAuthSignout } = serverAuth$(
+  ({ env }) => ({
+    secret: env.get("AUTH_SECRET"),
+    trustHost: true,
+    providers: [
+      Credentials({
+        async authorize(credentials, req) {
+          // Добавьте сюда логику для поиска пользователя по предоставленным учётным данным
+          const user = {
+            id: 1,
+            name: "Mike",
+            email: "mike@example.com",
+          };
+
+          return user;
+        },
+      }),
+    ] as Provider[],
+  })
+);
+```
+
+2. Создайте или отредактируйте файл `.env.local` в корне проекта для хранения секретов
+
+```bash title=".env.local"
+AUTH_SECRET=
+```
+
+> *ВАЖНО*: Пожалуйста, прочитайте документацию Qwik о [Переменных окружения](../../(qwikcity)/env-variables/), чтобы убедиться, что вы используете их безопасно. Многие секреты провайдера должны храниться в безопасности и не должны раскрываться клиенту/браузеру.
+
+3. Теперь приложение готово к реализации аутентификации с помощью Auth.js.
+4. Наслаждайтесь!
+
 ### Защита маршрута
 
 Доступ к данным сессии можно получить через маршрут `event.sharedMap`. Таким образом, маршрут может быть защищён и перенаправлен с помощью чего-то подобного, расположенного в `layout.tsx` или на странице `index.tsx`:
