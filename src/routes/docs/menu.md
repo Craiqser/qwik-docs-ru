@@ -109,7 +109,7 @@
 - [Режим библиотеки](./(qwik)/advanced/library/index.mdx)
 - [Qwikloader](./(qwik)/advanced/qwikloader/index.mdx)
 - [Оптимизатор](./(qwik)/advanced/optimizer/index.mdx)
-- [Предзагрузка](./(qwik)/advanced/prefetching/index.mdx)
+- [Предзагрузка модулей](./(qwik)/advanced/modules-prefetching/index.mdx)
 - [Каталог сборки](./(qwik)/advanced/custom-build-dir/index.mdx)
 - [Vite](./(qwik)/advanced/vite/index.mdx)
 - [Расширенная маршрутизация](./(qwikcity)/advanced/routing/index.mdx)
