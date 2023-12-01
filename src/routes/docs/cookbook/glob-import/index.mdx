@@ -1,0 +1,96 @@
+---
+title: Рецепты | Импорт Glob с помощью import.meta.glob
+contributors:
+  - maiieul
+---
+
+import CodeSandbox from '../../../../components/code-sandbox/index.tsx';
+
+# Импорт Glob и динамический импорт
+
+Как вы, вероятно, знаете, Qwik заботится о ленивой загрузке для того, чтобы сделать ваше приложение производительным и масштабируемым по умолчанию.
+
+Вследствие этой автоматической оптимизации вам не нужно и не следует использовать функцию Vite [dynamic imports](https://vitejs.dev/guide/features#dynamic-import), поскольку она конфликтует с [optimizer](<../../(qwik)/advanced/optimizer/index.mdx>).
+
+Но всё же бывают случаи, когда вам нужно импортировать много файлов из каталога, и вы не хотите вводить все пути к файлам. Для подобных ситуаций можно использовать [`import.meta.glob`](https://vitejs.dev/guide/features#glob-import).
+
+## import.meta.glob
+
+Цель использования `import.meta.glob` заключается в том, чтобы позволить вам создать компонент-обертку, которому вы можете передать параметр name, чтобы выбрать компонент, который вы хотите импортировать:
+
+```tsx
+<MetaGlobComponent name="file-name" />
+<MetaGlobComponent name="another-file-name" />
+<MetaGlobComponent name="etc." />
+```
+
+Как написано в документации Vite, `import.meta.glob` имеет несколько функций, которые позволяют вам указать, как импортировать ваши файлы.
+
+По умолчанию вы можете просто использовать сопоставление шаблонов, чтобы указать, какие файлы должны быть импортированы и из какой папки:
+
+```tsx
+const metaGlobComponents: any = import.meta.glob('/src/components/*');
+```
+
+Но вы также можете передать дополнительные опции, такие как [`import`](https://vitejs.dev/guide/features#named-imports), [`as`](https://vitejs.dev/guide/features#glob-import-as) или `eager`:
+
+```tsx
+const metaGlobComponents: any = import.meta.glob('/src/components/*', {
+  import: 'default',
+  as: 'raw',
+  eager: true, // defaults to false
+});
+```
+
+## How to
+
+Проблема с `import.meta.glob` в Qwik заключается в том, что в настоящее время он либо работает в режиме разработки и не работает в preview/production-режимах, либо работает в preview/production, но становится все медленнее и медленнее в режиме разработки по мере увеличения количества импортируемых файлов.
+
+Причина такого поведения в том, что `import.meta.glob` с `eager.false` ломает сборку для производственной среды, так как создаёт лениво загружаемые чанки, которые Qwik не знает как обрабатывать. С другой стороны, `eager:true` вроде бы решает проблему, поскольку позволяет Qwik нормально компоновать файлы, но это также замедляет работу сервера разработки - особенно если вы импортируете с его помощью много тяжелых компонентов.
+
+В качестве обходного пути пока что можно использовать булево значение времени сборки `isDev` из `"@builder.io/qwik/build"`:
+
+<CodeSandbox url="/demo/cookbook/glob-import/">
+```tsx
+import {
+  type Component,
+  component$,
+  useSignal,
+  useTask$,
+} from '@builder.io/qwik';
+import { isDev } from '@builder.io/qwik/build';
+
+const metaGlobComponents: Record<string, any> = import.meta.glob(
+  '/src/examples/*',
+  {
+    import: 'default',
+    eager: isDev ? false : true,
+  }
+);
+
+export default component$(() => {
+  return (
+    <div>
+      <MetaGlobExample name="example1" />
+      <MetaGlobExample name="example2" />
+      <MetaGlobExample name="example3" />
+    </div>
+  );
+});
+
+export const MetaGlobExample = component$<{ name: string }>(({ name }) => {
+  const MetaGlobComponent = useSignal<Component<any>>();
+  const componentPath = `/src/examples/${name}.tsx`;
+
+  useTask$(async () => {
+    MetaGlobComponent.value = isDev
+      ? await metaGlobComponents[componentPath]()
+      // We need to call `await metaGlobComponents[componentPath]()` in development as it is `eager:false`
+      : metaGlobComponents[componentPath];
+      // We need to directly access the `metaGlobComponents[componentPath]` expression in preview/production as it is `eager:true`
+  });
+
+  return <>{MetaGlobComponent.value && <MetaGlobComponent.value />}</>;
+});
+```
+</CodeSandbox>
