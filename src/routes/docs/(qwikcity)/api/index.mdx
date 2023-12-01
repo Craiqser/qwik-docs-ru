@@ -270,6 +270,39 @@ export default component$(() => {
 
 > `QwikCityProvider` не рендерит ни один элемент DOM, даже не совпадающий маршрут, он просто инициализирует логику ядра Qwik City, по этой причине его не следует использовать более одного раза в одном и том же приложении.
 
+## `<QwikCityMockProvider>`
+
+Компонент `QwikCityMockProvider` инициализирует контекст Qwik City для тестирования. Он обеспечивает необходимый контекст для работы кода Qwik City в тестах, например [`useContent()`](../api/index.mdx#usecontent). И наоборот, для `useNavigate()`, `<Link>`, `useLocation()` и так далее.
+Рекомендуется использовать его в тестовых файлах.
+
+> `QwikCityMockProvider` не отображает никаких элементов DOM, что означает, что он не будет виден в снэпшотах.
+
+Если вы ищете общий пример того, как интегрировать vitest в ваш Qwik, посмотрите [документацию по интеграции vitest](../../integrations/vitest/index.mdx).
+
+```tsx title="src/components/card.spec.tsx"
+import { createDOM } from '@builder.io/qwik/testing';
+import { QwikCityMockProvider } from '@builder.io/qwik-city';
+import { test, expect } from 'vitest';
+
+// Компонент с двумя свойствами. Внутри использует <Link>. Опущено для краткости.
+import { Card } from './card';
+
+const cases = [
+  {text: 'qwik', link:'https://qwik.builder.io/docs/api'},
+  {text: 'vitest', link: 'https://vitest.dev'}
+];
+
+test.each(cases)('должен отрисовывать карту с %s %s', async ({text, link}) => {
+  const { screen, render } = await createDOM();
+  await render(
+    <QwikCityMockProvider>
+      <Card text={text} link={link} />
+    </QwikCityMockProvider>,
+  );
+  expect(screen.innerHTML).toMatchSnapshot();
+});
+```
+
 ## `<RouterOutlet>`
 
 Компонент `RouterOutlet` отвечает за рендер совпадающего в данный момент маршрута, он использует под капотом [`useContent()`](#usecontent) для отрисовки текущей страницы, а также всех вложенных макетов.
