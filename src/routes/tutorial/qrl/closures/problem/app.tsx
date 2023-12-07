@@ -7,7 +7,8 @@ export default component$(() => {
       <label>
         Введите своё имя и нажмите клавишу ввода:{' '}
         <input
-          onInput$={$(async (event: KeyboardEvent) => {
+          // @ts-expect-error we can't infer through the $. Remove this line when solving
+          onInput$={$(async (event) => {
             const input = event.target as HTMLInputElement;
             store.name = input.value;
           })}
