@@ -21,7 +21,7 @@
     "@modular-forms/qwik": "^0.21.0",
     "@mui/material": "^5.14.13",
     "@mui/x-data-grid": "^6.16.2",
-    "@supabase/supabase-js": "^2.38.1",
+    "@supabase/supabase-js": "2.38.1",
     "@types/node": "^20.8.6",
     "@types/prismjs": "^1.26.1",
     "@types/react": "^18.2.28",
@@ -51,7 +51,7 @@
     "valibot": "^0.17.1",
     "vite": "^5.0.2",
     "vite-plugin-inspect": "^0.7.42",
-    "wrangler": "^3.11.0"
+    "wrangler": "^3.18.0"
   },
   "engines": {
     "node": ">=18.11",
@@ -61,6 +61,11 @@
   },
   "homepage": "https://qwik-docs-ru.pages.dev/",
   "license": "MIT",
+  "pnpm": {
+    "overrides": {
+      "@supabase/realtime-js": "2.8.4"
+    }
+  },
   "private": true,
   "scripts": {
     "build": "qwik build",

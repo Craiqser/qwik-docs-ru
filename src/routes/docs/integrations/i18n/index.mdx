@@ -79,6 +79,10 @@ npm run qwik add localize
 
 Для получения дополнительной информации, пожалуйста, ознакомьтесь с [примером репозитория](https://github.com/mhevery/qwik-i18n).
 
+#### Извлечение переводов
+
+Когда вы закончите вносить изменения, вы можете использовать `npm run i18n-extract` для извлечения переводов из кода. Эта команда обновит файл, который вы видите в `package.json`.
+
 #### Автопереводы для $localize с помощью deepl
 
 Для автоперевода можно использовать пакет [deepl-localize](https://www.npmjs.com/package/deepl-localize). Он автоматически переведёт ваши строки, используя API [deepl.com](https://deepl.com/).
@@ -86,7 +90,7 @@ npm run qwik add localize
 Для перевода строк с помощью `npx` используйте команду `deepl-localize`:
 
 ```bash
-npx deepl-localize translate -b src/locales/message-en.json -l de-DE fr-FR -a "YOUR-DEEPL-API-KEY"
+npx deepl-localize translate -b src/locales/message.en.json -l de-DE fr-FR -a "YOUR-DEEPL-API-KEY"
 ```
 
 В качестве альтернативы можно использовать команду `deepl-localize` для перевода строк в секции скрипта:
@@ -94,7 +98,7 @@ npx deepl-localize translate -b src/locales/message-en.json -l de-DE fr-FR -a "Y
 ```json
 {
   "scripts":{
-    "translate":"deepl-localize translate -b src/locales/message-en.json -l de-DE fr-FR -a 'your-deepl-api-key'"
+    "translate":"deepl-localize translate -b src/locales/message.en.json -l de-DE fr-FR -a 'your-deepl-api-key'"
   }
 }
 ```
