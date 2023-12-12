@@ -27,10 +27,7 @@ export default component$(() => {
       <p>
         <label>
           Имя пользователя GitHub:
-          <input
-            value={github.org}
-            onInput$={(ev) => (github.org = (ev.target as HTMLInputElement).value)}
-          />
+          <input value={github.org} onInput$={(ev, el) => (github.org = el.value)} />
         </label>
       </p>
       <section>

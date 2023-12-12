@@ -27,11 +27,7 @@ export default component$(() => {
       <div>
         <label>
           Введите своё имя, и я угадаю ваш возраст!
-          <input
-            onInput$={(e: Event) =>
-              (name.value = (e.target as HTMLInputElement).value)
-            }
-          />
+          <input onInput$={(ev, el) => (name.value = el.value)} />
         </label>
       </div>
       <Resource

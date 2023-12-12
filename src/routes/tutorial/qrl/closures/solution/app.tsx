@@ -7,8 +7,7 @@ export default component$(() => {
       <label>
         Введите своё имя и нажмите клавишу ввода:{' '}
         <input
-          onInput$={(event) => {
-            const input = event.target as HTMLInputElement;
+          onInput$={(event, input) => {
             store.name = input.value;
           }}
           onChange$={() => {
