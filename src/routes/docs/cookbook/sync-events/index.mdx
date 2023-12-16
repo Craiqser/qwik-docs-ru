@@ -1,0 +1,76 @@
+---
+title: Рецепты | Синхронные события с состоянием
+contributors:
+  - mhevery
+---
+
+import CodeSandbox, {CodeFile} from '../../../../components/code-sandbox/index.tsx';
+
+# `sync$()` Синхронные события (BETA)
+
+Qwik обрабатывает события асинхронно. Это означает, что некоторые API, такие как `event.preventDefault()` и `event.stopPropagation()`, не работают так, как ожидается. Чтобы обойти это ограничение, Qwik предоставляет API `sync$()`, который позволяет обрабатывать события синхронно. Но `sync$()` имеет несколько оговорок:
+
+1. `sync$()` не может закрыть ни одно состояние.
+2. `sync$()` не может вызывать другие функции, которые объявлены в области видимости или импортированы.
+3. `sync$()` сериализуется в HTML, и поэтому мы должны помнить о размере функции.
+
+Типичный способ справиться с этими ограничениями - разделить обработку событий на две части:
+
+1. `sync$()`, которая вызывается синхронно и может вызывать такие методы, как `event.preventDefault()` и `event.stopPropagation()`.
+2. `$()`, которая вызывается асинхронно и может закрывать состояние и вызывать другие функции, а также не имеет ограничений на размер.
+
+Поскольку `sync$()` не может получить доступ к состоянию, какова наилучшая стратегия работы с ним? Ответ заключается в использовании атрибутов элементов для передачи состояния в функцию `sync$()`.
+
+## Пример: `sync$()` с состоянием
+
+В этом примере мы хотим предотвратить поведение ссылки по умолчанию на основе некоторого состояния. Для этого мы разбиваем код на три части:
+
+1. `sync$()`: синхронная часть, которая сведена к минимуму,
+2. `$()`: асинхронная часть, которая может быть произвольно большой и может закрываться по состоянию,
+3. `data-should-prevent-default`: атрибут элемента, который используется для передачи состояния в функцию `sync$()`.
+
+<CodeSandbox url="/demo/cookbook/sync-event/"  style={{ height: '15em' }}>
+</CodeSandbox>
+
+<CodeFile src="/src/routes/demo/cookbook/sync-event/index.tsx">
+```tsx
+import { component$, useSignal, sync$, $ } from '@builder.io/qwik';
+
+export default component$(() => {
+  const shouldPreventDefault = useSignal(true);
+  return (
+    <div>
+      <div>Событие синхронизации:</div>
+      <input
+        type="checkbox"
+        checked={shouldPreventDefault.value}
+        onChange$={(e, target) =>
+          (shouldPreventDefault.value = target.checked)
+        }
+      />{' '}
+      Должны предотвратить по умолчанию
+      <hr />
+      <a
+        href="https://google.com"
+        target="_blank"
+        data-should-prevent-default={shouldPreventDefault.value}
+        onClick$={[
+          sync$((e: MouseEvent, target: HTMLAnchorElement) => {
+            if (target.hasAttribute('data-should-prevent-default')) {
+              e.preventDefault();
+            }
+          }),
+          $(() => {
+            console.log(
+              shouldPreventDefault.value ? 'Предотвращено' : 'Не предотвращено'
+            );
+          }),
+        ]}
+      >
+        открыть Google
+      </a>
+    </div>
+  );
+});
+```
+</CodeFile>

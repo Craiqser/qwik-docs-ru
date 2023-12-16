@@ -13,7 +13,7 @@ export default component$(() => {
 
   return (
     <a href="/" ref={aHref}>
-      Нажми меня!
+      кликни меня!
     </a>
   );
 });

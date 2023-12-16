@@ -132,8 +132,8 @@ export default component$(() => {
         Добавить в список
       </button>
       <ul>
-        {store.list.map((item, index) => (
-          <li key={`items-${index}`}>{item}</li>
+        {store.list.map((item, key) => (
+          <li key={key}>{item}</li>
         ))}
       </ul>
     </>
@@ -400,9 +400,7 @@ export default component$(() => {
       <div>
         <label>
           Введите свое имя, и я угадаю ваш возраст!
-          <input
-            onInput$={(ev, el) => (name.value = el.value)}
-          />
+          <input onInput$={(ev, el) => (name.value = el.value)} />
         </label>
       </div>
       <Resource

@@ -106,8 +106,15 @@
         "enableSsrOutput": false
       },
       {
-        "id": "synchronous",
-        "title": "Синхронные события",
+        "id": "synchronous-sync",
+        "title": "Синхронные события с sync()",
+        "enableHtmlOutput": false,
+        "enableClientOutput": false,
+        "enableSsrOutput": false
+      },
+      {
+        "id": "synchronous-visible",
+        "title": "Синхронные события с useVisibleTask$()",
         "enableHtmlOutput": false,
         "enableClientOutput": false,
         "enableSsrOutput": false
