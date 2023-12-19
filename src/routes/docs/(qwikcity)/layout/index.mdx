@@ -62,7 +62,7 @@ src/
 Макет будет использоваться для всех маршрутов в каталоге `src/routes`. Он будет рендерить компоненты `Header`, `Menu` и `Footer`, а также отобразит вложенные маршруты под компонентом `Slot`.
 
 ```tsx title="src/routes/layout.tsx"
-import { component$ } from '@builder.io/qwik';
+import { component$, Slot } from '@builder.io/qwik';
 
 export default component$(() => {
   return (
