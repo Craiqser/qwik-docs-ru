@@ -155,7 +155,9 @@ function bundle(bundleName: string, symbols: string[]) {
 
 Приложения Qwik используют сервис-воркер для обеспечения предварительной загрузки бандлов в кэш браузера для того, чтобы любое взаимодействие пользователя со страницей приводило к обращению к кэшу, следовательно, не было задержки во взаимодействии.
 
-См. [спекулятивное получение модулей](/docs/(qwikcity)/advanced/speculative-module-fetching/index.mdx).
+См. [спекулятивное получение модулей](../../advanced/speculative-module-fetching/index.mdx).
+
+> Обратите внимание, что функция Service Worker доступна только в защищённом контексте (HTTPS), в некоторых или во всех поддерживающих браузерах. См. спецификацию [`serviceWorker` property API specs](https://developer.mozilla.org/en-US/docs/Web/API/Navigator/serviceWorker).
 
 ## События
 
