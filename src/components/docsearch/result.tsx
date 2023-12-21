@@ -1,4 +1,5 @@
 import { Slot, component$, useContext, useSignal, useStore, useTask$ } from '@builder.io/qwik';
+import { QwikGPT } from '../qwik-gpt';
 import { SearchContext } from './context';
 import { AiResultOpenContext, type DocSearchState } from './doc-search';
 import { Snippet } from './snippet';
@@ -151,6 +152,11 @@ export const AIButton = component$(({ state }: { state: DocSearchState }) => {
                 )}
               </span>
             </button>
+            {gpt.value && (
+              <div class="qwikgpt-box">
+                <QwikGPT query={gpt.value}></QwikGPT>
+              </div>
+            )}
           </div>
         </li>
       )}

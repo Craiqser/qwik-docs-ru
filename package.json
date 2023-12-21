@@ -60,6 +60,11 @@
   },
   "homepage": "https://qwik-docs-ru.pages.dev/",
   "license": "MIT",
+  "pnpm": {
+    "overrides": {
+      "@supabase/realtime-js": "2.8.4"
+    }
+  },
   "private": true,
   "scripts": {
     "build": "qwik build",
