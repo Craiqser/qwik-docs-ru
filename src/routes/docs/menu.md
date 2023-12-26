@@ -41,6 +41,7 @@
 - [Импорт Glob](./cookbook/glob-import/index.mdx)
 - [Медиа-контроллер](./cookbook/mediaController/index.mdx)
 - [Портал](./cookbook/portal/index.mdx)
+- [Реэкспорт загрузчиков](./cookbook/re-exporting-loaders/index.mdx)
 - [Синхронизация событий с состоянием](./cookbook/sync-events/index.mdx)
 - [Управление темой](./cookbook/theme-management/index.mdx)
 
