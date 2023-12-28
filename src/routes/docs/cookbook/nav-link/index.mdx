@@ -1,0 +1,92 @@
+---
+title: Рецепты | Панель навигации
+contributors:
+  - Adbib
+---
+
+import CodeSandbox, { CodeFile } from '../../../../components/code-sandbox/index.tsx';
+
+# Компонент NavLink
+
+Если вы хотите добавить `активное` состояние вашим ссылкам, вы можете использовать это решение.
+Компонент NavLink расширяет возможности компонента Qwik `<Link>`, добавляя в него:
+
+- **Активный статус**: Применяет класс, когда ссылка href совпадает с текущим именем URL.
+
+Это позволяет стилизовать активное состояние навигации.
+
+## Как это работает
+
+Под капотом NavLink использует хук `useLocation` для получения статуса навигации. Он проверяет, совпадает ли href ссылки с текущим URL, чтобы установить activeClass. Это позволяет NavLink автоматически определять активное состояние в зависимости от навигации.
+
+<CodeFile src="/src/routes/demo/cookbook/nav-link/index.tsx">
+```tsx
+import { Slot, component$ } from '@builder.io/qwik';
+import { Link, useLocation, type LinkProps } from '@builder.io/qwik-city';
+
+type NavLinkProps = LinkProps & { activeClass?: string };
+
+export const NavLink = component$(
+  ({ activeClass, ...props }: NavLinkProps) => {
+    const location = useLocation();
+    const toPathname = props.href ?? '';
+    const locationPathname = location.url.pathname;
+
+    const startSlashPosition =
+      toPathname !== '/' && toPathname.startsWith('/')
+        ? toPathname.length - 1
+        : toPathname.length;
+    const endSlashPosition =
+      toPathname !== '/' && toPathname.endsWith('/')
+        ? toPathname.length - 1
+        : toPathname.length;
+    const isActive =
+      locationPathname === toPathname ||
+      (locationPathname.endsWith(toPathname) &&
+        (locationPathname.charAt(endSlashPosition) === '/' ||
+          locationPathname.charAt(startSlashPosition) === '/'));
+
+    return (
+      <Link
+        class={`${props.class || ''} ${isActive ? activeClass : ''}`}
+        {...props}
+      >
+        <Slot />
+      </Link>
+    );
+  }
+);
+```
+</CodeFile>
+
+## Использование
+
+Вы можете использовать NavLink с добавлением свойства `activeClass`:
+
+<CodeSandbox src="/src/routes/demo/cookbook/nav-link/example/index.tsx" style={{ height: '10em' }}>
+```tsx
+import { component$ } from '@builder.io/qwik';
+import { NavLink } from '..';
+
+export default component$(() => {
+  return (
+    <>
+      Ссылки
+      <div>
+        <NavLink href="/docs" activeClass="text-green-600">
+          /docs
+        </NavLink>
+      </div>
+      <div>
+        <NavLink
+          href="/demo/cookbook/nav-link/example/"
+          activeClass="text-green-600"
+        >
+          /demo/cookbook/nav-link/example/
+        </NavLink>
+      </div>
+    </>
+  );
+});
+```
+</CodeSandbox>
