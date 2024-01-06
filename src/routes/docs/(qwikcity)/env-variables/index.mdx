@@ -90,3 +90,34 @@ DB_PRIVATE_KEY=123456789
 > Убедитесь, что вы никогда не коммитите в git файлы `.env.local`.
 
 В производственной среде **установка переменных на стороне сервера зависит от конкретной платформы**. Большинство платформ позволяют устанавливать переменные окружения из своей панели управления или CLI. Пожалуйста, обратитесь к документации по вашей платформе (cloudflare, vercel, netlify) для получения дополнительной информации.
+
+### Доступ к переменным окружения в архитектуре serverfull (пример: Express)
+
+Для доступа к переменным .env в архитектуре serverfull нам нужно использовать паттерн проектирования singleton, инициализировать базу данных в плагине и обращаться к ней с помощью getDB везде, где это необходимо.
+
+```typescript title="src/util/db.ts"
+let _db!: AppDatabase;
+
+export function getDB() {
+  // eslint-disable-next-line
+  if (!_db) {
+    throw new Error('DB not set');
+  }
+  return _db;
+}
+
+export async function initializeDbIfNeeded(factory: () => Promise<AppDatabase>) {
+  // eslint-disable-next-line
+  if (!_db) {
+    _db = await factory();
+  }
+}
+```
+
+```typescript title="src/routes/plugin@db.ts"
+export const onRequest: RequestHandler = async ({ env }) => {
+  const url = env.get('PRIVATE_LIBSQL_DB_URL')!;
+  const authToken = env.get('PRIVATE_LIBSQL_DB_API_TOKEN')!;
+  await initializeDbIfNeeded(initLibSql(url, authToken));
+};
+```
