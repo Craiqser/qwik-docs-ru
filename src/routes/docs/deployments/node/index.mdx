@@ -78,9 +78,9 @@ npm run serve
 
 Эта защита включена по умолчанию, и это та причина, по которой вам необходимо установить переменную окружения `ORIGIN` при развёртывании вашего приложения для производства.
 
-Если вы хотите отключить защиту от CSRF, вы можете установить `checkOrigin: false` в опциях `createQwikCity()` в `src/entry.express.tsx`:
+Если вы хотите отключить защиту от CSRF, вы можете установить `checkOrigin: false` в опциях `createQwikCity()` в `src/entry.preview.tsx` или `src/entry.[server].tsx`:
 
-```tsx {6} /checkOrigin/ title="entry.express.tsx"
+```tsx {6} /checkOrigin/ title="entry.preview.tsx"
 // ...
 const { router, notFound, staticFile } = createQwikCity({
   render,
