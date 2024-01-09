@@ -38,15 +38,16 @@
 ## Рецепты
 
 - [Обзор](./cookbook/index.mdx)
-- [Шрифты](./cookbook/fonts/index.mdx)
 - [Импорт Glob](./cookbook/glob-import/index.mdx)
 - [Медиа-контроллер](./cookbook/mediaController/index.mdx)
-- [Порталы](./cookbook/portals/index.mdx)
 - [Панель навигации](./cookbook/nav-link/index.mdx)
+- [Поиск Algolia](./cookbook/algolia-search/index.mdx)
+- [Порталы](./cookbook/portals/index.mdx)
 - [Развёртывание в Node с Docker](./cookbook/node-docker-deploy/index.mdx)
 - [Реэкспорт загрузчиков](./cookbook/re-exporting-loaders/index.mdx)
 - [Синхронизация событий с состоянием](./cookbook/sync-events/index.mdx)
 - [Управление темой](./cookbook/theme-management/index.mdx)
+- [Шрифты](./cookbook/fonts/index.mdx)
 
 ## Интеграции
 
