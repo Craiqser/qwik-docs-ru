@@ -292,10 +292,10 @@ export const Button = component$<ButtonProps>(({ onTripleClick$ }) => {
 ```
 </CodeSandbox>
 
-⚠️ При использовании аннотаций типов необходимо обернуть тип события в `PropFunction`, чтобы сообщить TypeScript, что функция не может быть вызвана синхронно.
+⚠️ При использовании аннотаций типов необходимо обернуть тип события в `QRL`, чтобы сообщить TypeScript, что функция не может быть вызвана синхронно.
 
 ```tsx
-component$(({ onTripleClick$ } : { onTripleClick$?: PropFunction<() => void> }) => {
+component$(({ onTripleClick$ } : { onTripleClick$?: QRL<() => void> }) => {
   ...
 });
 ```

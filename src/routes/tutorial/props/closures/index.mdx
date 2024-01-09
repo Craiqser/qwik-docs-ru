@@ -32,12 +32,12 @@ created_at: '2022-08-02T12:07:45Z'
 Компонент может объявить обратный вызов в своих параметрах:
 
 - Свойство, которое заканчивается на `$` (как в `goodbye$`);
-- Тип свойства - `PropFunction<T>`, где `T` - ленивый ссылочный тип, на который указывает QRL (сигнатура функции).
+- Тип свойства - `QRL<T>`, где `T` - ленивый ссылочный тип, на который указывает QRL (сигнатура функции).
 
 ```tsx
 interface MyComponentProps {
-  goodbye$: PropFunction<() => void>;
-  hello$: PropFunction<() => void>;
+  goodbye$: QRL<() => void>;
+  hello$: QRL<() => void>;
 }
 
 export const MyComponent = component$((props: MyComponentProps) => { ... });
