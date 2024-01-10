@@ -27,6 +27,7 @@ contributors:
   - eecopa
   - drumnistnakano
   - maiieul
+  - wmertens
 updated_at: '2023-12-14T18:38:38Z'
 created_at: '2023-03-20T23:45:13Z'
 ---
@@ -368,6 +369,31 @@ export default component$(() => {
 - Невозможно проецировать содержимое через `<Slot>`.
 
 Как и следует из их названия, встроенные компоненты лучше экономно использовать для легковесных фрагментов разметки, поскольку их удобство в том, что они связаны с родительским компонентом.
+
+## Полиморфные компоненты
+
+Если вам нужно вывести различные типы элемента в зависимости от его свойства, вы можете сделать это следующим образом:
+
+```tsx
+export const Poly = component$(
+  <C extends string | FunctionComponent>({
+    as: Cmp = 'div' as C,
+    ...props
+  }: { as?: C } & PropsOf<string extends C ? 'div' : C>) => {
+    return <Cmp {...props}>hi</Cmp>;
+  }
+);
+
+// Все они работают с правильными типами
+<>
+  <Poly>Hello from a div</Poly>
+  <Poly as="a" href="/blog">Blog</Poly>
+  <Poly as="input" onInput$={(ev, el) => console.log(el.value)} />
+  <Poly as={OtherComponent} someProp />
+</>
+```
+
+Обратите внимание на `string extends C`, это верно только в том случае, если TypeScript не смог вывести тип из реквизита `as`, и поэтому вы можете указать тип по умолчанию.
 
 ## Обзор API
 
