@@ -61,6 +61,7 @@
 - [Leaflet Map](integrations/leaflet-map/index.mdx)
 - [Modular Forms](integrations/modular-forms/index.mdx)
 - [Nx монорепозитории](integrations/nx/index.mdx)
+- [OG Image](integrations/og-img/index.mdx)
 - [Orama](integrations/orama/index.mdx)
 - [Panda CSS](integrations/panda-css/index.mdx)
 - [Partytown](integrations/partytown/index.mdx)

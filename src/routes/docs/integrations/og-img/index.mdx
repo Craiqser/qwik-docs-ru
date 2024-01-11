@@ -1,0 +1,91 @@
+---
+title: OG Image (og-img) | Интеграции
+keywords: 'open-graph, image, satori, resvg'
+contributors:
+  - fabian-hiller
+updated_at: '2024-01-10T21:56:50Z'
+created_at: '2024-01-10T21:56:50Z'
+---
+
+# OG Image (og-img)
+
+С помощью [`og-img`](https://github.com/fabian-hiller/og-img) вы можете легко добавлять динамические изображения Open Graph на свой Qwik-сайт. Они отображаются, например, когда вашим сайтом делятся в социальных сетях или через службы обмена сообщениями.
+
+> `og-img` - это пакет, не зависящий от фреймворка, для генерации изображений Open Graph с использованием [Satori](https://github.com/vercel/satori) и [resvg](https://github.com/RazrFalcon/resvg).
+
+Чтобы начать работу, установите пакет npm:
+
+```bash
+npm install og-img
+```
+
+## Как это работает
+
+Чтобы сгенерировать изображение, достаточно вернуть `ImageResponse` через конечную точку сервера. Чтобы создать такой маршрут, добавьте новый маршрут на свой сайт Qwik и экспортируйте функцию `onGet` в индексном файле. Чтобы легко определить содержимое изображения, вы можете использовать литерал шаблона с тегом `html`.
+
+> Чтобы получить правильную подсветку синтаксиса для литералов тегов шаблона в Visual Studio Code, вы можете установить расширение [lit-html](https://marketplace.visualstudio.com/items?itemName=bierner.lit-html).
+
+```ts title="src/routes/og-image/index.ts"
+import type { RequestHandler } from '@builder.io/qwik-city';
+import { fetchFont, ImageResponse, html } from 'og-img';
+
+export const onGet: RequestHandler = async ({ send }) => {
+  send(
+    new ImageResponse(
+      // Use Tailwind CSS or style attribute
+      html`
+        <div tw="text-4xl text-green-700" style="background-color: tan">
+          Hello, world!
+        </div>
+      `,
+      {
+        width: 1200,
+        height: 600,
+        fonts: [
+          {
+            name: 'Roboto',
+            // Use `fs` (Node.js only) or `fetch` to read font file
+            data: await fetchFont(
+              'https://www.example.com/fonts/roboto-400.ttf'
+            ),
+            weight: 400,
+            style: 'normal',
+          },
+        ],
+      }
+    )
+  );
+};
+```
+
+Затем всё, что вам нужно сделать, это указать на эту конечную точку API с помощью метатега в шапке вашего сайта Qwik, чтобы вставить изображение Open Graph.
+
+```html
+<head>
+  <title>Привет, мир!</title>
+  <meta property="og:image" content="https://www.example.com/og-image" />
+</head>
+```
+
+Вы также можете генерировать метатег динамически, экспортируя объект `head` в маршруты.
+
+```tsx title="src/routes/index.tsx"
+import { component$ } from '@builder.io/qwik';
+import type { DocumentHead } from '@builder.io/qwik-city';
+
+export default component$(() => {
+  return <h1>Привет, мир!</h1>;
+});
+
+export const head: DocumentHead = {
+  title: 'Привет, мир!',
+  meta: [
+    {
+      property: 'og:image',
+      content: 'https://www.example.com/og-image',
+    },
+  ],
+};
+```
+
+Вы можете использовать параметры URL для динамического изменения содержимого изображения Open Graph. Взгляните на [Open Graph image Valibot](https://valibot.dev/og-image/?title=Example%20Title&description=The%20content%20of%20this%20image%20was%20generated%20dynamically). Исходный код можно найти [здесь](https://github.com/fabian-hiller/valibot/blob/main/website/src/routes/og-image/index.ts).
