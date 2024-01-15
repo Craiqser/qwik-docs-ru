@@ -75,57 +75,6 @@ export const Button = component$(() => {
   <p>Внимание ⚠️: <a href="https://qwik.builder.io/docs/components/events/#inline-handler">обработчики</a> JSX, такие как onClick$ и onInput$ выполняются только на клиенте. Потому что это события DOM, и поскольку на сервере нет DOM, они не будут выполняться на сервере.</p>
 </details>
 
-## Использование параметров
-
-### ⚛️ React
-
-```tsx
-export const Parent = (() => {
-  const [ count, setCount ] = useState<number>(0);
-
-  const increment = (() => {
-    setCount((prev) => prev + 1)
-  })
-  return <Child count={count} increment={increment} />;
-})
-
-interface ChildProps {
-  count: number;
-  increment: () => void;
-}
-
-export const Child = ((props: ChildProps) => {
-  return (
-    <>
-      <button onClick={props.increment}>Прибавить</button>
-      <p>Счёт: {props.count}</p>
-    </>
-  );
-})
-```
-
-### ⚡️ Qwik
-
-```tsx
-export const Parent = component$(() => {
-  const userData = useStore({ count: 0 });
-  return <Child userData={userData} />;
-});
-
-interface ChildProps {
-  userData: { count: number };
-}
-
-export const Child = component$<ChildProps>(({ userData }) => {
-  return (
-    <>
-      <button onClick$={() => userData.count++}>Прибавить</button>
-      <p>Счёт: {userData.count}</p>
-    </>
-  );
-});
-```
-
 ## Объявление локального состояния
 
 ### ⚛️ React
@@ -176,6 +125,57 @@ export const Counter = component$(() => {
     <>
       <p>Значение: {count.value}</p>
       <button onClick$={() => count.value++}>Увеличить</button>
+    </>
+  );
+});
+```
+
+## Использование параметров
+
+### ⚛️ React
+
+```tsx
+export const Parent = (() => {
+  const [ count, setCount ] = useState<number>(0);
+
+  const increment = (() => {
+    setCount((prev) => prev + 1)
+  })
+  return <Child count={count} increment={increment} />;
+})
+
+interface ChildProps {
+  count: number;
+  increment: () => void;
+}
+
+export const Child = ((props: ChildProps) => {
+  return (
+    <>
+      <button onClick={props.increment}>Прибавить</button>
+      <p>Счёт: {props.count}</p>
+    </>
+  );
+})
+```
+
+### ⚡️ Qwik
+
+```tsx
+export const Parent = component$(() => {
+  const userData = useStore({ count: 0 });
+  return <Child userData={userData} />;
+});
+
+interface ChildProps {
+  userData: { count: number };
+}
+
+export const Child = component$<ChildProps>(({ userData }) => {
+  return (
+    <>
+      <button onClick$={() => userData.count++}>Прибавить</button>
+      <p>Счёт: {userData.count}</p>
     </>
   );
 });
