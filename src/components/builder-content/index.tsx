@@ -55,7 +55,7 @@ export default component$<{
   return (
     <Resource
       value={builderContentRsrc}
-      onPending={() => <div>Загрузка...</div>}
+      onPending={() => <div>Loading...</div>}
       onResolved={(content) =>
         content.html ? (
           <props.tag class="builder" dangerouslySetInnerHTML={content.html} />
@@ -119,10 +119,14 @@ export async function getBuilderContent({
     qwikUrl.searchParams.set('cachebust', 'true');
   }
 
-  const response = await fetch(qwikUrl.href);
-  if (response.ok) {
-    const content: BuilderContent = JSON.parse(await response.text());
-    return content;
+  try {
+    const response = await fetch(qwikUrl.href);
+    if (response.ok) {
+      const content: BuilderContent = JSON.parse(await response.text());
+      return content;
+    }
+  } catch (err) {
+    console.error(err);
   }
-  throw new Error(`Unable to load Builder content from ${qwikUrl.toString()}`);
+  return { html: `<div>Unable to load Builder content from ${qwikUrl.toString()}</div>` };
 }
