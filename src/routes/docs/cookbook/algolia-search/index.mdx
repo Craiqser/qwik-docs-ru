@@ -6,7 +6,7 @@ updated_at: '2024-01-09T11:00:00Z'
 created_at: '2024-01-09T11:00:00Z'
 ---
 
-import CodeSandbox, {CodeFile} from '../../../../components/code-sandbox/index.tsx';
+import CodeSandbox from '../../../../components/code-sandbox/index.tsx';
 
 # Поиск Algolia
 
@@ -30,7 +30,7 @@ VITE_ALGOLIA_SEARCH_KEY=
 
 Ниже представлен рабочий пример первой пригодной для использования реализации. Затем, очевидно, вы можете настроить и создать свой графический интерфейс. Во многих случаях имеет смысл создать модальное окно, в котором будет отображаться поиск и результаты, как, например, в этой документации по Qwik. Вы можете проверить, что возвращает Algolia, через [официальную документацию](https://www.algolia.com/doc/).
 
-<CodeSandbox url="/demo/cookbook/algolia-search/"  style={{ height: '20em' }}>
+<CodeSandbox src="/src/routes/demo/cookbook/algolia-search/"  style={{ height: '20em' }}>
 ```tsx
 import { $, component$, useSignal, useStylesScoped$ } from '@builder.io/qwik';
 

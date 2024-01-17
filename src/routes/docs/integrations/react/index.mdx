@@ -101,7 +101,7 @@ npm run qwik add react
 
 Давайте начнём с простого примера. Мы создадим простой компонент React, а затем обернём его в компонент Qwik. Затем мы будем использовать компонент Qwik в маршруте Qwik.
 
-<CodeSandbox url="/src/routes/demo/react/hello-world/" tabs={["react.tsx","index.tsx"]} style={{ height: '6em' }}>
+<CodeSandbox src="/src/routes/demo/react/hello-world/" tabs={["react.tsx","index.tsx"]} style={{ height: '6em' }}>
 <div  q:slot="0">
 <CodeFile src="/src/routes/demo/react/hello-world/react.tsx">
 ```tsx /qwikify$/ /QGreetings/
@@ -147,7 +147,7 @@ export default component$(() => {
 
 Приведённый выше пример показывает, как SSR статический React-контент на сервере. Преимуществом является то, что этот компонент никогда не будет повторно отображаться в браузере и, следовательно, его код никогда не загружается на клиент. Но что, если компонент должен быть интерактивным, и нам нужно загрузить его поведение в браузер? Давайте начнём с создания простого примера счётчика в React.
 
-<CodeSandbox url="/src/routes/demo/react/counter-simple/" tabs={["react.tsx","index.tsx"]} style={{ height: '6em' }}>
+<CodeSandbox src="/src/routes/demo/react/counter-simple/" tabs={["react.tsx","index.tsx"]} style={{ height: '6em' }}>
 <div  q:slot="0">
 <CodeFile src="/src/routes/demo/react/counter-simple/react.tsx">
 ```tsx /qwikify$/ /QGreetings/
@@ -190,7 +190,7 @@ export default component$(() => {
 
 Обратите внимание, что нажатие на кнопку `Count` ничего не даёт. Это происходит потому, что React не был загружен, и поэтому компонент не был гидратирован. Нам нужно указать Qwik загрузить компонент React и гидратировать его, но нам нужно указать условие, при котором мы хотим это сделать. Если делать это сразу, то все преимущества превращения приложения React в острова будут потеряны. В данном случае мы хотим загружать компонент, когда пользователь наводит курсор на кнопку, для этого мы добавляем `{: eagerness: 'hover' }` to `qwikify$()`.
 
-<CodeSandbox url="/src/routes/demo/react/counter-simple-hover/" console={true}
+<CodeSandbox src="/src/routes/demo/react/counter-simple-hover/" console={true}
              tabs={["react.tsx","index.tsx"]} style={{ height: '20em' }}>
 <div  q:slot="0">
 <CodeFile src="/src/routes/demo/react/counter-simple-hover/react.tsx">
@@ -243,7 +243,7 @@ export default component$(() => {
 
 В предыдущем примере у нас был один остров, который мы гидрировали с задержкой. Но как только у вас появится несколько островов, возникнет необходимость в общении между ними. В этом примере показано, как осуществлять межостровную связь с помощью Qwik.
 
-<CodeSandbox url="/src/routes/demo/react/counter-two-islands/" console={true}
+<CodeSandbox src="/src/routes/demo/react/counter-two-islands/" console={true}
              tabs={["react.tsx","index.tsx"]} style={{ height: '20em' }}>
 <div  q:slot="0">
 <CodeFile src="/src/routes/demo/react/counter-two-islands/react.tsx">
@@ -316,7 +316,7 @@ export default component$(() => {
 
 В предыдущем примере у нас было два острова. Кнопка `QButton` должна быть сразу гидратирована, чтобы React мог установить обработчик события `onClick`. Это немного расточительно, потому что остров `QButton` никогда не будет нуждаться в повторном рендере, так как его вывод статичен. Клик по `QButton` не приведёт к повторному рендеру острова `QButton`. В таком случае мы можем попросить Qwik зарегистрировать слушателя `click` вместо того, чтобы гидрировать весь компонент в React только для того, чтобы прикрепить слушателя. Это делается с помощью префикса `host:` в имени события.
 
-<CodeSandbox url="/src/routes/demo/react/counter-two-islands-host/" console={true}
+<CodeSandbox src="/src/routes/demo/react/counter-two-islands-host/" console={true}
              tabs={["index.tsx","react.tsx"]} style={{ height: '20em' }}>
 <div  q:slot="0">
 <CodeFile src="/src/routes/demo/react/counter-two-islands-host/index.tsx">
@@ -374,7 +374,7 @@ export const QDisplay = qwikify$(Display);
 
 Частым случаем использования является передача содержимого дочерним компонентам. Это работает и с Qwik React. В компоненте React просто объявите `children` в своих параметрах и используйте их как ожидается (см. `react.tsx`).
 
-<CodeSandbox url="/src/routes/demo/react/children/" console={true}
+<CodeSandbox src="/src/routes/demo/react/children/" console={true}
              tabs={["index.tsx","react.tsx"]} style={{ height: '20em' }}>
 <div  q:slot="0">
 <CodeFile src="/src/routes/demo/react/children/index.tsx">
@@ -437,7 +437,7 @@ export const QFrame = qwikify$(Frame);
 
 Наконец, в приложении Qwik можно использовать библиотеки React. В этом примере [Material UI](https://mui.com/) и [Emotion](https://emotion.sh/docs/introduction) используются для рендера этого примера React.
 
-<CodeSandbox url="/src/routes/demo/react/mui/"
+<CodeSandbox src="/src/routes/demo/react/mui/"
              tabs={["react.tsx", "index.tsx"]} style={{ height: '8em' }}>
 <div  q:slot="0">
 <CodeFile src="/src/routes/demo/react/mui/react.tsx">
@@ -555,7 +555,7 @@ export default component$(() => {
 
 Обратите внимание, что по умолчанию никакой код React не будет выполняться в браузере, то есть компонент React по умолчанию НЕ будет интерактивным. В следующем примере мы _квикифицируем_ компонент [Слайдер](https://mui.com/material-ui/react-slider/) из библиотеки MUI, но он не будет интерактивным (в нем отсутствует свойство `eagerness`, чтобы сообщить Qwik, когда React-компонент должен быть гидратирован в браузере).
 
-<CodeSandbox url="/src/routes/demo/react/slider/" console={true}
+<CodeSandbox src="/src/routes/demo/react/slider/" console={true}
              tabs={["react.tsx","index.tsx"]} style={{ height: '20em' }}>
 <div  q:slot="0">
 <CodeFile src="/src/routes/demo/react/slider/react.tsx">

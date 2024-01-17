@@ -3,6 +3,7 @@ title: OG Image (og-img) | Интеграции
 keywords: 'open-graph, image, satori, resvg'
 contributors:
   - fabian-hiller
+  - aendel
 updated_at: '2024-01-10T21:56:50Z'
 created_at: '2024-01-10T21:56:50Z'
 ---
@@ -67,7 +68,7 @@ export const onGet: RequestHandler = async ({ send }) => {
 </head>
 ```
 
-Вы также можете генерировать метатег динамически, экспортируя объект `head` в маршруты.
+Вы также можете генерировать метатег динамически, экспортируя объект `head` в свои маршруты.
 
 ```tsx title="src/routes/index.tsx"
 import { component$ } from '@builder.io/qwik';

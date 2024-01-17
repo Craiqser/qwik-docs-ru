@@ -2,6 +2,7 @@
 title: Рецепты | Реэкспорт загрузчиков
 contributors:
   - gioboa
+  - aendel
 updated_at: '2023-12-15T11:00:00Z'
 created_at: '2023-12-15T11:00:00Z'
 ---
@@ -23,7 +24,7 @@ import CodeSandbox, {CodeFile} from '../../../../components/code-sandbox/index.t
 Представим, что у нас есть `routeLoader$`, который проверяет, вошёл ли пользователь в систему или нет. Не имеет смысла копировать и вставлять один и тот же код в разные части нашего кода. Согласно хорошим практикам, идеальным способом является централизация логики. В этом примере мы объявляем `routeAction$` и `routeLoader$` в централизованном файле, чтобы затем повторно использовать их в других файлах.
 
 Пример с `./shared/loaders.ts`
-<CodeFile url="/demo/cookbook/re-exporting-loaders/shared/loaders.ts" >
+<CodeFile src="/src/routes/demo/cookbook/re-exporting-loaders/shared/loaders.ts" >
 ```tsx
 import { routeAction$, routeLoader$ } from '@builder.io/qwik-city';
 
@@ -41,7 +42,7 @@ export const useCommonRouteLoader = routeLoader$(async () => {
 
 Теперь вы можете использовать ваши общие `routeAction$` и `routeLoader$` в путях, подобных этому `./src/routes/index.tsx`.
 
-<CodeFile url="/demo/cookbook/re-exporting-loaders/" >
+<CodeFile src="/src/routes/demo/cookbook/re-exporting-loaders/" >
 ```tsx
 import { component$ } from '@builder.io/qwik';
 import { Form } from '@builder.io/qwik-city';
@@ -75,7 +76,7 @@ export default component$(() => {
 ```
 </CodeFile>
 
-<CodeSandbox url="/demo/cookbook/re-exporting-loaders/"  style={{ height: '15em' }} />
+<CodeSandbox src="/src/routes/demo/cookbook/re-exporting-loaders/"  style={{ height: '15em' }} />
 
 ### Пример с библиотекой сторонних разработчиков
 
@@ -83,7 +84,7 @@ export default component$(() => {
 
 #### Вот наш код:
 
-<CodeSandbox url="/demo/cookbook/re-exporting-loaders/third-party/index.tsx"  style={{ height: '20em' }}>
+<CodeSandbox src="/src/routes/demo/cookbook/re-exporting-loaders/third-party/index.tsx"  style={{ height: '20em' }}>
 ```tsx
 import { component$ } from '@builder.io/qwik';
 import { ThirdPartyPaymentComponent } from './third-party-library';
@@ -103,7 +104,7 @@ export default component$(() => {
 
 #### Здесь представлен код библиотеки:
 
-<CodeFile url="/demo/cookbook/re-exporting-loaders/third-party/third-party-library.tsx" >
+<CodeFile src="/src/routes/demo/cookbook/re-exporting-loaders/third-party/third-party-library.tsx">
 ```tsx
 import { component$ } from '@builder.io/qwik';
 import { routeLoader$ } from '@builder.io/qwik-city';
