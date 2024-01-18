@@ -40,6 +40,7 @@
 - [Обзор](./cookbook/index.mdx)
 - [Импорт Glob](./cookbook/glob-import/index.mdx)
 - [Медиа-контроллер](./cookbook/mediaController/index.mdx)
+- [Объединение обработчиков](./cookbook/combine-request-handlers/index.mdx)
 - [Панель навигации](./cookbook/nav-link/index.mdx)
 - [Поиск Algolia](./cookbook/algolia-search/index.mdx)
 - [Порталы](./cookbook/portals/index.mdx)

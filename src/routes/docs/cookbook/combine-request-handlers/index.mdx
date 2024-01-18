@@ -1,0 +1,56 @@
+---
+title: Рецепты | Объединение обработчиков запросов
+contributors:
+  - gioboa
+  - erikras
+updated_at: '2024-01-18T11:00:00Z'
+created_at: '2024-01-18T11:00:00Z'
+---
+
+import {CodeFile} from '../../../../components/code-sandbox/index.tsx';
+
+# Объединение обработчиков запросов
+
+## Проблема
+
+В приложении Qwik мы часто используем несколько обработчиков запросов для выполнения [функций промежуточного ПО](../../(qwikcity)/middleware/). Фактически, в соответствии с принципом [единой ответственности](https://en.wikipedia.org/wiki/Single_responsibility_principle) функции промежуточного ПО разрабатываются для выполнения только одной задачи (например, для создания соединения с базой данных). С этими предпосылками может быть сложно объединить несколько обработчиков запросов, сохранив при этом порядок их вызова. Например, у вас есть один обработчик запроса для подключения к базе данных, а другой - для загрузки текущей записи пользователя, причем последний зависит от первого, поэтому они должны вызываться по порядку.
+
+## Решение
+
+Если вы хотите объединить в цепочку несколько обработчиков запросов, вы можете использовать эту служебную функцию.
+
+<CodeFile src="/src/routes/demo/cookbook/combine-request-handlers/index.tsx">
+```tsx
+import type { RequestHandler } from '@builder.io/qwik-city';
+
+/**
+ * Combines multiple request handlers into a single request handler.
+ *
+ * The handlers will be called in order:
+ *
+ * 1. Handler1 before next()
+ * 2. Handler2 before next()
+ * 3. Handler3 before next()
+ * 4. Next()
+ * 5. Handler3 after next()
+ * 6. Handler2 after next()
+ * 7. Handler1 after next()
+ *
+ * @public
+ */
+
+export const combineRequestHandlers = (...handlers: RequestHandler[]): RequestHandler =>
+  async (originalContext) => {
+    let lastNext = originalContext.next;
+    for (let i = handlers.length - 1; i >= 0; i--) {
+      const currentHandler = handlers[i];
+      const nextInChain = lastNext;
+      lastNext = async () => {
+        await currentHandler({ ...originalContext, next: nextInChain });
+      };
+    }
+
+    await lastNext();
+  };
+```
+</CodeFile>
