@@ -71,31 +71,6 @@ If you don't already have an account, then [create a Cloudflare account here](ht
 
 Within the projects "Settings" for "Build and deployments", the "Build command" should be `pnpm build`, and the "Build output directory" should be set to `dist`.
 
-## Algolia search
-
-STILL WIP
-
-resource: https://docsearch.algolia.com/
-
-### Crawler
-
-Setup in https://crawler.algolia.com/
-
-### Debug local site with crawler settings
-
-To crawl localhost site for testing index settings for content hierarchy. use this docker command
-
-```shell
-# create apiKey via https://www.algolia.com/account/api-keys
-touch .env
-# APPLICATION_ID=APPLICATION_ID
-# API_KEY=API_KEY
-docker run -it --rm --env-file=.env -e "CONFIG=$(cat ./packages/docs/algolia.json | jq -r tostring)" algolia/docsearch-scraper
-```
-
-see guide of [DocSearch-legacy docker command](https://docsearch.algolia.com/docs/legacy/run-your-own#run-the-crawl-from-the-docker-image)
-
-> In mac machine, docker container can access host's network, workaround is to use `host.docker.internal`
 ## Cloudflare Pages
 
 Cloudflare's [wrangler](https://github.com/cloudflare/wrangler) CLI can be used to preview a production build locally. To start a local server, run:

@@ -1,6 +1,5 @@
 import { useLocation } from '@builder.io/qwik-city';
 import { component$, useStyles$, useContext, useTask$ } from '@builder.io/qwik';
-// import { DocSearch } from '../docsearch/doc-search';
 import { CloseIcon } from '../svgs/close-icon';
 import { DiscordLogo } from '../svgs/discord-logo';
 import { GithubLogo } from '../svgs/github-logo';
@@ -15,8 +14,6 @@ import {
   setPreference,
   ThemeToggle,
 } from '../theme-toggle/theme-toggle';
-import BuilderContentComp from '../../components/builder-content';
-import { BUILDER_TOP_BAR_MODEL, BUILDER_PUBLIC_API_KEY } from '../../constants';
 import { isBrowser } from '@builder.io/qwik/build';
 
 export const Header = component$(() => {
@@ -44,11 +41,6 @@ export const Header = component$(() => {
     <>
       {hasBuilderBar && (
         <div class="builder-bar">
-          <BuilderContentComp
-            apiKey={BUILDER_PUBLIC_API_KEY}
-            model={BUILDER_TOP_BAR_MODEL}
-            tag="div"
-          />
         </div>
       )}
       <header
@@ -119,13 +111,6 @@ export const Header = component$(() => {
                 <span>Магазин</span>
               </a>
             </li>
-            {/* <li>
-              <DocSearch
-                appId={import.meta.env.VITE_ALGOLIA_APP_ID}
-                apiKey={import.meta.env.VITE_ALGOLIA_SEARCH_KEY}
-                indexName={import.meta.env.VITE_ALGOLIA_INDEX}
-              />
-            </li> */}
             <li>
               <ThemeToggle />
             </li>

@@ -1,6 +1,5 @@
 import { partytownVite } from '@builder.io/partytown/utils';
 import { qwikCity } from '@builder.io/qwik-city/vite';
-import { qwikInsights } from '@builder.io/qwik-labs/vite';
 import { qwikReact } from '@builder.io/qwik-react/vite';
 import { qwikVite } from '@builder.io/qwik/optimizer';
 import path, { resolve } from 'node:path';
@@ -8,8 +7,6 @@ import { defineConfig, loadEnv } from 'vite';
 import Inspect from 'vite-plugin-inspect';
 import { examplesData, playgroundData, tutorialData } from './vite.repl-apps';
 import { sourceResolver } from './vite.source-resolver';
-
-export const PUBLIC_QWIK_INSIGHT_KEY = loadEnv('', '.', 'PUBLIC').PUBLIC_QWIK_INSIGHTS_KEY;
 
 export default defineConfig(async () => {
   const { default: rehypePrettyCode } = await import('rehype-pretty-code');
@@ -45,13 +42,6 @@ export default defineConfig(async () => {
       noExternal: [
         '@mui/material',
         '@emotion/react',
-        '@algolia/autocomplete-core/dist/esm/resolve',
-        '@algolia/autocomplete-core',
-        '@algolia/autocomplete-shared',
-        'algoliasearch/lite',
-        'algoliasearch',
-        '@algolia/autocomplete-core/dist/esm/reshape',
-        'algoliasearch/dist/algoliasearch-lite.esm.browser',
       ],
     },
 
@@ -116,7 +106,6 @@ export default defineConfig(async () => {
         //   manual: {
         //     ...page,
         //     ...menus,
-        //     ...algoliaSearch,
         //     ...repl,
         //   },
         // },
@@ -130,7 +119,6 @@ export default defineConfig(async () => {
       sourceResolver(resolve('.')),
       qwikReact(),
       Inspect(),
-      qwikInsights({ publicApiKey: loadEnv('', '.', '').PUBLIC_QWIK_INSIGHTS_KEY }),
     ],
     build: {
       rollupOptions: {
@@ -162,41 +150,6 @@ export const menus = {
   S0wV0vUzzSo: 'right',
   '5wL0DAwmu0A': 'left',
 };
-
-export const algoliaSearch = bundle('algoliasearch', [
-  'hW',
-  '9t1uPE4yoLA',
-  'I5CyQjO9FjQ',
-  'NsnidK2eXPg',
-  'kDw0latGeM0',
-  '7YcOLMha9lM',
-  'Ly5oFWTkofs',
-  'NCpn2iO0Vo0',
-  'X3ZkFa9P7Dc',
-  'cGb8pS0shrs',
-  '0TG0b0n4wNg',
-  'qQlSSnFvEvs',
-  'qolFAthnlPo',
-  'vXb90XKAnjE',
-  'hYpp40gCb60',
-  'J3Nim3Y9sio',
-  'aWt0AqHIkGQ',
-  'H7LftCVcX8A',
-  'EhtTJVluy08',
-  'Rtwief4DyrI',
-  'uCl5Lf0Typ8',
-  'DCgB1xiHL28',
-  'VRTvy2D80Ww',
-  'r1y7UDjTtCw',
-  'ZiJmJ6Or9eY',
-  'UyYdc56f0ig',
-  'OmOFy2W4aT4',
-  'mnN5FJ8qddY',
-  '5o2hfyxmyXo',
-  'yqKaTNK0QR0',
-  'S0wV0vUzzSo',
-  'S0wV0vUzzSo',
-]);
 
 export const repl = bundle('repl', [
   's_XoQB11UZ1S0',
