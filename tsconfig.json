@@ -26,5 +26,6 @@
 		"types": ["node", "vite/client"],
 		"verbatimModuleSyntax": true,
 	},
+	"exclude": ["dist"],
 	"include": ["src", "./*.d.ts"]
 }

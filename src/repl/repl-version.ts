@@ -43,7 +43,7 @@ export const getReplVersion = async (version: string | undefined) => {
         // always exclude blockList
         return false;
       }
-      if (npmData?.tags.latest === v) {
+      if (npmData?.tags?.latest === v) {
         // always include "latest"
         return true;
       }
