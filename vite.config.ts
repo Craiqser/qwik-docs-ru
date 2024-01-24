@@ -4,7 +4,6 @@ import { qwikReact } from '@builder.io/qwik-react/vite';
 import { qwikVite } from '@builder.io/qwik/optimizer';
 import path, { resolve } from 'node:path';
 import { defineConfig, loadEnv } from 'vite';
-import Inspect from 'vite-plugin-inspect';
 import { examplesData, playgroundData, tutorialData } from './vite.repl-apps';
 import { sourceResolver } from './vite.source-resolver';
 
@@ -111,7 +110,6 @@ export default defineConfig(async () => {
       tutorialData(routesDir),
       sourceResolver(resolve('.')),
       qwikReact(),
-      Inspect(),
     ],
     build: {
       rollupOptions: {
