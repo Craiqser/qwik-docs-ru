@@ -27,5 +27,5 @@
 		"verbatimModuleSyntax": true,
 	},
 	"exclude": ["dist"],
-	"include": ["src", "./*.d.ts"]
+	"include": ["src", "./*.d.ts"],
 }
