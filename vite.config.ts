@@ -92,7 +92,16 @@ export default defineConfig(async () => {
           ],
         },
       }),
-      qwikVite(),
+      qwikVite({
+        // entryStrategy: {
+        //   type: 'smart',
+        //   manual: {
+        //     ...page,
+        //     ...menus,
+        //     ...repl,
+        //   },
+        // },
+      }),
       partytownVite({
         dest: resolve('dist', '~partytown'),
       }),
@@ -125,3 +134,37 @@ export default defineConfig(async () => {
     },
   };
 });
+
+export const page = {
+  KnNE9eL0qfc: 'page',
+  '9t1uPE4yoLA': 'page',
+};
+
+export const menus = {
+  S0wV0vUzzSo: 'right',
+  '5wL0DAwmu0A': 'left',
+};
+
+export const repl = bundle('repl', [
+  's_XoQB11UZ1S0',
+  's_AqHBIVNKf34',
+  's_IRhp4u7HN3o',
+  's_Qf2nEuUdHpM',
+  's_oEksvFPgMEM',
+  's_eePwnt3YTI8',
+  's_iw211Du0bw8',
+  's_lWGaPPYlcvs',
+  's_uCl5Lf0Typ8',
+  's_IW29huCoDkc',
+]);
+
+function bundle(bundleName: string, symbols: string[]) {
+  return symbols.reduce(
+    (obj, key) => {
+      // Sometimes symbols are prefixed with `s_`, remove it.
+      obj[key.replace('s_', '')] = obj[key] = bundleName;
+      return obj;
+    },
+    {} as Record<string, string>
+  );
+}
